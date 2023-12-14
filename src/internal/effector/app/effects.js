@@ -27,7 +27,6 @@ export const onAuthorization = createEffect((payload) => {
     })
     .catch(err => {
       authErrorState.setState(err)
-      console.log(err.response)
       throw err
     })
     .finally(() => isAuthorization.setState(false))

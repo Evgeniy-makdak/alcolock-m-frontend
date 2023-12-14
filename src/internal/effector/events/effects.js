@@ -23,7 +23,7 @@ const getSortQuery = (orderType, order) => {
 
   switch (orderType) {
     case EventsSortTypes.byUserName:
-      return `&sort=events.userRecord.lastName${orderStr}`
+      return `&sort=createdBy.lastName${orderStr}`
     case EventsSortTypes.byCarMake:
       return `&sort=vehicleRecord.manufacturer${orderStr}`
     case EventsSortTypes.byCarLicense:
@@ -74,9 +74,9 @@ export const uploadEvents = createEffect((
   }
 
   if (queryTrimmed.length) {
-    queries += `&any.events.userRecord.lastName.contains=${queryTrimmed}`
-    queries += `&any.events.userRecord.firstName.contains=${queryTrimmed}`
-    queries += `&any.events.userRecord.middleName.contains=${queryTrimmed}`
+    queries += `&any.createdBy.lastName.contains=${queryTrimmed}`
+    queries += `&any.createdBy.firstName.contains=${queryTrimmed}`
+    queries += `&any.createdBy.middleName.contains=${queryTrimmed}`
     queries += `&any.vehicleRecord.registrationNumber.contains=${queryTrimmed}`
     queries += `&any.vehicleRecord.manufacturer.contains=${queryTrimmed}`
     queries += `&any.vehicleRecord.model.contains=${queryTrimmed}`
@@ -215,10 +215,20 @@ export const getEventsHistory = createEffect((
     })
 })
 
-export const activateServiceMode = createEffect(({data, deviceId}) => {
+export const activateServiceMode = createEffect(({data, deviceId, isDeactivate = false}) => {
   activateServiceLoadingState.setState(true)
+  const requestData = isDeactivate
+    ? {
+      deviceId,
+      type: 'SERVICE_MODE_DEACTIVATE'
+    }
+    : {
+      duration: data.duration * 3600,
+      deviceId,
+      type: 'SERVICE_MODE_ACTIVATE'
+    }
 
-  const {promise} = EventsApi.activateServiceMode(deviceId, data)
+  const {promise} = EventsApi.activateServiceMode(deviceId, requestData)
 
   return promise
     .then(({res}) => {
@@ -232,6 +242,36 @@ export const activateServiceMode = createEffect(({data, deviceId}) => {
 
 export const cancelActivateService = createEffect((id) => {
   const {promise} = EventsApi.cancelActivateServiceMode(id)
+
+  return promise
+    .then(({res}) => res)
+    .catch(err => {
+      throw err
+    })
+})
+
+export const rejectActivateService = createEffect((id) => {
+  const {promise} = EventsApi.rejectActivateServiceMode(id)
+
+  return promise
+    .then(({res}) => res)
+    .catch(err => {
+      throw err
+    })
+})
+
+export const acceptActivateService = createEffect((id) => {
+  const {promise} = EventsApi.acceptActivateServiceMode(id)
+
+  return promise
+    .then(({res}) => res)
+    .catch(err => {
+      throw err
+    })
+})
+
+export const seenAutoService = createEffect((id) => {
+  const {promise} = EventsApi.seenAction(id)
 
   return promise
     .then(({res}) => res)

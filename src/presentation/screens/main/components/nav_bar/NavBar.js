@@ -8,11 +8,27 @@ import RoutePaths from "../../../../../internal/route_paths";
 import {autoServiceStore} from "../../../../../internal/effector/auto_service/store";
 import BranchSelect from "./BranchSelect";
 import {userStore} from "../../../../../internal/effector/user/store";
+import {useEffect} from "react";
+import {checkAutoServiceCount} from "../../../../../internal/effector/auto_service/effects";
 
 const NavBar = () => {
-  const allAutoServices = autoServiceStore.allList.useValue()
-  const notifications = allAutoServices.length
+  const notifications = autoServiceStore.notificationsCount.useValue()
   const userData = userStore.userData.useValue()
+  const updateNotificationsCount = autoServiceStore.updateNotificationsCount.useValue()
+
+  useEffect(() => {
+    checkAutoServiceCount()
+      .catch(err => {
+        console.log('checkAutoServiceCount error', err?.response)
+      })
+
+    setInterval(() => {
+      checkAutoServiceCount()
+        .catch(err => {
+          console.log('checkAutoServiceCount error', err?.response)
+        })
+    }, 60000)
+  }, [updateNotificationsCount])
 
   const permissionsFilter = (item) => {
     return item.path === RoutePaths.groups || item.path === RoutePaths.roles
@@ -25,7 +41,9 @@ const NavBar = () => {
             ? !!userData?.permissions.alcolocks
             : item.path === RoutePaths.attachments
               ? !!userData?.permissions.attachments
-              : true
+              : item.path === RoutePaths.autoService
+                ? !!userData?.permissions.alkozamki || userData?.isAdmin
+                : true
   }
 
   return (

@@ -42,9 +42,7 @@ const EventInfo = ({selectedEventId}) => {
           fields={[
             {
               label: 'Пользователь:',
-              value: (eventData?.events ?? [])[0] && (eventData?.events ?? [])[0].userRecord
-                ? Formatters.nameFormatter(eventData.events[0].userRecord)
-                : '-'
+              value: Formatters.nameFormatter(eventData?.createdBy)
             },
             {
               label: 'Серийный номер алкозамка:',

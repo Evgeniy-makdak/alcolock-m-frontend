@@ -28,7 +28,9 @@ const EventsHistory = ({type, id}) => {
         })
           .then(res => {
             setLoading(false)
-            setEventsList(res)
+            if (Array.isArray(res)) {
+              setEventsList(res)
+            }
           })
           .catch(err => {
             setLoading(false)
@@ -40,7 +42,10 @@ const EventsHistory = ({type, id}) => {
           carId: id
         })
           .then(res => {
-            setEventsList(res)
+            if (Array.isArray(res)) {
+              setEventsList(res)
+            }
+
             setLoading(false)
           })
           .catch(err => {
@@ -53,7 +58,9 @@ const EventsHistory = ({type, id}) => {
           alcolockId: id
         })
           .then(res => {
-            setEventsList(res)
+            if (Array.isArray(res)) {
+              setEventsList(res)
+            }
             setLoading(false)
           })
           .catch(err => {

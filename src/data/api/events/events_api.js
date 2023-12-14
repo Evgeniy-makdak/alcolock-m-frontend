@@ -1,5 +1,4 @@
 import {request} from "../../request";
-import {cancelActivateService} from "../../../internal/effector/events/effects";
 
 export default class EventsApi {
   static getList(
@@ -29,11 +28,7 @@ export default class EventsApi {
     const params = {
       url: `api/device-actions`,
       method: 'POST',
-      data: {
-        duration: data.duration * 3600,
-        deviceId,
-        type: 'SERVICE_MODE_ACTIVATE'
-      }
+      data
     }
 
     return request(params)
@@ -42,6 +37,33 @@ export default class EventsApi {
   static cancelActivateServiceMode(id) {
     const params = {
       url: `api/device-actions/${id}/cancel`,
+      method: 'POST',
+    }
+
+    return request(params)
+  }
+
+  static rejectActivateServiceMode(id) {
+    const params = {
+      url: `api/device-actions/${id}/reject`,
+      method: 'POST',
+    }
+
+    return request(params)
+  }
+
+  static acceptActivateServiceMode(id) {
+    const params = {
+      url: `api/device-actions/${id}/accept`,
+      method: 'POST',
+    }
+
+    return request(params)
+  }
+
+  static seenAction(id) {
+    const params = {
+      url: `api/device-actions/${id}/seen`,
       method: 'POST',
     }
 

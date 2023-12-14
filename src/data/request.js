@@ -1,6 +1,6 @@
 import {API_URL} from "./config";
 import {cookieManager} from "../internal/utils/cookie_manager";
-import {appAuthStatusState, appTokenState, AuthStatus} from "../internal/effector/app/store";
+import {appAuthStatusState, appTokenState, AuthStatus, refreshTokenState} from "../internal/effector/app/store";
 
 const getHeaders = (isAuth, token) => {
   const initHeaders = {
@@ -114,15 +114,17 @@ export const request = (params) => {
           cookieManager.removeAll()
           appAuthStatusState.setState(AuthStatus.notAuth)
           appTokenState.setState(null)
-          const error = new Error('UnAuth');
+          refreshTokenState.setState(null)
+          const unAuthError = new Error('UnAuth')
+
           if (contentType &&
             (contentType.includes('application/json') || contentType.includes('application/problem+json'))) {
-            error.response = await result.json()
+            unAuthError.response = await result.json()
           } else {
-            error.response = result
+            unAuthError.response = result
           }
 
-          throw error
+          throw unAuthError
         }
       }
 
@@ -149,6 +151,9 @@ export const request = (params) => {
 
         throw error
       }
+    })
+    .catch((err) => {
+      throw err
     })
 
   return ({

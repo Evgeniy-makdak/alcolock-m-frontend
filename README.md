@@ -35,4 +35,14 @@
 
 2. Откройте [http://localhost:3000](http://localhost:3000), чтобы просмотреть его в браузере.
 
+## Сборка релиза через Docker
 
+1. Соберите образ для сборки *(собирается один раз)*
+   ```bash
+   docker build --tag ls-node docker-build/
+   ```
+2. Выполните команду для сбоки, пример в `docker-build/build.sh`
+   ```bash
+   bash docker-build/build.sh 
+   ```
+3. Результат сборки находится в папке `bulid`

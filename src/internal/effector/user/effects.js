@@ -50,13 +50,9 @@ export const getUserData = createEffect(({token, navigate}) => {
         })
         appAuthStatusState.setState(AuthStatus.auth)
       }
-      console.log(res)
     })
     .catch(err => {
-      if (err.response?.status === 401) {
-        navigate(RoutePaths.auth)
-        appAuthStatusState.setState(AuthStatus.notAuth)
-      }
+      throw err
     })
     .finally(() =>  appLoadingState.setState(false))
 })

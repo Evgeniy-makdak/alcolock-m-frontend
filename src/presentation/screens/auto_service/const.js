@@ -1,7 +1,7 @@
 import {AutoServiceSortTypes} from "../../../internal/effector/auto_service/effects";
 import Formatters from "../../../internal/utils/formatters";
-import AppConstants from "../../../internal/app_constants";
 import TimeCell from "./components/TimeCell";
+import SearchMethods from "../../../internal/utils/global_methods";
 
 export const HEADERS = [
   {
@@ -21,16 +21,16 @@ export const HEADERS = [
     sortType: AutoServiceSortTypes.byCar
   },
   {
-    label: 'Водитель',
+    label: 'Инициатор',
     sortType: AutoServiceSortTypes.byDriver
   },
   {
     label: 'Состояние',
-    sortType: AutoServiceSortTypes.byState
+    // sortType: AutoServiceSortTypes.byState
   },
   {
     label: 'Процесс',
-    sortType: AutoServiceSortTypes.byProcess,
+    // sortType: AutoServiceSortTypes.byProcess,
     style: {
       maxWidth: '120px',
       width: '120px',
@@ -45,43 +45,74 @@ export const HEADERS = [
   },
 ]
 
-export const getRowsTemplate = (item) => ({
-  id: item.id,
-  values: [
-    {
-      value: Formatters.formatISODate(item.createdAt),
-      style: {
-        maxWidth: '170px',
-        width: '170px',
-      }
-    },
-    {
-      value: item.alcolock?.serial ?? '-',
-    },
-    {
-      value: item.alcolock?.car
-        ? `${item.alcolock.car.make} ${item.alcolock.car.model} ${item.alcolock.car.license}`
-        : '-',
-    },
-    {
-      value: item.driver?.name ?? '-',
-    },
-    {
-      value: AppConstants.alcolockServiceTypes.find(obj => obj.value === item.state)?.label ?? '-',
-    },
-    {
-      value: AppConstants.alcolockServiceProcesses.find(obj => obj.value === item.process)?.label ?? '-',
-      style: {
-        maxWidth: '120px',
-        width: '120px',
-      }
-    },
-    {
-      value: <TimeCell time={item.time} id={item.id}/>,
-      style: {
-        maxWidth: '120px',
-        width: '120px',
-      }
-    },
-  ]
-})
+export const getRowsTemplate = (item, updateInfo) => {
+  const lastEvent = SearchMethods.findMostRecentEvent(item.events)
+  const requestType = SearchMethods.findFirstRequestEvent(item.events)?.eventType
+  const isAcknowledged = !!(item.events ?? []).find(event => event.eventType === 'APP_ACKNOWLEDGED')
+
+  return {
+    id: item.id,
+    values: [
+      {
+        value: Formatters.formatISODate(item.createdAt),
+        style: {
+          maxWidth: '170px',
+          width: '170px',
+        }
+      },
+      {
+        value: item.device?.serialNumber ?? '-',
+      },
+      {
+        value: item.vehicleRecord
+          ? Formatters.carNameFormatter(item.vehicleRecord)
+          : '-',
+      },
+      {
+        value: Formatters.nameFormatter(item.createdBy),
+      },
+      {
+        value: lastEvent?.eventType === 'SERVER_REQUEST'
+          ? 'Ожидание водителя'
+          : lastEvent?.eventType === 'APP_REQUEST'
+            ? 'Ожидание оператора'
+            : lastEvent?.eventType === 'REJECTED'
+              ? isAcknowledged
+                  ? 'Оператор отклонил'
+                  : requestType === 'SERVER_REQUEST'
+                    ? 'Водитель отклонил'
+                    : 'Оператор отклонил'
+              : lastEvent?.eventType === 'ACCEPTED'
+                ? isAcknowledged
+                  ? 'Оператор подтвердил'
+                  : requestType === 'SERVER_REQUEST'
+                    ? 'Водитель подтвердил'
+                    : 'Оператор подтвердил'
+                : lastEvent?.eventType === 'OFFLINE_DEACTIVATION' || lastEvent?.eventType === 'OFFLINE_ACTIVATION'
+                  ? 'Офлайн-переключение'
+                  : '-'
+      },
+      {
+        value: item.type === 'SERVICE_MODE_ACTIVATE'
+          ? 'Включение'
+          : item.type ==="SERVICE_MODE_DEACTIVATE"
+            ? 'Выключение'
+            : '-'
+      },
+      {
+        value: <TimeCell
+          key={item.id}
+          time={lastEvent?.eventType !== 'REJECTED'
+            ? item.finishedAt
+            : null}
+          updateInfo={updateInfo}
+          id={item.id}
+        />,
+        style: {
+          maxWidth: '120px',
+          width: '120px',
+        }
+      },
+    ]
+  }
+}

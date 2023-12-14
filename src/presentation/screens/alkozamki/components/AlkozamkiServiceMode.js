@@ -1,41 +1,54 @@
 import './AlkozamkiServiceMode.sass'
-import {changeAlcolockService} from "../../../../internal/effector/alkozamki/effects";
-import {useEffect, useState} from "react";
-import {hideExpiredItems} from "../../../../internal/effector/auto_service/effects";
 import {useToggle} from "../../../../internal/hooks/useToggle";
 import Popup from "../../../shared/ui/popup/Popup";
 import ActivateForm from "./ActivateForm";
 import {alcolockActivateFormSelectors} from "../../../../internal/effector/events/forms";
 import Button, {ButtonsType} from "../../../shared/ui/button/Button";
 import AppConstants from "../../../../internal/app_constants";
-import {activateServiceMode, cancelActivateService} from "../../../../internal/effector/events/effects";
+import {
+  acceptActivateService,
+  activateServiceMode,
+  cancelActivateService,
+  rejectActivateService, seenAutoService
+} from "../../../../internal/effector/events/effects";
 import Formatters from "../../../../internal/utils/formatters";
+import SearchMethods from "../../../../internal/utils/global_methods";
+import {useEffect} from "react";
+import {autoServiceStore, updateNotificationsCountState} from "../../../../internal/effector/auto_service/store";
 
-const AlkozamkiServiceMode = ({data, toggleUpdateInfo, toggleUpdateTable}) => {
+const AlkozamkiServiceMode = (
+  {
+    data,
+    toggleUpdateInfo,
+    toggleUpdateTable,
+    outerActionData = null
+  }) => {
   const [openActivatePopup, toggleActivatePopup] = useToggle()
+  const [openDeactivatePopup, toggleDeactivatePopup] = useToggle()
   const isValidForm = alcolockActivateFormSelectors.useIsFormValid()
   const onClickSubmit = alcolockActivateFormSelectors.useOnClickSubmit()
   const resetForm = alcolockActivateFormSelectors.useResetForm()
-  // useEffect(() => {
-  //   if (!data) return
-  //
-  //  // if (!['OPERATOR_WAITING', 'DRIVER_WAITING'].includes(data.state)) {
-  //  //   hideExpiredItems(data.id)
-  //  // }
-  // }, [data])
+  const [updateNotificationsCount, setUpdateNotificationsCount] = autoServiceStore.updateNotificationsCount.useState()
 
+  useEffect(() => {
+    if (!outerActionData || outerActionData?.seen) return
+    const lastEvent = SearchMethods.findMostRecentEvent(outerActionData.events)
+    const requestType = SearchMethods.findFirstRequestEvent(outerActionData.events)?.eventType
+    const isAcknowledged = !!(outerActionData.events ?? []).find(event => event.eventType === 'APP_ACKNOWLEDGED')
 
-  const handleChangeMode = (workMode, serviceStatus) => {
-    changeAlcolockService({
-      id: data?.id,
-      workMode,
-      serviceStatus
-    })
-      .then(() => {
-        toggleUpdateInfo()
-        toggleUpdateTable()
-      })
-  }
+    if (['OFFLINE_DEACTIVATION', 'OFFLINE_ACTIVATION'].includes(lastEvent?.eventType) ||
+      isAcknowledged ||
+      (['REJECTED', 'ACCEPTED'].includes(lastEvent?.eventType) && requestType === 'SERVER_REQUEST')) {
+      seenAutoService(outerActionData?.id)
+        .then(() => {
+          toggleUpdateInfo()
+          toggleUpdateTable()
+        })
+        .catch(err => {
+          console.log('seenAutoService error', err?.response)
+        })
+    }
+  }, [outerActionData])
 
   const onSubmit = () => {
     if (!isValidForm) return
@@ -56,128 +69,233 @@ const AlkozamkiServiceMode = ({data, toggleUpdateInfo, toggleUpdateTable}) => {
       .then(() => {
         toggleUpdateInfo()
         toggleUpdateTable()
+        setUpdateNotificationsCount(!updateNotificationsCount)
       })
       .catch(err => {
         console.log('handleCancelActivate error', err?.response)
       })
   }
 
+  const handleRejectActivateService = (id) => {
+    if (!id) {
+      console.log('Нет id action')
+      return
+    }
+    rejectActivateService(id)
+      .then(() => {
+        toggleUpdateInfo()
+        toggleUpdateTable()
+        setUpdateNotificationsCount(!updateNotificationsCount)
+      })
+      .catch(err => {
+        console.log('handleRejectActivateService error', err?.response)
+      })
+  }
+
+  const handleAcceptActivateService = (id) => {
+    if (!id) {
+      console.log('Нет id action')
+      return
+    }
+    acceptActivateService(id)
+      .then(() => {
+        toggleUpdateInfo()
+        toggleUpdateTable()
+        setUpdateNotificationsCount(!updateNotificationsCount)
+      })
+      .catch(err => {
+        console.log('handleRejectActivateService error', err?.response)
+      })
+  }
+
   const serviceModeInfoMapper = (entity) => {
-    const action = (entity?.activeActions ?? []).length
+    const action = outerActionData ?? ((entity?.activeActions ?? []).length
       ? entity.activeActions[0]
-      : null
+      : null)
+    const lastEvent = SearchMethods.findMostRecentEvent(action?.events)
+    const requestEvent = SearchMethods.findFirstRequestEvent(action?.events)
 
     return {
       action,
-      type: action
-        ? (action.events ?? [])[0]?.eventType ?? null
-        : null,
+      type: lastEvent?.eventType ?? null,
       duration: action
-        ? (action.events ?? [])[0]?.extra?.duration ?? null
+        ? (action?.events ?? [])[0]?.extra?.duration ?? null
         : null,
-
+      requestType: requestEvent?.eventType ?? null,
+      isAcknowledged: !!(action?.events ?? []).find(event => event.eventType === 'APP_ACKNOWLEDGED')
     }
+  }
+
+  const handleActivate = (formData) => {
+    activateServiceMode({
+      data: formData,
+      deviceId: data.id
+    })
+      .then(() => {
+        handleCloseActivatePopup()
+        toggleUpdateInfo()
+        toggleUpdateTable()
+        setUpdateNotificationsCount(!updateNotificationsCount)
+      })
+      .catch(err => {
+        console.log('activateServiceMode error', err?.response)
+      })
+  }
+
+  const handleDeactivate = () => {
+    activateServiceMode({
+      isDeactivate: true,
+      deviceId: data.id
+    })
+      .then(() => {
+        toggleDeactivatePopup()
+        toggleUpdateInfo()
+        toggleUpdateTable()
+        setUpdateNotificationsCount(!updateNotificationsCount)
+      })
+      .catch(err => {
+        console.log('handleDeactivate error', err?.response)
+      })
   }
 
   const getButtons = () => {
     try {
       const serviceModeInfo = serviceModeInfoMapper(data)
-
+      console.log('serviceModeInfo', serviceModeInfo)
+      const isServiceMode = data?.mode === 'MAINTENANCE'
       if (serviceModeInfo.action) {
-        if (serviceModeInfo.type === 'SERVER_REQUEST' ) {
-          const time = Formatters.parseISO8601Duration(serviceModeInfo.duration)
-          const timeFormat = time
-            ? `${time.hours}:${time.minutes}:${time.seconds}`
-            : '-'
+        const time = Formatters.parseISO8601Duration(serviceModeInfo.duration)
+        const timeFormat = time
+          ? `${time.hours}:${time.minutes}:${time.seconds}`
+          : '-'
 
-          return (
-            <>
-              <span><b>Включение на {timeFormat}</b></span>
-              <div className={'alcolock_service_mode__toggles'}>
-                <button>
-                  ожидание
-                </button>
-                <button
-                  className={'cancel'}
-                  onClick={() => handleCancelActivate(serviceModeInfo.action?.id)}
-                >
-                  Отменить
-                </button>
-              </div>
-            </>
-          )
-        } else {
-          return null
+        switch (serviceModeInfo.type) {
+          case 'SERVER_REQUEST':
+            const servText = serviceModeInfo.action.type === 'SERVICE_MODE_DEACTIVATE'
+              ? <span><b>Выключение</b></span>
+              : serviceModeInfo.action.type === 'SERVICE_MODE_ACTIVATE'
+                ? <span><b>Включение на {timeFormat}</b></span>
+                : '-'
+            return (
+              <>
+                {servText}
+                <div className={'alcolock_service_mode__toggles'}>
+                  <button>
+                    ожидание
+                  </button>
+                  <button
+                    className={'cancel'}
+                    onClick={() => handleCancelActivate(serviceModeInfo.action?.id)}
+                  >
+                    Отменить
+                  </button>
+                </div>
+              </>
+            )
+          case 'APP_REQUEST':
+            const appText = serviceModeInfo.action.type === 'SERVICE_MODE_DEACTIVATE'
+              ? <span><b>Выключение</b></span>
+              : serviceModeInfo.action.type === 'SERVICE_MODE_ACTIVATE'
+                ? <span><b>Включение на {timeFormat}</b></span>
+                : '-'
+            return (
+              <>
+                {appText}
+                <div className={'alcolock_service_mode__toggles'}>
+                  <button
+                    className={'accept'}
+                    onClick={() => handleAcceptActivateService(serviceModeInfo.action?.id)}
+                  >
+                    Принять
+                  </button>
+
+                  <button
+                    className={'cancel'}
+                    onClick={() => handleRejectActivateService(serviceModeInfo.action?.id)}
+                  >
+                    Отклонить
+                  </button>
+                </div>
+              </>
+            )
+          case 'REJECTED':
+            if (serviceModeInfo.requestType === 'SERVER_REQUEST') {
+              return serviceModeInfo.action.type === 'SERVICE_MODE_DEACTIVATE'
+                ? <span><b>Выключение отклонено</b> водителем</span>
+                : serviceModeInfo.action.type === 'SERVICE_MODE_ACTIVATE'
+                  ? <span><b>Включение отклонено</b> водителем</span>
+                  : '-'
+            } else if (serviceModeInfo.requestType === 'APP_REQUEST') {
+              if (serviceModeInfo.isAcknowledged) {
+                return (
+                  <span>Отклонение подтвержденно приложением</span>
+                )
+              } else {
+                return (
+                  <span>Ожидание подтверждения приложения</span>
+                )
+              }
+            } else {
+              return (
+                <span>Ожидание подтверждения приложения</span>
+              )
+            }
+          case 'ACCEPTED':
+            if (serviceModeInfo.requestType === 'SERVER_REQUEST') {
+              return serviceModeInfo.action.type === 'SERVICE_MODE_DEACTIVATE'
+                ? <span><b>Выключение подтверждено</b> водителем</span>
+                : serviceModeInfo.action.type === 'SERVICE_MODE_ACTIVATE'
+                  ? <span><b>Включение подтверждено</b> водителем</span>
+                  : '-'
+            } else if (serviceModeInfo.requestType === 'APP_REQUEST') {
+              if (serviceModeInfo.isAcknowledged) {
+                return (
+                  <span>Подтвержденно приложением</span>
+                )
+              } else {
+                return (
+                  <span>Ожидание подтверждения приложения</span>
+                )
+              }
+            } else {
+              return (
+                <span>Ожидание подтверждения приложения</span>
+              )
+            }
+          case 'OFFLINE_DEACTIVATION':
+            return (
+              <span>Выключен в оффлайн-режиме</span>
+            )
+          case 'OFFLINE_ACTIVATION':
+            return (
+              <span>Включен в оффлайн-режиме на {timeFormat}</span>
+            )
+          default:
+            return null
         }
       } else {
         return (
           <div className={'alcolock_service_mode__toggles'}>
             <button
-              className={'active'}
-              onClick={toggleActivatePopup}
+              className={!isServiceMode ? 'active': ''}
+              onClick={!isServiceMode ? toggleActivatePopup : null}
             >
               Включить
             </button>
-            <button>Выключить</button>
+            <button
+              className={isServiceMode ? 'active': ''}
+              onClick={isServiceMode ? toggleDeactivatePopup : null}
+            >
+              Выключить
+            </button>
           </div>
         )
       }
     } catch (err) {
-      console.log('Ошибка в отображении режима автосервиса')
+      console.log('Ошибка в отображении режима автосервиса', err)
     }
 
   }
-
-
-    // switch (data.mode) {
-    //   case 'NORMAL':
-    //     return (
-    //       <>
-    //         <button
-    //           className={'active'}
-    //           onClick={toggleActivatePopup}
-    //         >
-    //           Включить
-    //         </button>
-    //         <button>Выключить</button>
-    //       </>
-    //     )
-      // case 'OPERATOR_WAITING':
-      //   return (
-      //     <>
-      //       <button
-      //         className={'accept'}
-      //         // onClick={() => handleChangeMode(1, AppConstants.ServiceModeTypes.on)}
-      //       >
-      //         Принять
-      //       </button>
-      //
-      //       <button
-      //         className={'cancel'}
-      //         // onClick={() => handleChangeMode(data?.work_mode, AppConstants.ServiceModeTypes.off)}
-      //       >
-      //         Отклонить
-      //       </button>
-      //     </>
-      //   )
-      // case 'DRIVER_WAITING':
-      //   return (
-      //     <>
-      //       <button>
-      //         ожидание
-      //       </button>
-      //       <button
-      //         className={'cancel'}
-      //         // onClick={() => handleChangeMode(data?.work_mode, AppConstants.ServiceModeTypes.off)}
-      //       >
-      //         Отменить
-      //       </button>
-      //     </>
-      //   )
-    //   default:
-    //     return null
-    // }
-
 
   const getText = () => {
     switch (data.state) {
@@ -226,21 +344,6 @@ const AlkozamkiServiceMode = ({data, toggleUpdateInfo, toggleUpdateTable}) => {
     }
   }
 
-  const handleActivate = (formData) => {
-    activateServiceMode({
-      data: formData,
-      deviceId: data.id
-    })
-      .then(() => {
-        handleCloseActivatePopup()
-        toggleUpdateInfo()
-        toggleUpdateTable()
-      })
-      .catch(err => {
-        console.log('activateServiceMode error', err?.response)
-      })
-  }
-
   return (
     <>
       <div className={'alcolock_service_mode'}>
@@ -271,6 +374,28 @@ const AlkozamkiServiceMode = ({data, toggleUpdateInfo, toggleUpdateTable}) => {
             key={'action_2'}
             type={ButtonsType.action}
             onClick={handleCloseActivatePopup}
+          >
+            {AppConstants.cancelTxt}
+          </Button>,
+        ]}
+      />
+
+      <Popup
+        isOpen={openDeactivatePopup}
+        headerTitle={'Отключить режим “Автосервис”?'}
+        toggleModal={toggleDeactivatePopup}
+        buttons={[
+          <Button
+            key={'action_1'}
+            type={ButtonsType.action}
+            onClick={handleDeactivate}
+          >
+            {'Отключть'}
+          </Button>,
+          <Button
+            key={'action_2'}
+            type={ButtonsType.action}
+            onClick={toggleDeactivatePopup}
           >
             {AppConstants.cancelTxt}
           </Button>,

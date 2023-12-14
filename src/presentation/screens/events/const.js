@@ -12,7 +12,7 @@ export const HEADERS = [
     }
   },
   {
-    label: 'Водитель',
+    label: 'Инициатор',
     sortType: EventsSortTypes.byUserName,
   },
   {
@@ -41,9 +41,7 @@ export const getRowsTemplate = (item) => {
         }
       },
       {
-        value: (item.events ?? [])[0] && (item.events ?? [])[0].userRecord
-          ? Formatters.nameFormatter(item.events[0].userRecord)
-          : '-'
+        value: Formatters.nameFormatter(item.createdBy)
       },
       {
         value: item.vehicleRecord

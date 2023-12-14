@@ -27,6 +27,10 @@ const AlkozamkiInfo = (
           setItemData(res)
         }
       })
+      .catch(err => {
+        console.log('AlkozamkiInfo getItem error', err.response)
+        setLoading(false)
+      })
   }, [selectedAlcolockId, updateData])
 
 
@@ -55,9 +59,7 @@ const AlkozamkiInfo = (
             },
             {
               label: 'Кем привязан:',
-              value: itemData?.createdBy
-                ? `${itemData.createdBy.firstName} ${itemData.createdBy.lastName}`
-                : '-'
+              value: Formatters.nameFormatter(itemData?.createdBy)
             },
             {
               label: 'Дата установки:',

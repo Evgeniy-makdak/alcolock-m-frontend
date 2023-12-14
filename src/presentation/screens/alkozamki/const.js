@@ -87,9 +87,7 @@ export const getRowsTemplate = (item) => ({
       }
     },
     {
-      value: item.createdBy
-        ? `${item.createdBy.firstName} ${item.createdBy.lastName}`
-        : '-',
+      value: Formatters.nameFormatter(item.createdBy),
       style: {
         background: item.service_status === AppConstants.ServiceModeTypes.pending_by_system
           ? 'rgba(255, 0, 0, 0.20)'

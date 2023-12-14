@@ -19,6 +19,9 @@ function App() {
       token: bar,
       navigate
     })
+      .catch(err => {
+        console.log('getUserData error', err?.response)
+      })
   }, [token])
 
   return (
