@@ -1,7 +1,8 @@
 import LoadingOverlay from 'react-loading-overlay';
+
 import CircularProgress from '@mui/material/CircularProgress';
 
-const Loader = ({children, isLoading = false, styles = {}}) => {
+const Loader = ({ children, isLoading = false, styles = {} }) => {
   return (
     <LoadingOverlay
       active={isLoading}
@@ -13,13 +14,12 @@ const Loader = ({children, isLoading = false, styles = {}}) => {
           backdropFilter: 'blur(1px)',
           minHeight: '88px',
         }),
-        ...styles
+        ...styles,
       }}
-      fadeSpeed={100}
-    >
+      fadeSpeed={100}>
       {children}
     </LoadingOverlay>
-  )
-}
+  );
+};
 
-export default Loader
+export default Loader;

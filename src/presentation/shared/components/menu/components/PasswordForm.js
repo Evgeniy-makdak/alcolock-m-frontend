@@ -1,35 +1,29 @@
-import Form from "../../../ui/form/Form";
-import Input from "../../../ui/form/components/Input";
-import {userStore} from "../../../../../internal/effector/user/store";
-import Loader from "../../loader/Loader";
-import {useEffect} from "react";
-import {getErrorMessagesFromServer} from "../../../../../internal/validations/server_error_handler";
-import ErrorViewer from "../../errors/ErrorViewer";
+import { useEffect } from 'react';
 
-const PasswordForm = (
-  {
-    formSelectors,
-    onValidSubmit
-  }) => {
-  const loading = userStore.changingPassword.useValue()
-  const [error, setError] = userStore.changePasswordError.useState()
-  const serverErrorMessages = getErrorMessagesFromServer(error)
+import { userStore } from '../../../../../internal/effector/user/store';
+import { getErrorMessagesFromServer } from '../../../../../internal/validations/server_error_handler';
+import Form from '../../../ui/form/Form';
+import Input from '../../../ui/form/components/Input';
+import ErrorViewer from '../../errors/ErrorViewer';
+import Loader from '../../loader/Loader';
+
+const PasswordForm = ({ formSelectors, onValidSubmit }) => {
+  const loading = userStore.changingPassword.useValue();
+  const [error, setError] = userStore.changePasswordError.useState();
+  const serverErrorMessages = getErrorMessagesFromServer(error);
   useEffect(() => {
-    setError(null)
-  }, [])
+    setError(null);
+  }, []);
 
   return (
     <Loader isLoading={loading}>
-      <Form
-        onValidSubmit={onValidSubmit}
-        formSelectors={formSelectors}
-      >
+      <Form onValidSubmit={onValidSubmit} formSelectors={formSelectors}>
         <Input
           formSelectors={formSelectors}
           fieldParams={{
             name: 'currentPassword',
             label: 'Текущий пароль',
-            type: 'password'
+            type: 'password',
           }}
         />
         <Input
@@ -37,16 +31,14 @@ const PasswordForm = (
           fieldParams={{
             name: 'newPassword',
             label: 'Новый пароль',
-            type: 'password'
+            type: 'password',
           }}
         />
       </Form>
 
-      {!!serverErrorMessages.length &&
-        <ErrorViewer errorMessages={serverErrorMessages}/>
-      }
+      {!!serverErrorMessages.length && <ErrorViewer errorMessages={serverErrorMessages} />}
     </Loader>
-  )
-}
+  );
+};
 
-export default PasswordForm
+export default PasswordForm;

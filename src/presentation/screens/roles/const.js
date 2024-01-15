@@ -1,12 +1,11 @@
-import AppConstants from "../../../internal/app_constants";
-import Sorts from "../../../internal/utils/sortes";
-import {RolesSortTypes} from "../../../internal/effector/roles/effects";
-import Formatters from "../../../internal/utils/formatters";
+import AppConstants from '../../../internal/app_constants';
+import { RolesSortTypes } from '../../../internal/effector/roles/effects';
+import Formatters from '../../../internal/utils/formatters';
 
 export const HEADERS = [
   {
     label: 'Роль',
-    sortType: RolesSortTypes.byRole
+    sortType: RolesSortTypes.byRole,
   },
   {
     label: 'Управление пользователями',
@@ -24,10 +23,10 @@ export const HEADERS = [
     label: 'Управление привязками',
     // sortType: RolesSortTypes.byAttachment
   },
-]
+];
 
 export const getRowsTemplate = (item) => {
-  const rolePermissions = Formatters.normalizePermissions(item.userGroupPermissions)
+  const rolePermissions = Formatters.normalizePermissions(item.userGroupPermissions);
 
   return {
     id: item.id,
@@ -37,27 +36,29 @@ export const getRowsTemplate = (item) => {
         value: item.name,
       },
       {
-        value: AppConstants.permissionsList.find(perm => perm.value === rolePermissions.user_control)?.label ?? '-',
+        value: AppConstants.permissionsList.find((perm) => perm.value === rolePermissions.user_control)?.label ?? '-',
       },
       {
-        value: AppConstants.permissionsList.find(perm => perm.value === rolePermissions.car_control)?.label ?? '-',
+        value: AppConstants.permissionsList.find((perm) => perm.value === rolePermissions.car_control)?.label ?? '-',
       },
       {
-        value: AppConstants.permissionsList.find(perm => perm.value === rolePermissions.alkozamki_control)?.label ?? '-',
+        value: AppConstants.permissionsList.find((perm) => perm.value === rolePermissions.alkozamki_control)?.label ?? '-',
       },
       {
-        value: AppConstants.permissionsList.find(perm => perm.value === rolePermissions.attachments_control)?.label ?? '-',
+        value: AppConstants.permissionsList.find((perm) => perm.value === rolePermissions.attachments_control)?.label ?? '-',
       },
-    ]
-  }
-}
+    ],
+  };
+};
 
-export const DELETE_POPUP_TITLE = 'Удаление роли'
+export const DELETE_POPUP_TITLE = 'Удаление роли';
 export const getDeletePopupBody = (selectedItem) => {
-  return <p>
-    Вы действительно хотите удалить роль <b>{selectedItem?.name}</b>?
-  </p>
-}
+  return (
+    <p>
+      Вы действительно хотите удалить роль <b>{selectedItem?.name}</b>?
+    </p>
+  );
+};
 
-export const ADD_POPUP_TITLE = 'Добавление роли'
-export const EDIT_POPUP_TITLE = 'Редактирование роли'
+export const ADD_POPUP_TITLE = 'Добавление роли';
+export const EDIT_POPUP_TITLE = 'Редактирование роли';

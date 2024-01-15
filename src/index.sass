@@ -141,16 +141,20 @@ legend
 
 .table-control
   position: relative
+  padding: 0 10px 0 10px
   z-index: 1000
   display: flex
+  align-items: center
+  height: 50px
 
   &__date-pickers
-    min-width: 318px
+    width: 300px
     display: flex
     justify-content: space-between
-    padding: 12px 8px
     column-gap: 16px
+    padding: 0 20px
     background: #FAFAFA
+    align-items: center
 
     input
       padding: 4px 8px
@@ -160,6 +164,7 @@ legend
       border: 1px solid #E0E0E0
       background: white
       border-radius: 4px
+      height: 30px
       width: 143px
 
   &__filter
@@ -174,7 +179,6 @@ legend
     cursor: pointer
 
 .filters-panel
-  //flex: 1
   padding: 12px 8px
   display: flex
   gap: 16px

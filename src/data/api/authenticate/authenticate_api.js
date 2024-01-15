@@ -1,4 +1,4 @@
-import {request} from "../../request";
+import { request } from '../../request';
 
 export default class AuthenticateApi {
   static auth(data) {
@@ -6,9 +6,9 @@ export default class AuthenticateApi {
       url: 'api/authenticate',
       method: 'POST',
       isAuth: false,
-      data: data
-    }
+      data: data,
+    };
 
-    return request(params)
+    return request(params);
   }
 }

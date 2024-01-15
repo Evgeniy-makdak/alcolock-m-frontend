@@ -1,10 +1,8 @@
-import MultipleSearchSelect from "../../../shared/ui/form/components/MultipleSearchSelect";
-import {filtersFormSelectors} from "../../../../internal/effector/events/forms";
-import {
-  searchCarsByRegistrationNumber, searchCarsManufacturers
-} from "../../../../internal/effector/vehicles/effects";
-import AppConstants from "../../../../internal/app_constants";
-import {searchDrivers} from "../../../../internal/effector/users/effects";
+import AppConstants from '../../../../internal/app_constants';
+import { filtersFormSelectors } from '../../../../internal/effector/events/forms';
+import { searchDrivers } from '../../../../internal/effector/users/effects';
+import { searchCarsByRegistrationNumber, searchCarsManufacturers } from '../../../../internal/effector/vehicles/effects';
+import MultipleSearchSelect from '../../../shared/ui/form/components/MultipleSearchSelect';
 
 const EventsFilterPanel = () => {
   return (
@@ -14,7 +12,7 @@ const EventsFilterPanel = () => {
         formSelectors={filtersFormSelectors}
         fieldParams={{
           name: 'users',
-          label: 'Поиск по водителю'
+          label: 'Поиск по водителю',
         }}
         onSearch={searchDrivers}
       />
@@ -24,7 +22,7 @@ const EventsFilterPanel = () => {
         formSelectors={filtersFormSelectors}
         fieldParams={{
           name: 'carsByMake',
-          label: 'Поиск по марке ТС'
+          label: 'Поиск по марке ТС',
         }}
         onSearch={searchCarsManufacturers}
       />
@@ -34,7 +32,7 @@ const EventsFilterPanel = () => {
         formSelectors={filtersFormSelectors}
         fieldParams={{
           name: 'carsByLicense',
-          label: 'Поиск по гос.номеру'
+          label: 'Поиск по гос.номеру',
         }}
         onSearch={searchCarsByRegistrationNumber}
       />
@@ -44,12 +42,12 @@ const EventsFilterPanel = () => {
         formSelectors={filtersFormSelectors}
         fieldParams={{
           name: 'eventsByType',
-          label: 'Тип события'
+          label: 'Тип события',
         }}
         defOptions={AppConstants.eventTypesList}
       />
     </div>
-  )
-}
+  );
+};
 
-export default EventsFilterPanel
+export default EventsFilterPanel;

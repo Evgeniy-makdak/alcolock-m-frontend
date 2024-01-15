@@ -1,0 +1,14 @@
+{
+  "printWidth": 125,
+  "arrowParens": "always",
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "bracketSameLine": true,
+  "bracketSpacing": true,
+  "endOfLine": "auto",
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": ["^react(.*)", "mui/(.*)", "@/(.*)", "\\.(c|le|sc)ss$", "^[./].*(?<!\\.(c|le|sc)ss)$"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}

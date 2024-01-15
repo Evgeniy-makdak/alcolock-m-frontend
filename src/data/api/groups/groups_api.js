@@ -1,27 +1,22 @@
-import {request} from "../../request";
+import { request } from '../../request';
 
 export default class GroupsApi {
-  static getList(
-    {
-      page,
-      limit,
-      queries
-    }) {
+  static getList({ page, limit, queries }) {
     const params = {
       url: `api/branch-offices?page=${page}&size=${limit}${queries}`,
-      method: 'GET'
-    }
+      method: 'GET',
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static getItem(id) {
     const params = {
       url: `api/branch-offices/${id}`,
-      method: 'GET'
-    }
+      method: 'GET',
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static createItem(data) {
@@ -30,11 +25,11 @@ export default class GroupsApi {
       method: 'POST',
       data: {
         name: data.name,
-        branchId: 20
-      }
-    }
+        branchId: 20,
+      },
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static changeItem(id, data) {
@@ -44,19 +39,19 @@ export default class GroupsApi {
       data: {
         id,
         name: data.name,
-      }
-    }
+      },
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static deleteItem(id) {
     const params = {
       url: `api/branch-offices/${id}`,
       method: 'DELETE',
-    }
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static moveItems(id, data) {
@@ -64,10 +59,10 @@ export default class GroupsApi {
       url: `api/branch-offices/${id}/move`,
       method: 'POST',
       data: {
-        entities: data
-      }
-    }
+        entities: data,
+      },
+    };
 
-    return request(params)
+    return request(params);
   }
 }

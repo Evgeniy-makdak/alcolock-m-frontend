@@ -1,256 +1,256 @@
-import MockGenerators from "./utils/mock_generators";
+import MockGenerators from './utils/mock_generators';
 
 export default class AppConstants {
   static rolesSystemList = [
     {
       value: 1,
-      label: 'Администратор системы'
+      label: 'Администратор системы',
     },
     {
       value: 2,
-      label: 'Администратор филиала'
+      label: 'Администратор филиала',
     },
     {
       value: 3,
-      label: 'Оператор'
+      label: 'Оператор',
     },
     {
       value: 4,
-      label: 'Диспетчер'
+      label: 'Диспетчер',
     },
     {
       value: 5,
-      label: 'Водитель'
+      label: 'Водитель',
     },
     {
       value: 6,
-      label: 'Сервисный работник'
+      label: 'Сервисный работник',
     },
-  ]
+  ];
 
   static permissionsList = [
     {
       value: 1,
-      label: 'Чтение и Запись'
+      label: 'Чтение и Запись',
     },
     {
       value: 2,
-      label: 'Чтение'
+      label: 'Чтение',
     },
     {
       value: 3,
-      label: 'Недоступно'
+      label: 'Недоступно',
     },
-  ]
+  ];
 
   static accessList = [
     {
       value: false,
-      label: 'Разрешен'
+      label: 'Разрешен',
     },
     {
       value: true,
-      label: 'Запрещен'
+      label: 'Запрещен',
     },
-  ]
+  ];
 
   static carColorsList = [
     {
       value: 'BLACK',
-      label: 'Черный'
+      label: 'Черный',
     },
     {
       value: 'BLUE',
-      label: 'Синий'
+      label: 'Синий',
     },
     {
       value: 'GREEN',
-      label: 'Зеленый'
+      label: 'Зеленый',
     },
     {
       value: 'BEIGE',
-      label: 'Бежевый'
+      label: 'Бежевый',
     },
     {
       value: 'RED',
-      label: 'Красный'
+      label: 'Красный',
     },
     {
       value: 'VIOLET',
-      label: 'Фиолетовый'
+      label: 'Фиолетовый',
     },
     {
       value: 'ORANGE',
-      label: 'Оранжевый'
+      label: 'Оранжевый',
     },
     {
       value: 'YELLOW',
-      label: 'Желтый'
+      label: 'Желтый',
     },
     {
       value: 'WHITE',
-      label: 'Белый'
+      label: 'Белый',
     },
     {
       value: 'BROWN',
-      label: 'Коричневый'
+      label: 'Коричневый',
     },
     {
       value: 'GREY',
-      label: 'Серый'
+      label: 'Серый',
     },
-  ]
+  ];
 
   static carTypesList = [
     {
       value: 'PERSONAL',
-      label: 'Автомобиль'
+      label: 'Автомобиль',
     },
     {
       value: 'PASSENGER',
-      label: 'Автобус'
+      label: 'Автобус',
     },
     {
       value: 'FREIGHT',
-      label: 'Грузовое ТС'
+      label: 'Грузовое ТС',
     },
     {
       value: 'AGRICULTURAL',
-      label: 'С/х техника'
+      label: 'С/х техника',
     },
     {
       value: 'TAXI',
-      label: 'Такси'
+      label: 'Такси',
     },
     {
       value: 'SHARED',
-      label: 'Каршеринг'
+      label: 'Каршеринг',
     },
     {
       value: 'OTHER',
-      label: 'Прочее'
+      label: 'Прочее',
     },
-  ]
+  ];
 
   static categoryTypesList = [
     {
       value: 'A',
-      label: 'A'
+      label: 'A',
     },
     {
       value: 'B',
-      label: 'B'
+      label: 'B',
     },
     {
       value: 'C',
-      label: 'C'
+      label: 'C',
     },
     {
       value: 'D',
-      label: 'D'
+      label: 'D',
     },
     {
       value: 'E',
-      label: 'E'
+      label: 'E',
     },
     {
       value: 'BE',
-      label: 'BE'
+      label: 'BE',
     },
     {
       value: 'CE',
-      label: 'CE'
+      label: 'CE',
     },
     {
       value: 'DE',
-      label: 'DE'
+      label: 'DE',
     },
     {
       value: 'C1E',
-      label: 'C1E'
+      label: 'C1E',
     },
     {
       value: 'D1E',
-      label: 'D1E'
+      label: 'D1E',
     },
     {
       value: 'M',
-      label: 'M'
+      label: 'M',
     },
     {
       value: 'A1',
-      label: 'A1'
+      label: 'A1',
     },
     {
       value: 'B1',
-      label: 'B1'
+      label: 'B1',
     },
     {
       value: 'C1',
-      label: 'C1'
+      label: 'C1',
     },
     {
       value: 'D1',
-      label: 'D1'
+      label: 'D1',
     },
-  ]
+  ];
 
   static ServiceModeTypes = {
     pending_by_driver: 'pending_by_driver',
     pending_by_system: 'pending_by_system',
     on: 'on',
     off: 'off',
-    driver_accept: 'driver_accept'
-  }
+    driver_accept: 'driver_accept',
+  };
 
   static alkolockWorkModes = [
     {
       value: 'MAINTENANCE',
-      label: 'Автосервис'
+      label: 'Автосервис',
     },
     {
       value: 'NORMAL',
-      label: 'Рабочий'
+      label: 'Рабочий',
     },
     {
       value: 'EMERGENCY',
-      label: 'Аварийный'
+      label: 'Аварийный',
     },
-  ]
+  ];
 
   static alcolockServiceProcesses = [
     {
       value: 'SWITCHING_ON',
-      label: 'Включение'
+      label: 'Включение',
     },
     {
       value: 'SWITCHING_OFF',
-      label: 'Выключение'
+      label: 'Выключение',
     },
-  ]
+  ];
 
   static alcolockServiceTypes = [
     {
       value: 'OFFLINE_SWITCH',
-      label: 'Офлайн-переключение'
+      label: 'Офлайн-переключение',
     },
     {
       value: 'DRIVER_WAITING',
-      label: 'Ожидание водителя'
+      label: 'Ожидание водителя',
     },
     {
       value: 'OPERATOR_WAITING',
-      label: 'Ожидание оператора'
+      label: 'Ожидание оператора',
     },
     {
       value: 'DRIVER_ACCEPT',
-      label: 'Водитель подтвердил'
+      label: 'Водитель подтвердил',
     },
     {
       value: 'DRIVER_CANCEL',
-      label: 'Водитель отклонил'
+      label: 'Водитель отклонил',
     },
-  ]
+  ];
 
   static eventTypesList = [
     // {
@@ -309,64 +309,59 @@ export default class AppConstants {
     //   value: 'd',
     //   label: 'Ошибка устройства',
     // },
-  ]
+  ];
 
   static sobrietyTypesList = [
     {
       value: 1,
-      label: 'Трезвый'
+      label: 'Трезвый',
     },
     {
       value: 2,
-      label: 'Нетрезвый'
+      label: 'Нетрезвый',
     },
     {
       value: 3,
-      label: 'Слабый выдох'
+      label: 'Слабый выдох',
     },
     {
       value: 4,
-      label: 'Фальсификация выдоха'
+      label: 'Фальсификация выдоха',
     },
-  ]
+  ];
 
-  static usersList = MockGenerators.generateUsersList(100)
-  static carList = MockGenerators.generateCars(100)
+  static usersList = MockGenerators.generateUsersList(100);
+  static carList = MockGenerators.generateCars(100);
   static alkozamkiList = MockGenerators.generateAlcoLocks(
     70,
     this.carList,
-    this.usersList.filter(user => !user.roles.includes(5))
-  )
+    this.usersList.filter((user) => !user.roles.includes(5)),
+  );
   static eventsList = MockGenerators.generateEventsList(
-    this.usersList.filter(user => user.roles.includes(5)),
-    this.alkozamkiList.filter(item => item.car)
-  )
+    this.usersList.filter((user) => user.roles.includes(5)),
+    this.alkozamkiList.filter((item) => item.car),
+  );
   static attachmentsList = MockGenerators.generateAttachments(
     this.usersList,
-    this.alkozamkiList.filter(item => item.car)
-  )
-  static rolesList = MockGenerators.getRoles(6)
-  static groupsList = MockGenerators.generateGroups(
-    10,
-    this.usersList,
-    this.alkozamkiList,
-    this.carList
-  )
+    this.alkozamkiList.filter((item) => item.car),
+  );
+  static rolesList = MockGenerators.getRoles(6);
+  static groupsList = MockGenerators.generateGroups(10, this.usersList, this.alkozamkiList, this.carList);
 
-  static autoServiceList = MockGenerators.generateAutoService(10, this.alkozamkiList, this.usersList)
+  static autoServiceList = MockGenerators.generateAutoService(10, this.alkozamkiList, this.usersList);
 
-  static cancelTxt = 'Отмена'
-  static deleteTxt = 'Удалить'
-  static saveTxt = 'Сохранить'
-  static addTxt = 'Добавить'
+  static cancelTxt = 'Отмена';
+  static deleteTxt = 'Удалить';
+  static saveTxt = 'Сохранить';
+  static addTxt = 'Добавить';
 
   static notSelectedOption = {
     value: 0,
-    label: 'Не выбрано'
-  }
+    label: 'Не выбрано',
+  };
 
   static OrderTypes = {
     asc: 'asc',
-    desc: 'desc'
-  }
+    desc: 'desc',
+  };
 }

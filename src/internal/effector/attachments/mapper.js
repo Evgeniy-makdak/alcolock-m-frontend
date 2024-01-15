@@ -2,8 +2,8 @@ export default class AttachmentsMapper {
   static getAttachmentToApi(data) {
     return {
       driverId: data.driver.driver.id,
-      vehicleId: data.vehicle.id
-    }
+      vehicleId: data.vehicle.id,
+    };
   }
 
   static getAttachmentFromApi(data) {
@@ -12,12 +12,12 @@ export default class AttachmentsMapper {
       vehicle: data.vehicle ?? null,
       driver: data?.driver?.userAccount
         ? {
-          ...data.driver.userAccount,
-          driver: {
-            id: data.driver.id
+            ...data.driver.userAccount,
+            driver: {
+              id: data.driver.id,
+            },
           }
-        }
-        : null
-    }
+        : null,
+    };
   }
 }

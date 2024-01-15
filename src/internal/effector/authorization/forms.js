@@ -1,39 +1,37 @@
-import FormStateBuilder from "../form_state_builder";
-import ValidationRules from "../../validations/validation_rules";
+import ValidationRules from '../../validations/validation_rules';
+import FormStateBuilder from '../form_state_builder';
 
 const initAuthData = {
   username: '',
   password: '',
-  rememberMe: false
-}
+  rememberMe: false,
+};
 const initAuthValidations = {
   username: [],
-  password: []
-}
+  password: [],
+};
 
 const validator = () => ({
   username: (value) => {
-    const required = ValidationRules.requiredValidation(value)
-    const validEmail = ValidationRules.emailValidation(value)
+    const required = ValidationRules.requiredValidation(value);
+    const validEmail = ValidationRules.emailValidation(value);
 
-    return !!required.length
-      ? required
-      : validEmail
+    return !!required.length ? required : validEmail;
   },
-  password: ValidationRules.requiredValidation
-})
+  password: ValidationRules.requiredValidation,
+});
 
 const authFormSate = new FormStateBuilder({
   initialData: initAuthData,
   initialValidations: initAuthValidations,
-  getValidators: validator
-})
+  getValidators: validator,
+});
 
 const changeProfileFormState = new FormStateBuilder({
   initialData: initAuthData,
   initialValidations: initAuthValidations,
-  getValidators: validator
-})
+  getValidators: validator,
+});
 
-export const authFormSelectors = authFormSate.createSelectors()
-export const changeProfileFormSelectors = changeProfileFormState.createSelectors()
+export const authFormSelectors = authFormSate.createSelectors();
+export const changeProfileFormSelectors = changeProfileFormState.createSelectors();

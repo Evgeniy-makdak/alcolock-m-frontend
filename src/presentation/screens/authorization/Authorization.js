@@ -1,63 +1,63 @@
-import './Authorization.sass'
-import Logo from "../../shared/components/logo/Logo";
-import Form from "../../shared/ui/form/Form";
-import {authFormSelectors} from "../../../internal/effector/authorization/forms";
-import {onAuthorization} from "../../../internal/effector/app/effects";
-import {useNavigate} from "react-router-dom";
-import {appStore, AuthStatus} from "../../../internal/effector/app/store";
-import {useEffect} from "react";
-import RoutePaths from "../../../internal/route_paths";
-import Input from "../../shared/ui/form/components/Input";
-import Loader from "../../shared/components/loader/Loader";
-import FormCheckbox from "../../shared/ui/form/components/FormCheckbox";
-import {authStore} from "../../../internal/effector/authorization/store";
-import {getErrorMessagesFromServer} from "../../../internal/validations/server_error_handler";
-import ErrorViewer from "../../shared/components/errors/ErrorViewer";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { onAuthorization } from '../../../internal/effector/app/effects';
+import { AuthStatus, appStore } from '../../../internal/effector/app/store';
+import { authFormSelectors } from '../../../internal/effector/authorization/forms';
+import { authStore } from '../../../internal/effector/authorization/store';
+import RoutePaths from '../../../internal/route_paths';
+import { getErrorMessagesFromServer } from '../../../internal/validations/server_error_handler';
+import ErrorViewer from '../../shared/components/errors/ErrorViewer';
+import Loader from '../../shared/components/loader/Loader';
+import Logo from '../../shared/components/logo/Logo';
+import Form from '../../shared/ui/form/Form';
+import FormCheckbox from '../../shared/ui/form/components/FormCheckbox';
+import Input from '../../shared/ui/form/components/Input';
+import './Authorization.sass';
 
 const Authorization = () => {
-  const isValidForm = authFormSelectors.useIsFormValid()
-  const onClickSubmit = authFormSelectors.useOnClickSubmit()
-  const navigate = useNavigate()
-  const isAuth = appStore.appAuthStatus.useValue() === AuthStatus.auth
-  const resetForm = authFormSelectors.useResetForm()
-  const loading = appStore.isAuthorization.useValue()
-  const [error, setError] = authStore.authError.useState()
-  const serverErrorMessages = getErrorMessagesFromServer(error)
+  const isValidForm = authFormSelectors.useIsFormValid();
+  const onClickSubmit = authFormSelectors.useOnClickSubmit();
+  const navigate = useNavigate();
+  const isAuth = appStore.appAuthStatus.useValue() === AuthStatus.auth;
+  const resetForm = authFormSelectors.useResetForm();
+  const loading = appStore.isAuthorization.useValue();
+  const [error, setError] = authStore.authError.useState();
+  const serverErrorMessages = getErrorMessagesFromServer(error);
 
   useEffect(() => {
-    setError(null)
+    setError(null);
     if (isAuth) {
-      navigate(RoutePaths.events)
+      navigate(RoutePaths.events);
     }
 
     return () => {
-      resetForm()
-    }
-  }, [isAuth])
+      resetForm();
+    };
+  }, [isAuth]);
 
   const handleSubmit = () => {
-    if (!isValidForm) return
+    if (!isValidForm) return;
 
-    onClickSubmit()
-  }
+    onClickSubmit();
+  };
 
   const handleAuthorization = (data) => {
     onAuthorization({
       data,
-      navigate
-    })
-      .catch(err => {
-        console.log('handleAuthorization error', err?.response)
-      })
-  }
+      navigate,
+    }).catch((err) => {
+      console.log('handleAuthorization error', err?.response);
+    });
+  };
 
   return (
-    <div
-      className={'authorization'}
-    >
+    <div className={'authorization'}>
       <Logo />
       <div className="authorization__wrapper">
-        <h1>Информационная система <br/> «Алкозамок»</h1>
+        <h1>
+          Информационная система <br /> «Алкозамок»
+        </h1>
 
         <Loader
           isLoading={loading}
@@ -66,14 +66,10 @@ const Authorization = () => {
               ...base,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center'
-            })
-          }}
-        >
-          <Form
-            formSelectors={authFormSelectors}
-            onValidSubmit={handleAuthorization}
-          >
+              alignItems: 'center',
+            }),
+          }}>
+          <Form formSelectors={authFormSelectors} onValidSubmit={handleAuthorization}>
             <Input
               formSelectors={authFormSelectors}
               fieldParams={{
@@ -86,7 +82,7 @@ const Authorization = () => {
               fieldParams={{
                 name: 'password',
                 label: 'Пароль',
-                type: 'password'
+                type: 'password',
               }}
             />
 
@@ -99,27 +95,22 @@ const Authorization = () => {
             />
           </Form>
 
-          {!!serverErrorMessages.length &&
+          {!!serverErrorMessages.length && (
             <div
               style={{
-                marginBottom: '24px'
-              }}
-            >
-              <ErrorViewer errorMessages={serverErrorMessages}/>
+                marginBottom: '24px',
+              }}>
+              <ErrorViewer errorMessages={serverErrorMessages} />
             </div>
-          }
+          )}
 
-          <button
-            className={'authorization__btn'}
-            disabled={!isValidForm}
-            onClick={handleSubmit}
-          >
+          <button className={'authorization__btn'} disabled={!isValidForm} onClick={handleSubmit}>
             Вход
           </button>
         </Loader>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Authorization
+export default Authorization;

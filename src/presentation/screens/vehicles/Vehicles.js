@@ -1,62 +1,66 @@
+import { useEffect, useState } from 'react';
+
+import AppConstants from '../../../internal/app_constants';
+import { selectedBranchStore } from '../../../internal/effector/selected_branch/store';
+import { UserPermissionsTypes } from '../../../internal/effector/user/effects';
+import { userStore } from '../../../internal/effector/user/store';
 import {
+  CarsSortTypes,
   addCar,
-  CarsSortTypes, changeCar, clearVehiclesRequests,
+  changeCar,
+  clearVehiclesRequests,
   deleteCar,
-  uploadCarsList
-} from "../../../internal/effector/vehicles/effects";
-import EditTable from "../../shared/components/edit_table/EditTable";
-import {addCarFormSelectors, editCarFormSelectors} from "../../../internal/effector/vehicles/forms";
-import VehiclesForm from "./components/VehiclesForm";
+  uploadCarsList,
+} from '../../../internal/effector/vehicles/effects';
+import { addCarFormSelectors, editCarFormSelectors } from '../../../internal/effector/vehicles/forms';
+import { vehiclesStore } from '../../../internal/effector/vehicles/store';
+import { useToggle } from '../../../internal/hooks/useToggle';
+import Aside from '../../shared/components/aside/Aside';
+import EditTable from '../../shared/components/edit_table/EditTable';
+import EventsHistory, { HistoryTypes } from '../../shared/components/events_history/EventsHistory';
+import RowTableInfo from '../../shared/components/row_table_info/RowTableInfo';
+import VehiclesForm from './components/VehiclesForm';
+import VehiclesInfo from './components/VehiclesInfo';
 import {
   ADD_POPUP_TITLE,
-  DELETE_POPUP_TITLE, EDIT_POPUP_TITLE,
+  DELETE_POPUP_TITLE,
+  EDIT_POPUP_TITLE,
+  HEADERS,
   getDeletePopupBody,
   getRowsTemplate,
-  HEADERS,
-} from "./const";
-import AppConstants from "../../../internal/app_constants";
-import {useEffect, useState} from "react";
-import {useToggle} from "../../../internal/hooks/useToggle";
-import Aside from "../../shared/components/aside/Aside";
-import RowTableInfo from "../../shared/components/row_table_info/RowTableInfo";
-import VehiclesInfo from "./components/VehiclesInfo";
-import EventsHistory, {HistoryTypes} from "../../shared/components/events_history/EventsHistory";
-import {vehiclesStore} from "../../../internal/effector/vehicles/store";
-import {selectedBranchStore} from "../../../internal/effector/selected_branch/store";
-import {userStore} from "../../../internal/effector/user/store";
-import {UserPermissionsTypes} from "../../../internal/effector/user/effects";
+} from './const';
 
 const Vehicles = () => {
-  const [selectedCarId, setSelectedCarId] = useState(null)
-  const [updateInfo, toggleUpdateInfo] = useToggle()
-  const loading = vehiclesStore.carsLoading.useValue()
-  const selectedBranch = selectedBranchStore.selectedBranch.useValue()
-  const userData = userStore.userData.useValue()
+  const [selectedCarId, setSelectedCarId] = useState(null);
+  const [updateInfo, toggleUpdateInfo] = useToggle();
+  const loading = vehiclesStore.carsLoading.useValue();
+  const selectedBranch = selectedBranchStore.selectedBranch.useValue();
+  const userData = userStore.userData.useValue();
 
   useEffect(() => {
     return () => {
-      clearVehiclesRequests()
-    }
-  }, [])
+      clearVehiclesRequests();
+    };
+  }, []);
 
   useEffect(() => {
-    handleCloseAside()
-  }, [selectedBranch])
+    handleCloseAside();
+  }, [selectedBranch]);
 
-  const onClickRow = (id) => setSelectedCarId(id)
-  const handleCloseAside = () => setSelectedCarId(null)
+  const onClickRow = (id) => setSelectedCarId(id);
+  const handleCloseAside = () => setSelectedCarId(null);
 
   const afterDelete = (id) => {
     if (id === selectedCarId) {
-      handleCloseAside()
+      handleCloseAside();
     }
-  }
+  };
 
   const afterEdit = (id) => {
     if (id === selectedCarId) {
-      toggleUpdateInfo()
+      toggleUpdateInfo();
     }
-  }
+  };
 
   return (
     <>
@@ -70,18 +74,12 @@ const Vehicles = () => {
           addFormSelectors={addCarFormSelectors}
           editFormSelectors={editCarFormSelectors}
           uploadListPromise={uploadCarsList}
-          deleteItemPromise={userData?.permissions.cars === UserPermissionsTypes.create
-            ? deleteCar
-            : null}
-          addItemPromise={userData?.permissions.cars === UserPermissionsTypes.create
-            ? addCar
-            : null}
-          editItemPromise={userData?.permissions.cars === UserPermissionsTypes.create
-            ? changeCar
-            : null}
+          deleteItemPromise={userData?.permissions.cars === UserPermissionsTypes.create ? deleteCar : null}
+          addItemPromise={userData?.permissions.cars === UserPermissionsTypes.create ? addCar : null}
+          editItemPromise={userData?.permissions.cars === UserPermissionsTypes.create ? changeCar : null}
           deletePopupParams={{
             title: DELETE_POPUP_TITLE,
-            getBody: getDeletePopupBody
+            getBody: getDeletePopupBody,
           }}
           addPopupParams={{
             title: ADD_POPUP_TITLE,
@@ -89,7 +87,7 @@ const Vehicles = () => {
           }}
           editPopupParams={{
             title: EDIT_POPUP_TITLE,
-            Body: VehiclesForm
+            Body: VehiclesForm,
           }}
           selectedRow={selectedCarId}
           afterDelete={afterDelete}
@@ -99,22 +97,16 @@ const Vehicles = () => {
         />
       </div>
 
-      {selectedCarId &&
+      {selectedCarId && (
         <Aside onClose={handleCloseAside}>
           <RowTableInfo
-            infoContent={<VehiclesInfo
-              updateData={updateInfo}
-              selectedCarId={selectedCarId}
-            />}
-            historyContent={<EventsHistory
-              type={HistoryTypes.byCar}
-              id={selectedCarId}
-            />}
+            infoContent={<VehiclesInfo updateData={updateInfo} selectedCarId={selectedCarId} />}
+            historyContent={<EventsHistory type={HistoryTypes.byCar} id={selectedCarId} />}
           />
         </Aside>
-      }
+      )}
     </>
-  )
-}
+  );
+};
 
-export default Vehicles
+export default Vehicles;

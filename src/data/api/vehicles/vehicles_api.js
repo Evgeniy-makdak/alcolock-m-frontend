@@ -1,37 +1,32 @@
-import {request} from "../../request";
+import { request } from '../../request';
 
 export default class VehiclesApi {
-  static getList(
-    {
-      page,
-      limit,
-      queries
-    }) {
+  static getList({ page, limit, queries }) {
     const params = {
       url: `api/vehicles?page=${page}&size=${limit}${queries}`,
-      method: 'GET'
-    }
+      method: 'GET',
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static getItem(id) {
     const params = {
       url: `api/vehicles/${id}`,
-      method: 'GET'
-    }
+      method: 'GET',
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static createItem(data) {
     const params = {
       url: `api/vehicles`,
       method: 'POST',
-      data
-    }
+      data,
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static changeItem(id, data) {
@@ -40,42 +35,37 @@ export default class VehiclesApi {
       method: 'PUT',
       data: {
         id,
-        ...data
-      }
-    }
+        ...data,
+      },
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static deleteItem(id) {
     const params = {
       url: `api/vehicles/${id}`,
       method: 'DELETE',
-    }
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static switchBranch(id, groupId) {
     const params = {
       url: `api/vehicles/${id}/assign/${groupId}`,
       method: 'POST',
-    }
+    };
 
-    return request(params)
+    return request(params);
   }
 
-  static getManufacturersList(
-  {
-    page,
-    limit,
-    queries
-  }) {
+  static getManufacturersList({ page, limit, queries }) {
     const params = {
       url: `api/vehicles/manufacturers?page=${page}&size=${limit}${queries}`,
       method: 'GET',
-    }
+    };
 
-    return request(params)
+    return request(params);
   }
 }

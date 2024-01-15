@@ -3,13 +3,13 @@ export default class AlcolocksMapper {
     return {
       ...data,
       vehicleId: data.vehicle?.id ?? null,
-    }
+    };
   }
 
   static getAlcolockFromApi(data) {
     return {
       ...(data ?? {}),
       vehicle: data?.vehicleBind?.vehicle ?? null,
-    }
+    };
   }
 }

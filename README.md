@@ -1,4 +1,3 @@
-
 # Алкозамок-М ПРО. Frontend
 
 ## Обзор
@@ -17,6 +16,7 @@
    git clone -b develop2 http://192.168.100.82/git/alcolock-m-pro-fe.git
    ```
 2. Перейдите в директорию проекта:
+
    ```bash
    cd alcolock-m-pro-fe
    ```
@@ -29,6 +29,7 @@
 ## Запуск
 
 1. Чтобы запустить сервер разработки:
+
    ```bash
    yarn start
    ```
@@ -37,12 +38,12 @@
 
 ## Сборка релиза через Docker
 
-1. Соберите образ для сборки *(собирается один раз)*
+1. Соберите образ для сборки _(собирается один раз)_
    ```bash
    docker build --tag ls-node docker-build/
    ```
 2. Выполните команду для сбоки, пример в `docker-build/build.sh`
    ```bash
-   bash docker-build/build.sh 
+   bash docker-build/build.sh
    ```
 3. Результат сборки находится в папке `bulid`

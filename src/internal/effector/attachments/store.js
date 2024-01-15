@@ -1,14 +1,14 @@
-import StateBuilder from "../state_builder";
-import AppConstants from "../../app_constants";
+import AppConstants from '../../app_constants';
+import StateBuilder from '../state_builder';
 
-export const attachmentsLoadingState = new StateBuilder(true)
-export const attachmentsListState = new StateBuilder([])
-export const allAttachmentsState = new StateBuilder(AppConstants.attachmentsList)
-export const lastGetAttachmentsListRequest = new StateBuilder(null)
-export const lastGetAttachmentDataRequest = new StateBuilder(null)
-export const creatingAttachmentLoadingState = new StateBuilder(false)
-export const changingAttachmentLoadingState = new StateBuilder(false)
-export const loadingAttachmentDataState = new StateBuilder(false)
+export const attachmentsLoadingState = new StateBuilder(true);
+export const attachmentsListState = new StateBuilder([]);
+export const allAttachmentsState = new StateBuilder(AppConstants.attachmentsList);
+export const lastGetAttachmentsListRequest = new StateBuilder(null);
+export const lastGetAttachmentDataRequest = new StateBuilder(null);
+export const creatingAttachmentLoadingState = new StateBuilder(false);
+export const changingAttachmentLoadingState = new StateBuilder(false);
+export const loadingAttachmentDataState = new StateBuilder(false);
 
 export const attachmentsStore = {
   attachmentsLoading: attachmentsLoadingState.createHooks(),
@@ -16,5 +16,5 @@ export const attachmentsStore = {
   allAttachments: allAttachmentsState.createHooks(),
   creating: creatingAttachmentLoadingState.createHooks(),
   changing: changingAttachmentLoadingState.createHooks(),
-  loadingData: loadingAttachmentDataState.createHooks()
-}
+  loadingData: loadingAttachmentDataState.createHooks(),
+};

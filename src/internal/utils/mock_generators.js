@@ -1,4 +1,4 @@
-import AppConstants from "../app_constants";
+import AppConstants from '../app_constants';
 
 export default class MockGenerators {
   static generateCars(count) {
@@ -8,10 +8,10 @@ export default class MockGenerators {
       const car = {
         id: i + 1,
         ...generateCarsInfo(),
-        vin: (i + 1) + 'HSFJUFHHSFEDHSHE',
+        vin: i + 1 + 'HSFJUFHHSFEDHSHE',
         color: Math.floor(Math.random() * AppConstants.carColorsList.length + 1),
         type: Math.floor(Math.random() * AppConstants.carTypesList.length + 1),
-        registration: getRandomDate().toISOString()
+        registration: getRandomDate().toISOString(),
       };
 
       cars.push(car);
@@ -21,13 +21,13 @@ export default class MockGenerators {
   }
 
   static generateUsersList(count) {
-    const users = []
+    const users = [];
     const licenseData = {
       license: null,
       start_license: null,
       license_period: null,
       categories: null,
-    }
+    };
 
     users.push({
       id: 1,
@@ -39,60 +39,54 @@ export default class MockGenerators {
       birthday: generateBirthDate(),
       access: true,
       registration: getRandomDate().toISOString(),
-      password: 'password'
-    })
+      password: 'password',
+    });
 
     for (let i = 0; i < count; i++) {
-      const userLicense = {...licenseData}
+      const userLicense = { ...licenseData };
 
       if (Math.random() < 0.5) {
-        const licensePeriod = generateLicensePeriod()
-        userLicense.license = generateDriverLicenseNumber()
-        userLicense.start_license = licensePeriod.start
-        userLicense.license_period = licensePeriod.end
-        userLicense.categories = generateCategories()
+        const licensePeriod = generateLicensePeriod();
+        userLicense.license = generateDriverLicenseNumber();
+        userLicense.start_license = licensePeriod.start;
+        userLicense.license_period = licensePeriod.end;
+        userLicense.categories = generateCategories();
       }
 
       const user = {
         id: i + 2,
         name: getRandomUserName(),
-        phone: Math.random() < 0.5
-          ? generatePhoneNumber()
-          : null,
+        phone: Math.random() < 0.5 ? generatePhoneNumber() : null,
         email: `test${i}@mail.ru`,
-        birthday: Math.random() < 0.6
-          ? generateBirthDate()
-          : null,
+        birthday: Math.random() < 0.6 ? generateBirthDate() : null,
         roles: generateRoles(),
         ...userLicense,
         access: Math.random() < 0.5,
         registration: getRandomDate().toISOString(),
-        password: 'password'
+        password: 'password',
       };
 
       users.push(user);
     }
 
-    return users
+    return users;
   }
 
   static generateAlcoLocks(count, carsList, userList) {
-    const items = []
-    const shuffledCarsList = [...carsList].sort(() => Math.random() - 0.5)
+    const items = [];
+    const shuffledCarsList = [...carsList].sort(() => Math.random() - 0.5);
 
     for (let i = 0; i < count; i++) {
-      const service_status = getRandomServiceMode()
+      const service_status = getRandomServiceMode();
       const item = {
         id: i + 1,
-        name: `Алкозамок${i+1}`,
+        name: `Алкозамок${i + 1}`,
         serial: generateAlkolockSerial(),
         service_status,
         work_mode: [AppConstants.ServiceModeTypes.on, AppConstants.ServiceModeTypes.driver_accept].includes(service_status)
           ? 1
           : randomWorkMode(),
-        car: Math.random() < 0.7
-          ? shuffledCarsList[i] ?? null
-          : null,
+        car: Math.random() < 0.7 ? shuffledCarsList[i] ?? null : null,
         user: getRandomArrayItem(userList),
         setup: getRandomDate().toISOString(),
       };
@@ -108,11 +102,11 @@ export default class MockGenerators {
 
     for (let i = 0; i < alcoLocksWithCar.length; i++) {
       items.push({
-        id: i+1,
+        id: i + 1,
         user: getRandomArrayItem(driversList),
         date: getRandomDate().toISOString(),
         alcolock: alcoLocksWithCar[i],
-        event: generateRandomEventData()
+        event: generateRandomEventData(),
       });
     }
 
@@ -122,25 +116,25 @@ export default class MockGenerators {
   static generateAttachments(userList, alcoLocksWithCar) {
     const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-    const items = []
+    const items = [];
 
     for (let i = 0; i < alcoLocksWithCar.length; i++) {
       const item = {
         id: i + 1,
         alcolock: alcoLocksWithCar[i],
-        driver: getRandomItem(userList.filter(user => user.roles.includes(5))),
-        user: getRandomItem(userList.filter(user => !user.roles.includes(5))),
-        date: getRandomDate().toISOString()
+        driver: getRandomItem(userList.filter((user) => user.roles.includes(5))),
+        user: getRandomItem(userList.filter((user) => !user.roles.includes(5))),
+        date: getRandomDate().toISOString(),
       };
 
-      items.push(item)
+      items.push(item);
     }
 
-    return items
+    return items;
   }
 
   static getRoles() {
-    const items = []
+    const items = [];
 
     for (let i = 0; i < AppConstants.rolesSystemList.length; i++) {
       const item = {
@@ -151,82 +145,79 @@ export default class MockGenerators {
         alkozamki_control: Math.floor(Math.random() * 3) + 1,
         attachments_control: Math.floor(Math.random() * 3) + 1,
         groups_control: Math.floor(Math.random() * 3) + 1,
-      }
+      };
 
-      items.push(item)
+      items.push(item);
     }
 
-    return items
+    return items;
   }
 
-  static generateGroups (count, usersList, alcolocksList, carsList) {
-    const result = []
-    const remainingUsers = [...usersList]
-    const remainingAlcolocks = [...alcolocksList]
-    const remainingCars = [...carsList]
+  static generateGroups(count, usersList, alcolocksList, carsList) {
+    const result = [];
+    const remainingUsers = [...usersList];
+    const remainingAlcolocks = [...alcolocksList];
+    const remainingCars = [...carsList];
 
-    for (let i = 0; i < count;  i++) {
-      const usersSubset = randomSubset(remainingUsers, 4)
-      const alcolocksSubset = randomSubset(remainingAlcolocks, 4)
-      const carsSubset = randomSubset(remainingCars, 4)
+    for (let i = 0; i < count; i++) {
+      const usersSubset = randomSubset(remainingUsers, 4);
+      const alcolocksSubset = randomSubset(remainingAlcolocks, 4);
+      const carsSubset = randomSubset(remainingCars, 4);
 
       result.push({
-        id: i+1,
-        name: `Филиал${i+1}`,
+        id: i + 1,
+        name: `Филиал${i + 1}`,
         user: getRandomArrayItem(usersList),
-        users: usersSubset.map(user => ({
+        users: usersSubset.map((user) => ({
           ...user,
-          cars: [
-            getRandomArrayItem(carsList),
-            getRandomArrayItem(carsList),
-          ]
+          cars: [getRandomArrayItem(carsList), getRandomArrayItem(carsList)],
         })),
         alcolocks: alcolocksSubset,
         cars: carsSubset,
-        date: getRandomDate().toISOString()
-      })
+        date: getRandomDate().toISOString(),
+      });
 
-      usersSubset.forEach(user => {
-        const index = remainingUsers.indexOf((remainUser) => remainUser.id === user.id)
-        if (index > -1) remainingUsers.splice(index, 1)
-      })
+      usersSubset.forEach((user) => {
+        const index = remainingUsers.indexOf((remainUser) => remainUser.id === user.id);
+        if (index > -1) remainingUsers.splice(index, 1);
+      });
 
-      alcolocksSubset.forEach(alcolock => {
+      alcolocksSubset.forEach((alcolock) => {
         const index = remainingAlcolocks.indexOf((remainAlcolock) => remainAlcolock.id === alcolock.id);
         if (index > -1) remainingAlcolocks.splice(index, 1);
-      })
+      });
 
-      carsSubset.forEach(car => {
+      carsSubset.forEach((car) => {
         const index = remainingCars.indexOf((remainCar) => remainCar.id === car.id);
         if (index > -1) remainingCars.splice(index, 1);
-      })
+      });
     }
-    return result
+    return result;
   }
 
   static generateAutoService = (count, alcolocksList, userList) => {
-    const result = []
+    const result = [];
 
     for (let i = 0; i < count; i++) {
-      const state = getRandomArrayItem(AppConstants.alcolockServiceTypes).value
-      let time = null
+      const state = getRandomArrayItem(AppConstants.alcolockServiceTypes).value;
+      let time = null;
 
       if (state === 'DRIVER_WAITING' || state === 'OPERATOR_WAITING') {
-        time = getIsoDateWithOffset((i+1))
+        time = getIsoDateWithOffset(i + 1);
       }
       result.push({
         id: i + 1,
-        alcolock: alcolocksList.filter(item => item.car)[i],
-        driver: getRandomArrayItem(userList.filter(user => user.roles.includes(5))),
+        alcolock: alcolocksList.filter((item) => item.car)[i],
+        driver: getRandomArrayItem(userList.filter((user) => user.roles.includes(5))),
         state,
         process: getRandomArrayItem(AppConstants.alcolockServiceProcesses).value,
         createdAt: getRandomDate().toISOString(),
-        time
-      })
+        time,
+      });
     }
 
-    return result
-  }
+    return result;
+  };
 }
 
 function getIsoDateWithOffset(minutesOffset) {
@@ -256,31 +247,23 @@ function randomWorkMode() {
 }
 
 function generateRandomEventData() {
-  const eventType = getRandomArrayItem(AppConstants.eventTypesList).value
-  let alcohol_value = null
-  let sobriety = null
-  let error = null
-  let error_code = null
+  const eventType = getRandomArrayItem(AppConstants.eventTypesList).value;
+  let alcohol_value = null;
+  let sobriety = null;
+  let error = null;
+  let error_code = null;
 
   if (eventType === 13) {
-    sobriety = Math.random() > 0.05
-      ? Math.random() > 0.7
-        ? 1
-        : 2
-      : Math.random() > 0.5
-        ? 3
-        : 4
+    sobriety = Math.random() > 0.05 ? (Math.random() > 0.7 ? 1 : 2) : Math.random() > 0.5 ? 3 : 4;
 
     if (sobriety === 1 || sobriety === 2) {
-      alcohol_value = sobriety === 1
-        ? +(Math.random() * (20)).toFixed(0)
-        : +(Math.random() * (120-20) + 20).toFixed(0)
+      alcohol_value = sobriety === 1 ? +(Math.random() * 20).toFixed(0) : +(Math.random() * (120 - 20) + 20).toFixed(0);
     }
   }
 
   if (eventType === 14) {
-    error_code = 'E-20'
-    error = 'Общая критичекая ошибка'
+    error_code = 'E-20';
+    error = 'Общая критичекая ошибка';
   }
 
   return {
@@ -289,8 +272,8 @@ function generateRandomEventData() {
     alcohol_value,
     sobriety,
     error,
-    error_code
-  }
+    error_code,
+  };
 }
 
 function getRandomDate() {
@@ -299,7 +282,7 @@ function getRandomDate() {
   const endDate = new Date();
   const randomDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
 
-  return randomDate
+  return randomDate;
 }
 
 function formatDate(date) {
@@ -309,41 +292,41 @@ function formatDate(date) {
   return `${day}-${month}-${year}`;
 }
 
-function generateLicensePeriod () {
+function generateLicensePeriod() {
   function getRandomDateInInterval(start, end) {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
   }
 
   const currentDate = new Date();
   const tenYearsAgo = new Date(currentDate);
-  tenYearsAgo.setFullYear(currentDate.getFullYear() - 10)
+  tenYearsAgo.setFullYear(currentDate.getFullYear() - 10);
 
-  const startDate = getRandomDateInInterval(tenYearsAgo, currentDate)
-  const endDate = new Date(startDate)
-  endDate.setFullYear(startDate.getFullYear() + 10)
+  const startDate = getRandomDateInInterval(tenYearsAgo, currentDate);
+  const endDate = new Date(startDate);
+  endDate.setFullYear(startDate.getFullYear() + 10);
 
   return {
     start: formatDate(startDate),
-    end: formatDate(endDate)
-  }
+    end: formatDate(endDate),
+  };
 }
 
 function generateCategories() {
-  const shuffled = AppConstants.categoryTypesList.slice().sort(() => 0.5 - Math.random())
-  const subarrayLength = Math.floor(Math.random() * (shuffled.length - 1)) + 1
-  return shuffled.slice(0, subarrayLength).map(item => item.value)
+  const shuffled = AppConstants.categoryTypesList.slice().sort(() => 0.5 - Math.random());
+  const subarrayLength = Math.floor(Math.random() * (shuffled.length - 1)) + 1;
+  return shuffled.slice(0, subarrayLength).map((item) => item.value);
 }
 
 function getRandomArrayItem(arr) {
-  return arr[Math.floor(Math.random() * arr.length)]
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function getRandomUserName() {
-  const firstNames = ["Иван", "Василий", "Петр", "Алекснадр", "Никита"]
-  const lastNames = ["Соколов", "Смирнов", "Иванов", "Петров", "Сидоров"]
-  const middleNames = ["Иванович", "Владимирович", "Никитович", "Викторович", "Сергеевич"]
+  const firstNames = ['Иван', 'Василий', 'Петр', 'Алекснадр', 'Никита'];
+  const lastNames = ['Соколов', 'Смирнов', 'Иванов', 'Петров', 'Сидоров'];
+  const middleNames = ['Иванович', 'Владимирович', 'Никитович', 'Викторович', 'Сергеевич'];
 
-  return `${getRandomArrayItem(lastNames)} ${getRandomArrayItem(firstNames)} ${getRandomArrayItem(middleNames)}`
+  return `${getRandomArrayItem(lastNames)} ${getRandomArrayItem(firstNames)} ${getRandomArrayItem(middleNames)}`;
 }
 
 function generateDriverLicenseNumber() {
@@ -354,8 +337,8 @@ function generateDriverLicenseNumber() {
   return number;
 }
 
-function generateRoles () {
-  const maxValue = AppConstants.rolesSystemList.length
+function generateRoles() {
+  const maxValue = AppConstants.rolesSystemList.length;
   const arrayLength = Math.floor(Math.random() * 4) + 1;
 
   const roles = [];
@@ -377,21 +360,21 @@ function randomSubset(arr, maxSize) {
 
 function generateCarsInfo() {
   const makesAndModels = {
-    'Toyota': ['Camry', 'Corolla', 'Highlander'],
-    'Honda': ['Civic', 'Accord', 'Pilot'],
-    'BMW': ['X5', 'X3', '320i'],
-    'Audi': ['A3', 'A4', 'Q7'],
-    'Mercedes-Benz': ['E-Class', 'A-Class', 'GLC']
-  }
+    Toyota: ['Camry', 'Corolla', 'Highlander'],
+    Honda: ['Civic', 'Accord', 'Pilot'],
+    BMW: ['X5', 'X3', '320i'],
+    Audi: ['A3', 'A4', 'Q7'],
+    'Mercedes-Benz': ['E-Class', 'A-Class', 'GLC'],
+  };
 
   const getRandomMake = () => {
     const makes = Object.keys(makesAndModels);
     return makes[Math.floor(Math.random() * makes.length)];
-  }
+  };
   const getRandomModel = (make) => {
     const models = makesAndModels[make];
     return models[Math.floor(Math.random() * models.length)];
-  }
+  };
   const getRandomLicense = () => {
     const letters = 'АВЕКМНОРСТXУ';
     return (
@@ -406,22 +389,22 @@ function generateCarsInfo() {
       (Math.floor(Math.random() * 9) + 1) +
       (Math.floor(Math.random() * 9) + 1)
     );
-  }
+  };
   const getRandomYear = () => {
     return Math.floor(Math.random() * (2022 - 1990 + 1)) + 1990;
-  }
+  };
 
-  const make = getRandomMake()
+  const make = getRandomMake();
   return {
     make: getRandomMake(),
     model: getRandomModel(make),
     license: getRandomLicense(),
     manufacture: getRandomYear(),
-  }
+  };
 }
 
 function generatePhoneNumber() {
-  let number = "+7";
+  let number = '+7';
   for (let i = 0; i < 10; i++) {
     number += Math.floor(Math.random() * 10).toString();
   }
@@ -440,7 +423,7 @@ function generateBirthDate() {
 }
 
 function generateAlkolockSerial() {
-  const base = "alcosmart";
+  const base = 'alcosmart';
   const randomDigits = Math.floor(1000 + Math.random() * 9000); // Генерация случайного четырехзначного числа
   return base + randomDigits;
 }

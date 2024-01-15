@@ -1,54 +1,56 @@
-import EditTable from "../../shared/components/edit_table/EditTable";
+import { useState } from 'react';
+
+import AppConstants from '../../../internal/app_constants';
 import {
-  addItem, AlcolocksSortTypes,
+  AlcolocksSortTypes,
+  addItem,
   changeItem,
   deleteItem,
-  uploadAlkozamkiList
-} from "../../../internal/effector/alkozamki/effects";
-import AppConstants from "../../../internal/app_constants";
-import {addAlkozamokFormSelectors, editAlkozamokFormSelectors} from "../../../internal/effector/alkozamki/forms";
-import AlkozamkiForm from "./components/AlkozamkiForm";
+  uploadAlkozamkiList,
+} from '../../../internal/effector/alkozamki/effects';
+import { addAlkozamokFormSelectors, editAlkozamokFormSelectors } from '../../../internal/effector/alkozamki/forms';
+import { alkozamkiStore } from '../../../internal/effector/alkozamki/store';
+import { selectedBranchStore } from '../../../internal/effector/selected_branch/store';
+import { UserPermissionsTypes } from '../../../internal/effector/user/effects';
+import { userStore } from '../../../internal/effector/user/store';
+import { useToggle } from '../../../internal/hooks/useToggle';
+import Aside from '../../shared/components/aside/Aside';
+import EditTable from '../../shared/components/edit_table/EditTable';
+import EventsHistory, { HistoryTypes } from '../../shared/components/events_history/EventsHistory';
+import RowTableInfo from '../../shared/components/row_table_info/RowTableInfo';
+import AlkozamkiForm from './components/AlkozamkiForm';
+import AlkozamkiInfo from './components/AlkozamkiInfo';
 import {
   ADD_POPUP_TITLE,
   DELETE_POPUP_TITLE,
   EDIT_POPUP_TITLE,
+  HEADERS,
   getDeletePopupBody,
   getRowsTemplate,
-  HEADERS,
-} from "./const";
-import {useState} from "react";
-import {useToggle} from "../../../internal/hooks/useToggle";
-import Aside from "../../shared/components/aside/Aside";
-import RowTableInfo from "../../shared/components/row_table_info/RowTableInfo";
-import AlkozamkiInfo from "./components/AlkozamkiInfo";
-import EventsHistory, {HistoryTypes} from "../../shared/components/events_history/EventsHistory";
-import {alkozamkiStore} from "../../../internal/effector/alkozamki/store";
-import {selectedBranchStore} from "../../../internal/effector/selected_branch/store";
-import {userStore} from "../../../internal/effector/user/store";
-import {UserPermissionsTypes} from "../../../internal/effector/user/effects";
+} from './const';
 
 const Alkozamki = () => {
-  const [selectedAlcolockId, setSelectedAlcolockId] = useState(null)
-  const [updateInfo, toggleUpdateInfo] = useToggle()
-  const [updateTable, toggleUpdateTable] = useToggle()
-  const loading = alkozamkiStore.alkozamkiLoading.useValue()
-  const selectedBranch = selectedBranchStore.selectedBranch.useValue()
-  const userData = userStore.userData.useValue()
+  const [selectedAlcolockId, setSelectedAlcolockId] = useState(null);
+  const [updateInfo, toggleUpdateInfo] = useToggle();
+  const [updateTable, toggleUpdateTable] = useToggle();
+  const loading = alkozamkiStore.alkozamkiLoading.useValue();
+  const selectedBranch = selectedBranchStore.selectedBranch.useValue();
+  const userData = userStore.userData.useValue();
 
-  const onClickRow = (id) => setSelectedAlcolockId(id)
-  const handleCloseAside = () => setSelectedAlcolockId(null)
+  const onClickRow = (id) => setSelectedAlcolockId(id);
+  const handleCloseAside = () => setSelectedAlcolockId(null);
 
   const afterDelete = (id) => {
     if (id === selectedAlcolockId) {
-      handleCloseAside()
+      handleCloseAside();
     }
-  }
+  };
 
   const afterEdit = (id) => {
     if (id === selectedAlcolockId) {
-      toggleUpdateInfo()
+      toggleUpdateInfo();
     }
-  }
+  };
 
   return (
     <>
@@ -62,26 +64,20 @@ const Alkozamki = () => {
           addFormSelectors={addAlkozamokFormSelectors}
           editFormSelectors={editAlkozamokFormSelectors}
           uploadListPromise={uploadAlkozamkiList}
-          deleteItemPromise={userData?.permissions.alcolocks === UserPermissionsTypes.create
-            ? deleteItem
-            : null}
-          addItemPromise={userData?.permissions.alcolocks === UserPermissionsTypes.create
-            ? addItem
-            : null}
-          editItemPromise={userData.permissions.alcolocks === UserPermissionsTypes.create
-            ? changeItem
-            : null}
+          deleteItemPromise={userData?.permissions.alcolocks === UserPermissionsTypes.create ? deleteItem : null}
+          addItemPromise={userData?.permissions.alcolocks === UserPermissionsTypes.create ? addItem : null}
+          editItemPromise={userData.permissions.alcolocks === UserPermissionsTypes.create ? changeItem : null}
           deletePopupParams={{
             title: DELETE_POPUP_TITLE,
-            getBody: getDeletePopupBody
+            getBody: getDeletePopupBody,
           }}
           addPopupParams={{
             title: ADD_POPUP_TITLE,
-            Body: AlkozamkiForm
+            Body: AlkozamkiForm,
           }}
           editPopupParams={{
             title: EDIT_POPUP_TITLE,
-            Body: AlkozamkiForm
+            Body: AlkozamkiForm,
           }}
           selectedRow={selectedAlcolockId}
           afterDelete={afterDelete}
@@ -91,24 +87,23 @@ const Alkozamki = () => {
         />
       </div>
 
-      {selectedAlcolockId &&
+      {selectedAlcolockId && (
         <Aside onClose={handleCloseAside}>
           <RowTableInfo
-            infoContent={<AlkozamkiInfo
-              updateData={updateInfo}
-              toggleUpdateInfo={toggleUpdateInfo}
-              selectedAlcolockId={selectedAlcolockId}
-              toggleUpdateTable={toggleUpdateTable}
-            />}
-            historyContent={<EventsHistory
-              type={HistoryTypes.byAlcolock}
-              id={selectedAlcolockId}
-            />}
+            infoContent={
+              <AlkozamkiInfo
+                updateData={updateInfo}
+                toggleUpdateInfo={toggleUpdateInfo}
+                selectedAlcolockId={selectedAlcolockId}
+                toggleUpdateTable={toggleUpdateTable}
+              />
+            }
+            historyContent={<EventsHistory type={HistoryTypes.byAlcolock} id={selectedAlcolockId} />}
           />
         </Aside>
-      }
+      )}
     </>
-  )
-}
+  );
+};
 
-export default Alkozamki
+export default Alkozamki;

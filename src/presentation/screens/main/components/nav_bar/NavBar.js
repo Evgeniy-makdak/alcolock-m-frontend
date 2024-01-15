@@ -1,34 +1,33 @@
-import Logo from "../../../../shared/components/logo/Logo";
-import './NavBar.sass'
-import Const from "./const";
-import {NavLink} from "react-router-dom";
+import { useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+
+import { checkAutoServiceCount } from '../../../../../internal/effector/auto_service/effects';
+import { autoServiceStore } from '../../../../../internal/effector/auto_service/store';
+import { userStore } from '../../../../../internal/effector/user/store';
+import RoutePaths from '../../../../../internal/route_paths';
+import Logo from '../../../../shared/components/logo/Logo';
+import MenuButton from '../../../../shared/components/menu/MenuButton';
+import BranchSelect from './BranchSelect';
 import './NavBar.sass';
-import MenuButton from "../../../../shared/components/menu/MenuButton";
-import RoutePaths from "../../../../../internal/route_paths";
-import {autoServiceStore} from "../../../../../internal/effector/auto_service/store";
-import BranchSelect from "./BranchSelect";
-import {userStore} from "../../../../../internal/effector/user/store";
-import {useEffect} from "react";
-import {checkAutoServiceCount} from "../../../../../internal/effector/auto_service/effects";
+import './NavBar.sass';
+import Const from './const';
 
 const NavBar = () => {
-  const notifications = autoServiceStore.notificationsCount.useValue()
-  const userData = userStore.userData.useValue()
-  const updateNotificationsCount = autoServiceStore.updateNotificationsCount.useValue()
+  const notifications = autoServiceStore.notificationsCount.useValue();
+  const userData = userStore.userData.useValue();
+  const updateNotificationsCount = autoServiceStore.updateNotificationsCount.useValue();
 
   useEffect(() => {
-    checkAutoServiceCount()
-      .catch(err => {
-        console.log('checkAutoServiceCount error', err?.response)
-      })
+    checkAutoServiceCount().catch((err) => {
+      console.log('checkAutoServiceCount error', err?.response);
+    });
 
     setInterval(() => {
-      checkAutoServiceCount()
-        .catch(err => {
-          console.log('checkAutoServiceCount error', err?.response)
-        })
-    }, 60000)
-  }, [updateNotificationsCount])
+      checkAutoServiceCount().catch((err) => {
+        console.log('checkAutoServiceCount error', err?.response);
+      });
+    }, 60000);
+  }, [updateNotificationsCount]);
 
   const permissionsFilter = (item) => {
     return item.path === RoutePaths.groups || item.path === RoutePaths.roles
@@ -43,45 +42,33 @@ const NavBar = () => {
               ? !!userData?.permissions.attachments
               : item.path === RoutePaths.autoService
                 ? !!userData?.permissions.alkozamki || userData?.isAdmin
-                : true
-  }
+                : true;
+  };
 
   return (
     <div className={'nav-bar'}>
       <div>
         <Logo />
 
-        {userData?.isAdmin &&
-          <BranchSelect />
-        }
+        {userData?.isAdmin && <BranchSelect />}
 
         <div className="nav-bar__links">
-          {
-            Const.NAV_LINKS.filter(permissionsFilter).map(link => {
-              const notification = link.path === RoutePaths.autoService
-                ? notifications
-                : null
+          {Const.NAV_LINKS.filter(permissionsFilter).map((link) => {
+            const notification = link.path === RoutePaths.autoService ? notifications : null;
 
-              return (
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                >
-                  <span>{link.name}</span>
-                  {!!notification &&
-                    <span className={'nav-bar__notifications'}>{notifications}</span>
-                  }
-                </NavLink>
-              )
-            })
-          }
+            return (
+              <NavLink key={link.path} to={link.path}>
+                <span>{link.name}</span>
+                {!!notification && <span className={'nav-bar__notifications'}>{notifications}</span>}
+              </NavLink>
+            );
+          })}
         </div>
       </div>
 
-
       <MenuButton />
     </div>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;

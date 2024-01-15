@@ -1,87 +1,77 @@
-import {
-  ADD_ALCOLOCK_POPUP_TITLE,
-  ALCOLOCKS_TABLE_HEADERS,
-  getAlcolocksRowsTemplate,
-} from "./const";
-import AppConstants from "../../../../internal/app_constants";
-import {addGroupAlcolock, GroupAlcolocksSortTypes} from "../../../../internal/effector/groups/effects";
-import {addGroupAlcolockFormSelectors, switchGroupFormSelectors} from "../../../../internal/effector/groups/forms";
-import AddAlcolockForm from "./AddAlcolockForm";
-import EditTable from "../../../shared/components/edit_table/EditTable";
-import StyledTable from "../../../shared/components/edit_table/styled";
-import {alkozamkiStore} from "../../../../internal/effector/alkozamki/store";
-import {useCallback, useState} from "react";
-import {switchAlcolockGroup, uploadAlkozamkiList} from "../../../../internal/effector/alkozamki/effects";
-import {useToggle} from "../../../../internal/hooks/useToggle";
-import Popup from "../../../shared/ui/popup/Popup";
-import SwitchGroupForm from "./SwitchGroupForm";
-import Button, {ButtonsType} from "../../../shared/ui/button/Button";
+import { useCallback, useState } from 'react';
 
-const GroupAlcolocksTable = ({groupInfo}) => {
-  const [openSwitchPopup, toggleSwitchPopup] = useToggle()
-  const loadingAlcolocks = alkozamkiStore.alkozamkiLoading.useValue()
-  const [selectedAlcolockId, setSelectedAlcolockId] = useState(null)
-  const isValidForm = switchGroupFormSelectors.useIsFormValid()
-  const onClickSubmit = switchGroupFormSelectors.useOnClickSubmit()
-  const [updateTable, toggleUpdateTable] = useToggle()
-  const alcolockSwitchLoading = alkozamkiStore.alcolockBranchSwitchLoading.useValue()
+import AppConstants from '../../../../internal/app_constants';
+import { switchAlcolockGroup, uploadAlkozamkiList } from '../../../../internal/effector/alkozamki/effects';
+import { alkozamkiStore } from '../../../../internal/effector/alkozamki/store';
+import { GroupAlcolocksSortTypes, addGroupAlcolock } from '../../../../internal/effector/groups/effects';
+import { addGroupAlcolockFormSelectors, switchGroupFormSelectors } from '../../../../internal/effector/groups/forms';
+import { useToggle } from '../../../../internal/hooks/useToggle';
+import EditTable from '../../../shared/components/edit_table/EditTable';
+import StyledTable from '../../../shared/components/edit_table/styled';
+import Button, { ButtonsType } from '../../../shared/ui/button/Button';
+import Popup from '../../../shared/ui/popup/Popup';
+import AddAlcolockForm from './AddAlcolockForm';
+import SwitchGroupForm from './SwitchGroupForm';
+import { ADD_ALCOLOCK_POPUP_TITLE, ALCOLOCKS_TABLE_HEADERS, getAlcolocksRowsTemplate } from './const';
 
-  const handleUploadAlcolocksPromise = useCallback((
-    {
-      page,
-      limit,
-      sortBy,
-      order,
-      query,
-    }) => {
+const GroupAlcolocksTable = ({ groupInfo }) => {
+  const [openSwitchPopup, toggleSwitchPopup] = useToggle();
+  const loadingAlcolocks = alkozamkiStore.alkozamkiLoading.useValue();
+  const [selectedAlcolockId, setSelectedAlcolockId] = useState(null);
+  const isValidForm = switchGroupFormSelectors.useIsFormValid();
+  const onClickSubmit = switchGroupFormSelectors.useOnClickSubmit();
+  const [updateTable, toggleUpdateTable] = useToggle();
+  const alcolockSwitchLoading = alkozamkiStore.alcolockBranchSwitchLoading.useValue();
 
-    return uploadAlkozamkiList({
-      groupId: groupInfo?.id ?? 0,
-      page,
-      limit,
-      sortBy,
-      order,
-      query,
-    })
-  }, [groupInfo])
+  const handleUploadAlcolocksPromise = useCallback(
+    ({ page, limit, sortBy, order, query }) => {
+      return uploadAlkozamkiList({
+        groupId: groupInfo?.id ?? 0,
+        page,
+        limit,
+        sortBy,
+        order,
+        query,
+      });
+    },
+    [groupInfo],
+  );
 
   const handleOpenSwitchPopup = (e, id) => {
-    setSelectedAlcolockId(id)
-    toggleSwitchPopup()
-  }
+    setSelectedAlcolockId(id);
+    toggleSwitchPopup();
+  };
 
   const handleCloseSwitchPopup = () => {
-    toggleSwitchPopup()
-    setSelectedAlcolockId(null)
-  }
+    toggleSwitchPopup();
+    setSelectedAlcolockId(null);
+  };
 
   const transferButton = (
-    <StyledTable.TableButton
-      onClick={handleOpenSwitchPopup}
-    >
-      <StyledTable.ShiftIcon/>
+    <StyledTable.TableButton onClick={handleOpenSwitchPopup}>
+      <StyledTable.ShiftIcon />
     </StyledTable.TableButton>
-  )
+  );
 
   const onClickSwitch = () => {
-    if (!isValidForm) return
+    if (!isValidForm) return;
 
-    onClickSubmit()
-  }
+    onClickSubmit();
+  };
 
   const handleSwitchBranch = (data) => {
     switchAlcolockGroup({
       alcolockId: selectedAlcolockId,
-      groupId: data.group?.id
+      groupId: data.group?.id,
     })
       .then(() => {
-        handleCloseSwitchPopup()
-        toggleUpdateTable()
+        handleCloseSwitchPopup();
+        toggleUpdateTable();
       })
-      .catch(err => {
-        console.log('handleSwitchBranch GroupAlcolocksTable error', err?.response)
-      })
-  }
+      .catch((err) => {
+        console.log('handleSwitchBranch GroupAlcolocksTable error', err?.response);
+      });
+  };
 
   return (
     <>
@@ -94,18 +84,16 @@ const GroupAlcolocksTable = ({groupInfo}) => {
         withDate={false}
         uploadListPromise={handleUploadAlcolocksPromise}
         addFormSelectors={addGroupAlcolockFormSelectors}
-        addItemPromise={(data) => addGroupAlcolock({data, groupId: groupInfo?.id ?? 0})}
+        addItemPromise={(data) => addGroupAlcolock({ data, groupId: groupInfo?.id ?? 0 })}
         addPopupParams={{
           title: ADD_ALCOLOCK_POPUP_TITLE,
           Body: AddAlcolockForm,
           additionalBodyProps: {
-            groupId: groupInfo?.id
-          }
+            groupId: groupInfo?.id,
+          },
         }}
         withoutAction={true}
-        additionalActions={[
-          transferButton
-        ]}
+        additionalActions={[transferButton]}
         updateTable={updateTable}
       />
 
@@ -114,30 +102,18 @@ const GroupAlcolocksTable = ({groupInfo}) => {
         toggleModal={toggleSwitchPopup}
         headerTitle={'Перемещение алкозамка'}
         closeonClickSpace={false}
-        body={<SwitchGroupForm
-          groupInfo={groupInfo}
-          onValidSubmit={handleSwitchBranch}
-          loading={alcolockSwitchLoading}
-        />}
+        body={<SwitchGroupForm groupInfo={groupInfo} onValidSubmit={handleSwitchBranch} loading={alcolockSwitchLoading} />}
         buttons={[
-          <Button
-            key={'action_1'}
-            type={ButtonsType.action}
-            onClick={onClickSwitch}
-          >
+          <Button key={'action_1'} type={ButtonsType.action} onClick={onClickSwitch}>
             Переместить
           </Button>,
-          <Button
-            key={'action_2'}
-            type={ButtonsType.action}
-            onClick={handleCloseSwitchPopup}
-          >
+          <Button key={'action_2'} type={ButtonsType.action} onClick={handleCloseSwitchPopup}>
             {AppConstants.cancelTxt}
           </Button>,
         ]}
       />
     </>
-  )
-}
+  );
+};
 
-export default GroupAlcolocksTable
+export default GroupAlcolocksTable;

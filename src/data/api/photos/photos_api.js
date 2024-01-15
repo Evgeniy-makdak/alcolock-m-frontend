@@ -1,12 +1,12 @@
-import {request} from "../../request";
+import { request } from '../../request';
 
 export default class PhotosApi {
   static getItem(url) {
     const params = {
       url: `api/photos/${url}`,
-      method: 'GET'
-    }
+      method: 'GET',
+    };
 
-    return request(params, true)
+    return request(params, true);
   }
 }

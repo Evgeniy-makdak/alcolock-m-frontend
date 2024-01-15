@@ -1,106 +1,106 @@
-import ValidationRules from "../../validations/validation_rules";
-import FormStateBuilder from "../form_state_builder";
+import ValidationRules from '../../validations/validation_rules';
+import FormStateBuilder from '../form_state_builder';
 
 const initData = {
   name: '',
-  user: 0
-}
+  user: 0,
+};
 
 const initValidations = {
-  name: []
-}
+  name: [],
+};
 
 const validator = () => ({
-  name: ValidationRules.requiredValidation
-})
+  name: ValidationRules.requiredValidation,
+});
 
 const addGroupFormState = new FormStateBuilder({
   initialData: initData,
   initialValidations: initValidations,
-  getValidators: validator
-})
+  getValidators: validator,
+});
 
 const editGroupFormState = new FormStateBuilder({
   initialData: initData,
   initialValidations: initValidations,
-  getValidators: validator
-})
+  getValidators: validator,
+});
 
 const initUserData = {
-  user: []
-}
+  user: [],
+};
 
 const initUserValidations = {
-  user: []
-}
+  user: [],
+};
 
 const userValidator = () => ({
-  user: ValidationRules.requiredValidation
-})
+  user: ValidationRules.requiredValidation,
+});
 
 const addGroupUserFormState = new FormStateBuilder({
   initialData: initUserData,
   initialValidations: initUserValidations,
-  getValidators: userValidator
-})
+  getValidators: userValidator,
+});
 
 const initAlcolockData = {
-  alcolock: []
-}
+  alcolock: [],
+};
 
 const initAlcolockValidations = {
-  alcolock: []
-}
+  alcolock: [],
+};
 
 const alcolockValidator = () => ({
-  alcolock: ValidationRules.requiredValidation
-})
+  alcolock: ValidationRules.requiredValidation,
+});
 
 const addGroupAlcolockFormState = new FormStateBuilder({
   initialData: initAlcolockData,
   initialValidations: initAlcolockValidations,
-  getValidators: alcolockValidator
-})
+  getValidators: alcolockValidator,
+});
 
 const initCarData = {
-  car: []
-}
+  car: [],
+};
 
 const initCarValidations = {
-  car: []
-}
+  car: [],
+};
 
 const carValidator = () => ({
-  car: ValidationRules.requiredValidation
-})
+  car: ValidationRules.requiredValidation,
+});
 
 const addGroupCarFormState = new FormStateBuilder({
   initialData: initCarData,
   initialValidations: initCarValidations,
-  getValidators: carValidator
-})
+  getValidators: carValidator,
+});
 
 const initSwitchGroupData = {
-  group: null
-}
+  group: null,
+};
 
 const initSwitchGroupValidations = {
-  group: []
-}
+  group: [],
+};
 
 const switchGroupValidator = () => ({
-  group: ValidationRules.requiredValidation
-})
+  group: ValidationRules.requiredValidation,
+});
 
 const switchGroupFormState = new FormStateBuilder({
   initialData: initSwitchGroupData,
   initialValidations: initSwitchGroupValidations,
-  getValidators: switchGroupValidator
-})
+  getValidators: switchGroupValidator,
+});
 
-export const addGroupFormSelectors = addGroupFormState.createSelectors()
-export const editGroupFormSelectors = editGroupFormState.createSelectors()
-export const addGroupUserFormSelectors = addGroupUserFormState.createSelectors()
-export const addGroupAlcolockFormSelectors = addGroupAlcolockFormState.createSelectors()
-export const addGroupCarFormSelectors = addGroupCarFormState.createSelectors()
-export const switchGroupFormSelectors = switchGroupFormState.createSelectors()
+export const addGroupFormSelectors = addGroupFormState.createSelectors();
+export const editGroupFormSelectors = editGroupFormState.createSelectors();
+export const addGroupUserFormSelectors = addGroupUserFormState.createSelectors();
+export const addGroupAlcolockFormSelectors = addGroupAlcolockFormState.createSelectors();
+export const addGroupCarFormSelectors = addGroupCarFormState.createSelectors();
+export const switchGroupFormSelectors = switchGroupFormState.createSelectors();

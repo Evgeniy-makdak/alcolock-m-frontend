@@ -1,6 +1,5 @@
-import FormStateBuilder from "../form_state_builder";
-import ValidationRules from "../../validations/validation_rules";
-import StateBuilder from "../state_builder";
+import ValidationRules from '../../validations/validation_rules';
+import FormStateBuilder from '../form_state_builder';
 
 const initData = {
   manufacturer: '',
@@ -10,7 +9,7 @@ const initData = {
   vin: '',
   color: null,
   type: null,
-}
+};
 
 const initValidations = {
   manufacturer: [],
@@ -19,8 +18,8 @@ const initValidations = {
   year: [],
   vin: [],
   color: [],
-  type: []
-}
+  type: [],
+};
 
 const validator = () => ({
   manufacturer: ValidationRules.requiredValidation,
@@ -28,25 +27,23 @@ const validator = () => ({
   registrationNumber: ValidationRules.requiredValidation,
   year: ValidationRules.requiredValidation,
   vin: (value) => {
-    return value.length
-      ? ValidationRules.vinValidator(value)
-      : ValidationRules.requiredValidation(value)
+    return value.length ? ValidationRules.vinValidator(value) : ValidationRules.requiredValidation(value);
   },
   color: ValidationRules.requiredValidation,
-  type: ValidationRules.requiredValidation
-})
+  type: ValidationRules.requiredValidation,
+});
 
 const addCarFormState = new FormStateBuilder({
   initialData: initData,
   initialValidations: initValidations,
-  getValidators: validator
-})
+  getValidators: validator,
+});
 
 const editCarFormState = new FormStateBuilder({
   initialData: initData,
   initialValidations: initValidations,
-  getValidators: validator
-})
+  getValidators: validator,
+});
 
-export const addCarFormSelectors = addCarFormState.createSelectors()
+export const addCarFormSelectors = addCarFormState.createSelectors();
 export const editCarFormSelectors = editCarFormState.createSelectors();

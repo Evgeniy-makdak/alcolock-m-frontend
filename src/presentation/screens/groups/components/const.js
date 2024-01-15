@@ -1,7 +1,7 @@
-import {UsersSortTypes} from "../../../../internal/effector/users/effects";
-import Formatters from "../../../../internal/utils/formatters";
-import {AlcolocksSortTypes} from "../../../../internal/effector/alkozamki/effects";
-import {CarsSortTypes} from "../../../../internal/effector/vehicles/effects";
+import { AlcolocksSortTypes } from '../../../../internal/effector/alkozamki/effects';
+import { UsersSortTypes } from '../../../../internal/effector/users/effects';
+import { CarsSortTypes } from '../../../../internal/effector/vehicles/effects';
+import Formatters from '../../../../internal/utils/formatters';
 
 export const USERS_TABLE_HEADERS = [
   {
@@ -13,9 +13,9 @@ export const USERS_TABLE_HEADERS = [
     sortType: UsersSortTypes.byEmail,
   },
   {
-    label: 'Привязанные ТС'
-  }
-]
+    label: 'Привязанные ТС',
+  },
+];
 
 export const getUsersRowsTemplate = (item) => {
   return {
@@ -28,25 +28,25 @@ export const getUsersRowsTemplate = (item) => {
         value: item.email,
       },
       {
-        value: !!item.driver?.vehicleAllotments?.length
-          ? (
-            <span
-              style={{
-                display: 'flex',
-                flexDirection: 'column'
-              }}
-            >
-              {item.driver.vehicleAllotments.map(vehicleAllotment => <span key={vehicleAllotment.id}>{Formatters.carNameFormatter(vehicleAllotment.vehicle)}</span>)}
-            </span>
-          )
-          : '-'
-      }
-    ]
-  }
-}
+        value: !!item.driver?.vehicleAllotments?.length ? (
+          <span
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}>
+            {item.driver.vehicleAllotments.map((vehicleAllotment) => (
+              <span key={vehicleAllotment.id}>{Formatters.carNameFormatter(vehicleAllotment.vehicle)}</span>
+            ))}
+          </span>
+        ) : (
+          '-'
+        ),
+      },
+    ],
+  };
+};
 
-
-export const ADD_USER_POPUP_TITLE = 'Добавить пользователей в группу'
+export const ADD_USER_POPUP_TITLE = 'Добавить пользователей в группу';
 
 export const ALCOLOCKS_TABLE_HEADERS = [
   {
@@ -61,7 +61,7 @@ export const ALCOLOCKS_TABLE_HEADERS = [
     label: 'Установлен на ТС',
     sortType: AlcolocksSortTypes.byCar,
   },
-]
+];
 
 export const getAlcolocksRowsTemplate = (item) => ({
   id: item.id,
@@ -73,12 +73,12 @@ export const getAlcolocksRowsTemplate = (item) => ({
       value: item.serialNumber ?? '-',
     },
     {
-      value: Formatters.carNameFormatter(item.vehicleBind?.vehicle)
+      value: Formatters.carNameFormatter(item.vehicleBind?.vehicle),
     },
-  ]
-})
+  ],
+});
 
-export const ADD_ALCOLOCK_POPUP_TITLE = 'Добавить алкозамки в группу'
+export const ADD_ALCOLOCK_POPUP_TITLE = 'Добавить алкозамки в группу';
 
 export const CARS_TABLE_HEADERS = [
   {
@@ -101,16 +101,16 @@ export const CARS_TABLE_HEADERS = [
       width: '288px',
     },
   },
-]
+];
 
 export const getCarsRowsTemplate = (car) => ({
   id: car.id,
   values: [
     {
-      value: car.manufacturer ?? '-'
+      value: car.manufacturer ?? '-',
     },
     {
-      value: car.model ?? '-'
+      value: car.model ?? '-',
     },
     {
       value: car.vin ?? '-',
@@ -120,10 +120,9 @@ export const getCarsRowsTemplate = (car) => ({
       style: {
         maxWidth: '288px',
         width: '288px',
-      }
+      },
     },
-  ]
-})
+  ],
+});
 
-
-export const ADD_CAR_POPUP_TITLE = 'Добавить ТС в группу'
+export const ADD_CAR_POPUP_TITLE = 'Добавить ТС в группу';

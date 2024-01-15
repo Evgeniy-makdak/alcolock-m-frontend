@@ -1,5 +1,5 @@
-import {GroupsSortTypes} from "../../../internal/effector/groups/effects";
-import Formatters from "../../../internal/utils/formatters";
+import { GroupsSortTypes } from '../../../internal/effector/groups/effects';
+import Formatters from '../../../internal/utils/formatters';
 
 export const HEADERS = [
   {
@@ -16,9 +16,9 @@ export const HEADERS = [
     style: {
       maxWidth: '201px',
       width: '201px',
-    }
+    },
   },
-]
+];
 
 export const getRowsTemplate = (item) => {
   return {
@@ -29,25 +29,27 @@ export const getRowsTemplate = (item) => {
         value: item.name,
       },
       {
-        value: Formatters.nameFormatter(item.createdBy)
+        value: Formatters.nameFormatter(item.createdBy),
       },
       {
         value: Formatters.formatISODate(item.createdAt),
         style: {
           maxWidth: '201px',
           width: '201px',
-        }
+        },
       },
-    ]
-  }
-}
+    ],
+  };
+};
 
-export const DELETE_POPUP_TITLE = 'Удаление группы'
+export const DELETE_POPUP_TITLE = 'Удаление группы';
 export const getDeletePopupBody = (selectedItem) => {
-  return <p>
-    Вы действительно хотите удалить группу <b>{selectedItem?.name}</b>?
-  </p>
-}
+  return (
+    <p>
+      Вы действительно хотите удалить группу <b>{selectedItem?.name}</b>?
+    </p>
+  );
+};
 
-export const ADD_POPUP_TITLE = 'Добавление группы'
-export const EDIT_POPUP_TITLE = 'Редактирование названия группы'
+export const ADD_POPUP_TITLE = 'Добавление группы';
+export const EDIT_POPUP_TITLE = 'Редактирование названия группы';

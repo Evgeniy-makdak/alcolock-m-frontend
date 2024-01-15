@@ -1,71 +1,64 @@
-import Form from "../../../shared/ui/form/Form";
-import Input from "../../../shared/ui/form/components/Input";
-import Select from "../../../shared/ui/form/components/Select";
-import AppConstants from "../../../../internal/app_constants";
-import {useEffect} from "react";
-import {getUser} from "../../../../internal/effector/users/effects";
-import DateInput from "../../../shared/ui/form/components/DateInput";
-import PhoneInput from "../../../shared/ui/form/components/PhoneInput";
-import RolesSelect from "./RolesSelect";
-import './UserForm.sass'
-import CategoriesSelect from "./CategoriesSelect";
-import dayjs from 'dayjs'
-import {userMapper} from "../mapper";
-import {usersStore} from "../../../../internal/effector/users/store";
-import Loader from "../../../shared/components/loader/Loader";
-import {getErrorMessagesFromServer} from "../../../../internal/validations/server_error_handler";
-import ErrorViewer from "../../../shared/components/errors/ErrorViewer";
+import dayjs from 'dayjs';
 
-const UserForm = (
-  {
-    formSelectors,
-    onValidSubmit,
-    selectedItem = null
-  }) => {
-  const setInitData = formSelectors.useSetInitFormData()
-  const license = formSelectors.useFormDataValue('licenseCode')
-  const rolesIds = formSelectors.useFormDataValue('userGroups')
-  const isDriver = (rolesIds ?? []).includes(200)
-  const loading = usersStore.dataLoading.useValue()
-  const creating = usersStore.creating.useValue()
-  const changing = usersStore.changing.useValue()
-  const [error, setError] = usersStore.userError.useState()
-  const serverErrorMessages = getErrorMessagesFromServer(error)
-  const fieldsErrors = error?.response?.fieldErrors
-  const isValidationAvailable = formSelectors.useIsValidationsAvailable()
-  const validateAllFields = formSelectors.useValidateAllFields()
+import { useEffect } from 'react';
+
+import AppConstants from '../../../../internal/app_constants';
+import { getUser } from '../../../../internal/effector/users/effects';
+import { usersStore } from '../../../../internal/effector/users/store';
+import { getErrorMessagesFromServer } from '../../../../internal/validations/server_error_handler';
+import ErrorViewer from '../../../shared/components/errors/ErrorViewer';
+import Loader from '../../../shared/components/loader/Loader';
+import Form from '../../../shared/ui/form/Form';
+import DateInput from '../../../shared/ui/form/components/DateInput';
+import Input from '../../../shared/ui/form/components/Input';
+import PhoneInput from '../../../shared/ui/form/components/PhoneInput';
+import Select from '../../../shared/ui/form/components/Select';
+import { userMapper } from '../mapper';
+import CategoriesSelect from './CategoriesSelect';
+import RolesSelect from './RolesSelect';
+import './UserForm.sass';
+
+const UserForm = ({ formSelectors, onValidSubmit, selectedItem = null }) => {
+  const setInitData = formSelectors.useSetInitFormData();
+  const license = formSelectors.useFormDataValue('licenseCode');
+  const rolesIds = formSelectors.useFormDataValue('userGroups');
+  const isDriver = (rolesIds ?? []).includes(200);
+  const loading = usersStore.dataLoading.useValue();
+  const creating = usersStore.creating.useValue();
+  const changing = usersStore.changing.useValue();
+  const [error, setError] = usersStore.userError.useState();
+  const serverErrorMessages = getErrorMessagesFromServer(error);
+  const fieldsErrors = error?.response?.fieldErrors;
+  const isValidationAvailable = formSelectors.useIsValidationsAvailable();
+  const validateAllFields = formSelectors.useValidateAllFields();
 
   useEffect(() => {
-    setError(null)
-  }, [])
+    setError(null);
+  }, []);
 
   useEffect(() => {
-    if (!selectedItem) return
+    if (!selectedItem) return;
 
     getUser(selectedItem.id)
-      .then(res => {
+      .then((res) => {
         if (res) {
-          setInitData(userMapper(res))
+          setInitData(userMapper(res));
         }
       })
-      .catch(err => {
-        console.log('UserForm error', err?.response)
-      })
-  }, [selectedItem])
+      .catch((err) => {
+        console.log('UserForm error', err?.response);
+      });
+  }, [selectedItem]);
 
   const withChangeLicenseCode = () => {
     if (isValidationAvailable) {
-      validateAllFields()
+      validateAllFields();
     }
-  }
+  };
 
   return (
     <Loader isLoading={!!loading || !!creating || !!changing}>
-      <Form
-        formSelectors={formSelectors}
-        onValidSubmit={onValidSubmit}
-        className={'user-form'}
-      >
+      <Form formSelectors={formSelectors} onValidSubmit={onValidSubmit} className={'user-form'}>
         <div className="user-form__column">
           <Input
             formSelectors={formSelectors}
@@ -79,7 +72,7 @@ const UserForm = (
             formSelectors={formSelectors}
             fieldParams={{
               name: 'birthDate',
-              label: 'Дата рождения'
+              label: 'Дата рождения',
             }}
             maxDate={dayjs(Date.now())}
           />
@@ -88,7 +81,7 @@ const UserForm = (
             formSelectors={formSelectors}
             fieldParams={{
               name: 'phone',
-              label: 'Номер телефона'
+              label: 'Номер телефона',
             }}
           />
 
@@ -96,7 +89,7 @@ const UserForm = (
             formSelectors={formSelectors}
             fieldParams={{
               name: 'email',
-              label: 'Почта'
+              label: 'Почта',
             }}
           />
 
@@ -105,7 +98,7 @@ const UserForm = (
             fieldParams={{
               name: 'password',
               label: 'Пароль',
-              type: 'password'
+              type: 'password',
             }}
             fieldsErrors={fieldsErrors}
           />
@@ -114,7 +107,7 @@ const UserForm = (
             formSelectors={formSelectors}
             fieldParams={{
               name: 'userGroups',
-              label: 'Роли'
+              label: 'Роли',
             }}
             isEdit={!!selectedItem}
           />
@@ -144,7 +137,7 @@ const UserForm = (
             formSelectors={formSelectors}
             fieldParams={{
               name: 'licenseIssueDate',
-              label: 'Дата выдачи'
+              label: 'Дата выдачи',
             }}
             disabled={!license || !isDriver}
             maxDate={dayjs(Date.now())}
@@ -154,7 +147,7 @@ const UserForm = (
             formSelectors={formSelectors}
             fieldParams={{
               name: 'licenseExpirationDate',
-              label: 'Дата окончания действия'
+              label: 'Дата окончания действия',
             }}
             disabled={!license || !isDriver}
           />
@@ -163,18 +156,16 @@ const UserForm = (
             formSelectors={formSelectors}
             fieldParams={{
               name: 'licenseClass',
-              label: 'Категории'
+              label: 'Категории',
             }}
             disabled={!license || !isDriver}
           />
         </div>
       </Form>
 
-      {!!serverErrorMessages.length &&
-        <ErrorViewer errorMessages={serverErrorMessages}/>
-      }
+      {!!serverErrorMessages.length && <ErrorViewer errorMessages={serverErrorMessages} />}
     </Loader>
-  )
-}
+  );
+};
 
-export default UserForm
+export default UserForm;

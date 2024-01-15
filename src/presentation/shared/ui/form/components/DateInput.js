@@ -1,37 +1,33 @@
-import ValidationsWrapper from "./ValidationsWrapper";
-import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import 'dayjs/locale/ru'
-import { ruRU } from '@mui/x-date-pickers/locales';
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
 
-const DateInput = (
-  {
-    formSelectors,
-    fieldParams,
-    disabled = false,
-    maxDate = null
-  }) => {
-  const value = formSelectors.useFormDataValue(fieldParams.name)
-  const setValue = formSelectors.useSetFormDataValue(fieldParams.name)
-  const validations = formSelectors.useFormValueValidation(fieldParams.name)
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { ruRU } from '@mui/x-date-pickers/locales';
+
+import ValidationsWrapper from './ValidationsWrapper';
+
+const DateInput = ({ formSelectors, fieldParams, disabled = false, maxDate = null }) => {
+  const value = formSelectors.useFormDataValue(fieldParams.name);
+  const setValue = formSelectors.useSetFormDataValue(fieldParams.name);
+  const validations = formSelectors.useFormValueValidation(fieldParams.name);
   const onChange = (e) => {
-    if (disabled) return
+    if (disabled) return;
     const formattedDate = e?.format('YYYY-MM-DD');
 
     if (!formattedDate || formattedDate === 'Invalid Date') {
-      setValue(null)
+      setValue(null);
     } else {
-      setValue(formattedDate)
+      setValue(formattedDate);
     }
-  }
+  };
 
   const dateValueFormatter = (dateString) => {
-    const [year, month, day] = dateString.split("-").map(Number)
-    const dateObject = new Date(year, month - 1, day)
+    const [year, month, day] = dateString.split('-').map(Number);
+    const dateObject = new Date(year, month - 1, day);
 
-    return dayjs(dateObject)
-  }
+    return dayjs(dateObject);
+  };
 
   return (
     <div className={'input'}>
@@ -40,8 +36,7 @@ const DateInput = (
           <LocalizationProvider
             dateAdapter={AdapterDayjs}
             adapterLocale={'ru'}
-            localeText={ruRU.components.MuiLocalizationProvider.defaultProps.localeText}
-          >
+            localeText={ruRU.components.MuiLocalizationProvider.defaultProps.localeText}>
             <DatePicker
               maxDate={maxDate}
               id={fieldParams.name}
@@ -50,7 +45,7 @@ const DateInput = (
               onChange={onChange}
               disabled={disabled}
               sx={{
-                width: '100%'
+                width: '100%',
               }}
               fullWidth={true}
               format="DD.MM.YYYY"
@@ -60,7 +55,7 @@ const DateInput = (
         </ValidationsWrapper>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DateInput
+export default DateInput;

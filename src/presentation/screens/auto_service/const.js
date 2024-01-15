@@ -1,7 +1,7 @@
-import {AutoServiceSortTypes} from "../../../internal/effector/auto_service/effects";
-import Formatters from "../../../internal/utils/formatters";
-import TimeCell from "./components/TimeCell";
-import SearchMethods from "../../../internal/utils/global_methods";
+import { AutoServiceSortTypes } from '../../../internal/effector/auto_service/effects';
+import Formatters from '../../../internal/utils/formatters';
+import SearchMethods from '../../../internal/utils/global_methods';
+import TimeCell from './components/TimeCell';
 
 export const HEADERS = [
   {
@@ -10,19 +10,19 @@ export const HEADERS = [
     style: {
       maxWidth: '170px',
       width: '170px',
-    }
+    },
   },
   {
     label: 'Серийный номер',
-    sortType: AutoServiceSortTypes.bySerial
+    sortType: AutoServiceSortTypes.bySerial,
   },
   {
     label: 'Установлен на ТС',
-    sortType: AutoServiceSortTypes.byCar
+    sortType: AutoServiceSortTypes.byCar,
   },
   {
     label: 'Инициатор',
-    sortType: AutoServiceSortTypes.byDriver
+    sortType: AutoServiceSortTypes.byDriver,
   },
   {
     label: 'Состояние',
@@ -34,21 +34,21 @@ export const HEADERS = [
     style: {
       maxWidth: '120px',
       width: '120px',
-    }
+    },
   },
   {
     label: 'Истекает',
     style: {
       maxWidth: '120px',
       width: '120px',
-    }
+    },
   },
-]
+];
 
 export const getRowsTemplate = (item, updateInfo) => {
-  const lastEvent = SearchMethods.findMostRecentEvent(item.events)
-  const requestType = SearchMethods.findFirstRequestEvent(item.events)?.eventType
-  const isAcknowledged = !!(item.events ?? []).find(event => event.eventType === 'APP_ACKNOWLEDGED')
+  const lastEvent = SearchMethods.findMostRecentEvent(item.events);
+  const requestType = SearchMethods.findFirstRequestEvent(item.events)?.eventType;
+  const isAcknowledged = !!(item.events ?? []).find((event) => event.eventType === 'APP_ACKNOWLEDGED');
 
   return {
     id: item.id,
@@ -58,61 +58,57 @@ export const getRowsTemplate = (item, updateInfo) => {
         style: {
           maxWidth: '170px',
           width: '170px',
-        }
+        },
       },
       {
         value: item.device?.serialNumber ?? '-',
       },
       {
-        value: item.vehicleRecord
-          ? Formatters.carNameFormatter(item.vehicleRecord)
-          : '-',
+        value: item.vehicleRecord ? Formatters.carNameFormatter(item.vehicleRecord) : '-',
       },
       {
         value: Formatters.nameFormatter(item.createdBy),
       },
       {
-        value: lastEvent?.eventType === 'SERVER_REQUEST'
-          ? 'Ожидание водителя'
-          : lastEvent?.eventType === 'APP_REQUEST'
-            ? 'Ожидание оператора'
-            : lastEvent?.eventType === 'REJECTED'
-              ? isAcknowledged
+        value:
+          lastEvent?.eventType === 'SERVER_REQUEST'
+            ? 'Ожидание водителя'
+            : lastEvent?.eventType === 'APP_REQUEST'
+              ? 'Ожидание оператора'
+              : lastEvent?.eventType === 'REJECTED'
+                ? isAcknowledged
                   ? 'Оператор отклонил'
                   : requestType === 'SERVER_REQUEST'
                     ? 'Водитель отклонил'
                     : 'Оператор отклонил'
-              : lastEvent?.eventType === 'ACCEPTED'
-                ? isAcknowledged
-                  ? 'Оператор подтвердил'
-                  : requestType === 'SERVER_REQUEST'
-                    ? 'Водитель подтвердил'
-                    : 'Оператор подтвердил'
-                : lastEvent?.eventType === 'OFFLINE_DEACTIVATION' || lastEvent?.eventType === 'OFFLINE_ACTIVATION'
-                  ? 'Офлайн-переключение'
-                  : '-'
+                : lastEvent?.eventType === 'ACCEPTED'
+                  ? isAcknowledged
+                    ? 'Оператор подтвердил'
+                    : requestType === 'SERVER_REQUEST'
+                      ? 'Водитель подтвердил'
+                      : 'Оператор подтвердил'
+                  : lastEvent?.eventType === 'OFFLINE_DEACTIVATION' || lastEvent?.eventType === 'OFFLINE_ACTIVATION'
+                    ? 'Офлайн-переключение'
+                    : '-',
       },
       {
-        value: item.type === 'SERVICE_MODE_ACTIVATE'
-          ? 'Включение'
-          : item.type ==="SERVICE_MODE_DEACTIVATE"
-            ? 'Выключение'
-            : '-'
+        value:
+          item.type === 'SERVICE_MODE_ACTIVATE' ? 'Включение' : item.type === 'SERVICE_MODE_DEACTIVATE' ? 'Выключение' : '-',
       },
       {
-        value: <TimeCell
-          key={item.id}
-          time={lastEvent?.eventType !== 'REJECTED'
-            ? item.finishedAt
-            : null}
-          updateInfo={updateInfo}
-          id={item.id}
-        />,
+        value: (
+          <TimeCell
+            key={item.id}
+            time={lastEvent?.eventType !== 'REJECTED' ? item.finishedAt : null}
+            updateInfo={updateInfo}
+            id={item.id}
+          />
+        ),
         style: {
           maxWidth: '120px',
           width: '120px',
-        }
+        },
       },
-    ]
-  }
-}
+    ],
+  };
+};

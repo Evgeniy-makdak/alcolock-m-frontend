@@ -1,77 +1,76 @@
-import {Table, TableBody, TableHead, TableSortLabel} from "@mui/material";
-import StyledTable from "./styled";
-import {cloneElement, useEffect, useRef, useState} from "react";
-import Pagination from "./components/Pagination";
-import TableControl from "./components/TableControl";
-import {useToggle} from "../../../../internal/hooks/useToggle";
-import Popup from "../../ui/popup/Popup";
-import Button, {ButtonsType} from "../../ui/button/Button";
-import AppConstants from "../../../../internal/app_constants";
-import Loader from "../loader/Loader";
+import { cloneElement, useEffect, useRef, useState } from 'react';
 
-const EditTable = (
-  {
-    headers,
-    getRowsTemplate,
-    withDate = true,
-    withSearch = true,
-    onRowClick,
-    addFormSelectors,
-    editFormSelectors,
-    initOrderBy = null,
-    initOrderType = AppConstants.OrderTypes.asc,
-    uploadListPromise,
-    deleteItemPromise,
-    deletePopupParams,
-    addItemPromise,
-    addPopupParams,
-    editItemPromise,
-    editPopupParams,
-    afterDelete,
-    selectedRow,
-    afterEdit,
-    filtersPanel = null,
-    filtersData = null,
-    isFiltersActive,
-    updateTable = null,
-    loading = false,
-    withoutAction = false,
-    withoutAdd = false,
-    additionalActions = []
-  }) => {
-  const [openDeleteModal, toggleDeleteModal] = useToggle()
-  const [openAddModal, toggleAddModal] = useToggle()
-  const [openEditModal, toggleEditModal] = useToggle()
+import { Table, TableBody, TableHead, TableSortLabel } from '@mui/material';
 
-  const [items, setItems] = useState([])
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(50)
-  const [itemsCount, setItemsCount] = useState(0)
+import AppConstants from '../../../../internal/app_constants';
+import { useToggle } from '../../../../internal/hooks/useToggle';
+import Button, { ButtonsType } from '../../ui/button/Button';
+import Popup from '../../ui/popup/Popup';
+import Loader from '../loader/Loader';
+import Pagination from './components/Pagination/Pagination';
+import TableControl from './components/TableControl';
+import StyledTable from './styled';
 
-  const [selectedItem, setSelectedItem] = useState(null)
+const EditTable = ({
+  headers,
+  getRowsTemplate,
+  withDate = true,
+  withSearch = true,
+  onRowClick,
+  addFormSelectors,
+  editFormSelectors,
+  initOrderBy = null,
+  initOrderType = AppConstants.OrderTypes.asc,
+  uploadListPromise,
+  deleteItemPromise,
+  deletePopupParams,
+  addItemPromise,
+  addPopupParams,
+  editItemPromise,
+  editPopupParams,
+  afterDelete,
+  selectedRow,
+  afterEdit,
+  filtersPanel = null,
+  filtersData = null,
+  isFiltersActive,
+  updateTable = null,
+  loading = false,
+  withoutAction = false,
+  withoutAdd = false,
+  additionalActions = [],
+}) => {
+  const [openDeleteModal, toggleDeleteModal] = useToggle();
+  const [openAddModal, toggleAddModal] = useToggle();
+  const [openEditModal, toggleEditModal] = useToggle();
 
-  const resetAddForm = addFormSelectors?.useResetForm()
-  const isValidAddForm = addFormSelectors?.useIsFormValid()
-  const onClickAddSubmit = addFormSelectors?.useOnClickSubmit()
-  const resetEditForm = editFormSelectors?.useResetForm()
-  const isValidEditForm = editFormSelectors?.useIsFormValid()
-  const onClickEditSubmit = editFormSelectors?.useOnClickSubmit()
+  const [items, setItems] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [itemsCount, setItemsCount] = useState(0);
 
-  const [order, setOrder] = useState(initOrderType)
-  const [orderBy, setOrderBy] = useState(initOrderBy)
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  const tableWrapper = useRef(null)
-  const searchTimeout = useRef(null)
-  const searchQuery = useRef('')
-  const startDate = useRef('')
-  const endDate = useRef('')
+  const resetAddForm = addFormSelectors?.useResetForm();
+  const isValidAddForm = addFormSelectors?.useIsFormValid();
+  const onClickAddSubmit = addFormSelectors?.useOnClickSubmit();
+  const resetEditForm = editFormSelectors?.useResetForm();
+  const isValidEditForm = editFormSelectors?.useIsFormValid();
+  const onClickEditSubmit = editFormSelectors?.useOnClickSubmit();
 
-  const updateTableDeps = Array.isArray(updateTable)
-    ? updateTable
-    : [updateTable]
+  const [order, setOrder] = useState(initOrderType);
+  const [orderBy, setOrderBy] = useState(initOrderBy);
+
+  const tableWrapper = useRef(null);
+  const searchTimeout = useRef(null);
+  const searchQuery = useRef('');
+  const startDate = useRef('');
+  const endDate = useRef('');
+
+  const updateTableDeps = Array.isArray(updateTable) ? updateTable : [updateTable];
 
   useEffect(() => {
-    setPage(0)
+    setPage(0);
 
     uploadListPromise({
       page: 1,
@@ -81,26 +80,26 @@ const EditTable = (
       query: searchQuery.current,
       startDate: startDate.current,
       endDate: endDate.current,
-      filtersData: filtersData ?? {}
+      filtersData: filtersData ?? {},
     })
-      .then(res => {
-        setItems(res.list)
-        setItemsCount(res.count)
+      .then((res) => {
+        setItems(res.list);
+        setItemsCount(res.count);
       })
-      .catch(err => {
-        console.log('uploadListPromise error', err)
-      })
+      .catch((err) => {
+        console.log('uploadListPromise error', err);
+      });
 
     return () => {
       if (searchTimeout.current) {
-        clearTimeout(searchTimeout.current)
+        clearTimeout(searchTimeout.current);
       }
-    }
-  }, [filtersData, uploadListPromise, ...updateTableDeps])
+    };
+  }, [filtersData, uploadListPromise, ...updateTableDeps]);
 
   const onPageChange = (event, newPage) => {
-    tableWrapper.current?.scrollTo(0, 0)
-    setPage(newPage)
+    tableWrapper.current?.scrollTo(0, 0);
+    setPage(newPage);
 
     uploadListPromise({
       page: newPage + 1,
@@ -110,22 +109,22 @@ const EditTable = (
       query: searchQuery.current,
       startDate: startDate.current,
       endDate: endDate.current,
-      filtersData: filtersData
+      filtersData: filtersData,
     })
       .then((res) => {
-        setItems(res.list)
-        setItemsCount(res.count)
+        setItems(res.list);
+        setItemsCount(res.count);
       })
-      .catch(err => {
-        console.log('uploadListPromise error', err)
-      })
-  }
+      .catch((err) => {
+        console.log('uploadListPromise error', err);
+      });
+  };
 
   const onChangeRowsPerPage = (event) => {
-    tableWrapper.current?.scrollTo(0, 0)
-    const value = parseInt(event.target.value, 10)
-    setRowsPerPage(value)
-    setPage(0)
+    tableWrapper.current?.scrollTo(0, 0);
+    const value = parseInt(event.target.value, 10);
+    setRowsPerPage(value);
+    setPage(0);
 
     uploadListPromise({
       page: 1,
@@ -135,28 +134,28 @@ const EditTable = (
       query: searchQuery.current,
       startDate: startDate.current,
       endDate: endDate.current,
-      filtersData: filtersData
+      filtersData: filtersData,
     })
       .then((res) => {
-        setItems(res.list)
-        setItemsCount(res.count)
+        setItems(res.list);
+        setItemsCount(res.count);
       })
-      .catch(err => {
-        console.log('uploadListPromise error', err)
-      })
-  }
+      .catch((err) => {
+        console.log('uploadListPromise error', err);
+      });
+  };
 
   const onClickDelete = (e, id) => {
-    e.stopPropagation()
-    const item = items.find(item => item.id === id)
+    e.stopPropagation();
+    const item = items.find((item) => item.id === id);
 
     if (!item) {
-      throw Error('Не найден элемент для удаления')
+      throw Error('Не найден элемент для удаления');
     }
 
-    setSelectedItem(item)
-    toggleDeleteModal()
-  }
+    setSelectedItem(item);
+    toggleDeleteModal();
+  };
 
   const handleDelete = () => {
     deleteItemPromise(selectedItem?.id)
@@ -169,36 +168,36 @@ const EditTable = (
           query: searchQuery.current,
           startDate: startDate.current,
           endDate: endDate.current,
-          filtersData: filtersData
+          filtersData: filtersData,
         })
           .then((res) => {
-            setItems(res.list)
-            setItemsCount(res.count)
+            setItems(res.list);
+            setItemsCount(res.count);
           })
-          .catch(err => {
-            console.log('uploadListPromise error', err)
-          })
-        toggleDeleteModal()
+          .catch((err) => {
+            console.log('uploadListPromise error', err);
+          });
+        toggleDeleteModal();
 
         if (afterDelete) {
-          afterDelete(selectedItem?.id)
+          afterDelete(selectedItem?.id);
         }
       })
-      .catch(err => {
-        console.log('deleteItemPromise error', err?.response)
-      })
-  }
+      .catch((err) => {
+        console.log('deleteItemPromise error', err?.response);
+      });
+  };
 
   const handleCloseAddModal = () => {
-    toggleAddModal()
-    resetAddForm()
-  }
+    toggleAddModal();
+    resetAddForm();
+  };
 
   const onSubmitAdd = () => {
-    if (!isValidAddForm) return
+    if (!isValidAddForm) return;
 
-    onClickAddSubmit()
-  }
+    onClickAddSubmit();
+  };
 
   const handleAddItem = (data) => {
     addItemPromise(data)
@@ -211,49 +210,49 @@ const EditTable = (
           query: searchQuery.current,
           startDate: startDate.current,
           endDate: endDate.current,
-          filtersData: filtersData
+          filtersData: filtersData,
         })
           .then((res) => {
-            setItems(res.list)
-            setItemsCount(res.count)
+            setItems(res.list);
+            setItemsCount(res.count);
           })
-          .catch(err => {
-            console.log('uploadListPromise error', err)
-          })
-        handleCloseAddModal()
+          .catch((err) => {
+            console.log('uploadListPromise error', err);
+          });
+        handleCloseAddModal();
       })
-      .catch(err => {
-        console.log('addItemPromise error', err)
-      })
-  }
+      .catch((err) => {
+        console.log('addItemPromise error', err);
+      });
+  };
 
   const handleCloseEditModal = () => {
-    toggleEditModal()
-    resetEditForm()
-  }
+    toggleEditModal();
+    resetEditForm();
+  };
 
   const onClickEdit = (e, id) => {
-    e.stopPropagation()
-    const item = items.find(item => item.id === id)
+    e.stopPropagation();
+    const item = items.find((item) => item.id === id);
 
     if (!item) {
-      throw Error('Не найден элемент для редактирования')
+      throw Error('Не найден элемент для редактирования');
     }
 
-    setSelectedItem(item)
-    toggleEditModal()
-  }
+    setSelectedItem(item);
+    toggleEditModal();
+  };
 
   const onSubmitEdit = () => {
-    if (!isValidEditForm) return
+    if (!isValidEditForm) return;
 
-    onClickEditSubmit()
-  }
+    onClickEditSubmit();
+  };
 
   const handleEditItem = (data) => {
     editItemPromise({
       id: selectedItem?.id,
-      data
+      data,
     })
       .then(() => {
         uploadListPromise({
@@ -264,33 +263,33 @@ const EditTable = (
           query: searchQuery.current,
           startDate: startDate.current,
           endDate: endDate.current,
-          filtersData: filtersData
+          filtersData: filtersData,
         })
           .then((res) => {
-            setItems(res.list)
-            setItemsCount(res.count)
+            setItems(res.list);
+            setItemsCount(res.count);
           })
-          .catch(err => {
-            console.log('uploadListPromise error', err)
-          })
+          .catch((err) => {
+            console.log('uploadListPromise error', err);
+          });
 
         if (afterEdit) {
-          afterEdit(selectedItem?.id)
+          afterEdit(selectedItem?.id);
         }
-        handleCloseEditModal()
+        handleCloseEditModal();
       })
-      .catch(err => {
-        console.log('editItemPromise error', err?.response)
-      })
-  }
+      .catch((err) => {
+        console.log('editItemPromise error', err?.response);
+      });
+  };
 
   const handleSort = (property) => {
-    setPage(0)
-    const isAsc = orderBy === property && order === AppConstants.OrderTypes.asc
-    setOrder(isAsc ? AppConstants.OrderTypes.desc : AppConstants.OrderTypes.asc)
-    setOrderBy(property)
+    setPage(0);
+    const isAsc = orderBy === property && order === AppConstants.OrderTypes.asc;
+    setOrder(isAsc ? AppConstants.OrderTypes.desc : AppConstants.OrderTypes.asc);
+    setOrderBy(property);
 
-    setPage(0)
+    setPage(0);
     uploadListPromise({
       page: 1,
       limit: rowsPerPage,
@@ -299,32 +298,32 @@ const EditTable = (
       query: searchQuery.current,
       startDate: startDate.current,
       endDate: endDate.current,
-      filtersData: filtersData
+      filtersData: filtersData,
     })
-      .then(res => {
-        setItems(res.list)
-        setItemsCount(res.count)
+      .then((res) => {
+        setItems(res.list);
+        setItemsCount(res.count);
       })
-      .catch(err => {
-        console.log('uploadListPromise error', err)
-      })
-  }
+      .catch((err) => {
+        console.log('uploadListPromise error', err);
+      });
+  };
 
-  const rows = items.map(data => {
-    return getRowsTemplate(data)
-  })
+  const rows = items.map((data) => {
+    return getRowsTemplate(data);
+  });
 
   const onSearch = (value, start, end) => {
-    searchQuery.current = value
-    startDate.current = start
-    endDate.current = end
+    searchQuery.current = value;
+    startDate.current = start;
+    endDate.current = end;
 
     if (searchTimeout.current) {
-      clearTimeout(searchTimeout.current)
+      clearTimeout(searchTimeout.current);
     }
 
     const timeout = setTimeout(() => {
-      setPage(0)
+      setPage(0);
       uploadListPromise({
         page: 1,
         limit: rowsPerPage,
@@ -333,25 +332,25 @@ const EditTable = (
         query: value,
         startDate: start,
         endDate: end,
-        filtersData: filtersData
+        filtersData: filtersData,
       })
-        .then(res => {
-          setItems(res.list)
-          setItemsCount(res.count)
+        .then((res) => {
+          setItems(res.list);
+          setItemsCount(res.count);
         })
-        .catch(err => {
-          console.log('uploadListPromise error', err)
-        })
+        .catch((err) => {
+          console.log('uploadListPromise error', err);
+        });
 
-      searchTimeout.current = null
-    }, 100)
+      searchTimeout.current = null;
+    }, 100);
 
-    searchTimeout.current = timeout
-  }
+    searchTimeout.current = timeout;
+  };
 
   return (
     <>
-      {(withSearch || filtersPanel) &&
+      {(withSearch || filtersPanel) && (
         <TableControl
           search={onSearch}
           withSearch={withSearch}
@@ -359,146 +358,119 @@ const EditTable = (
           filtersPanel={filtersPanel}
           isFiltersActive={isFiltersActive}
         />
-      }
+      )}
       <Loader
         isLoading={loading}
         styles={{
           wrapper: (base) => ({
             ...base,
             overflow: 'auto',
-            flexGrow: 1
-          })
-        }}
-      >
-        <Table
-          stickyHeader
-        >
+            flexGrow: 1,
+          }),
+        }}>
+        <Table stickyHeader>
           <TableHead
             sx={{
-              borderTop: '1px solid rgba(0, 0, 0, 0.12)'
-            }}
-          >
+              borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+            }}>
             <StyledTable.HeaderRow>
               {headers.map((head, i) => {
                 return (
-                  <StyledTable.HeaderCell
-                    key={i}
-                    sx={head.style ?? {}}
-                  >
-                    {head.sortType
-                      ? (
-                        <TableSortLabel
-                          active={orderBy === head.sortType}
-                          direction={orderBy === head.sortType ? order : AppConstants.OrderTypes.asc}
-                          onClick={() => handleSort(head.sortType)}
-                        >
-                          {head.label}
-                        </TableSortLabel>
-                      )
-                      : head.label
-                    }
-
+                  <StyledTable.HeaderCell key={i} sx={head.style ?? {}}>
+                    {head.sortType ? (
+                      <TableSortLabel
+                        active={orderBy === head.sortType}
+                        direction={orderBy === head.sortType ? order : AppConstants.OrderTypes.asc}
+                        onClick={() => handleSort(head.sortType)}>
+                        {head.label}
+                      </TableSortLabel>
+                    ) : (
+                      head.label
+                    )}
                   </StyledTable.HeaderCell>
-                )
+                );
               })}
 
-              {!withoutAdd &&
+              {!withoutAdd && (
                 <StyledTable.HeaderIconCell>
-                  {addItemPromise &&
+                  {addItemPromise && (
                     <div
                       style={{
-                        display: "flex",
+                        display: 'flex',
                         justifyContent: 'center',
-                        maxWidth: '114px'
-                      }}
-                    >
-                      <StyledTable.TableButton
-                        onClick={toggleAddModal}
-                      >
-                        <StyledTable.AddIcon
-                          className={'icon-button'}
-                        />
+                        maxWidth: '114px',
+                      }}>
+                      <StyledTable.TableButton onClick={toggleAddModal}>
+                        <StyledTable.AddIcon className={'icon-button'} />
                       </StyledTable.TableButton>
                     </div>
-                  }
+                  )}
                 </StyledTable.HeaderIconCell>
-              }
+              )}
             </StyledTable.HeaderRow>
           </TableHead>
 
           <TableBody>
-            {rows.map(row => {
+            {rows.map((row) => {
               return (
                 <StyledTable.BodyRow
                   key={row.id}
                   onClick={() => (onRowClick ?? (() => {}))(row.id)}
                   sx={{
-                    background: row.id === selectedRow
-                      ? 'rgba(246,246,246, .9)'
-                      : 'transparent',
-                    cursor: onRowClick && row.id !== selectedRow
-                      ? 'pointer'
-                      : 'unset',
+                    background: row.id === selectedRow ? 'rgba(246,246,246, .9)' : 'transparent',
+                    cursor: onRowClick && row.id !== selectedRow ? 'pointer' : 'unset',
                     '&:hover': {
-                      background: onRowClick && row.id !== selectedRow
-                        ? 'rgba(246,246,246, .4)'
-                        : row.id === selectedRow
-                          ? 'rgba(246,246,246, .9)'
-                          : 'transparent',
-                    }
-                  }}
-                >
+                      background:
+                        onRowClick && row.id !== selectedRow
+                          ? 'rgba(246,246,246, .4)'
+                          : row.id === selectedRow
+                            ? 'rgba(246,246,246, .9)'
+                            : 'transparent',
+                    },
+                  }}>
                   {row.values.map((value, i) => {
                     return (
-                      <StyledTable.BodyCell
-                        key={i}
-                        sx={value.style ?? {}}
-                      >
+                      <StyledTable.BodyCell key={i} sx={value.style ?? {}}>
                         {value.value}
                       </StyledTable.BodyCell>
-                    )
+                    );
                   })}
 
-                  {!!additionalActions.length &&
+                  {!!additionalActions.length && (
                     <StyledTable.ActionsCell>
                       <div className={'table-actions-wrapper'}>
                         {additionalActions.map((elem, i) => {
-                          return cloneElement((elem), {
+                          return cloneElement(elem, {
                             ...elem.props,
                             key: i,
-                            onClick: (e) => elem.props.onClick(e, row.id)
-                          })
+                            onClick: (e) => elem.props.onClick(e, row.id),
+                          });
                         })}
                       </div>
                     </StyledTable.ActionsCell>
-                  }
+                  )}
 
-                  {!withoutAction &&
+                  {!withoutAction && (
                     <StyledTable.ActionsCell>
-                      {!(row.disabledAction ?? false) &&
+                      {!(row.disabledAction ?? false) && (
                         <div className={'table-actions-wrapper'}>
-                          {editItemPromise &&
-                            <StyledTable.TableButton
-                              onClick={(e) => onClickEdit(e, row.id)}
-                            >
-                              <StyledTable.EditIcon/>
+                          {editItemPromise && (
+                            <StyledTable.TableButton onClick={(e) => onClickEdit(e, row.id)}>
+                              <StyledTable.EditIcon />
                             </StyledTable.TableButton>
-                          }
+                          )}
 
-                          {deleteItemPromise &&
-                            <StyledTable.TableButton
-                              onClick={(e) => onClickDelete(e, row.id)}
-                            >
-                              <StyledTable.DeleteIcon/>
+                          {deleteItemPromise && (
+                            <StyledTable.TableButton onClick={(e) => onClickDelete(e, row.id)}>
+                              <StyledTable.DeleteIcon />
                             </StyledTable.TableButton>
-                          }
+                          )}
                         </div>
-                      }
+                      )}
                     </StyledTable.ActionsCell>
-                  }
-
+                  )}
                 </StyledTable.BodyRow>
-              )
+              );
             })}
           </TableBody>
         </Table>
@@ -512,32 +484,24 @@ const EditTable = (
         rowsPerPage={rowsPerPage}
       />
 
-      {!!deletePopupParams &&
+      {!!deletePopupParams && (
         <Popup
           isOpen={openDeleteModal}
           toggleModal={toggleDeleteModal}
           headerTitle={deletePopupParams?.title}
           body={deletePopupParams?.getBody(selectedItem)}
           buttons={[
-            <Button
-              key={'action_1'}
-              type={ButtonsType.action}
-              onClick={handleDelete}
-            >
+            <Button key={'action_1'} type={ButtonsType.action} onClick={handleDelete}>
               {AppConstants.deleteTxt}
             </Button>,
-            <Button
-              key={'action_2'}
-              type={ButtonsType.action}
-              onClick={toggleDeleteModal}
-            >
+            <Button key={'action_2'} type={ButtonsType.action} onClick={toggleDeleteModal}>
               {AppConstants.cancelTxt}
             </Button>,
           ]}
         />
-      }
+      )}
 
-      {!!addPopupParams &&
+      {!!addPopupParams && (
         <Popup
           isOpen={openAddModal}
           toggleModal={toggleAddModal}
@@ -545,32 +509,25 @@ const EditTable = (
           headerTitle={addPopupParams.title}
           closeonClickSpace={false}
           size={addPopupParams.size}
-          body={<addPopupParams.Body
-            { ...(addPopupParams.additionalBodyProps ?? {})}
-            formSelectors={addFormSelectors}
-            onValidSubmit={handleAddItem}
-          />}
+          body={
+            <addPopupParams.Body
+              {...(addPopupParams.additionalBodyProps ?? {})}
+              formSelectors={addFormSelectors}
+              onValidSubmit={handleAddItem}
+            />
+          }
           buttons={[
-            <Button
-              key={'action_1'}
-              type={ButtonsType.action}
-              disabled={!isValidAddForm}
-              onClick={onSubmitAdd}
-            >
+            <Button key={'action_1'} type={ButtonsType.action} disabled={!isValidAddForm} onClick={onSubmitAdd}>
               {AppConstants.addTxt}
             </Button>,
-            <Button
-              key={'action_2'}
-              type={ButtonsType.action}
-              onClick={handleCloseAddModal}
-            >
+            <Button key={'action_2'} type={ButtonsType.action} onClick={handleCloseAddModal}>
               {AppConstants.cancelTxt}
             </Button>,
           ]}
         />
-      }
+      )}
 
-      {!!editPopupParams &&
+      {!!editPopupParams && (
         <Popup
           isOpen={openEditModal}
           toggleModal={toggleEditModal}
@@ -578,32 +535,25 @@ const EditTable = (
           closeonClickSpace={false}
           headerTitle={editPopupParams.title}
           size={editPopupParams.size}
-          body={<editPopupParams.Body
-            formSelectors={editFormSelectors}
-            onValidSubmit={handleEditItem}
-            selectedItem={selectedItem}
-          />}
+          body={
+            <editPopupParams.Body
+              formSelectors={editFormSelectors}
+              onValidSubmit={handleEditItem}
+              selectedItem={selectedItem}
+            />
+          }
           buttons={[
-            <Button
-              key={'action_1'}
-              type={ButtonsType.action}
-              disabled={!isValidEditForm}
-              onClick={onSubmitEdit}
-            >
+            <Button key={'action_1'} type={ButtonsType.action} disabled={!isValidEditForm} onClick={onSubmitEdit}>
               {AppConstants.saveTxt}
             </Button>,
-            <Button
-              key={'action_2'}
-              type={ButtonsType.action}
-              onClick={handleCloseEditModal}
-            >
+            <Button key={'action_2'} type={ButtonsType.action} onClick={handleCloseEditModal}>
               {AppConstants.cancelTxt}
             </Button>,
           ]}
         />
-      }
+      )}
     </>
-  )
-}
+  );
+};
 
-export default EditTable
+export default EditTable;

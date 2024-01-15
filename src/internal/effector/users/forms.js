@@ -1,6 +1,6 @@
-import FormStateBuilder from "../form_state_builder";
-import ValidationRules from "../../validations/validation_rules";
-import ValidationMessages from "../../validations/validation_messages";
+import ValidationMessages from '../../validations/validation_messages';
+import ValidationRules from '../../validations/validation_rules';
+import FormStateBuilder from '../form_state_builder';
 
 const initData = {
   email: '',
@@ -13,8 +13,8 @@ const initData = {
   licenseCode: null,
   licenseIssueDate: null,
   licenseExpirationDate: null,
-  licenseClass: null
-}
+  licenseClass: null,
+};
 
 const initValidations = {
   email: [],
@@ -25,7 +25,7 @@ const initValidations = {
   licenseCode: [],
   licenseIssueDate: [],
   licenseExpirationDate: [],
-}
+};
 
 const initChangeValidations = {
   email: [],
@@ -35,77 +35,67 @@ const initChangeValidations = {
   licenseCode: [],
   licenseIssueDate: [],
   licenseExpirationDate: [],
-}
+};
 
 const validator = (formValues) => ({
   email: (value) => {
-    const required = ValidationRules.requiredValidation(value)
-    const validEmail = ValidationRules.emailValidation(value)
+    const required = ValidationRules.requiredValidation(value);
+    const validEmail = ValidationRules.emailValidation(value);
 
-    return !!required.length
-      ? required
-      : validEmail
+    return !!required.length ? required : validEmail;
   },
   password: (value) => {
-    const required = ValidationRules.requiredValidation(value)
+    const required = ValidationRules.requiredValidation(value);
     const minMaxLength = ValidationRules.minMaxValidation(
       (value ?? '').length,
       4,
       100,
-      ValidationMessages.notValidPasswordLength
-    )
+      ValidationMessages.notValidPasswordLength,
+    );
 
-    return !!required.length
-      ? required
-      : minMaxLength
+    return !!required.length ? required : minMaxLength;
   },
   name: (value) => {
-    const required = ValidationRules.requiredValidation(value)
-    return !!required.length
-      ? required
-      : ValidationRules.userNameValidation(value)
+    const required = ValidationRules.requiredValidation(value);
+    return !!required.length ? required : ValidationRules.userNameValidation(value);
   },
   phone: (value) => {
-    return !!value
-      ? ValidationRules.phoneValidation(value)
-      : []
+    return !!value ? ValidationRules.phoneValidation(value) : [];
   },
   userGroups: (value) => ValidationRules.requiredValidation((value ?? []).length),
   licenseCode: (value) => {
-    if (!formValues.userGroups?.includes(200)) return []
-    return !!value
-      ? ValidationRules.driverLicenseValidation(value)
-      : []
+    if (!formValues.userGroups?.includes(200)) return [];
+    return !!value ? ValidationRules.driverLicenseValidation(value) : [];
   },
   licenseIssueDate: (value) => {
-    if (!formValues.userGroups?.includes(200)) return []
+    if (!formValues.userGroups?.includes(200)) return [];
     if (formValues.licenseCode) {
-      return ValidationRules.requiredValidation(value)
+      return ValidationRules.requiredValidation(value);
     } else {
-      return []
+      return [];
     }
   },
   licenseExpirationDate: (value) => {
-    if (!formValues.userGroups?.includes(200)) return []
+    if (!formValues.userGroups?.includes(200)) return [];
     if (formValues.licenseCode) {
-      return ValidationRules.requiredValidation(value)
+      return ValidationRules.requiredValidation(value);
     } else {
-      return []
+      return [];
     }
-  }
-})
+  },
+});
 
 const addUserFormState = new FormStateBuilder({
   initialData: initData,
   initialValidations: initValidations,
-  getValidators: validator
-})
+  getValidators: validator,
+});
 
 const editUserFromState = new FormStateBuilder({
   initialData: initData,
   initialValidations: initChangeValidations,
-  getValidators: validator
-})
+  getValidators: validator,
+});
 
-export const addUserFormSelectors = addUserFormState.createSelectors()
-export const editUserFromSelectors = editUserFromState.createSelectors()
+export const addUserFormSelectors = addUserFormState.createSelectors();
+export const editUserFromSelectors = editUserFromState.createSelectors();

@@ -1,14 +1,14 @@
-import StateBuilder from "../state_builder";
-import AppConstants from "../../app_constants";
+import AppConstants from '../../app_constants';
+import StateBuilder from '../state_builder';
 
-export const rolesListState = new StateBuilder([])
-export const rolesListLoadingState = new StateBuilder(false)
-export const lastGetRolesListRequest = new StateBuilder(null)
-export const allRolesState = new StateBuilder(AppConstants.rolesList)
-export const createRoleLoadingState = new StateBuilder(false)
-export const changeRoleLoadingState = new StateBuilder(false)
-export const lastGetRoleDataRequest = new StateBuilder()
-export const roleDataLoadingState = new StateBuilder(false)
+export const rolesListState = new StateBuilder([]);
+export const rolesListLoadingState = new StateBuilder(false);
+export const lastGetRolesListRequest = new StateBuilder(null);
+export const allRolesState = new StateBuilder(AppConstants.rolesList);
+export const createRoleLoadingState = new StateBuilder(false);
+export const changeRoleLoadingState = new StateBuilder(false);
+export const lastGetRoleDataRequest = new StateBuilder();
+export const roleDataLoadingState = new StateBuilder(false);
 
 export const rolesStore = {
   rolesList: rolesListState.createHooks(),
@@ -16,5 +16,5 @@ export const rolesStore = {
   loadingList: rolesListLoadingState.createHooks(),
   creating: createRoleLoadingState.createHooks(),
   changing: changeRoleLoadingState.createHooks(),
-  loadingData: roleDataLoadingState.createHooks()
-}
+  loadingData: roleDataLoadingState.createHooks(),
+};

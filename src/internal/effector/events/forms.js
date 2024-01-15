@@ -1,35 +1,35 @@
-import FormStateBuilder from "../form_state_builder";
-import ValidationRules from "../../validations/validation_rules";
+import ValidationRules from '../../validations/validation_rules';
+import FormStateBuilder from '../form_state_builder';
 
 const initData = {
   users: [],
   carsByMake: [],
   carsByLicense: [],
-  eventsByType: []
-}
+  eventsByType: [],
+};
 
 const filtersFormState = new FormStateBuilder({
   initialData: initData,
-})
+});
 
-export const filtersFormSelectors = filtersFormState.createSelectors()
+export const filtersFormSelectors = filtersFormState.createSelectors();
 
 const initActivateData = {
   duration: '',
-}
+};
 
 const initActivateValidations = {
-  duration: []
-}
+  duration: [],
+};
 
 const validator = () => ({
-  duration: ValidationRules.requiredValidation
-})
+  duration: ValidationRules.requiredValidation,
+});
 
 const alcolockActivateFormState = new FormStateBuilder({
   initialData: initActivateData,
   initialValidations: initActivateValidations,
-  getValidators: validator
-})
+  getValidators: validator,
+});
 
-export const alcolockActivateFormSelectors = alcolockActivateFormState.createSelectors()
+export const alcolockActivateFormSelectors = alcolockActivateFormState.createSelectors();

@@ -1,142 +1,130 @@
-import {Table, TableBody, TableHead, TableRow} from "@mui/material";
-import StyledTable from "../edit_table/styled";
-import {useEffect, useState} from "react";
-import {getEventsHistory} from "../../../../internal/effector/events/effects";
-import AppConstants from "../../../../internal/app_constants";
-import Formatters from "../../../../internal/utils/formatters";
-import EventData from "./components/EventData";
-import Loader from "../loader/Loader";
+import { useEffect, useState } from 'react';
+
+import { Table, TableBody, TableHead, TableRow } from '@mui/material';
+
+import AppConstants from '../../../../internal/app_constants';
+import { getEventsHistory } from '../../../../internal/effector/events/effects';
+import Formatters from '../../../../internal/utils/formatters';
+import StyledTable from '../edit_table/styled';
+import Loader from '../loader/Loader';
+import EventData from './components/EventData';
 
 export const HistoryTypes = {
   byUser: 'byUser',
   byCar: 'byCar',
-  byAlcolock: 'byAlcolock'
-}
+  byAlcolock: 'byAlcolock',
+};
 
-const EventsHistory = ({type, id}) => {
-  const [eventsList, setEventsList] = useState([])
-  const [expandRowId, setExpandRowId] = useState(null)
-  const [loading, setLoading] = useState(false)
+const EventsHistory = ({ type, id }) => {
+  const [eventsList, setEventsList] = useState([]);
+  const [expandRowId, setExpandRowId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setExpandRowId(null)
-    setLoading(true)
+    setExpandRowId(null);
+    setLoading(true);
     switch (type) {
       case HistoryTypes.byUser:
         getEventsHistory({
-          userId: id
+          userId: id,
         })
-          .then(res => {
-            setLoading(false)
+          .then((res) => {
+            setLoading(false);
             if (Array.isArray(res)) {
-              setEventsList(res)
+              setEventsList(res);
             }
           })
-          .catch(err => {
-            setLoading(false)
-            console.log('HistoryTypes.byUser err', err?.response ?? err)
-          })
-        break
+          .catch((err) => {
+            setLoading(false);
+            console.log('HistoryTypes.byUser err', err?.response ?? err);
+          });
+        break;
       case HistoryTypes.byCar:
         getEventsHistory({
-          carId: id
+          carId: id,
         })
-          .then(res => {
+          .then((res) => {
             if (Array.isArray(res)) {
-              setEventsList(res)
+              setEventsList(res);
             }
 
-            setLoading(false)
+            setLoading(false);
           })
-          .catch(err => {
-            setLoading(false)
-            console.log('HistoryTypes.byCar err', err?.response ?? err)
-          })
-        break
+          .catch((err) => {
+            setLoading(false);
+            console.log('HistoryTypes.byCar err', err?.response ?? err);
+          });
+        break;
       case HistoryTypes.byAlcolock:
         getEventsHistory({
-          alcolockId: id
+          alcolockId: id,
         })
-          .then(res => {
+          .then((res) => {
             if (Array.isArray(res)) {
-              setEventsList(res)
+              setEventsList(res);
             }
-            setLoading(false)
+            setLoading(false);
           })
-          .catch(err => {
-            setLoading(false)
-            console.log('HistoryTypes.byAlcolock err', err?.response ?? err)
-          })
-        break
+          .catch((err) => {
+            setLoading(false);
+            console.log('HistoryTypes.byAlcolock err', err?.response ?? err);
+          });
+        break;
     }
-  }, [id, type])
+  }, [id, type]);
 
   const onClickExpand = (id) => {
     if (expandRowId === id) {
-      setExpandRowId(null)
+      setExpandRowId(null);
     } else {
-      setExpandRowId(id)
+      setExpandRowId(id);
     }
-  }
+  };
 
   const rows = eventsList.map((event) => {
     return (
       <>
-        <StyledTable.BodyRow
-          key={event.id}
-        >
+        <StyledTable.BodyRow key={event.id}>
           <StyledTable.BodyCell>
-            {AppConstants.eventTypesList.find(item => item.value === event.type)?.label ?? '-'}
+            {AppConstants.eventTypesList.find((item) => item.value === event.type)?.label ?? '-'}
           </StyledTable.BodyCell>
 
           <StyledTable.BodyCell
             sx={{
               textAlign: 'right',
-              width: '193px'
-            }}
-          >
+              width: '193px',
+            }}>
             {Formatters.formatISODate(event.createdAt)}
           </StyledTable.BodyCell>
 
-          <StyledTable.BodyCell sx={{ maxWidth: '48px', width: '48px'}}>
+          <StyledTable.BodyCell sx={{ maxWidth: '48px', width: '48px' }}>
             <div
               style={{
-                display: "flex",
+                display: 'flex',
                 justifyContent: 'center',
-                maxWidth: '48px'
-              }}
-            >
-              <StyledTable.TableButton
-                onClick={() => onClickExpand(event.id)}
-              >
-                {expandRowId === event.id
-                  ? <StyledTable.CollapseIcon
-                    className={'icon-button'}
-                  />
-                  : <StyledTable.ExpandIcon
-                    className={'icon-button'}
-                  />
-                }
+                maxWidth: '48px',
+              }}>
+              <StyledTable.TableButton onClick={() => onClickExpand(event.id)}>
+                {expandRowId === event.id ? (
+                  <StyledTable.CollapseIcon className={'icon-button'} />
+                ) : (
+                  <StyledTable.ExpandIcon className={'icon-button'} />
+                )}
               </StyledTable.TableButton>
             </div>
           </StyledTable.BodyCell>
         </StyledTable.BodyRow>
 
-        {expandRowId === event.id &&
-          <TableRow
-            key={event.id + '-info'}
-          >
+        {expandRowId === event.id && (
+          <TableRow key={event.id + '-info'}>
             <StyledTable.DataCell colSpan={3}>
-              <EventData
-                type={type}
-                event={event}
-              />
+              <EventData type={type} event={event} />
             </StyledTable.DataCell>
           </TableRow>
-        }
+        )}
       </>
-    )
-  })
+    );
+  });
 
   return (
     <Loader
@@ -145,43 +133,34 @@ const EventsHistory = ({type, id}) => {
         wrapper: (base) => ({
           ...base,
           overflow: 'auto',
-          flexGrow: 1
-        })
-      }}
-    >
+          flexGrow: 1,
+        }),
+      }}>
       <div className={'events-history'}>
-        <Table
-          stickyHeader
-        >
+        <Table stickyHeader>
           <TableHead
             sx={{
-              borderTop: '1px solid rgba(0, 0, 0, 0.12)'
-            }}
-          >
+              borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+            }}>
             <StyledTable.HeaderRow>
-              <StyledTable.HeaderCell>
-                Тип события
-              </StyledTable.HeaderCell>
+              <StyledTable.HeaderCell>Тип события</StyledTable.HeaderCell>
 
               <StyledTable.HeaderCell
                 sx={{
-                  textAlign: 'right'
-                }}
-              >
+                  textAlign: 'right',
+                }}>
                 Дата
               </StyledTable.HeaderCell>
 
-              <StyledTable.HeaderCell sx={{ maxWidth: '48px', width: '48px'}}/>
+              <StyledTable.HeaderCell sx={{ maxWidth: '48px', width: '48px' }} />
             </StyledTable.HeaderRow>
           </TableHead>
 
-          <TableBody>
-            {rows}
-          </TableBody>
+          <TableBody>{rows}</TableBody>
         </Table>
       </div>
     </Loader>
-  )
-}
+  );
+};
 
-export default EventsHistory
+export default EventsHistory;

@@ -1,55 +1,50 @@
-import {request} from "../../request";
+import { request } from '../../request';
 
 export default class AttachmentsApi {
-  static getList(
-    {
-      page,
-      limit,
-      queries
-    }) {
+  static getList({ page, limit, queries }) {
     const params = {
       url: `api/vehicle-driver-allotments?page=${page}&size=${limit}${queries}`,
-      method: 'GET'
-    }
+      method: 'GET',
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static createItem(data) {
     const params = {
       url: `api/vehicle-driver-allotments`,
       method: 'POST',
-      data
-    }
+      data,
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static getItem(id) {
     const params = {
       url: `api/vehicle-driver-allotments/${id}`,
       method: 'GET',
-    }
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static changeItem(id, data) {
     const params = {
       url: `api/vehicle-driver-allotments/${id}`,
       method: 'PUT',
-      data
-    }
+      data,
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static deleteItem(id) {
     const params = {
       url: `api/vehicle-driver-allotments/${id}`,
       method: 'DELETE',
-    }
+    };
 
-    return request(params)
+    return request(params);
   }
 }

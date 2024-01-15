@@ -10,10 +10,10 @@ export default class Sorts {
   }
 
   static sortByBool(a, b) {
-    return a === b ? 0 : a ? -1 : 1
+    return a === b ? 0 : a ? -1 : 1;
   }
 
   static sortByNumber(a, b) {
-    return +a - +b
+    return +a - +b;
   }
 }

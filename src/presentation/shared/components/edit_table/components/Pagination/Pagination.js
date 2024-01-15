@@ -1,15 +1,8 @@
-import PaginationActions from "./PaginationActions";
-import './Pagination.sass'
-import StyledPagination from "./styled";
+import './Pagination.sass';
+import PaginationActions from './PaginationActions';
+import StyledPagination from './styled';
 
-const Pagination = (
-  {
-    count,
-    page,
-    rowsPerPage,
-    handleChangePage,
-    handleChangeRowsPerPage
-  }) => {
+const Pagination = ({ count, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage }) => {
   return (
     <div className={'pagination'}>
       <StyledPagination.Pagination
@@ -25,7 +18,7 @@ const Pagination = (
         ActionsComponent={PaginationActions}
       />
     </div>
-  )
-}
+  );
+};
 
-export default Pagination
+export default Pagination;

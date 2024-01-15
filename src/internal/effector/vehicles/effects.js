@@ -1,17 +1,20 @@
-import {createEffect} from "effector";
+import { createEffect } from 'effector';
+
+import VehiclesApi from '../../../data/api/vehicles/vehicles_api';
+import { selectedBranchState } from '../selected_branch/store';
+import { userState } from '../user/store';
 import {
-  carsLoadingState,
-  lastGetVehiclesListRequestState,
-  lastGetCarDataRequest,
+  carBranchSwitchLoadingState,
   carDataLoadingState,
-  createCarLoadingState,
-  lastSearchRequest,
+  carsLoadingState,
   changingCarLoadingState,
-  lastSearchByRegistrationNumberRequest, lastSearchByManufacturersRequest, carBranchSwitchLoadingState
-} from "./store";
-import VehiclesApi from "../../../data/api/vehicles/vehicles_api";
-import {selectedBranchState} from "../selected_branch/store";
-import {userState} from "../user/store";
+  createCarLoadingState,
+  lastGetCarDataRequest,
+  lastGetVehiclesListRequestState,
+  lastSearchByManufacturersRequest,
+  lastSearchByRegistrationNumberRequest,
+  lastSearchRequest,
+} from './store';
 
 export const CarsSortTypes = {
   byMake: 'byMake',
@@ -20,338 +23,321 @@ export const CarsSortTypes = {
   byLicense: 'byLicense',
   byManufacture: 'byManufacture',
   byDate: 'byDate',
-}
+};
 
 const getSortQuery = (orderType, order) => {
-  const orderStr = ',' + order.toUpperCase()
+  const orderStr = ',' + order.toUpperCase();
 
   switch (orderType) {
     case CarsSortTypes.byMake:
-      return `&sort=manufacturer${orderStr}`
+      return `&sort=manufacturer${orderStr}`;
     case CarsSortTypes.byModel:
-      return `&sort=model${orderStr}`
+      return `&sort=model${orderStr}`;
     case CarsSortTypes.byVin:
-      return `&sort=vin${orderStr}`
+      return `&sort=vin${orderStr}`;
     case CarsSortTypes.byLicense:
-      return `&sort=registrationNumber${orderStr}`
+      return `&sort=registrationNumber${orderStr}`;
     case CarsSortTypes.byManufacture:
-      return `&sort=year${orderStr}`
+      return `&sort=year${orderStr}`;
     case CarsSortTypes.byDate:
-      return `&sort=createdAt${orderStr}`
+      return `&sort=createdAt${orderStr}`;
     default:
-      return ''
+      return '';
   }
-}
+};
 
-export const uploadCarsList = createEffect((
-  {
-    page,
-    limit,
-    sortBy,
-    order,
-    query,
-    startDate,
-    endDate,
-    groupId
-  }) => {
-  carsLoadingState.setState(true)
-  const queryTrimmed = (query?? '').trim()
-  let queries = ''
-  const userData = userState.$store.getState()
+export const uploadCarsList = createEffect(({ page, limit, sortBy, order, query, startDate, endDate, groupId }) => {
+  carsLoadingState.setState(true);
+  const queryTrimmed = (query ?? '').trim();
+  let queries = '';
+  const userData = userState.$store.getState();
   const selectedBranch = userData?.isAdmin
     ? selectedBranchState.$store.getState()
-    : (userData?.assignment.branch ?? {id: 10})
+    : userData?.assignment.branch ?? { id: 10 };
 
-  lastGetVehiclesListRequestState.$store.getState()?.abort()
+  lastGetVehiclesListRequestState.$store.getState()?.abort();
 
   if (startDate) {
-    const date = new Date(startDate).toISOString()
-    queries += `&all.createdAt.greaterThanOrEqual=${date}`
+    const date = new Date(startDate).toISOString();
+    queries += `&all.createdAt.greaterThanOrEqual=${date}`;
   }
 
   if (endDate) {
-    const date = new Date(endDate).toISOString()
-    queries += `&all.createdAt.lessThanOrEqual=${date}`
+    const date = new Date(endDate).toISOString();
+    queries += `&all.createdAt.lessThanOrEqual=${date}`;
   }
 
   if (sortBy && order) {
-    queries += getSortQuery(sortBy, order)
+    queries += getSortQuery(sortBy, order);
   }
 
   if (queryTrimmed.length) {
-    queries += `&any.model.contains=${queryTrimmed}`
-    queries += `&any.manufacturer.contains=${queryTrimmed}`
-    queries += `&any.vin.contains=${queryTrimmed}`
-    queries += `&any.registrationNumber.contains=${queryTrimmed}`
+    queries += `&any.model.contains=${queryTrimmed}`;
+    queries += `&any.manufacturer.contains=${queryTrimmed}`;
+    queries += `&any.vin.contains=${queryTrimmed}`;
+    queries += `&any.registrationNumber.contains=${queryTrimmed}`;
   }
 
   if (groupId) {
-    queries += `&all.assignment.branch.id.in=${groupId}`
+    queries += `&all.assignment.branch.id.in=${groupId}`;
   } else {
     if (selectedBranch) {
-      queries += `&all.assignment.branch.id.equals=${selectedBranch.id}`
+      queries += `&all.assignment.branch.id.equals=${selectedBranch.id}`;
     } else {
-      queries += `&all.assignment.branch.id.equals=10`
+      queries += `&all.assignment.branch.id.equals=10`;
     }
   }
 
-  const {promise, controller} = VehiclesApi.getList(
-    {
-      page: page - 1,
-      limit,
-      queries
-    })
-  lastGetVehiclesListRequestState.setState(controller)
+  const { promise, controller } = VehiclesApi.getList({
+    page: page - 1,
+    limit,
+    queries,
+  });
+  lastGetVehiclesListRequestState.setState(controller);
 
   return promise
-    .then(({res, headers}) => {
-      const total = +headers?.get('X-Total-Count') ?? 0
-      carsLoadingState.setState(false)
-      lastGetVehiclesListRequestState.setState(null)
+    .then(({ res, headers }) => {
+      const total = +headers?.get('X-Total-Count') ?? 0;
+      carsLoadingState.setState(false);
+      lastGetVehiclesListRequestState.setState(null);
       if (Array.isArray(res)) {
         return {
           list: res,
-          count: isNaN(total) ? 0 : total
-        }
+          count: isNaN(total) ? 0 : total,
+        };
       } else {
         return {
           list: [],
-          count: 0
-        }
+          count: 0,
+        };
       }
     })
-    .catch(err => {
-      if (err.name === 'AbortError') return
-      lastGetVehiclesListRequestState.setState(null)
-      carsLoadingState.setState(false)
-      console.log(err)
-      throw err
-    })
-})
+    .catch((err) => {
+      if (err.name === 'AbortError') return;
+      lastGetVehiclesListRequestState.setState(null);
+      carsLoadingState.setState(false);
+      console.log(err);
+      throw err;
+    });
+});
 
 export const clearVehiclesRequests = createEffect(() => {
-  lastGetVehiclesListRequestState.$store.getState()?.abort()
-  lastGetCarDataRequest.$store.getState()?.abort()
-})
+  lastGetVehiclesListRequestState.$store.getState()?.abort();
+  lastGetCarDataRequest.$store.getState()?.abort();
+});
 
 export const deleteCar = createEffect((id) => {
-  const {promise} = VehiclesApi.deleteItem(id)
+  const { promise } = VehiclesApi.deleteItem(id);
 
   return promise
-    .then(({res}) => res)
-    .catch(err => {
-      throw err
-    })
-})
+    .then(({ res }) => res)
+    .catch((err) => {
+      throw err;
+    });
+});
 
 export const addCar = createEffect(async (data) => {
-  const userData = userState.$store.getState()
+  const userData = userState.$store.getState();
   const selectedBranch = userData?.isAdmin
     ? selectedBranchState.$store.getState()
-    : (userData?.assignment.branch ?? {id: 10})
-  createCarLoadingState.setState(true)
-  const {promise} = VehiclesApi.createItem({
+    : userData?.assignment.branch ?? { id: 10 };
+  createCarLoadingState.setState(true);
+  const { promise } = VehiclesApi.createItem({
     ...data,
-    branchId: selectedBranch?.id ?? 10
-  })
+    branchId: selectedBranch?.id ?? 10,
+  });
 
   return promise
-    .then(({res}) => res)
-    .catch(err => {
-      console.log(err.response)
-      throw err
+    .then(({ res }) => res)
+    .catch((err) => {
+      console.log(err.response);
+      throw err;
     })
-    .finally(() => createCarLoadingState.setState(false))
-})
+    .finally(() => createCarLoadingState.setState(false));
+});
 
 export const getCar = createEffect((id) => {
-  carDataLoadingState.setState(true)
-  const lastRequest = lastGetCarDataRequest.$store.getState()
-  lastRequest?.abort()
+  carDataLoadingState.setState(true);
+  const lastRequest = lastGetCarDataRequest.$store.getState();
+  lastRequest?.abort();
 
-  const {promise, controller} = VehiclesApi.getItem(id)
-  lastGetCarDataRequest.setState(controller)
+  const { promise, controller } = VehiclesApi.getItem(id);
+  lastGetCarDataRequest.setState(controller);
 
   return promise
-    .then(({res}) => {
-      lastGetCarDataRequest.setState(null)
-      carDataLoadingState.setState(false)
-      return res
+    .then(({ res }) => {
+      lastGetCarDataRequest.setState(null);
+      carDataLoadingState.setState(false);
+      return res;
     })
-    .catch(err => {
-      if (err.name === 'AbortError') return
-      carDataLoadingState.setState(false)
-      lastGetCarDataRequest.setState(null)
-      throw err
-    })
-})
+    .catch((err) => {
+      if (err.name === 'AbortError') return;
+      carDataLoadingState.setState(false);
+      lastGetCarDataRequest.setState(null);
+      throw err;
+    });
+});
 
 export const changeCar = createEffect((payload) => {
-  changingCarLoadingState.setState(true)
-  const {promise} = VehiclesApi.changeItem(payload.id, payload.data)
+  changingCarLoadingState.setState(true);
+  const { promise } = VehiclesApi.changeItem(payload.id, payload.data);
   return promise
-    .then(({res}) => res)
-    .catch(err => {
-      throw err
+    .then(({ res }) => res)
+    .catch((err) => {
+      throw err;
     })
-    .finally(() => changingCarLoadingState.setState(false))
-})
+    .finally(() => changingCarLoadingState.setState(false));
+});
 
 export const searchCarsByRegistrationNumber = createEffect((query = null) => {
-  const userData = userState.$store.getState()
+  const userData = userState.$store.getState();
   const selectedBranch = userData?.isAdmin
     ? selectedBranchState.$store.getState()
-    : (userData?.assignment.branch ?? {id: 10})
-  const trimmedQuery = query?.trim() ?? null
-  let queries = '&sort=manufacturer,ASC'
-  lastSearchByRegistrationNumberRequest.$store.getState()?.abort()
+    : userData?.assignment.branch ?? { id: 10 };
+  const trimmedQuery = query?.trim() ?? null;
+  let queries = '&sort=manufacturer,ASC';
+  lastSearchByRegistrationNumberRequest.$store.getState()?.abort();
 
   if (trimmedQuery) {
-    queries += `&registrationNumber.contains=${trimmedQuery}`
+    queries += `&registrationNumber.contains=${trimmedQuery}`;
   }
 
   if (selectedBranch) {
-    queries += `&all.assignment.branch.id.equals=${selectedBranch.id}`
+    queries += `&all.assignment.branch.id.equals=${selectedBranch.id}`;
   } else {
-    queries += `&all.assignment.branch.id.equals=10`
+    queries += `&all.assignment.branch.id.equals=10`;
   }
 
-  const {promise, controller} = VehiclesApi.getList(
-    {
-      page: 0,
-      limit: 20,
-      queries
-    }
-  )
-  lastSearchByRegistrationNumberRequest.setState(controller)
+  const { promise, controller } = VehiclesApi.getList({
+    page: 0,
+    limit: 20,
+    queries,
+  });
+  lastSearchByRegistrationNumberRequest.setState(controller);
   return promise
-    .then(({res}) => {
-      lastSearchByRegistrationNumberRequest.setState(null)
+    .then(({ res }) => {
+      lastSearchByRegistrationNumberRequest.setState(null);
       if (Array.isArray(res)) {
-        return res.map(item => ({
+        return res.map((item) => ({
           value: item,
-          label: item.registrationNumber
-        }))
+          label: item.registrationNumber,
+        }));
       } else {
-        return []
+        return [];
       }
     })
-    .catch(err => {
-      if (err.name === 'AbortError') return
-      lastSearchByRegistrationNumberRequest.setState(null)
-      throw err
-    })
-})
+    .catch((err) => {
+      if (err.name === 'AbortError') return;
+      lastSearchByRegistrationNumberRequest.setState(null);
+      throw err;
+    });
+});
 
 export const searchCarsManufacturers = createEffect((query = null) => {
-  const trimmedQuery = query?.trim() ?? null
-  let queries = '&sort=match,ASC'
-  lastSearchByManufacturersRequest.$store.getState()?.abort()
+  const trimmedQuery = query?.trim() ?? null;
+  let queries = '&sort=match,ASC';
+  lastSearchByManufacturersRequest.$store.getState()?.abort();
 
   if (trimmedQuery) {
-    queries += `&match=${trimmedQuery}`
+    queries += `&match=${trimmedQuery}`;
   }
 
-  const {promise, controller} = VehiclesApi.getManufacturersList(
-    {
-      page: 0,
-      limit: 20,
-      queries
-    }
-  )
-  lastSearchByManufacturersRequest.setState(controller)
+  const { promise, controller } = VehiclesApi.getManufacturersList({
+    page: 0,
+    limit: 20,
+    queries,
+  });
+  lastSearchByManufacturersRequest.setState(controller);
   return promise
-    .then(({res}) => {
-      lastSearchByManufacturersRequest.setState(null)
+    .then(({ res }) => {
+      lastSearchByManufacturersRequest.setState(null);
       if (Array.isArray(res)) {
-        return res.map(item => ({
+        return res.map((item) => ({
           value: item,
-          label: item
-        }))
+          label: item,
+        }));
       } else {
-        return []
+        return [];
       }
     })
-    .catch(err => {
-      if (err.name === 'AbortError') return
-      lastSearchByManufacturersRequest.setState(null)
-      throw err
-    })
-})
+    .catch((err) => {
+      if (err.name === 'AbortError') return;
+      lastSearchByManufacturersRequest.setState(null);
+      throw err;
+    });
+});
 
-export const searchCars = createEffect(({query, withoutAlcolock, withoutDriver, excludeGroupId}) => {
-  const userData = userState.$store.getState()
+export const searchCars = createEffect(({ query, withoutAlcolock, withoutDriver, excludeGroupId }) => {
+  const userData = userState.$store.getState();
   const selectedBranch = userData?.isAdmin
     ? selectedBranchState.$store.getState()
-    : (userData?.assignment.branch ?? {id: 10})
-  const trimmedQuery = query?.trim() ?? null
-  let queries = '&sort=manufacturer,ASC'
-  const lastRequest = lastSearchRequest.$store.getState()
-  lastRequest?.abort()
+    : userData?.assignment.branch ?? { id: 10 };
+  const trimmedQuery = query?.trim() ?? null;
+  let queries = '&sort=manufacturer,ASC';
+  const lastRequest = lastSearchRequest.$store.getState();
+  lastRequest?.abort();
 
   if (trimmedQuery) {
-    queries += `&any.registrationNumber.contains=${trimmedQuery}`
-    queries += `&any.model.contains=${trimmedQuery}`
-    queries += `&any.manufacturer.contains=${trimmedQuery}`
+    queries += `&any.registrationNumber.contains=${trimmedQuery}`;
+    queries += `&any.model.contains=${trimmedQuery}`;
+    queries += `&any.manufacturer.contains=${trimmedQuery}`;
   }
 
   if (withoutAlcolock) {
-    queries += '&all.monitoringDevice.id.specified=false'
+    queries += '&all.monitoringDevice.id.specified=false';
   }
 
   if (withoutDriver) {
-    queries += '&all.driverAllotments.id.specified=false'
+    queries += '&all.driverAllotments.id.specified=false';
   }
 
   if (excludeGroupId) {
-    queries += `&all.assignment.branch.id.notEquals=${excludeGroupId}`
+    queries += `&all.assignment.branch.id.notEquals=${excludeGroupId}`;
   } else {
     if (selectedBranch) {
-      queries += `&all.assignment.branch.id.equals=${selectedBranch.id}`
+      queries += `&all.assignment.branch.id.equals=${selectedBranch.id}`;
     } else {
-      queries += `&all.assignment.branch.id.equals=10`
+      queries += `&all.assignment.branch.id.equals=10`;
     }
   }
 
-  const {promise, controller} = VehiclesApi.getList(
-    {
-      page: 0,
-      limit: 20,
-      queries
-    }
-  )
-  lastSearchRequest.setState(controller)
+  const { promise, controller } = VehiclesApi.getList({
+    page: 0,
+    limit: 20,
+    queries,
+  });
+  lastSearchRequest.setState(controller);
   return promise
-    .then(({res}) => {
-      lastSearchRequest.setState(null)
+    .then(({ res }) => {
+      lastSearchRequest.setState(null);
       if (Array.isArray(res)) {
-        return res.map(item => {
+        return res.map((item) => {
           return {
             value: item,
-            label: `${item.manufacturer} ${item.model} ${item.registrationNumber}`
-          }
-        })
+            label: `${item.manufacturer} ${item.model} ${item.registrationNumber}`,
+          };
+        });
       } else {
-        return []
+        return [];
       }
     })
-    .catch(err => {
-      if (err.name === 'AbortError') return
-      lastSearchRequest.setState(null)
-      console.log(err)
-      throw err
-    })
-})
+    .catch((err) => {
+      if (err.name === 'AbortError') return;
+      lastSearchRequest.setState(null);
+      console.log(err);
+      throw err;
+    });
+});
 
 export const switchCarGroup = createEffect((paylaod) => {
-  carBranchSwitchLoadingState.setState(true)
+  carBranchSwitchLoadingState.setState(true);
 
-  const {promise} = VehiclesApi.switchBranch(paylaod.id, paylaod.groupId)
+  const { promise } = VehiclesApi.switchBranch(paylaod.id, paylaod.groupId);
 
   return promise
-    .then(res => res)
-    .catch(err => {
-      throw err
+    .then((res) => res)
+    .catch((err) => {
+      throw err;
     })
-    .finally(() => carBranchSwitchLoadingState.setState(false))
-})
+    .finally(() => carBranchSwitchLoadingState.setState(false));
+});

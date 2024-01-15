@@ -1,19 +1,18 @@
-import Formatters from "../../../internal/utils/formatters";
-import {CarsSortTypes} from "../../../internal/effector/vehicles/effects";
-
+import { CarsSortTypes } from '../../../internal/effector/vehicles/effects';
+import Formatters from '../../../internal/utils/formatters';
 
 export const HEADERS = [
   {
     label: 'Марка',
-    sortType: CarsSortTypes.byMake
+    sortType: CarsSortTypes.byMake,
   },
   {
     label: 'Модель',
-    sortType: CarsSortTypes.byModel
+    sortType: CarsSortTypes.byModel,
   },
   {
     label: 'VIN',
-    sortType: CarsSortTypes.byVin
+    sortType: CarsSortTypes.byVin,
   },
   {
     label: 'Государственный номер',
@@ -21,7 +20,7 @@ export const HEADERS = [
       maxWidth: '288px',
       width: '288px',
     },
-    sortType: CarsSortTypes.byLicense
+    sortType: CarsSortTypes.byLicense,
   },
   {
     label: 'Год выпуска',
@@ -29,7 +28,7 @@ export const HEADERS = [
       maxWidth: '201px',
       width: '201px',
     },
-    sortType: CarsSortTypes.byManufacture
+    sortType: CarsSortTypes.byManufacture,
   },
   {
     label: 'Дата регистрации',
@@ -37,18 +36,18 @@ export const HEADERS = [
       maxWidth: '201px',
       width: '201px',
     },
-    sortType: CarsSortTypes.byDate
+    sortType: CarsSortTypes.byDate,
   },
-]
+];
 
 export const getRowsTemplate = (car) => ({
   id: car.id,
   values: [
     {
-      value: car.manufacturer ?? '-'
+      value: car.manufacturer ?? '-',
     },
     {
-      value: car.model ?? '-'
+      value: car.model ?? '-',
     },
     {
       value: car.vin,
@@ -58,29 +57,37 @@ export const getRowsTemplate = (car) => ({
       style: {
         maxWidth: '288px',
         width: '288px',
-      }
+      },
     },
     {
       value: car.year,
       style: {
         maxWidth: '201px',
         width: '201px',
-      }
+      },
     },
     {
       value: Formatters.formatISODate(car.createdAt),
       style: {
         maxWidth: '201px',
         width: '201px',
-      }
+      },
     },
-  ]
-})
+  ],
+});
 
-export const DELETE_POPUP_TITLE = 'Удаление ТС'
+export const DELETE_POPUP_TITLE = 'Удаление ТС';
 export const getDeletePopupBody = (selectedItem) => {
-  return <p>Вы действительно хотите удалить транспортное средство <b>{selectedItem?.manufacturer} {selectedItem?.model}, {selectedItem?.year}, {selectedItem?.registrationNumber}</b>?</p>
-}
+  return (
+    <p>
+      Вы действительно хотите удалить транспортное средство{' '}
+      <b>
+        {selectedItem?.manufacturer} {selectedItem?.model}, {selectedItem?.year}, {selectedItem?.registrationNumber}
+      </b>
+      ?
+    </p>
+  );
+};
 
-export const ADD_POPUP_TITLE = 'Добавление ТС'
-export const EDIT_POPUP_TITLE = 'Редактирование ТС'
+export const ADD_POPUP_TITLE = 'Добавление ТС';
+export const EDIT_POPUP_TITLE = 'Редактирование ТС';

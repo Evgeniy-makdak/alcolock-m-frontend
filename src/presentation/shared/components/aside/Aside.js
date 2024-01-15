@@ -1,19 +1,17 @@
-import './Aside.sass'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-const Aside = ({children, onClose}) => {
+import './Aside.sass';
+
+const Aside = ({ children, onClose }) => {
   return (
     <div className={'aside'}>
       {children}
 
-      <div
-        className="aside__close"
-        onClick={onClose}
-      >
+      <div className="aside__close" onClick={onClose}>
         <ArrowBackIosNewIcon />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Aside
+export default Aside;

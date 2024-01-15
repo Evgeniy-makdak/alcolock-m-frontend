@@ -1,87 +1,77 @@
-import {
-  ADD_CAR_POPUP_TITLE,
-  CARS_TABLE_HEADERS,
-  getCarsRowsTemplate,
-} from "./const";
-import AppConstants from "../../../../internal/app_constants";
-import {addGroupCar, GroupCarsSortTypes} from "../../../../internal/effector/groups/effects";
-import {addGroupCarFormSelectors, switchGroupFormSelectors} from "../../../../internal/effector/groups/forms";
-import AddCarForm from "./AddCarForm";
-import EditTable from "../../../shared/components/edit_table/EditTable";
-import {vehiclesStore} from "../../../../internal/effector/vehicles/store";
-import StyledTable from "../../../shared/components/edit_table/styled";
-import {useCallback, useState} from "react";
-import {switchCarGroup, uploadCarsList} from "../../../../internal/effector/vehicles/effects";
-import {useToggle} from "../../../../internal/hooks/useToggle";
-import Popup from "../../../shared/ui/popup/Popup";
-import SwitchGroupForm from "./SwitchGroupForm";
-import Button, {ButtonsType} from "../../../shared/ui/button/Button";
+import { useCallback, useState } from 'react';
 
-const GroupCarTable = ({groupInfo}) => {
-  const loadingCars = vehiclesStore.carsLoading.useValue()
-  const [openSwitchPopup, toggleSwitchPopup] = useToggle()
-  const [updateTable, toggleUpdateTable] = useToggle()
-  const [selectedCarId, setSelectedCarId] = useState(null)
-  const isValidForm = switchGroupFormSelectors.useIsFormValid()
-  const onClickSubmit = switchGroupFormSelectors.useOnClickSubmit()
-  const carSwitchLoading = vehiclesStore.carBranchSwitchLoading.useValue()
+import AppConstants from '../../../../internal/app_constants';
+import { GroupCarsSortTypes, addGroupCar } from '../../../../internal/effector/groups/effects';
+import { addGroupCarFormSelectors, switchGroupFormSelectors } from '../../../../internal/effector/groups/forms';
+import { switchCarGroup, uploadCarsList } from '../../../../internal/effector/vehicles/effects';
+import { vehiclesStore } from '../../../../internal/effector/vehicles/store';
+import { useToggle } from '../../../../internal/hooks/useToggle';
+import EditTable from '../../../shared/components/edit_table/EditTable';
+import StyledTable from '../../../shared/components/edit_table/styled';
+import Button, { ButtonsType } from '../../../shared/ui/button/Button';
+import Popup from '../../../shared/ui/popup/Popup';
+import AddCarForm from './AddCarForm';
+import SwitchGroupForm from './SwitchGroupForm';
+import { ADD_CAR_POPUP_TITLE, CARS_TABLE_HEADERS, getCarsRowsTemplate } from './const';
 
-  const handleUploadCarsPromise = useCallback((
-    {
-      page,
-      limit,
-      sortBy,
-      order,
-      query,
-    }) => {
+const GroupCarTable = ({ groupInfo }) => {
+  const loadingCars = vehiclesStore.carsLoading.useValue();
+  const [openSwitchPopup, toggleSwitchPopup] = useToggle();
+  const [updateTable, toggleUpdateTable] = useToggle();
+  const [selectedCarId, setSelectedCarId] = useState(null);
+  const isValidForm = switchGroupFormSelectors.useIsFormValid();
+  const onClickSubmit = switchGroupFormSelectors.useOnClickSubmit();
+  const carSwitchLoading = vehiclesStore.carBranchSwitchLoading.useValue();
 
-    return uploadCarsList({
-      groupId: groupInfo?.id ?? 0,
-      page,
-      limit,
-      sortBy,
-      order,
-      query,
-    })
-  }, [groupInfo])
+  const handleUploadCarsPromise = useCallback(
+    ({ page, limit, sortBy, order, query }) => {
+      return uploadCarsList({
+        groupId: groupInfo?.id ?? 0,
+        page,
+        limit,
+        sortBy,
+        order,
+        query,
+      });
+    },
+    [groupInfo],
+  );
 
   const handleOpenSwitchPopup = (e, id) => {
-    setSelectedCarId(id)
-    toggleSwitchPopup()
-  }
+    setSelectedCarId(id);
+    toggleSwitchPopup();
+  };
 
   const handleCloseSwitchPopup = () => {
-    toggleSwitchPopup()
-    setSelectedCarId(null)
-  }
+    toggleSwitchPopup();
+    setSelectedCarId(null);
+  };
 
   const handleSwitchBranch = (data) => {
     switchCarGroup({
       id: selectedCarId,
-      groupId: data.group?.id
+      groupId: data.group?.id,
     })
       .then(() => {
-        handleCloseSwitchPopup()
-        toggleUpdateTable()
+        handleCloseSwitchPopup();
+        toggleUpdateTable();
       })
-      .catch(err => {
-        console.log('handleSwitchBranch GroupCarTable error', err?.response)
-      })
-  }
+      .catch((err) => {
+        console.log('handleSwitchBranch GroupCarTable error', err?.response);
+      });
+  };
 
   const onClickSwitch = () => {
-    if (!isValidForm) return
+    if (!isValidForm) return;
 
-    onClickSubmit()
-  }
+    onClickSubmit();
+  };
 
   const transferButton = (
-    <StyledTable.TableButton
-      onClick={handleOpenSwitchPopup}
-    >
-      <StyledTable.ShiftIcon/>
+    <StyledTable.TableButton onClick={handleOpenSwitchPopup}>
+      <StyledTable.ShiftIcon />
     </StyledTable.TableButton>
-  )
+  );
 
   return (
     <>
@@ -93,19 +83,17 @@ const GroupCarTable = ({groupInfo}) => {
         initOrderBy={GroupCarsSortTypes.byMake}
         withDate={false}
         uploadListPromise={handleUploadCarsPromise}
-        addItemPromise={(data) => addGroupCar({data, groupId: groupInfo?.id ?? 0})}
+        addItemPromise={(data) => addGroupCar({ data, groupId: groupInfo?.id ?? 0 })}
         addFormSelectors={addGroupCarFormSelectors}
         addPopupParams={{
           title: ADD_CAR_POPUP_TITLE,
           Body: AddCarForm,
           additionalBodyProps: {
-            groupId: groupInfo?.id
-          }
+            groupId: groupInfo?.id,
+          },
         }}
         withoutAction={true}
-        additionalActions={[
-          transferButton
-        ]}
+        additionalActions={[transferButton]}
         updateTable={updateTable}
       />
 
@@ -114,30 +102,18 @@ const GroupCarTable = ({groupInfo}) => {
         toggleModal={toggleSwitchPopup}
         headerTitle={'Перемещение ТС'}
         closeonClickSpace={false}
-        body={<SwitchGroupForm
-          groupInfo={groupInfo}
-          onValidSubmit={handleSwitchBranch}
-          loading={carSwitchLoading}
-        />}
+        body={<SwitchGroupForm groupInfo={groupInfo} onValidSubmit={handleSwitchBranch} loading={carSwitchLoading} />}
         buttons={[
-          <Button
-            key={'action_1'}
-            type={ButtonsType.action}
-            onClick={onClickSwitch}
-          >
+          <Button key={'action_1'} type={ButtonsType.action} onClick={onClickSwitch}>
             Переместить
           </Button>,
-          <Button
-            key={'action_2'}
-            type={ButtonsType.action}
-            onClick={handleCloseSwitchPopup}
-          >
+          <Button key={'action_2'} type={ButtonsType.action} onClick={handleCloseSwitchPopup}>
             {AppConstants.cancelTxt}
           </Button>,
         ]}
       />
     </>
-  )
-}
+  );
+};
 
-export default GroupCarTable
+export default GroupCarTable;

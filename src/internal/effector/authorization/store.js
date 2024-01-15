@@ -1,7 +1,7 @@
-import StateBuilder from "../state_builder";
+import StateBuilder from '../state_builder';
 
-export const authErrorState = new StateBuilder()
+export const authErrorState = new StateBuilder();
 
 export const authStore = {
-  authError: authErrorState.createHooks()
-}
+  authError: authErrorState.createHooks(),
+};

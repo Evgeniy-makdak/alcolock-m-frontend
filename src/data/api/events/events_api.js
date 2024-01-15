@@ -1,72 +1,67 @@
-import {request} from "../../request";
+import { request } from '../../request';
 
 export default class EventsApi {
-  static getList(
-    {
-      page,
-      limit,
-      queries
-    }) {
+  static getList({ page, limit, queries }) {
     const params = {
       url: `api/device-actions?page=${page}&size=${limit}${queries}`,
-      method: 'GET'
-    }
+      method: 'GET',
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static getItem(id) {
     const params = {
       url: `api/device-actions/${id}`,
-      method: 'GET'
-    }
+      method: 'GET',
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static activateServiceMode(deviceId, data) {
     const params = {
       url: `api/device-actions`,
       method: 'POST',
-      data
-    }
+      data,
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static cancelActivateServiceMode(id) {
     const params = {
       url: `api/device-actions/${id}/cancel`,
       method: 'POST',
-    }
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static rejectActivateServiceMode(id) {
     const params = {
       url: `api/device-actions/${id}/reject`,
       method: 'POST',
-    }
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static acceptActivateServiceMode(id) {
     const params = {
       url: `api/device-actions/${id}/accept`,
       method: 'POST',
-    }
+    };
 
-    return request(params)
+    return request(params);
   }
 
   static seenAction(id) {
     const params = {
       url: `api/device-actions/${id}/seen`,
       method: 'POST',
-    }
+    };
 
-    return request(params)
+    return request(params);
   }
 }

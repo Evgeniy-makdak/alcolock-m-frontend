@@ -1,6 +1,6 @@
 export default class Formatters {
   static formatISODate(isoDate) {
-    if (!isoDate) return '-'
+    if (!isoDate) return '-';
     const date = new Date(isoDate);
 
     const day = String(date.getDate()).padStart(2, '0');
@@ -15,37 +15,31 @@ export default class Formatters {
   }
 
   static convertDateFormat(dateStr) {
-    if (!dateStr) return '-'
-    const dateParts = dateStr.split('-')
+    if (!dateStr) return '-';
+    const dateParts = dateStr.split('-');
 
-    return dateParts.reverse().join('.')
+    return dateParts.reverse().join('.');
   }
 
-  static nameFormatter(user, withPlaceholder = true ) {
-    const placeholder = withPlaceholder
-      ? '-'
-      : ''
-    if (!user) return placeholder
-    const name = user.firstName
-      ? `${user.firstName} `
-      : ''
-    const middleName = user.middleName ?? ''
-    const lastName = user.lastName
-      ? `${user.lastName} `
-      : ''
+  static nameFormatter(user, withPlaceholder = true) {
+    const placeholder = withPlaceholder ? '-' : '';
+    if (!user) return placeholder;
+    const name = user.firstName ? `${user.firstName} ` : '';
+    const middleName = user.middleName ?? '';
+    const lastName = user.lastName ? `${user.lastName} ` : '';
 
-    if (!name.length && !middleName.length && !lastName.length) return placeholder
+    if (!name.length && !middleName.length && !lastName.length) return placeholder;
 
-    return lastName + name + middleName
+    return lastName + name + middleName;
   }
 
   static carNameFormatter(car, withoutRegistrationNumber = false) {
-    if (!car) return '-'
+    if (!car) return '-';
 
     if (withoutRegistrationNumber) {
-      return `${car.manufacturer} ${car.model}`
+      return `${car.manufacturer} ${car.model}`;
     } else {
-      return `${car.manufacturer} ${car.model} ${car.registrationNumber}`
+      return `${car.manufacturer} ${car.model} ${car.registrationNumber}`;
     }
   }
 
@@ -54,53 +48,53 @@ export default class Formatters {
       user_control: 3,
       car_control: 3,
       alkozamki_control: 3,
-      attachments_control: 3
-    }
+      attachments_control: 3,
+    };
 
     if ((userGroupPermissions ?? []).length) {
-      userGroupPermissions.forEach(permission => {
-        const permissionNameParts = permission.permission.name.split('_')
-        const permissionArea = permissionNameParts[1]
-        const availableMethod = permissionNameParts[permissionNameParts.length - 1]
+      userGroupPermissions.forEach((permission) => {
+        const permissionNameParts = permission.permission.name.split('_');
+        const permissionArea = permissionNameParts[1];
+        const availableMethod = permissionNameParts[permissionNameParts.length - 1];
 
         switch (availableMethod) {
           case 'CREATE':
             if (permissionArea === 'DEVICE') {
-              rolePermissions.alkozamki_control = 1
+              rolePermissions.alkozamki_control = 1;
             } else if (permissionArea === 'VEHICLE') {
-              rolePermissions.car_control = 1
+              rolePermissions.car_control = 1;
             } else if (permissionArea === 'USER') {
-              rolePermissions.user_control = 1
+              rolePermissions.user_control = 1;
             }
             break;
           case 'READ':
             if (permissionArea === 'DEVICE') {
-              rolePermissions.alkozamki_control = 2
+              rolePermissions.alkozamki_control = 2;
             } else if (permissionArea === 'VEHICLE') {
-              rolePermissions.car_control = 2
+              rolePermissions.car_control = 2;
             } else if (permissionArea === 'USER') {
-              rolePermissions.user_control = 2
+              rolePermissions.user_control = 2;
             }
             break;
         }
-      })
+      });
 
       if (rolePermissions.user_control === 1 && rolePermissions.car_control === 1) {
-        rolePermissions.attachments_control = 1
+        rolePermissions.attachments_control = 1;
       } else if (rolePermissions.user_control !== 3 && rolePermissions.car_control !== 3) {
-        rolePermissions.attachments_control = 2
+        rolePermissions.attachments_control = 2;
       }
 
-      return rolePermissions
+      return rolePermissions;
     } else {
-      return rolePermissions
+      return rolePermissions;
     }
   }
 
   static parseISO8601Duration(isoDuration) {
-    if (!isoDuration) return null
-    const regex = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/
-    const matches = isoDuration.match(regex)
+    if (!isoDuration) return null;
+    const regex = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+    const matches = isoDuration.match(regex);
 
     return {
       hours: parseInt(matches[4])
@@ -117,8 +111,7 @@ export default class Formatters {
         ? parseInt(matches[6]).toString().length === 1
           ? `0${parseInt(matches[6])}`
           : parseInt(matches[6])
-        : '00'
-    }
+        : '00',
+    };
   }
 }
-

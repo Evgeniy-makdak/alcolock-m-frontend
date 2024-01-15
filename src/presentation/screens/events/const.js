@@ -1,6 +1,6 @@
-import Formatters from "../../../internal/utils/formatters";
-import {EventsSortTypes} from "../../../internal/effector/events/effects";
-import AppConstants from "../../../internal/app_constants";
+import AppConstants from '../../../internal/app_constants';
+import { EventsSortTypes } from '../../../internal/effector/events/effects';
+import Formatters from '../../../internal/utils/formatters';
 
 export const HEADERS = [
   {
@@ -9,7 +9,7 @@ export const HEADERS = [
     style: {
       maxWidth: '201px',
       width: '201px',
-    }
+    },
   },
   {
     label: 'Инициатор',
@@ -27,7 +27,7 @@ export const HEADERS = [
     label: 'Тип события',
     sortType: EventsSortTypes.byEventType,
   },
-]
+];
 
 export const getRowsTemplate = (item) => {
   return {
@@ -38,22 +38,20 @@ export const getRowsTemplate = (item) => {
         style: {
           maxWidth: '201px',
           width: '201px',
-        }
+        },
       },
       {
-        value: Formatters.nameFormatter(item.createdBy)
+        value: Formatters.nameFormatter(item.createdBy),
       },
       {
-        value: item.vehicleRecord
-          ? Formatters.carNameFormatter(item.vehicleRecord, true)
-          : '-',
+        value: item.vehicleRecord ? Formatters.carNameFormatter(item.vehicleRecord, true) : '-',
       },
       {
         value: item.vehicleRecord?.registrationNumber ?? '-',
       },
       {
-        value: AppConstants.eventTypesList.find(type => type.value === item.type)?.label ?? '-'
-      }
-    ]
-  }
-}
+        value: AppConstants.eventTypesList.find((type) => type.value === item.type)?.label ?? '-',
+      },
+    ],
+  };
+};

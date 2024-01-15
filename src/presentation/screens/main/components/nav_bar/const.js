@@ -1,38 +1,38 @@
-import RoutePaths from "../../../../../internal/route_paths";
+import RoutePaths from '../../../../../internal/route_paths';
 
 export default class Const {
   static NAV_LINKS = [
     {
       path: RoutePaths.events,
-      name: 'События'
+      name: 'События',
     },
     {
       path: RoutePaths.users,
-      name: 'Пользователи'
+      name: 'Пользователи',
     },
     {
       path: RoutePaths.roles,
-      name: 'Роли'
+      name: 'Роли',
     },
     {
       path: RoutePaths.groups,
-      name: 'Группы'
+      name: 'Группы',
     },
     {
       path: RoutePaths.tc,
-      name: 'Транспорт'
+      name: 'Транспорт',
     },
     {
       path: RoutePaths.alkozamki,
-      name: 'Алкозамки'
+      name: 'Алкозамки',
     },
     {
       path: RoutePaths.autoService,
-      name: 'Автосервис'
+      name: 'Автосервис',
     },
     {
       path: RoutePaths.attachments,
-      name: 'Привязки'
+      name: 'Привязки',
     },
-  ]
+  ];
 }
