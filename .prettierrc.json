@@ -1,5 +1,5 @@
 {
-  "printWidth": 125,
+  "printWidth": 100,
   "arrowParens": "always",
   "semi": true,
   "singleQuote": true,
@@ -8,7 +8,16 @@
   "bracketSpacing": true,
   "endOfLine": "auto",
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "importOrder": ["^react(.*)", "mui/(.*)", "@/(.*)", "\\.(c|le|sc)ss$", "^[./].*(?<!\\.(c|le|sc)ss)$"],
+  "importOrder": [
+    "^(react/(.*)$)|^(react$)",
+    "<THIRD_PARTY_MODULES>",
+    "react-seo.config",
+    "^components/(.*)$",
+    "^utils/(.*)$",
+    "^assets/(.*)$",
+    "^@fontsource/(.*)$",
+    "^[./]"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

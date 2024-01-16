@@ -2,5 +2,9 @@
   "prettier.requireConfig": true,
   "prettier.useTabs": true,
   "prettier.printWidth": 125,
-  "prettier.singleQuote": true
+  "prettier.singleQuote": true,
+  "cSpell.words": [
+    "craco"
+  ],
+  "explorer.compactFolders": false
 }

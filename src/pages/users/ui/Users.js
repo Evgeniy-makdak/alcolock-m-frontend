@@ -1,0 +1,109 @@
+import { useEffect, useState } from 'react';
+
+import AppConstants from '@app/lib/app_constants';
+import RowTableInfo from '@entities/row_table_info/ui/RowTableInfo';
+import EditTable from '@features/edit_table/ui/EditTable';
+import EventsHistory, { HistoryTypes } from '@features/events_history/ui/EventsHistory';
+import { UserPermissionsTypes } from '@features/menu_button/model/effects';
+import { userStore } from '@features/menu_button/model/store';
+import UserForm from '@features/users/ui/UserForm';
+import { useToggle } from '@shared/hooks/useToggle';
+import { selectedBranchStore } from '@shared/model/selected_branch/store';
+import Aside from '@shared/ui/aside/Aside';
+import UserInfo from '@widgets/users/ui/UserInfo/UserInfo';
+
+import {
+  ADD_POPUP_TITLE,
+  DELETE_POPUP_TITLE,
+  EDIT_POPUP_TITLE,
+  HEADERS,
+  getDeletePopupBody,
+  getRowsTemplate,
+} from '../lib/const';
+import { UsersSortTypes, addUser, changeUser, deleteUser, uploadUsersList } from '../model/effects';
+import { addUserFormSelectors, editUserFromSelectors } from '../model/forms';
+import { usersStore } from '../model/store';
+import './Users.sass';
+
+const Users = () => {
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [updateInfo, toggleUpdateInfo] = useToggle();
+  const loading = usersStore.usersLoading.useValue();
+  const selectedBranch = selectedBranchStore.selectedBranch.useValue();
+  const userData = userStore.userData.useValue();
+
+  useEffect(() => {
+    handleCloseAside();
+  }, [selectedBranch]);
+
+  const onClickRow = (id) => setSelectedUserId(id);
+  const handleCloseAside = () => setSelectedUserId(null);
+
+  const afterDelete = (id) => {
+    if (id === selectedUserId) {
+      handleCloseAside();
+    }
+  };
+
+  const afterEdit = (id) => {
+    if (id === selectedUserId) {
+      toggleUpdateInfo();
+    }
+  };
+
+  return (
+    <>
+      <div className={'page users'}>
+        <EditTable
+          loading={!!loading}
+          headers={HEADERS}
+          getRowsTemplate={getRowsTemplate}
+          initOrderType={AppConstants.OrderTypes.asc}
+          initOrderBy={UsersSortTypes.byName}
+          addFormSelectors={addUserFormSelectors}
+          editFormSelectors={editUserFromSelectors}
+          uploadListPromise={uploadUsersList}
+          deleteItemPromise={
+            userData?.permissions.users === UserPermissionsTypes.create ? deleteUser : null
+          }
+          editItemPromise={
+            userData?.permissions.users === UserPermissionsTypes.create ? changeUser : null
+          }
+          addItemPromise={
+            userData?.permissions.users === UserPermissionsTypes.create ? addUser : null
+          }
+          deletePopupParams={{
+            title: DELETE_POPUP_TITLE,
+            getBody: getDeletePopupBody,
+          }}
+          addPopupParams={{
+            title: ADD_POPUP_TITLE,
+            Body: UserForm,
+            size: 'l',
+          }}
+          editPopupParams={{
+            title: EDIT_POPUP_TITLE,
+            Body: UserForm,
+            size: 'l',
+          }}
+          onRowClick={onClickRow}
+          afterDelete={afterDelete}
+          selectedRow={selectedUserId}
+          afterEdit={afterEdit}
+          updateTable={selectedBranch}
+        />
+      </div>
+
+      {selectedUserId && (
+        <Aside onClose={handleCloseAside}>
+          <RowTableInfo
+            infoContent={<UserInfo selectedUserId={selectedUserId} updateData={updateInfo} />}
+            historyContent={<EventsHistory type={HistoryTypes.byUser} id={selectedUserId} />}
+          />
+        </Aside>
+      )}
+    </>
+  );
+};
+
+export default Users;

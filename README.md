@@ -47,3 +47,7 @@
    bash docker-build/build.sh
    ```
 3. Результат сборки находится в папке `bulid`
+
+## О проекте
+
+1. У проекта выбрана архитектура FSD - почитать о ней можно тут => https://feature-sliced.design/ru/docs/get-started/overview

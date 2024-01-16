@@ -19,7 +19,26 @@
     "parser": "@babel/eslint-parser",
     "requireConfigFile": false
   },
-  "ignorePatterns": ["/build/*"],
+  "ignorePatterns": ["/build/*", "craco.config.js"],
+  // "import/order": [
+  //   "warn",
+  //   {
+  //     "groups": ["builtin", "external", "internal"],
+  //     "pathGroups": [
+  //       {
+  //         "pattern": "react",
+  //         "group": "external",
+  //         "position": "before"
+  //       }
+  //     ],
+  //     "pathGroupsExcludedImportTypes": ["react"],
+  //     "newlines-between": "always",
+  //     "alphabetize": {
+  //       "order": "asc",
+  //       "caseInsensitive": true
+  //     }
+  //   }
+  // ],
   "plugins": ["react", "react-hooks"],
   "rules": {
     "no-extra-boolean-cast": "off",
