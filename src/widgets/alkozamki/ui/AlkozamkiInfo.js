@@ -7,7 +7,7 @@ import { getItem } from '@pages/alkozamki/model/effects';
 import Loader from '@shared/ui/loader/Loader';
 import Formatters from '@shared/utils/formatters';
 
-import './AlkozamkiInfo.sass';
+import style from './AlkozamkiInfo.module.scss';
 
 const AlkozamkiInfo = ({ updateData, selectedAlcolockId, toggleUpdateInfo, toggleUpdateTable }) => {
   const [itemData, setItemData] = useState(null);
@@ -31,7 +31,7 @@ const AlkozamkiInfo = ({ updateData, selectedAlcolockId, toggleUpdateInfo, toggl
 
   return (
     <Loader isLoading={loading} styles={{ wrapper: (base) => ({ ...base, height: '100%' }) }}>
-      <div className={'alcolock-info'}>
+      <div className={style.alcolockInfo}>
         <Info
           fields={[
             {

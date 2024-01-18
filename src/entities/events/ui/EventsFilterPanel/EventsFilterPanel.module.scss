@@ -1,0 +1,24 @@
+.filtersPanel {
+  padding: 12px 8px;
+  display: flex;
+  gap: 16px;
+
+  & .input {
+    flex: 1;
+    width: max-content;
+  }
+  & .input-values {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  & .clear {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2196f3;
+    cursor: pointer;
+  }
+}

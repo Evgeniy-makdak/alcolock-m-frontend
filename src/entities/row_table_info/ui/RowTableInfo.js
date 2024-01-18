@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import './RowTableInfo.sass';
+import style from './RowTableInfo.module.scss';
 
 const Tabs = {
   info: 'info',
@@ -11,24 +11,22 @@ const RowTableInfo = ({ infoContent, historyContent }) => {
   const [activeTab, setActiveTab] = useState(Tabs.info);
 
   return (
-    <div className={'row-table-info'}>
-      <div className="row-table-info__tabs">
+    <div className={style.rowTableInfo}>
+      <div className={style.tabs}>
         <button
-          className={activeTab === Tabs.info ? 'active' : ''}
+          className={activeTab === Tabs.info ? style.active : ''}
           onClick={() => setActiveTab(Tabs.info)}>
           инфо
         </button>
 
         <button
-          className={activeTab === Tabs.history ? 'active' : ''}
+          className={activeTab === Tabs.history ? style.active : ''}
           onClick={() => setActiveTab(Tabs.history)}>
           история
         </button>
       </div>
 
-      <div className="row-table-info__content">
-        {activeTab === Tabs.info ? infoContent : historyContent}
-      </div>
+      <div className={style.content}>{activeTab === Tabs.info ? infoContent : historyContent}</div>
     </div>
   );
 };

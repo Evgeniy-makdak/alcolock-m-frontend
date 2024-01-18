@@ -9,6 +9,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import RoutePaths from '../lib/route_paths';
 import { appStore } from '../model/store';
+import style from './app.module.scss';
 
 function App() {
   const navigate = useNavigate();
@@ -26,9 +27,9 @@ function App() {
   }, [token]);
 
   return (
-    <div className="app">
+    <div className={style.app}>
       {loading ? (
-        <div className={'loading-page'}>
+        <div className={style.loadingPage}>
           <CircularProgress />
         </div>
       ) : (

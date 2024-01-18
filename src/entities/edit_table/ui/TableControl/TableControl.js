@@ -7,6 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useToggle } from '@shared/hooks/useToggle';
 
 import FilterButton from '../FilterButton/FilterButton';
+import style from './TableControl.module.scss';
 
 const theme = createTheme({
   components: {
@@ -64,7 +65,7 @@ const TableControl = ({ search, withDate, withSearch, filtersPanel, isFiltersAct
 
   return (
     <>
-      <div className={'table-control'}>
+      <div className={style.tableControl}>
         {withSearch && (
           <ThemeProvider theme={theme}>
             <TextField
@@ -89,7 +90,7 @@ const TableControl = ({ search, withDate, withSearch, filtersPanel, isFiltersAct
         )}
 
         {withDate && (
-          <div className="table-control__date-pickers">
+          <div className={style.datePickers}>
             <input
               type={'date'}
               onChange={onChangeStartDate}

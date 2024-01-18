@@ -7,6 +7,7 @@ import EditTable from '@features/edit_table/ui/EditTable';
 import EventsHistory, { HistoryTypes } from '@features/events_history/ui/EventsHistory';
 import { UserPermissionsTypes } from '@features/menu_button/model/effects';
 import { userStore } from '@features/menu_button/model/store';
+import { PageWrapper } from '@layout/page_wrapper';
 import { useToggle } from '@shared/hooks/useToggle';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import Aside from '@shared/ui/aside/Aside';
@@ -65,7 +66,7 @@ const Vehicles = () => {
 
   return (
     <>
-      <div className={'page vehicles'}>
+      <PageWrapper>
         <EditTable
           loading={loading}
           headers={HEADERS}
@@ -102,7 +103,7 @@ const Vehicles = () => {
           onRowClick={onClickRow}
           updateTable={selectedBranch}
         />
-      </div>
+      </PageWrapper>
 
       {selectedCarId && (
         <Aside onClose={handleCloseAside}>

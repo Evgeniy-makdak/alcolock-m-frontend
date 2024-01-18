@@ -8,6 +8,8 @@ import StyledTable from '@shared/styled_components/styledTable';
 import Loader from '@shared/ui/loader/Loader';
 import Formatters from '@shared/utils/formatters';
 
+import style from './EventsHistory.module.scss';
+
 export const HistoryTypes = {
   byUser: 'byUser',
   byCar: 'byCar',
@@ -19,6 +21,7 @@ const EventsHistory = ({ type, id }) => {
   const [expandRowId, setExpandRowId] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // TODO => подумать, нужны ли эти эффекты в компонентах
   useEffect(() => {
     setExpandRowId(null);
     setLoading(true);
@@ -80,6 +83,7 @@ const EventsHistory = ({ type, id }) => {
     }
   };
 
+  // TODO => вынести маппинг из компонента
   const rows = eventsList.map((event) => {
     return (
       <>
@@ -97,17 +101,12 @@ const EventsHistory = ({ type, id }) => {
           </StyledTable.BodyCell>
 
           <StyledTable.BodyCell sx={{ maxWidth: '48px', width: '48px' }}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                maxWidth: '48px',
-              }}>
+            <div className={style.buttonWrapper}>
               <StyledTable.TableButton onClick={() => onClickExpand(event.id)}>
                 {expandRowId === event.id ? (
-                  <StyledTable.CollapseIcon className={'icon-button'} />
+                  <StyledTable.CollapseIcon />
                 ) : (
-                  <StyledTable.ExpandIcon className={'icon-button'} />
+                  <StyledTable.ExpandIcon />
                 )}
               </StyledTable.TableButton>
             </div>
@@ -124,7 +123,7 @@ const EventsHistory = ({ type, id }) => {
       </>
     );
   });
-
+  // TODO => сделать единые таблицы, заголовки в них
   return (
     <Loader
       isLoading={loading}
@@ -135,7 +134,7 @@ const EventsHistory = ({ type, id }) => {
           flexGrow: 1,
         }),
       }}>
-      <div className={'events-history'}>
+      <div>
         <Table stickyHeader>
           <TableHead
             sx={{

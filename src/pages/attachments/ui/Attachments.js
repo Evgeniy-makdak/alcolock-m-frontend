@@ -3,6 +3,7 @@ import AttachmentsForm from '@entities/attachments/ui/AttachmentsForm';
 import EditTable from '@features/edit_table/ui/EditTable';
 import { UserPermissionsTypes } from '@features/menu_button/model/effects';
 import { userStore } from '@features/menu_button/model/store';
+import { PageWrapper } from '@layout/page_wrapper';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
 
 import {
@@ -28,7 +29,7 @@ const Attachments = () => {
   const userData = userStore.userData.useValue();
 
   return (
-    <div className={'page attachments'}>
+    <PageWrapper>
       <EditTable
         loading={loading}
         headers={HEADERS}
@@ -62,7 +63,7 @@ const Attachments = () => {
         }}
         updateTable={selectedBranch}
       />
-    </div>
+    </PageWrapper>
   );
 };
 

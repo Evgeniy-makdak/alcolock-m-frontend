@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { getItem } from '@pages/alkozamki/model/effects';
 import { alkozamkiStore } from '@pages/alkozamki/model/store';
 import { searchCars } from '@pages/vehicles/model/effects';
+import { InputsColumnWrapper } from '@shared/components/Inputs_column_wrapper/InputsColumnWrapper';
 import Form from '@shared/ui/form/Form';
 import Input from '@shared/ui/input/Input';
 import Loader from '@shared/ui/loader/Loader';
@@ -41,37 +42,39 @@ const AlkozamkiForm = ({ formSelectors, onValidSubmit, selectedItem }) => {
   return (
     <Loader isLoading={!!loading || !!creating || !!changing}>
       <Form formSelectors={formSelectors} onValidSubmit={onValidSubmit}>
-        <Input
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'name',
-            label: 'Наименование',
-          }}
-        />
-        <Input
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'serialNumber',
-            label: 'Серийный номер',
-          }}
-          disabled={!!selectedItem}
-        />
-        <Input
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'serviceId',
-            label: 'uid',
-          }}
-        />
-        <SearchSelect
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'vehicle',
-            label: 'Установлен на ТС',
-          }}
-          onSearch={(query) => searchCars({ query: query, withoutAlcolock: true })}
-          valueFormatter={selectValueFormatter}
-        />
+        <InputsColumnWrapper>
+          <Input
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'name',
+              label: 'Наименование',
+            }}
+          />
+          <Input
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'serialNumber',
+              label: 'Серийный номер',
+            }}
+            disabled={!!selectedItem}
+          />
+          <Input
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'serviceId',
+              label: 'uid',
+            }}
+          />
+          <SearchSelect
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'vehicle',
+              label: 'Установлен на ТС',
+            }}
+            onSearch={(query) => searchCars({ query: query, withoutAlcolock: true })}
+            valueFormatter={selectValueFormatter}
+          />
+        </InputsColumnWrapper>
       </Form>
     </Loader>
   );

@@ -2,13 +2,13 @@ import { HistoryTypes } from '@features/events_history/ui/EventsHistory';
 import MapLink from '@shared/ui/map_link/MapLink';
 import Formatters from '@shared/utils/formatters';
 
-import './EventData.sass';
+import style from './EventData.module.scss';
 
 const EventData = ({ event, type }) => {
   return (
-    <div className={'event-data'}>
+    <div>
       {type !== HistoryTypes.byUser && (
-        <div className="event-data__row">
+        <div className={style.row}>
           <span>Водитель</span>
 
           <span>{Formatters.nameFormatter((event?.events ?? [])[0]?.userRecord)}</span>
@@ -16,7 +16,7 @@ const EventData = ({ event, type }) => {
       )}
 
       {type !== HistoryTypes.byUser && (
-        <div className="event-data__row">
+        <div className={style.row}>
           <span>Почта</span>
 
           <span>{(event?.events ?? [])[0]?.userRecord?.email}</span>
@@ -24,7 +24,7 @@ const EventData = ({ event, type }) => {
       )}
 
       {type === HistoryTypes.byCar && (
-        <div className="event-data__row">
+        <div className={style.row}>
           <span>Наименование алкозамка</span>
 
           <span>{event?.device?.name ?? '-'}</span>
@@ -32,7 +32,7 @@ const EventData = ({ event, type }) => {
       )}
 
       {type === HistoryTypes.byCar && (
-        <div className="event-data__row">
+        <div className={style.row}>
           <span>Серийный номер алкозамка</span>
 
           <span>{event?.device?.serialNumber ?? '-'}</span>
@@ -40,7 +40,7 @@ const EventData = ({ event, type }) => {
       )}
 
       {type !== HistoryTypes.byCar && (
-        <div className="event-data__row">
+        <div className={style.row}>
           <span>Марка ТС</span>
 
           <span>{event?.vehicleRecord?.manufacturer ?? '-'}</span>
@@ -48,7 +48,7 @@ const EventData = ({ event, type }) => {
       )}
 
       {type !== HistoryTypes.byCar && (
-        <div className="event-data__row">
+        <div className={style.row}>
           <span>Модель ТС</span>
 
           <span>{event?.vehicleRecord?.model ?? '-'}</span>
@@ -56,7 +56,7 @@ const EventData = ({ event, type }) => {
       )}
 
       {type !== HistoryTypes.byCar && (
-        <div className="event-data__row">
+        <div className={style.row}>
           <span>Государственный номер</span>
 
           <span>{event?.vehicleRecord?.registrationNumber ?? '-'}</span>
@@ -64,7 +64,7 @@ const EventData = ({ event, type }) => {
       )}
 
       {event.action?.type === 'SOBRIETY_TEST' && type !== HistoryTypes.byAlcolock && (
-        <div className="event-data__row">
+        <div className={style.row}>
           <span>Результат тестирования</span>
 
           <span>
@@ -74,7 +74,7 @@ const EventData = ({ event, type }) => {
         </div>
       )}
 
-      <div className="event-data__row">
+      <div className={style.row}>
         <span>Координаты</span>
 
         <span>

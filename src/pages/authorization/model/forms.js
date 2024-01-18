@@ -16,7 +16,7 @@ const validator = () => ({
     const required = ValidationRules.requiredValidation(value);
     const validEmail = ValidationRules.emailValidation(value);
 
-    return !!required.length ? required : validEmail;
+    return required.length ? required : validEmail;
   },
   password: ValidationRules.requiredValidation,
 });

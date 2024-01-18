@@ -66,7 +66,7 @@ const MenuButton = () => {
   };
 
   return (
-    <div className={'menu-button'}>
+    <div>
       <MuiButton
         onClick={handleClick}
         aria-controls={open ? 'basic-menu' : undefined}

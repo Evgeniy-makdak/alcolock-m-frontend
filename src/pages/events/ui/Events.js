@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import AppConstants from '@app/lib/app_constants';
 import EventsFilterPanel from '@entities/events/ui/EventsFilterPanel/EventsFilterPanel';
 import EditTable from '@features/edit_table/ui/EditTable';
+import { PageWrapper } from '@layout/page_wrapper';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import Aside from '@shared/ui/aside/Aside';
 import EventInfo from '@widgets/events/ui/EventInfo';
@@ -43,7 +44,7 @@ const Events = () => {
 
   return (
     <>
-      <div className={'page events'}>
+      <PageWrapper>
         <EditTable
           loading={loading}
           headers={HEADERS}
@@ -60,7 +61,7 @@ const Events = () => {
           withoutAdd={true}
           updateTable={selectedBranch}
         />
-      </div>
+      </PageWrapper>
 
       {selectedEventId && (
         <Aside onClose={handleCloseAside}>

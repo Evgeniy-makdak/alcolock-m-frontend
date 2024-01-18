@@ -14,9 +14,10 @@ import Loader from '@shared/ui/loader/Loader';
 import PhoneInput from '@shared/ui/phone_input/PhoneInput';
 import Select from '@shared/ui/select/Select';
 import { getErrorMessagesFromServer } from '@shared/validations/server_error_handler';
+// TODO => вынести всё использование dayjs в shared слой, там экспортировать готовые функции
 import dayjs from 'dayjs';
 
-import './UserForm.sass';
+import style from './UserForm.module.scss';
 
 const UserForm = ({ formSelectors, onValidSubmit, selectedItem = null }) => {
   const setInitData = formSelectors.useSetInitFormData();
@@ -58,8 +59,8 @@ const UserForm = ({ formSelectors, onValidSubmit, selectedItem = null }) => {
 
   return (
     <Loader isLoading={!!loading || !!creating || !!changing}>
-      <Form formSelectors={formSelectors} onValidSubmit={onValidSubmit} className={'user-form'}>
-        <div className="user-form__column">
+      <Form formSelectors={formSelectors} onValidSubmit={onValidSubmit} className={style.userForm}>
+        <div className={style.column}>
           <Input
             formSelectors={formSelectors}
             fieldParams={{
@@ -122,7 +123,7 @@ const UserForm = ({ formSelectors, onValidSubmit, selectedItem = null }) => {
           />
         </div>
 
-        <div className="user-form__column">
+        <div className={style.column}>
           <Input
             formSelectors={formSelectors}
             fieldParams={{

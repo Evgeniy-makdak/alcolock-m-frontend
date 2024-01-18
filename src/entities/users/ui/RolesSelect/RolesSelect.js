@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { uploadRolesList } from '@pages/roles/model/effects';
 import ValidationsWrapper from '@shared/components/validations_wrapper/ValidationsWrapper';
 
-import './RolesSelect.sass';
+import style from './RolesSelect.module.scss';
 
 const RolesSelect = ({ formSelectors, fieldParams, isEdit = false }) => {
   const [allRoles, setAllRoles] = useState([]);
@@ -55,16 +55,16 @@ const RolesSelect = ({ formSelectors, fieldParams, isEdit = false }) => {
   };
 
   return (
-    <div className={'roles-select'}>
+    <div className={style.rolesSelect}>
       <span
         style={{
-          color: !!validations.length ? 'red' : 'rgba(0, 0, 0, 0.6)',
+          color: validations.length ? 'red' : 'rgba(0, 0, 0, 0.6)',
         }}>
         {fieldParams.label}
       </span>
 
       <ValidationsWrapper validationMsgs={validations}>
-        <div className="roles-select__wrapper">
+        <div className={style.wrapper}>
           {loading && <span style={{ fontSize: 14 }}>Загрузка...</span>}
           {allRoles.map((role) => {
             const isDisabled =
@@ -75,7 +75,7 @@ const RolesSelect = ({ formSelectors, fieldParams, isEdit = false }) => {
             return (
               <span
                 key={role.id}
-                className={`roles-select__role ${value.includes(role.id) ? 'active' : ''} ${disabledClass}`}
+                className={`${style.role} ${value.includes(role.id) ? style.active : ''} ${disabledClass}`}
                 onClick={() => onClickRole(role.id)}>
                 {role.name}
               </span>

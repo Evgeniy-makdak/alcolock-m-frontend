@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import AppConstants from '@app/lib/app_constants';
 import { getCar } from '@pages/vehicles/model/effects';
 import { vehiclesStore } from '@pages/vehicles/model/store';
+import { InputsColumnWrapper } from '@shared/components/Inputs_column_wrapper/InputsColumnWrapper';
 import Form from '@shared/ui/form/Form';
 import Input from '@shared/ui/input/Input';
 import Loader from '@shared/ui/loader/Loader';
@@ -37,59 +38,61 @@ const VehiclesForm = ({ formSelectors, onValidSubmit, selectedItem }) => {
   return (
     <Loader isLoading={!!loadingData || !!creating || !!changing}>
       <Form formSelectors={formSelectors} onValidSubmit={onValidSubmit}>
-        <Input
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'manufacturer',
-            label: 'Марка',
-          }}
-        />
-        <Input
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'model',
-            label: 'Модель',
-          }}
-        />
-        <SearchSelect
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'type',
-            label: 'Тип',
-          }}
-          defOptions={AppConstants.carTypesList}
-          valueFormatter={typeSelectValueFormatter}
-        />
-        <Input
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'vin',
-            label: 'VIN',
-          }}
-        />
-        <SearchSelect
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'color',
-            label: 'Цвет',
-          }}
-          valueFormatter={colorSelectValueFormatter}
-          defOptions={AppConstants.carColorsList}
-        />
-        <Input
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'registrationNumber',
-            label: 'Государственный номер',
-          }}
-        />
-        <Input
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'year',
-            label: 'Год выпуска',
-          }}
-        />
+        <InputsColumnWrapper>
+          <Input
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'manufacturer',
+              label: 'Марка',
+            }}
+          />
+          <Input
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'model',
+              label: 'Модель',
+            }}
+          />
+          <SearchSelect
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'type',
+              label: 'Тип',
+            }}
+            defOptions={AppConstants.carTypesList}
+            valueFormatter={typeSelectValueFormatter}
+          />
+          <Input
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'vin',
+              label: 'VIN',
+            }}
+          />
+          <SearchSelect
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'color',
+              label: 'Цвет',
+            }}
+            valueFormatter={colorSelectValueFormatter}
+            defOptions={AppConstants.carColorsList}
+          />
+          <Input
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'registrationNumber',
+              label: 'Государственный номер',
+            }}
+          />
+          <Input
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'year',
+              label: 'Год выпуска',
+            }}
+          />
+        </InputsColumnWrapper>
       </Form>
     </Loader>
   );

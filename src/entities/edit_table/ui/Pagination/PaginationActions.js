@@ -5,6 +5,8 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 
+import style from './PaginationActions.module.scss';
+
 const PaginationActions = (props) => {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -18,7 +20,7 @@ const PaginationActions = (props) => {
   };
 
   return (
-    <div className={'pagination__actions'}>
+    <div className={style.paginationActions}>
       <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}

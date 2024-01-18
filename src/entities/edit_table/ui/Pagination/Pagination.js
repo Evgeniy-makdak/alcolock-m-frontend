@@ -1,10 +1,9 @@
-import './Pagination.sass';
 import PaginationActions from './PaginationActions';
 import StyledPagination from './styled';
 
 const Pagination = ({ count, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage }) => {
   return (
-    <div className={'pagination'}>
+    <div>
       <StyledPagination.Pagination
         component="div"
         count={count}

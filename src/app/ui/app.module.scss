@@ -1,0 +1,14 @@
+.app {
+  height: 100vh;
+  max-height: 100vh;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.loadingPage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

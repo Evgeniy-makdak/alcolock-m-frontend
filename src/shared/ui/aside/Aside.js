@@ -1,13 +1,13 @@
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-import './Aside.sass';
+import style from './Aside.module.scss';
 
 const Aside = ({ children, onClose }) => {
   return (
-    <div className={'aside'}>
+    <div className={style.aside}>
       {children}
 
-      <div className="aside__close" onClick={onClose}>
+      <div className={style.close} onClick={onClose}>
         <ArrowBackIosNewIcon />
       </div>
     </div>

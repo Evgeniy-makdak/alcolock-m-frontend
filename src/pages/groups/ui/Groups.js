@@ -5,6 +5,7 @@ import RoutePaths from '@app/lib/route_paths';
 import GroupForm from '@entities/groups/ui/GroupForm/GroupForm';
 import EditTable from '@features/edit_table/ui/EditTable';
 import { userStore } from '@features/menu_button/model/store';
+import { PageWrapper } from '@layout/page_wrapper';
 import { useToggle } from '@shared/hooks/useToggle';
 import GroupInfo from '@widgets/groups/ui/GroupInfo/GroupInfo';
 import { useNavigate } from 'react-router-dom';
@@ -51,7 +52,7 @@ const Groups = () => {
 
   return (
     <>
-      <div className={'page groups'}>
+      <PageWrapper>
         <EditTable
           loading={loading}
           headers={HEADERS}
@@ -81,7 +82,7 @@ const Groups = () => {
           onRowClick={onClickRow}
           afterEdit={afterEdit}
         />
-      </div>
+      </PageWrapper>
 
       {selectedGroupId && (
         <GroupInfo

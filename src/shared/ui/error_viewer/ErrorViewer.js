@@ -1,10 +1,14 @@
-import './ErrorViewer.sass';
+import style from './ErrorViewer.module.scss';
 
 const ErrorViewer = ({ errorMessages }) => {
   return (
-    <div className={'error-viewer'}>
+    <div className={style.errorViewer}>
       {errorMessages.map((error, i) => {
-        return <span key={i}>{error}</span>;
+        return (
+          <span className={style.text} key={i}>
+            {error}
+          </span>
+        );
       })}
     </div>
   );

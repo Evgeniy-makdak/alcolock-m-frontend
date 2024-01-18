@@ -8,6 +8,8 @@ import { getEvent } from '@pages/events/model/effects';
 import Loader from '@shared/ui/loader/Loader';
 import Formatters from '@shared/utils/formatters';
 
+import style from './AutoServiceInfo.module.scss';
+
 const AutoServiceInfo = ({ selectedId, toggleUpdateInfo, toggleUpdateTable, updateData }) => {
   const [itemData, setItemData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -35,7 +37,7 @@ const AutoServiceInfo = ({ selectedId, toggleUpdateInfo, toggleUpdateTable, upda
 
   return (
     <Loader isLoading={loading} styles={{ wrapper: (base) => ({ ...base, height: '100%' }) }}>
-      <div className={'alcolock-info'}>
+      <div className={style.alcolockInfo}>
         <Info
           // TODO => вынести массив с заголовками для таблиц из верстки в константы
           fields={[

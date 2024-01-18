@@ -1,1 +1,1 @@
-export const API_URL = 'https://alcolock-smart.alfaintegral.ru/';
+export const API_URL = process.env.REACT_APP_API_URL;

@@ -5,6 +5,7 @@ import { getAttachment } from '@pages/attachments/model/effects';
 import { attachmentsStore } from '@pages/attachments/model/store';
 import { searchDrivers } from '@pages/users/model/effects';
 import { searchCars } from '@pages/vehicles/model/effects';
+import { InputsColumnWrapper } from '@shared/components/Inputs_column_wrapper/InputsColumnWrapper';
 import Form from '@shared/ui/form/Form';
 import Loader from '@shared/ui/loader/Loader';
 import SearchSelect from '@shared/ui/search_select/SearchSelect';
@@ -58,25 +59,27 @@ const AttachmentsForm = ({ formSelectors, onValidSubmit, selectedItem }) => {
   return (
     <Loader isLoading={isLoading}>
       <Form onValidSubmit={onValidSubmit} formSelectors={formSelectors}>
-        <SearchSelect
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'vehicle',
-            label: 'ТС',
-          }}
-          valueFormatter={carSelectValueFormatter}
-          onSearch={(query) => searchCars({ query })}
-        />
+        <InputsColumnWrapper>
+          <SearchSelect
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'vehicle',
+              label: 'ТС',
+            }}
+            valueFormatter={carSelectValueFormatter}
+            onSearch={(query) => searchCars({ query })}
+          />
 
-        <SearchSelect
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'driver',
-            label: 'Водитель',
-          }}
-          valueFormatter={driverSelectValueFormatter}
-          onSearch={searchDrivers}
-        />
+          <SearchSelect
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'driver',
+              label: 'Водитель',
+            }}
+            valueFormatter={driverSelectValueFormatter}
+            onSearch={searchDrivers}
+          />
+        </InputsColumnWrapper>
       </Form>
     </Loader>
   );

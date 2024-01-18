@@ -7,6 +7,7 @@ import EditTable from '@features/edit_table/ui/EditTable';
 import EventsHistory, { HistoryTypes } from '@features/events_history/ui/EventsHistory';
 import { UserPermissionsTypes } from '@features/menu_button/model/effects';
 import { userStore } from '@features/menu_button/model/store';
+import { PageWrapper } from '@layout/page_wrapper';
 import { useToggle } from '@shared/hooks/useToggle';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import Aside from '@shared/ui/aside/Aside';
@@ -56,7 +57,7 @@ const Alkozamki = () => {
 
   return (
     <>
-      <div className={'page alkozamki'}>
+      <PageWrapper>
         <EditTable
           loading={loading}
           headers={HEADERS}
@@ -95,7 +96,7 @@ const Alkozamki = () => {
           onRowClick={onClickRow}
           updateTable={[updateTable, selectedBranch]}
         />
-      </div>
+      </PageWrapper>
 
       {selectedAlcolockId && (
         <Aside onClose={handleCloseAside}>

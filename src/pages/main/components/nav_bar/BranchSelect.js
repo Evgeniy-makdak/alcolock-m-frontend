@@ -5,7 +5,7 @@ import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import { isEqual } from 'lodash';
 
 import { searchGroups } from '../../../groups/model/effects';
-import './BranchSelect.sass';
+import style from './BranchSelect.module.scss';
 
 const BranchSelect = () => {
   const [selectedBranch, setSelectedBranch] = selectedBranchStore.selectedBranch.useState();
@@ -89,7 +89,7 @@ const BranchSelect = () => {
   };
 
   return (
-    <div className={'branch-select'}>
+    <div className={style.branchSelect}>
       <Autocomplete
         fullWidth
         noOptionsText={'Ничего не найдено'}

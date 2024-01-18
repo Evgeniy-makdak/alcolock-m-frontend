@@ -8,7 +8,7 @@ const Form = ({ children, formSelectors, onValidSubmit, className = '' }) => {
   }, [onValidSubmit]);
 
   return (
-    <div className={`form ${className}`}>
+    <div className={`${className}`}>
       <form
         onKeyDown={(e) => {
           if (e.code === 'Enter') e.preventDefault();

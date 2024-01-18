@@ -10,6 +10,8 @@ import Button, { ButtonsType } from '@shared/ui/button/Button';
 import Loader from '@shared/ui/loader/Loader';
 import Popup from '@shared/ui/popup/Popup';
 
+import style from './EditTable.module.scss';
+
 // TODO => разнести этот компонент на более мелкие компоненты
 const EditTable = ({
   headers,
@@ -401,7 +403,7 @@ const EditTable = ({
                         maxWidth: '114px',
                       }}>
                       <StyledTable.TableButton onClick={toggleAddModal}>
-                        <StyledTable.AddIcon className={'icon-button'} />
+                        <StyledTable.AddIcon />
                       </StyledTable.TableButton>
                     </div>
                   )}
@@ -438,7 +440,7 @@ const EditTable = ({
 
                   {!!additionalActions.length && (
                     <StyledTable.ActionsCell>
-                      <div className={'table-actions-wrapper'}>
+                      <div className={style.tableActionsWrapper}>
                         {additionalActions.map((elem, i) => {
                           return cloneElement(elem, {
                             ...elem.props,
@@ -453,7 +455,7 @@ const EditTable = ({
                   {!withoutAction && (
                     <StyledTable.ActionsCell>
                       {!(row.disabledAction ?? false) && (
-                        <div className={'table-actions-wrapper'}>
+                        <div className={style.tableActionsWrapper}>
                           {editItemPromise && (
                             <StyledTable.TableButton onClick={(e) => onClickEdit(e, row.id)}>
                               <StyledTable.EditIcon />
@@ -508,7 +510,7 @@ const EditTable = ({
           onCloseModal={handleCloseAddModal}
           headerTitle={addPopupParams.title}
           closeonClickSpace={false}
-          size={addPopupParams.size}
+          styles={addPopupParams.style}
           body={
             <addPopupParams.Body
               {...(addPopupParams.additionalBodyProps ?? {})}
@@ -538,7 +540,7 @@ const EditTable = ({
           onCloseModal={handleCloseEditModal}
           closeonClickSpace={false}
           headerTitle={editPopupParams.title}
-          size={editPopupParams.size}
+          styles={editPopupParams.style}
           body={
             <editPopupParams.Body
               formSelectors={editFormSelectors}

@@ -7,9 +7,11 @@ import {
 } from '@pages/vehicles/model/effects';
 import MultipleSearchSelect from '@shared/ui/multiple_search_select/MultipleSearchSelect';
 
+import style from './EventsFilterPanel.module.scss';
+
 const EventsFilterPanel = () => {
   return (
-    <div className={'filters-panel'}>
+    <div className={style.filtersPanel}>
       <MultipleSearchSelect
         key={'users'}
         formSelectors={filtersFormSelectors}

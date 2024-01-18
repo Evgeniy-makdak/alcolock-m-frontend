@@ -18,8 +18,9 @@ import Popup from '@shared/ui/popup/Popup';
 import Formatters from '@shared/utils/formatters';
 import SearchMethods from '@shared/utils/global_methods';
 
-import './AlkozamkiServiceMode.sass';
+import style from './AlkozamkiServiceMode.module.scss';
 
+// TODO => вынести все лишние функции в lib - компонент очень раздут
 const AlkozamkiServiceMode = ({
   data,
   toggleUpdateInfo,
@@ -192,10 +193,10 @@ const AlkozamkiServiceMode = ({
             return (
               <>
                 {servText}
-                <div className={'alcolock_service_mode__toggles'}>
+                <div className={style.toggles}>
                   <button>ожидание</button>
                   <button
-                    className={'cancel'}
+                    className={style.cancel}
                     onClick={() => handleCancelActivate(serviceModeInfo.action?.id)}>
                     Отменить
                   </button>
@@ -218,15 +219,15 @@ const AlkozamkiServiceMode = ({
             return (
               <>
                 {appText}
-                <div className={'alcolock_service_mode__toggles'}>
+                <div className={style.toggles}>
                   <button
-                    className={'accept'}
+                    className={style.accept}
                     onClick={() => handleAcceptActivateService(serviceModeInfo.action?.id)}>
                     Принять
                   </button>
 
                   <button
-                    className={'cancel'}
+                    className={style.cancel}
                     onClick={() => handleRejectActivateService(serviceModeInfo.action?.id)}>
                     Отклонить
                   </button>
@@ -286,14 +287,14 @@ const AlkozamkiServiceMode = ({
         }
       } else {
         return (
-          <div className={'alcolock_service_mode__toggles'}>
+          <div className={style.toggles}>
             <button
-              className={!isServiceMode ? 'active' : ''}
+              className={!isServiceMode ? style.active : style.disabled}
               onClick={!isServiceMode ? toggleActivatePopup : null}>
               Включить
             </button>
             <button
-              className={isServiceMode ? 'active' : ''}
+              className={isServiceMode ? style.active : style.disabled}
               onClick={isServiceMode ? toggleDeactivatePopup : null}>
               Выключить
             </button>
@@ -305,7 +306,7 @@ const AlkozamkiServiceMode = ({
     }
   };
 
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const getText = () => {
     switch (data.state) {
       case 'OFFLINE_SWITCH':
@@ -387,8 +388,8 @@ const AlkozamkiServiceMode = ({
 
   return (
     <>
-      <div className={'alcolock_service_mode'}>
-        <span className={'alcolock_service_mode__name'}>Режим "Автосервис": </span>
+      <div className={style.alcolockServiceMode}>
+        <span className={style.name}>Режим "Автосервис": </span>
         {/*{getText()}*/}
         {getButtons()}
       </div>

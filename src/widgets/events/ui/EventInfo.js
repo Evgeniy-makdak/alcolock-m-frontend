@@ -7,7 +7,7 @@ import Loader from '@shared/ui/loader/Loader';
 import MapLink from '@shared/ui/map_link/MapLink';
 import Formatters from '@shared/utils/formatters';
 
-import './EventInfo.sass';
+import style from './EventInfo.module.scss';
 
 const EventInfo = ({ selectedEventId }) => {
   const [eventData, setEventData] = useState(null);
@@ -30,9 +30,9 @@ const EventInfo = ({ selectedEventId }) => {
 
   return (
     <Loader isLoading={loading}>
-      <div className={'event-info'}>
+      <div className={style.eventInfo}>
         {!!eventData?.summary?.photoFileName && (
-          <div className="event-info__img">
+          <div className={style.img}>
             <Image url={eventData.summary.photoFileName} />
           </div>
         )}

@@ -4,12 +4,12 @@ import { Autocomplete, TextField } from '@mui/material';
 import { isEqual } from 'lodash';
 
 import ValidationsWrapper from '../../components/validations_wrapper/ValidationsWrapper';
+import { InputWrapper } from '../../styled_components/styledInputWrapper';
 
 const SearchSelect = ({
   formSelectors,
   fieldParams,
   defOptions,
-  classes = '',
   valueFormatter = (item) => item,
   onSearch,
 }) => {
@@ -84,36 +84,29 @@ const SearchSelect = ({
   const isOptionEqualToValue = (option, value) => {
     return isEqual(option.value, value?.value);
   };
-
   return (
-    <div className={`input ${classes}`}>
-      <div className="input__field">
-        <ValidationsWrapper validationMsgs={validations}>
-          <Autocomplete
-            fullWidth
-            options={options}
-            onChange={onChange}
-            value={option}
-            loading={loading}
-            onInputChange={onInputChange}
-            noOptionsText={'Ничего не найдено'}
-            loadingText={'Загрузка...'}
-            filterOptions={filterOptions}
-            isOptionEqualToValue={isOptionEqualToValue}
-            getOptionLabel={(option) => option.label}
-            renderInput={(params) => {
-              return (
-                <TextField
-                  {...params}
-                  label={fieldParams.label ?? ''}
-                  error={!!validations.length}
-                />
-              );
-            }}
-          />
-        </ValidationsWrapper>
-      </div>
-    </div>
+    <InputWrapper>
+      <ValidationsWrapper validationMsgs={validations}>
+        <Autocomplete
+          fullWidth
+          options={options}
+          onChange={onChange}
+          value={option}
+          loading={loading}
+          onInputChange={onInputChange}
+          noOptionsText={'Ничего не найдено'}
+          loadingText={'Загрузка...'}
+          filterOptions={filterOptions}
+          isOptionEqualToValue={isOptionEqualToValue}
+          getOptionLabel={(option) => option.label}
+          renderInput={(params) => {
+            return (
+              <TextField {...params} label={fieldParams.label ?? ''} error={!!validations.length} />
+            );
+          }}
+        />
+      </ValidationsWrapper>
+    </InputWrapper>
   );
 };
 

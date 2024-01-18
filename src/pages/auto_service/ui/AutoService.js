@@ -4,6 +4,7 @@ import AppConstants from '@app/lib/app_constants';
 import RowTableInfo from '@entities/row_table_info/ui/RowTableInfo';
 import EditTable from '@features/edit_table/ui/EditTable';
 import EventsHistory, { HistoryTypes } from '@features/events_history/ui/EventsHistory';
+import { PageWrapper } from '@layout/page_wrapper';
 import { useToggle } from '@shared/hooks/useToggle';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import Aside from '@shared/ui/aside/Aside';
@@ -39,7 +40,7 @@ const AutoService = () => {
 
   return (
     <>
-      <div className={'page auto-service'}>
+      <PageWrapper>
         <EditTable
           loading={loading}
           headers={HEADERS}
@@ -53,7 +54,7 @@ const AutoService = () => {
           selectedRow={selectedItemId}
           onRowClick={onClickRow}
         />
-      </div>
+      </PageWrapper>
 
       {selectedItemId && (
         <Aside onClose={handleCloseAside}>

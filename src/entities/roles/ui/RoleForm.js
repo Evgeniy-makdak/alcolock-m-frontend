@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import AppConstants from '@app/lib/app_constants';
 import { getRole } from '@pages/roles/model/effects';
 import { rolesStore } from '@pages/roles/model/store';
+import { InputsColumnWrapper } from '@shared/components/Inputs_column_wrapper/InputsColumnWrapper';
 import Form from '@shared/ui/form/Form';
 import Input from '@shared/ui/input/Input';
 import Loader from '@shared/ui/loader/Loader';
@@ -39,50 +40,52 @@ const RoleForm = ({ formSelectors, onValidSubmit, selectedItem }) => {
   return (
     <Loader isLoading={!!loading || !!changing || !!creating}>
       <Form onValidSubmit={onValidSubmit} formSelectors={formSelectors}>
-        <Input
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'role',
-            label: 'Название роли',
-          }}
-        />
+        <InputsColumnWrapper>
+          <Input
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'role',
+              label: 'Название роли',
+            }}
+          />
 
-        <Select
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'user_control',
-            label: 'Пользователи',
-          }}
-          options={AppConstants.permissionsList}
-        />
+          <Select
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'user_control',
+              label: 'Пользователи',
+            }}
+            options={AppConstants.permissionsList}
+          />
 
-        <Select
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'car_control',
-            label: 'ТС',
-          }}
-          options={AppConstants.permissionsList}
-        />
+          <Select
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'car_control',
+              label: 'ТС',
+            }}
+            options={AppConstants.permissionsList}
+          />
 
-        <Select
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'alkozamki_control',
-            label: 'Алкозамки',
-          }}
-          options={AppConstants.permissionsList}
-        />
+          <Select
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'alkozamki_control',
+              label: 'Алкозамки',
+            }}
+            options={AppConstants.permissionsList}
+          />
 
-        <Select
-          formSelectors={formSelectors}
-          fieldParams={{
-            name: 'attachments_control',
-            label: 'Привязки',
-          }}
-          options={AppConstants.permissionsList}
-          disabled={true}
-        />
+          <Select
+            formSelectors={formSelectors}
+            fieldParams={{
+              name: 'attachments_control',
+              label: 'Привязки',
+            }}
+            options={AppConstants.permissionsList}
+            disabled={true}
+          />
+        </InputsColumnWrapper>
       </Form>
     </Loader>
   );

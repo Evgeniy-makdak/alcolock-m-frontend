@@ -1,6 +1,6 @@
 import { cloneElement } from 'react';
 
-import './ValidationsWrapper.sass';
+import style from './ValidationsWrapper.module.scss';
 
 const ValidationsWrapper = ({ children, validationMsgs = [], isShowValidMsg = true }) => {
   const styledChildren = () => {
@@ -8,12 +8,12 @@ const ValidationsWrapper = ({ children, validationMsgs = [], isShowValidMsg = tr
       return children.map((child, i) => {
         return cloneElement(child, {
           key: i,
-          className: `${child.props.classNaWWme ?? ''}${validationMsgs.length ? ' error-input' : ''}`,
+          className: `${child.props.classNaWWme ?? ''}${validationMsgs.length ? style.errorInput : ''}`,
         });
       });
     } else {
       return cloneElement(children, {
-        className: `${children.props.className ?? ''}${validationMsgs.length ? ' error-input' : ''}`,
+        className: `${children.props.className ?? ''}${validationMsgs.length ? style.errorInput : ''}`,
       });
     }
   };
@@ -23,10 +23,10 @@ const ValidationsWrapper = ({ children, validationMsgs = [], isShowValidMsg = tr
       {styledChildren()}
 
       {isShowValidMsg && (
-        <div className={'validation-messages'}>
+        <div>
           {validationMsgs.map((msg, i) => {
             return (
-              <span key={i} className={'validation-messages__msg'}>
+              <span key={i} className={style.validationMessages}>
                 {msg}
               </span>
             );

@@ -10,7 +10,7 @@ const FormCheckbox = ({ formSelectors, fieldParams, disabled = false }) => {
   };
 
   return (
-    <div className={'form-checkbox'}>
+    <div>
       <FormControlLabel
         control={<Checkbox checked={value} onChange={onChange} disabled={disabled} />}
         label={fieldParams.label ?? ''}

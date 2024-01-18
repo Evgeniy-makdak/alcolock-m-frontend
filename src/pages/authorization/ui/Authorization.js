@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import RoutePaths from '@app/lib/route_paths';
 import { onAuthorization } from '@app/model/effects';
 import { AuthStatus, appStore } from '@app/model/store';
+import { InputsColumnWrapper } from '@shared/components/Inputs_column_wrapper/InputsColumnWrapper';
 import ErrorViewer from '@shared/ui/error_viewer/ErrorViewer';
 import Form from '@shared/ui/form/Form';
 import FormCheckbox from '@shared/ui/form_checkbox/FormCheckbox';
@@ -14,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { authFormSelectors } from '../model/forms';
 import { authStore } from '../model/store';
-import './Authorization.sass';
+import style from './Authorization.module.scss';
 
 const Authorization = () => {
   const isValidForm = authFormSelectors.useIsFormValid();
@@ -53,10 +54,12 @@ const Authorization = () => {
   };
 
   return (
-    <div className={'authorization'}>
-      <Logo />
-      <div className="authorization__wrapper">
-        <h1>
+    <div className={style.authorization}>
+      <div className={style.logo}>
+        <Logo />
+      </div>
+      <div className={style.wrapper}>
+        <h1 className={style.title}>
           Информационная система <br /> «Алкозамок»
         </h1>
 
@@ -70,30 +73,36 @@ const Authorization = () => {
               alignItems: 'center',
             }),
           }}>
-          <Form formSelectors={authFormSelectors} onValidSubmit={handleAuthorization}>
-            <Input
-              formSelectors={authFormSelectors}
-              fieldParams={{
-                name: 'username',
-                label: 'Логин',
-              }}
-            />
-            <Input
-              formSelectors={authFormSelectors}
-              fieldParams={{
-                name: 'password',
-                label: 'Пароль',
-                type: 'password',
-              }}
-            />
+          <Form
+            className={style.form}
+            formSelectors={authFormSelectors}
+            onValidSubmit={handleAuthorization}>
+            <InputsColumnWrapper>
+              <Input
+                formSelectors={authFormSelectors}
+                fieldParams={{
+                  name: 'username',
+                  label: 'Логин',
+                }}
+              />
 
-            <FormCheckbox
-              formSelectors={authFormSelectors}
-              fieldParams={{
-                name: 'rememberMe',
-                label: 'Запомнить меня',
-              }}
-            />
+              <Input
+                formSelectors={authFormSelectors}
+                fieldParams={{
+                  name: 'password',
+                  label: 'Пароль',
+                  type: 'password',
+                }}
+              />
+
+              <FormCheckbox
+                formSelectors={authFormSelectors}
+                fieldParams={{
+                  name: 'rememberMe',
+                  label: 'Запомнить меня',
+                }}
+              />
+            </InputsColumnWrapper>
           </Form>
 
           {!!serverErrorMessages.length && (
@@ -105,7 +114,7 @@ const Authorization = () => {
             </div>
           )}
 
-          <button className={'authorization__btn'} disabled={!isValidForm} onClick={handleSubmit}>
+          <button className={style.button} disabled={!isValidForm} onClick={handleSubmit}>
             Вход
           </button>
         </Loader>

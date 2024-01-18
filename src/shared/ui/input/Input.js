@@ -5,7 +5,7 @@ import { IconButton, InputAdornment, TextField } from '@mui/material';
 
 import ValidationsWrapper from '../../components/validations_wrapper/ValidationsWrapper';
 import { mapFieldError } from '../../utils/field_error_mapper';
-import './Input.sass';
+import style from './Input.module.scss';
 
 const Input = ({ formSelectors, fieldParams, disabled = false, withChange, fieldsErrors = [] }) => {
   const value = formSelectors.useFormDataValue(fieldParams.name) ?? '';
@@ -41,8 +41,8 @@ const Input = ({ formSelectors, fieldParams, disabled = false, withChange, field
   };
 
   return (
-    <div className={'input'}>
-      <div className="input__field">
+    <div className={style.input}>
+      <div className={style.field}>
         <ValidationsWrapper validationMsgs={validations}>
           {fieldParams.type === 'password' ? (
             <TextField

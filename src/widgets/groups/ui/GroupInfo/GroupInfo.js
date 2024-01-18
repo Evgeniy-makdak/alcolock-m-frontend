@@ -8,7 +8,7 @@ import Loader from '@shared/ui/loader/Loader';
 import GroupAlcolocksTable from '../GroupAlcolocksTable/GroupAlcolocksTable';
 import GroupCarTable from '../GroupCarTable/GroupCarTable';
 import GroupUsersTable from '../GroupUsersTable/GroupUsersTable';
-import './GroupInfo.sass';
+import style from './GroupInfo.module.scss';
 
 export const GroupTabs = {
   users: 'users',
@@ -43,7 +43,7 @@ const GroupInfo = ({ selectedGroupId, updateInfo, onClose }) => {
         return null;
     }
   };
-
+  // TODO => сделать общую обертку для вкладок (табов)
   return (
     <Loader
       isLoading={loadingGroupData}
@@ -56,34 +56,34 @@ const GroupInfo = ({ selectedGroupId, updateInfo, onClose }) => {
           overflow: 'hidden',
         }),
       }}>
-      <div className={'page groups-info'}>
-        <div className="groups-info__name">
+      <div className={`page ${style.groupsInfo}`}>
+        <div className={style.name}>
           <span>{groupInfo?.name ?? '-'}</span>
         </div>
 
-        <div className="groups-info__tabs">
+        <div className={style.tabs}>
           <button
+            // TODO => сделать общую обертку для вкладок (табов)
             onClick={() => setActiveTab(GroupTabs.users)}
-            className={activeTab === GroupTabs.users ? 'active' : ''}>
+            className={activeTab === GroupTabs.users ? style.active : ''}>
             Пользователи
           </button>
 
           <button
             onClick={() => setActiveTab(GroupTabs.alcolocks)}
-            className={activeTab === GroupTabs.alcolocks ? 'active' : ''}>
+            className={activeTab === GroupTabs.alcolocks ? style.active : ''}>
             Алкозамки
           </button>
-
           <button
             onClick={() => setActiveTab(GroupTabs.cars)}
-            className={activeTab === GroupTabs.cars ? 'active' : ''}>
+            className={activeTab === GroupTabs.cars ? style.active : ''}>
             Транспорт
           </button>
         </div>
 
         {getContent()}
 
-        <div className="groups-info__close" onClick={onClose}>
+        <div className={style.close} onClick={onClose}>
           <ArrowBackIosNewIcon />
         </div>
       </div>

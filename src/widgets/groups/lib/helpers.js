@@ -48,7 +48,7 @@ export const getUsersRowsTemplate = (item) => {
         value: item.email,
       },
       {
-        value: !!item.driver?.vehicleAllotments?.length ? (
+        value: item.driver?.vehicleAllotments?.length ? (
           <span
             style={{
               display: 'flex',

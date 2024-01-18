@@ -7,6 +7,7 @@ import EventsHistory, { HistoryTypes } from '@features/events_history/ui/EventsH
 import { UserPermissionsTypes } from '@features/menu_button/model/effects';
 import { userStore } from '@features/menu_button/model/store';
 import UserForm from '@features/users/ui/UserForm';
+import { PageWrapper } from '@layout/page_wrapper';
 import { useToggle } from '@shared/hooks/useToggle';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import Aside from '@shared/ui/aside/Aside';
@@ -23,7 +24,7 @@ import {
 import { UsersSortTypes, addUser, changeUser, deleteUser, uploadUsersList } from '../model/effects';
 import { addUserFormSelectors, editUserFromSelectors } from '../model/forms';
 import { usersStore } from '../model/store';
-import './Users.sass';
+import style from './Users.module.scss';
 
 const Users = () => {
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -53,7 +54,7 @@ const Users = () => {
 
   return (
     <>
-      <div className={'page users'}>
+      <PageWrapper>
         <EditTable
           loading={!!loading}
           headers={HEADERS}
@@ -79,12 +80,12 @@ const Users = () => {
           addPopupParams={{
             title: ADD_POPUP_TITLE,
             Body: UserForm,
-            size: 'l',
+            style: style.large,
           }}
           editPopupParams={{
             title: EDIT_POPUP_TITLE,
             Body: UserForm,
-            size: 'l',
+            style: style.large,
           }}
           onRowClick={onClickRow}
           afterDelete={afterDelete}
@@ -92,7 +93,7 @@ const Users = () => {
           afterEdit={afterEdit}
           updateTable={selectedBranch}
         />
-      </div>
+      </PageWrapper>
 
       {selectedUserId && (
         <Aside onClose={handleCloseAside}>

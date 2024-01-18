@@ -2,6 +2,7 @@ import AppConstants from '@app/lib/app_constants';
 import Formatters from '@shared/utils/formatters';
 
 import { UsersSortTypes } from '../model/effects';
+import style from '../ui/Users.module.scss';
 
 export const HEADERS = [
   {
@@ -45,15 +46,10 @@ export const getRowsTemplate = (user) => {
       },
       {
         value: (
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '8px',
-            }}>
+          <div className={style.wrapperName}>
             {user.groupMembership?.map((group) => {
               return (
-                <span key={group.id} className={'role-span'}>
+                <span key={group.id} className={style.roleSpan}>
                   {group.group.name}
                 </span>
               );

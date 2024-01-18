@@ -5,6 +5,7 @@ import RoutePaths from '@app/lib/route_paths';
 import RoleForm from '@entities/roles/ui/RoleForm';
 import EditTable from '@features/edit_table/ui/EditTable';
 import { userStore } from '@features/menu_button/model/store';
+import { PageWrapper } from '@layout/page_wrapper';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -31,7 +32,7 @@ const Roles = () => {
   }, [userData]);
 
   return (
-    <div className={'page permissions'}>
+    <PageWrapper>
       <EditTable
         loading={loading}
         headers={HEADERS}
@@ -58,7 +59,7 @@ const Roles = () => {
         }}
         withDate={false}
       />
-    </div>
+    </PageWrapper>
   );
 };
 

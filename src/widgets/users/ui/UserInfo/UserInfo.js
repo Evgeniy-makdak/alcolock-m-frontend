@@ -73,7 +73,7 @@ const UserInfo = ({ selectedUserId, updateData }) => {
           },
           {
             label: 'Категории:',
-            value: !!(userData?.driver?.licenseClass ?? []).length
+            value: (userData?.driver?.licenseClass ?? []).length
               ? userData?.driver.licenseClass.join(', ')
               : '-',
           },

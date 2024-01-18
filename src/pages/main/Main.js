@@ -12,7 +12,7 @@ import Groups from '../groups/ui/Groups';
 import Roles from '../roles/ui/Roles';
 import Users from '../users/ui/Users';
 import Vehicles from '../vehicles/ui/Vehicles';
-import './Main.sass';
+import style from './Main.module.scss';
 import NavBar from './components/nav_bar/NavBar';
 
 // TODO => вынести Main после разбора с роутерами
@@ -30,10 +30,10 @@ const Main = () => {
   }, [isAuth]);
   // TODO => сделать массив с роутарами и инициализацию в App.tsx
   return (
-    <div className={'main'}>
+    <div className={style.main}>
       <NavBar />
-      <div className={'main__content'}>
-        <div className="main__content-wrapper">
+      <div className={style.content}>
+        <div className={style.contentWrapper}>
           <Routes>
             <Route path={RoutePaths.events} element={<Events />} />
             <Route path={RoutePaths.users} element={<Users />} />

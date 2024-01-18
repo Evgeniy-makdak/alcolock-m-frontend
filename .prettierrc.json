@@ -10,6 +10,7 @@
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrder": [
     "^(react/(.*)$)|^(react$)",
+    "^(react-/(.*)$)|^(react$)",
     "<THIRD_PARTY_MODULES>",
     "react-seo.config",
     "^components/(.*)$",

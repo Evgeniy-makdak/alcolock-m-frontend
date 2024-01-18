@@ -1,0 +1,17 @@
+.aside {
+  position: relative;
+  width: 508px;
+  padding-bottom: 42px;
+  border-left: 1px solid #d8d8d8;
+  max-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.close {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  cursor: pointer;
+}

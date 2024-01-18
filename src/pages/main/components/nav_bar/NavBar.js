@@ -9,8 +9,7 @@ import { NavLink } from 'react-router-dom';
 import { checkAutoServiceCount } from '../../../auto_service/model/effects';
 import { autoServiceStore } from '../../../auto_service/model/store';
 import BranchSelect from './BranchSelect';
-import './NavBar.sass';
-import './NavBar.sass';
+import style from './NavBar.module.scss';
 import Const from './const';
 
 const NavBar = () => {
@@ -48,22 +47,21 @@ const NavBar = () => {
   };
 
   return (
-    <div className={'nav-bar'}>
+    <div className={style.navBar}>
       <div>
-        <Logo />
-
+        <div className={style.logo}>
+          <Logo />
+        </div>
         {userData?.isAdmin && <BranchSelect />}
 
-        <div className="nav-bar__links">
+        <div className={style.links}>
           {Const.NAV_LINKS.filter(permissionsFilter).map((link) => {
             const notification = link.path === RoutePaths.autoService ? notifications : null;
 
             return (
               <NavLink key={link.path} to={link.path}>
                 <span>{link.name}</span>
-                {!!notification && (
-                  <span className={'nav-bar__notifications'}>{notifications}</span>
-                )}
+                {!!notification && <span className={style.notifications}>{notifications}</span>}
               </NavLink>
             );
           })}

@@ -42,7 +42,7 @@ const validator = (formValues) => ({
     const required = ValidationRules.requiredValidation(value);
     const validEmail = ValidationRules.emailValidation(value);
 
-    return !!required.length ? required : validEmail;
+    return required.length ? required : validEmail;
   },
   password: (value) => {
     const required = ValidationRules.requiredValidation(value);
@@ -53,19 +53,19 @@ const validator = (formValues) => ({
       ValidationMessages.notValidPasswordLength,
     );
 
-    return !!required.length ? required : minMaxLength;
+    return required.length ? required : minMaxLength;
   },
   name: (value) => {
     const required = ValidationRules.requiredValidation(value);
-    return !!required.length ? required : ValidationRules.userNameValidation(value);
+    return required.length ? required : ValidationRules.userNameValidation(value);
   },
   phone: (value) => {
-    return !!value ? ValidationRules.phoneValidation(value) : [];
+    return value ? ValidationRules.phoneValidation(value) : [];
   },
   userGroups: (value) => ValidationRules.requiredValidation((value ?? []).length),
   licenseCode: (value) => {
     if (!formValues.userGroups?.includes(200)) return [];
-    return !!value ? ValidationRules.driverLicenseValidation(value) : [];
+    return value ? ValidationRules.driverLicenseValidation(value) : [];
   },
   licenseIssueDate: (value) => {
     if (!formValues.userGroups?.includes(200)) return [];

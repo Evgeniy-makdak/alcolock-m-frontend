@@ -6,7 +6,7 @@ export default class ValidationRules {
     if (Array.isArray(value)) {
       checkedValue = value.length;
     }
-    return !!checkedValue ? [] : [ValidationMessages.required];
+    return checkedValue ? [] : [ValidationMessages.required];
   }
   static emailValidation(value) {
     const re =

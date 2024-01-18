@@ -21,7 +21,7 @@ const passwordValidation = (value) => {
     ValidationMessages.notValidPasswordLength,
   );
 
-  return !!required.length ? required : minMaxLength;
+  return required.length ? required : minMaxLength;
 };
 
 const validator = () => ({

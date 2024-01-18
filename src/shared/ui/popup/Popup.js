@@ -1,7 +1,9 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { createPortal } from 'react-dom';
 
-import './Popup.sass';
+import style from './Popup.module.scss';
+
+const DATA_SET = 'poput';
 
 const Popup = ({
   isOpen,
@@ -11,31 +13,31 @@ const Popup = ({
   buttons = [],
   closeonClickSpace = true,
   onCloseModal,
-  size = '',
+  styles = null, // HELP => тут нужно передать нужную высоту и ширину
 }) => {
   const handleClickOutside = (e) => {
     const { target } = e;
 
-    if (target && !target.closest('.popup__substr') && closeonClickSpace) {
+    if (target && target.dataset?.clickId && closeonClickSpace) {
       (onCloseModal ?? toggleModal)();
     }
   };
 
   return isOpen
     ? createPortal(
-        <div className={`popup ${size ? `popup_${size}` : ''}`} onClick={handleClickOutside}>
-          <div className="popup__substr">
-            <div className="popup__close" onClick={onCloseModal ?? toggleModal}>
+        <div data-click-id={DATA_SET} className={`${style.popup} `} onClick={handleClickOutside}>
+          <div className={`${styles ? styles : style.size} ${style.substr}`}>
+            <div className={style.close} onClick={onCloseModal ?? toggleModal}>
               <CloseIcon />
             </div>
 
-            <div className="popup__header">
-              <h4>{headerTitle}</h4>
+            <div className={style.header}>
+              <h4 className={style.title}>{headerTitle}</h4>
             </div>
 
-            <div className="popup__body">{body}</div>
+            <div className={style.body}>{body}</div>
 
-            <div className="popup__buttons">{buttons}</div>
+            <div className={style.buttons}>{buttons}</div>
           </div>
         </div>,
         document.getElementById('root'),

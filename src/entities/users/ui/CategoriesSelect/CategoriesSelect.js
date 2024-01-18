@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Checkbox } from '@mui/material';
 import ValidationsWrapper from '@shared/components/validations_wrapper/ValidationsWrapper';
 
-import './CategoriesSelect.sass';
+import style from './CategoriesSelect.module.scss';
 
 const CustomCheckbox = styled(Checkbox)({
   '&.MuiCheckbox-root': {
@@ -36,27 +36,26 @@ const CategoriesSelect = ({ formSelectors, fieldParams, disabled }) => {
   };
 
   return (
-    <div className={'categories-select'}>
+    <div className={style.categoriesSelect}>
       <span
         style={{
-          color: !!validations.length ? 'red' : 'rgba(0, 0, 0, 0.6)',
+          color: validations.length ? 'red' : 'rgba(0, 0, 0, 0.6)',
         }}>
         {fieldParams.label}
       </span>
 
       <ValidationsWrapper validationMsgs={validations}>
-        <div className={'categories-select__wrapper'}>
+        <div className={style.wrapper}>
           {AppConstants.categoryTypesList.map((category) => {
             return (
               <div
                 key={category.value}
-                className={`categories-select__checkbox ${disabled ? 'disabled' : ''}`}>
+                className={`${style.checkbox} ${disabled ? style.disabled : ''}`}>
                 <CustomCheckbox
                   checked={values.includes(category.value)}
                   onClick={() => onChange(category.value)}
                   disabled={disabled}
                 />
-
                 <span>{category.label}</span>
               </div>
             );
