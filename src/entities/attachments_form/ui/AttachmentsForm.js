@@ -42,7 +42,7 @@ export const AttachmentsForm = ({ formSelectors, onValidSubmit, selectedItem }) 
     return item
       ? {
           value: item,
-          label: Formatters.nameFormatter(item) + ` (${item.email})`,
+          label: `${Formatters.nameFormatter(item)} (${item.email})`,
         }
       : null;
   };

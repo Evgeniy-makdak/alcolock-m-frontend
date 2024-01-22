@@ -30,7 +30,7 @@ const refreshSession = async () => {
   };
 
   try {
-    const response = await fetch(API_URL + 'api/authenticate', refreshPromiseOptions);
+    const response = await fetch(`${API_URL}api/authenticate`, refreshPromiseOptions);
 
     if (!response.ok) {
       throw new Error('Ошибка при обновлении сессии');
@@ -51,7 +51,7 @@ const refreshSession = async () => {
 export const request = (params) => {
   const controller = new AbortController();
   const isAuth = params.isAuth ?? true;
-  const url = API_URL + params.url;
+  const url = `${API_URL}${params.url}`;
   const token = params.token ?? cookieManager.get('bearer');
 
   const promiseOptions = {

@@ -27,7 +27,7 @@ export const AlcolocksSortTypes = {
 };
 
 const getSortQuery = (orderType, order) => {
-  const orderStr = ',' + order.toUpperCase();
+  const orderStr = `,${order.toUpperCase()}`;
 
   switch (orderType) {
     case AlcolocksSortTypes.byName:

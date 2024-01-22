@@ -8,7 +8,7 @@ export class MockGenerators {
       const car = {
         id: i + 1,
         ...generateCarsInfo(),
-        vin: i + 1 + 'HSFJUFHHSFEDHSHE',
+        vin: i + 1 + 'HSFJUFHHSFEDHSHE', // TODO => почему такая надпись?
         color: Math.floor(Math.random() * AppConstants.carColorsList.length + 1),
         type: Math.floor(Math.random() * AppConstants.carTypesList.length + 1),
         registration: getRandomDate().toISOString(),

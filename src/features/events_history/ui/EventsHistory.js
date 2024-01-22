@@ -115,7 +115,7 @@ export const EventsHistory = ({ type, id }) => {
         </StyledTable.BodyRow>
 
         {expandRowId === event.id && (
-          <TableRow key={event.id + '-info'}>
+          <TableRow key={`${event.id}-info`}>
             <StyledTable.DataCell colSpan={3}>
               <EventData type={type} event={event} />
             </StyledTable.DataCell>

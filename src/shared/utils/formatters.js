@@ -30,7 +30,7 @@ export class Formatters {
 
     if (!name.length && !middleName.length && !lastName.length) return placeholder;
 
-    return lastName + name + middleName;
+    return `${lastName} ${name} ${middleName}`;
   }
 
   static carNameFormatter(car, withoutRegistrationNumber = false) {
