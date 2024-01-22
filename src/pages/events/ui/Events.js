@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import AppConstants from '@app/lib/app_constants';
-import EventsFilterPanel from '@entities/events/ui/EventsFilterPanel/EventsFilterPanel';
-import EditTable from '@features/edit_table/ui/EditTable';
+import { AppConstants } from '@app';
+import { EventsFilterPanel } from '@entities/events_filter_panel';
+import { EditTable } from '@features/edit_table';
 import { PageWrapper } from '@layout/page_wrapper';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
-import Aside from '@shared/ui/aside/Aside';
-import EventInfo from '@widgets/events/ui/EventInfo';
+import { Aside } from '@shared/ui/aside';
+import { EventInfo } from '@widgets/events_info';
 
 import { HEADERS, getRowsTemplate } from '../lib/const';
 import { EventsSortTypes, uploadEvents } from '../model/effects';

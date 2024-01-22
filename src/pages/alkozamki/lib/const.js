@@ -1,5 +1,5 @@
-import AppConstants from '@app/lib/app_constants';
-import Formatters from '@shared/utils/formatters';
+import { AppConstants } from '@app';
+import { Formatters } from '@shared/utils/formatters';
 
 import { AlcolocksSortTypes } from '../model/effects';
 

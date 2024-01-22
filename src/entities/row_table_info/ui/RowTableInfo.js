@@ -7,7 +7,7 @@ const Tabs = {
   history: 'history',
 };
 
-const RowTableInfo = ({ infoContent, historyContent }) => {
+export const RowTableInfo = ({ infoContent, historyContent }) => {
   const [activeTab, setActiveTab] = useState(Tabs.info);
 
   return (
@@ -30,5 +30,3 @@ const RowTableInfo = ({ infoContent, historyContent }) => {
     </div>
   );
 };
-
-export default RowTableInfo;

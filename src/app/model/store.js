@@ -1,4 +1,4 @@
-import StateBuilder from '@shared/lib/state_builder';
+import { StateBuilder } from '@shared/lib/state_builder';
 
 export const AuthStatus = {
   auth: 'auth',

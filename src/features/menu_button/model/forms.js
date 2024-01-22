@@ -1,6 +1,6 @@
-import FormStateBuilder from '@shared/lib/form_state_builder';
-import ValidationMessages from '@shared/validations/validation_messages';
-import ValidationRules from '@shared/validations/validation_rules';
+import { FormStateBuilder } from '@shared/lib/form_state_builder';
+import { ValidationMessages } from '@shared/validations/validation_messages';
+import { ValidationRules } from '@shared/validations/validation_rules';
 
 const initData = {
   currentPassword: '',

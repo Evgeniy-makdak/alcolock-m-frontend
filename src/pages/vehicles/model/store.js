@@ -1,5 +1,5 @@
-import AppConstants from '@app/lib/app_constants';
-import StateBuilder from '@shared/lib/state_builder';
+import { AppConstants } from '@app';
+import { StateBuilder } from '@shared/lib/state_builder';
 
 export const carsLoadingState = new StateBuilder(true);
 export const allCarsListState = new StateBuilder(AppConstants.carList);

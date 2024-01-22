@@ -1,12 +1,15 @@
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { ruRU } from '@mui/x-date-pickers/locales';
-import ValidationsWrapper from '@shared/components/validations_wrapper/ValidationsWrapper';
-import { InputWrapper } from '@shared/styled_components/styledInputWrapper';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
-const DateInput = ({ formSelectors, fieldParams, disabled = false, maxDate = null }) => {
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { ruRU } from '@mui/x-date-pickers/locales';
+
+import { ValidationsWrapper } from '@shared/components/validations_wrapper';
+import { DATE_FORMAT_FOR_DISPLAYS } from '@shared/const/dateFormat';
+import { InputWrapper } from '@shared/styled_components/styledInputWrapper';
+
+export const DateInput = ({ formSelectors, fieldParams, disabled = false, maxDate = null }) => {
   const value = formSelectors.useFormDataValue(fieldParams.name);
   const setValue = formSelectors.useSetFormDataValue(fieldParams.name);
   const validations = formSelectors.useFormValueValidation(fieldParams.name);
@@ -46,7 +49,7 @@ const DateInput = ({ formSelectors, fieldParams, disabled = false, maxDate = nul
               width: '100%',
             }}
             fullWidth={true}
-            format="DD.MM.YYYY"
+            format={DATE_FORMAT_FOR_DISPLAYS}
             error={!!validations.length}
           />
         </LocalizationProvider>
@@ -54,5 +57,3 @@ const DateInput = ({ formSelectors, fieldParams, disabled = false, maxDate = nul
     </InputWrapper>
   );
 };
-
-export default DateInput;

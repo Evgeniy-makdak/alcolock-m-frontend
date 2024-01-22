@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import AppConstants from '@app/lib/app_constants';
-import EventData from '@entities/events_history/ui/EventData';
 import { Table, TableBody, TableHead, TableRow } from '@mui/material';
+
+import { AppConstants } from '@app';
+import { EventData } from '@entities/events_data';
 import { getEventsHistory } from '@pages/events/model/effects';
-import StyledTable from '@shared/styled_components/styledTable';
-import Loader from '@shared/ui/loader/Loader';
-import Formatters from '@shared/utils/formatters';
+import { StyledTable } from '@shared/styled_components/styledTable';
+import { Loader } from '@shared/ui/loader';
+import { Formatters } from '@shared/utils/formatters';
 
 import style from './EventsHistory.module.scss';
 
@@ -16,7 +17,7 @@ export const HistoryTypes = {
   byAlcolock: 'byAlcolock',
 };
 
-const EventsHistory = ({ type, id }) => {
+export const EventsHistory = ({ type, id }) => {
   const [eventsList, setEventsList] = useState([]);
   const [expandRowId, setExpandRowId] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -160,5 +161,3 @@ const EventsHistory = ({ type, id }) => {
     </Loader>
   );
 };
-
-export default EventsHistory;

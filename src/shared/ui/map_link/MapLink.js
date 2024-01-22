@@ -1,6 +1,6 @@
 import style from './MapLink.module.scss';
 
-const MapLink = ({ latitude, longitude }) => {
+export const MapLink = ({ latitude, longitude }) => {
   const url = `https://yandex.ru/maps/?ll=${longitude},${latitude}&z=10&pt=${longitude},${latitude}`;
 
   return (
@@ -9,5 +9,3 @@ const MapLink = ({ latitude, longitude }) => {
     </a>
   );
 };
-
-export default MapLink;

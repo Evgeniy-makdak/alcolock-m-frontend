@@ -1,9 +1,10 @@
 import { FormControl, InputLabel, MenuItem, Select as MuiSelect } from '@mui/material';
 
-import ValidationsWrapper from '../../components/validations_wrapper/ValidationsWrapper';
+import { ValidationsWrapper } from '@shared/components/validations_wrapper';
+
 import { InputWrapper } from '../../styled_components/styledInputWrapper';
 
-const Select = ({ formSelectors, fieldParams, disabled = false, options }) => {
+export const Select = ({ formSelectors, fieldParams, disabled = false, options }) => {
   const value = formSelectors.useFormDataValue(fieldParams.name);
   const setValue = formSelectors.useSetFormDataValue(fieldParams.name);
   const validations = formSelectors.useFormValueValidation(fieldParams.name);
@@ -49,5 +50,3 @@ const Select = ({ formSelectors, fieldParams, disabled = false, options }) => {
     </InputWrapper>
   );
 };
-
-export default Select;

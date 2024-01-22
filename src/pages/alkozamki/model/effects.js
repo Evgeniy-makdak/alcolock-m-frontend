@@ -1,6 +1,7 @@
+import { createEffect } from 'effector';
+
 import { userState } from '@features/menu_button/model/store';
 import { selectedBranchState } from '@shared/model/selected_branch/store';
-import { createEffect } from 'effector';
 
 import AlcolocksApi from '../api/alcolocks_api';
 import AlcolocksMapper from './mapper';

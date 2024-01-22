@@ -1,19 +1,20 @@
 import { cloneElement, useEffect, useRef, useState } from 'react';
 
-import AppConstants from '@app/lib/app_constants';
-import Pagination from '@entities/edit_table/ui/Pagination/Pagination';
-import TableControl from '@entities/edit_table/ui/TableControl/TableControl';
 import { Table, TableBody, TableHead, TableSortLabel } from '@mui/material';
+
+import { AppConstants } from '@app';
+import { Pagination } from '@entities/edit_table_pagination';
+import { TableControl } from '@entities/edit_table_table_control';
 import { useToggle } from '@shared/hooks/useToggle';
-import StyledTable from '@shared/styled_components/styledTable';
-import Button, { ButtonsType } from '@shared/ui/button/Button';
-import Loader from '@shared/ui/loader/Loader';
-import Popup from '@shared/ui/popup/Popup';
+import { StyledTable } from '@shared/styled_components/styledTable';
+import { Button, ButtonsType } from '@shared/ui/button';
+import { Loader } from '@shared/ui/loader';
+import { Popup } from '@shared/ui/popup';
 
 import style from './EditTable.module.scss';
 
 // TODO => разнести этот компонент на более мелкие компоненты
-const EditTable = ({
+export const EditTable = ({
   headers,
   getRowsTemplate,
   withDate = true,
@@ -565,5 +566,3 @@ const EditTable = ({
     </>
   );
 };
-
-export default EditTable;

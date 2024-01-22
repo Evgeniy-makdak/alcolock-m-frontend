@@ -1,6 +1,6 @@
-import MockGenerators from '@shared/utils/mock_generators';
+import { MockGenerators } from '@shared/utils/mock_generators';
 
-export default class AppConstants {
+export class AppConstants {
   static rolesSystemList = [
     {
       value: 1,

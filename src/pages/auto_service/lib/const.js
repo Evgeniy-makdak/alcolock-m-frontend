@@ -1,6 +1,6 @@
-import TimeCell from '@entities/time_cell/ui/TimeCell';
-import Formatters from '@shared/utils/formatters';
-import SearchMethods from '@shared/utils/global_methods';
+import { TimeCell } from '@entities/time_cell';
+import { Formatters } from '@shared/utils/formatters';
+import { SearchMethods } from '@shared/utils/global_methods';
 
 import { AutoServiceSortTypes } from '../model/effects';
 

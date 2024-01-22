@@ -1,10 +1,12 @@
-import { TextField } from '@mui/material';
 import InputMask from 'react-input-mask';
 
-import ValidationsWrapper from '../../components/validations_wrapper/ValidationsWrapper';
+import { TextField } from '@mui/material';
+
+import { ValidationsWrapper } from '@shared/components/validations_wrapper';
+
 import { InputWrapper } from '../../styled_components/styledInputWrapper';
 
-const PhoneInput = ({ formSelectors, fieldParams, disabled = false }) => {
+export const PhoneInput = ({ formSelectors, fieldParams, disabled = false }) => {
   const value = formSelectors.useFormDataValue(fieldParams.name) ?? '';
   const setValue = formSelectors.useSetFormDataValue(fieldParams.name);
   const validations = formSelectors.useFormValueValidation(fieldParams.name);
@@ -36,5 +38,3 @@ const PhoneInput = ({ formSelectors, fieldParams, disabled = false }) => {
     </InputWrapper>
   );
 };
-
-export default PhoneInput;

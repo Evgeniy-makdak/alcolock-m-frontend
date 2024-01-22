@@ -1,4 +1,4 @@
-import Formatters from '@shared/utils/formatters';
+import { Formatters } from '@shared/utils/formatters';
 
 export const getRowsTemplate = (item) => {
   return {

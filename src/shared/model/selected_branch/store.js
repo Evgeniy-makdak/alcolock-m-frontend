@@ -1,4 +1,4 @@
-import StateBuilder from '@shared/lib/state_builder';
+import { StateBuilder } from '@shared/lib/state_builder';
 
 // TODO => Понять для чего это и вынести в соответствующий слой
 export const selectedBranchState = new StateBuilder({

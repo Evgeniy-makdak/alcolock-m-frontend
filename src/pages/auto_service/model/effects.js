@@ -1,8 +1,9 @@
-import AppConstants from '@app/lib/app_constants';
+import { createEffect } from 'effector';
+
+import { AppConstants } from '@app';
 import { userState } from '@features/menu_button/model/store';
 import { selectedBranchState } from '@shared/model/selected_branch/store';
 import Sorts from '@shared/utils/sortes';
-import { createEffect } from 'effector';
 
 import EventsApi from '../../events/api/events_api';
 import {

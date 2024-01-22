@@ -1,6 +1,6 @@
 import style from './ErrorViewer.module.scss';
 
-const ErrorViewer = ({ errorMessages }) => {
+export const ErrorViewer = ({ errorMessages }) => {
   return (
     <div className={style.errorViewer}>
       {errorMessages.map((error, i) => {
@@ -13,5 +13,3 @@ const ErrorViewer = ({ errorMessages }) => {
     </div>
   );
 };
-
-export default ErrorViewer;

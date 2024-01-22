@@ -1,7 +1,8 @@
+import { createEffect } from 'effector';
+
 import { userState } from '@features/menu_button/model/store';
 import { selectedBranchState } from '@shared/model/selected_branch/store';
-import Formatters from '@shared/utils/formatters';
-import { createEffect } from 'effector';
+import { Formatters } from '@shared/utils/formatters';
 
 import UsersApi from '../api/users_api';
 import UsersMapper from './mapper';

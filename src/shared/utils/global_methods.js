@@ -1,4 +1,4 @@
-export default class SearchMethods {
+export class SearchMethods {
   static searchByDateFields(array, startDate, endDate, fields) {
     return array.filter((item) => {
       const matches = fields.map((field) => {

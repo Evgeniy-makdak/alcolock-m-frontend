@@ -1,7 +1,8 @@
-import CircularProgress from '@mui/material/CircularProgress';
 import LoadingOverlay from 'react-loading-overlay';
 
-const Loader = ({ children, isLoading = false, styles = {} }) => {
+import CircularProgress from '@mui/material/CircularProgress';
+
+export const Loader = ({ children, isLoading = false, styles = {} }) => {
   return (
     <LoadingOverlay
       active={isLoading}
@@ -20,5 +21,3 @@ const Loader = ({ children, isLoading = false, styles = {} }) => {
     </LoadingOverlay>
   );
 };
-
-export default Loader;

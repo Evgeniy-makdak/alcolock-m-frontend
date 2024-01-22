@@ -1,23 +1,23 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import RoutePaths from '@app/lib/route_paths';
+import { RoutePaths } from '@app';
 import { onAuthorization } from '@app/model/effects';
 import { AuthStatus, appStore } from '@app/model/store';
 import { InputsColumnWrapper } from '@shared/components/Inputs_column_wrapper/InputsColumnWrapper';
-import ErrorViewer from '@shared/ui/error_viewer/ErrorViewer';
-import Form from '@shared/ui/form/Form';
-import FormCheckbox from '@shared/ui/form_checkbox/FormCheckbox';
-import Input from '@shared/ui/input/Input';
-import Loader from '@shared/ui/loader/Loader';
-import Logo from '@shared/ui/logo/Logo';
+import { ErrorViewer } from '@shared/ui/error_viewer';
+import { Form } from '@shared/ui/form';
+import { FormCheckbox } from '@shared/ui/form_checkbox';
+import { Input } from '@shared/ui/input';
+import { Loader } from '@shared/ui/loader';
+import { Logo } from '@shared/ui/logo';
 import { getErrorMessagesFromServer } from '@shared/validations/server_error_handler';
-import { useNavigate } from 'react-router-dom';
 
 import { authFormSelectors } from '../model/forms';
 import { authStore } from '../model/store';
 import style from './Authorization.module.scss';
 
-const Authorization = () => {
+export const Authorization = () => {
   const isValidForm = authFormSelectors.useIsFormValid();
   const onClickSubmit = authFormSelectors.useOnClickSubmit();
   const navigate = useNavigate();
@@ -122,5 +122,3 @@ const Authorization = () => {
     </div>
   );
 };
-
-export default Authorization;

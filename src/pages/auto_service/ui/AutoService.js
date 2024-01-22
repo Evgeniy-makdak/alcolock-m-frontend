@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import AppConstants from '@app/lib/app_constants';
-import RowTableInfo from '@entities/row_table_info/ui/RowTableInfo';
-import EditTable from '@features/edit_table/ui/EditTable';
-import EventsHistory, { HistoryTypes } from '@features/events_history/ui/EventsHistory';
+import { AppConstants } from '@app';
+import { RowTableInfo } from '@entities/row_table_info';
+import { EditTable } from '@features/edit_table';
+import { EventsHistory, HistoryTypes } from '@features/events_history';
 import { PageWrapper } from '@layout/page_wrapper';
 import { useToggle } from '@shared/hooks/useToggle';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
-import Aside from '@shared/ui/aside/Aside';
-import AutoServiceInfo from '@widgets/auto_service/ui/AutoServiceInfo';
+import { Aside } from '@shared/ui/aside';
+import { AutoServiceInfo } from '@widgets/auto_service_info';
 
 import { HEADERS, getRowsTemplate } from '../lib/const';
 import { AutoServiceSortTypes, uploadAutoServiceList } from '../model/effects';

@@ -1,5 +1,5 @@
-import AppConstants from '@app/lib/app_constants';
-import StateBuilder from '@shared/lib/state_builder';
+import { AppConstants } from '@app';
+import { StateBuilder } from '@shared/lib/state_builder';
 
 export const allGroupsListState = new StateBuilder(AppConstants.groupsList);
 export const groupsListLoadingState = new StateBuilder(false);

@@ -1,4 +1,4 @@
-export default class Formatters {
+export class Formatters {
   static formatISODate(isoDate) {
     if (!isoDate) return '-';
     const date = new Date(isoDate);

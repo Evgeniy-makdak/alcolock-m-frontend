@@ -16,12 +16,10 @@ const ButtonsTypeStyle = {
   [ButtonsType.action]: style.action,
 };
 
-const Button = ({ children, onClick, type = ButtonsType.new, disabled = false }) => {
+export const Button = ({ children, onClick, type = ButtonsType.new, disabled = false }) => {
   return (
     <MuiButton className={`button ${ButtonsTypeStyle[type]}`} onClick={onClick} disabled={disabled}>
       {children}
     </MuiButton>
   );
 };
-
-export default Button;

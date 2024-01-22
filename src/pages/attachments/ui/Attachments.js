@@ -1,6 +1,6 @@
-import AppConstants from '@app/lib/app_constants';
-import AttachmentsForm from '@entities/attachments/ui/AttachmentsForm';
-import EditTable from '@features/edit_table/ui/EditTable';
+import { AppConstants } from '@app';
+import { AttachmentsForm } from '@entities/attachments_form';
+import { EditTable } from '@features/edit_table';
 import { UserPermissionsTypes } from '@features/menu_button/model/effects';
 import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';

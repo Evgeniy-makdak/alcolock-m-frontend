@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 
-import AppConstants from '@app/lib/app_constants';
-import RowTableInfo from '@entities/row_table_info/ui/RowTableInfo';
-import VehiclesForm from '@entities/vehicles/ui/VehiclesForm';
-import EditTable from '@features/edit_table/ui/EditTable';
-import EventsHistory, { HistoryTypes } from '@features/events_history/ui/EventsHistory';
+import { AppConstants } from '@app';
+import { RowTableInfo } from '@entities/row_table_info';
+import { VehiclesForm } from '@entities/vehicles_form';
+import { EditTable } from '@features/edit_table';
+import { EventsHistory, HistoryTypes } from '@features/events_history/ui/EventsHistory';
 import { UserPermissionsTypes } from '@features/menu_button/model/effects';
 import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';
 import { useToggle } from '@shared/hooks/useToggle';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
-import Aside from '@shared/ui/aside/Aside';
-import VehiclesInfo from '@widgets/vehicles/ui/VehiclesInfo';
+import { Aside } from '@shared/ui/aside';
+import { VehiclesInfo } from '@widgets/vehicles_info';
 
 import {
   ADD_POPUP_TITLE,

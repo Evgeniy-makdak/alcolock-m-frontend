@@ -1,7 +1,8 @@
-import RoutePaths from '@app/lib/route_paths';
+import { createEffect } from 'effector';
+
+import { RoutePaths } from '@app';
 import { AuthStatus, appAuthStatusState, appLoadingState } from '@app/model/store';
 import { cookieManager } from '@shared/utils/cookie_manager';
-import { createEffect } from 'effector';
 
 import UserApi from '../api/user_api';
 import { changePasswordErrorState, changePasswordLoadingState, userState } from './store';

@@ -1,6 +1,6 @@
-import AppConstants from '@app/lib/app_constants';
+import { AppConstants } from '@app/lib/app_constants';
 
-export default class MockGenerators {
+export class MockGenerators {
   static generateCars(count) {
     const cars = [];
 

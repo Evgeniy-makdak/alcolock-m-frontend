@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { Autocomplete, TextField } from '@mui/material';
 import { isEqual } from 'lodash';
 
-import ValidationsWrapper from '../../components/validations_wrapper/ValidationsWrapper';
+import { Autocomplete, TextField } from '@mui/material';
+
+import { ValidationsWrapper } from '@shared/components/validations_wrapper';
+
 import { InputWrapper } from '../../styled_components/styledInputWrapper';
 
-const SearchSelect = ({
+export const SearchSelect = ({
   formSelectors,
   fieldParams,
   defOptions,
@@ -109,5 +111,3 @@ const SearchSelect = ({
     </InputWrapper>
   );
 };
-
-export default SearchSelect;

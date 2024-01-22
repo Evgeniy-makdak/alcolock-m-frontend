@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EastIcon from '@mui/icons-material/East';
@@ -6,7 +5,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { IconButton, TableCell, TableRow } from '@mui/material';
 
-export default class StyledTable {
+import styled from '@emotion/styled';
+
+export class StyledTable {
   static HeaderRow = styled(TableRow)({
     width: '100%',
     background: '#F6F6F6',

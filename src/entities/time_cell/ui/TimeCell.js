@@ -7,7 +7,7 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(duration);
 dayjs.extend(utc);
 
-const TimeCell = ({ time, id, updateInfo }) => {
+export const TimeCell = ({ time, id, updateInfo }) => {
   const [timeDifference, setTimeDifference] = useState('');
 
   useEffect(() => {
@@ -44,5 +44,3 @@ const TimeCell = ({ time, id, updateInfo }) => {
 
   return <>{timeDifference}</>;
 };
-
-export default TimeCell;

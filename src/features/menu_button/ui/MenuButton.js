@@ -1,12 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import PasswordForm from '@entities/password_form/ui/PasswordForm';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Divider, Menu, MenuItem, Button as MuiButton } from '@mui/material';
+
+import { PasswordForm } from '@entities/password_form';
 import { useToggle } from '@shared/hooks/useToggle';
-import Button, { ButtonsType } from '@shared/ui/button/Button';
-import Popup from '@shared/ui/popup/Popup';
-import { useNavigate } from 'react-router-dom';
+import { Button, ButtonsType } from '@shared/ui/button';
+import { Popup } from '@shared/ui/popup';
 
 import { changePassword, logout } from '../model/effects';
 import { changePasswordFormSelectors } from '../model/forms';
@@ -17,7 +18,7 @@ const ActionTypes = {
   profileEdit: 'profileEdit',
 };
 
-const MenuButton = () => {
+export const MenuButton = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openModal, toggleModal] = useToggle();
   const open = !!anchorEl;
@@ -139,5 +140,3 @@ const MenuButton = () => {
     </div>
   );
 };
-
-export default MenuButton;

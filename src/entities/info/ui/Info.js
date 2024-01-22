@@ -1,6 +1,6 @@
 import style from './Info.module.scss';
 
-const Info = ({ fields, withoutPaddings = false }) => {
+export const Info = ({ fields, withoutPaddings = false }) => {
   // TODO - вынести мапинг данных из верстки
   return (
     <div className={`${withoutPaddings ? style.zeroPaddings : style.paddings} ${style.info}`}>
@@ -17,5 +17,3 @@ const Info = ({ fields, withoutPaddings = false }) => {
     </div>
   );
 };
-
-export default Info;

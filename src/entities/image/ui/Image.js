@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-import Loader from '@shared/ui/loader/Loader';
+import { Loader } from '@shared/ui/loader';
 
 import PhotosApi from '../api/photos_api';
 
-const Image = ({ url }) => {
+export const Image = ({ url }) => {
   const [imageUrl, setImageUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const lastRequest = useRef(null);
@@ -48,5 +48,3 @@ const Image = ({ url }) => {
     </Loader>
   );
 };
-
-export default Image;

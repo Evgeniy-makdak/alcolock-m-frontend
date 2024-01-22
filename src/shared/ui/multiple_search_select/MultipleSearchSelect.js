@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Autocomplete, TextField } from '@mui/material';
 
-import ValidationsWrapper from '../../components/validations_wrapper/ValidationsWrapper';
+import { ValidationsWrapper } from '@shared/components/validations_wrapper';
+
 import style from './multipleSearchSelect.module.scss';
 
-const MultipleSearchSelect = ({
+export const MultipleSearchSelect = ({
   formSelectors,
   fieldParams,
   onSearch,
@@ -102,5 +103,3 @@ const MultipleSearchSelect = ({
     </div>
   );
 };
-
-export default MultipleSearchSelect;

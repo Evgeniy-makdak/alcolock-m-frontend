@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const Form = ({ children, formSelectors, onValidSubmit, className = '' }) => {
+export const Form = ({ children, formSelectors, onValidSubmit, className = '' }) => {
   const setOnValidSubmit = formSelectors.useSetOnValidSubmit();
 
   useEffect(() => {
@@ -18,5 +18,3 @@ const Form = ({ children, formSelectors, onValidSubmit, className = '' }) => {
     </div>
   );
 };
-
-export default Form;

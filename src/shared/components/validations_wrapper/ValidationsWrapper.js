@@ -2,7 +2,7 @@ import { cloneElement } from 'react';
 
 import style from './ValidationsWrapper.module.scss';
 
-const ValidationsWrapper = ({ children, validationMsgs = [], isShowValidMsg = true }) => {
+export const ValidationsWrapper = ({ children, validationMsgs = [], isShowValidMsg = true }) => {
   const styledChildren = () => {
     if (Array.isArray(children)) {
       return children.map((child, i) => {
@@ -36,5 +36,3 @@ const ValidationsWrapper = ({ children, validationMsgs = [], isShowValidMsg = tr
     </>
   );
 };
-
-export default ValidationsWrapper;

@@ -1,11 +1,12 @@
-import CloseIcon from '@mui/icons-material/Close';
 import { createPortal } from 'react-dom';
+
+import CloseIcon from '@mui/icons-material/Close';
 
 import style from './Popup.module.scss';
 
 const DATA_SET = 'poput';
 
-const Popup = ({
+export const Popup = ({
   isOpen,
   headerTitle = '',
   body,
@@ -44,5 +45,3 @@ const Popup = ({
       )
     : null;
 };
-
-export default Popup;

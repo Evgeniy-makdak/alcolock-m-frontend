@@ -2,7 +2,7 @@ import { combine, createEffect, createEvent, createStore, sample } from 'effecto
 import { useEvent, useStore } from 'effector-react';
 import { isEqual } from 'lodash';
 
-export default class FormStateBuilder {
+export class FormStateBuilder {
   constructor({ initialData, initialValidations = {}, getValidators = null }) {
     this.valueStateManager = {};
     this.onValidSubmit = null;

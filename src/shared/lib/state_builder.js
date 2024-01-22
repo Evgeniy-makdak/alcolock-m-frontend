@@ -1,7 +1,7 @@
 import { createEvent, createStore } from 'effector';
 import { useEvent, useStore } from 'effector-react';
 
-export default class StateBuilder {
+export class StateBuilder {
   constructor(initValue = null) {
     this.$store = createStore(initValue);
     this.setState = createEvent();

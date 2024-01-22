@@ -3,11 +3,18 @@ import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 
-import ValidationsWrapper from '../../components/validations_wrapper/ValidationsWrapper';
+import { ValidationsWrapper } from '@shared/components/validations_wrapper';
+
 import { mapFieldError } from '../../utils/field_error_mapper';
 import style from './Input.module.scss';
 
-const Input = ({ formSelectors, fieldParams, disabled = false, withChange, fieldsErrors = [] }) => {
+export const Input = ({
+  formSelectors,
+  fieldParams,
+  disabled = false,
+  withChange,
+  fieldsErrors = [],
+}) => {
   const value = formSelectors.useFormDataValue(fieldParams.name) ?? '';
   const setValue = formSelectors.useSetFormDataValue(fieldParams.name);
 
@@ -92,5 +99,3 @@ const Input = ({ formSelectors, fieldParams, disabled = false, withChange, field
     </div>
   );
 };
-
-export default Input;

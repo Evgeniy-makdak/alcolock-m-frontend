@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import AppConstants from '@app/lib/app_constants';
-import RoutePaths from '@app/lib/route_paths';
-import GroupForm from '@entities/groups/ui/GroupForm/GroupForm';
-import EditTable from '@features/edit_table/ui/EditTable';
+import { AppConstants, RoutePaths } from '@app';
+import { GroupForm } from '@entities/groups_form';
+import { EditTable } from '@features/edit_table';
 import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';
 import { useToggle } from '@shared/hooks/useToggle';
-import GroupInfo from '@widgets/groups/ui/GroupInfo/GroupInfo';
-import { useNavigate } from 'react-router-dom';
+import { GroupInfo } from '@widgets/groups_info';
 
 import { ADD_POPUP_TITLE, DELETE_POPUP_TITLE, EDIT_POPUP_TITLE, HEADERS } from '../lib/const';
 import { getDeletePopupBody, getRowsTemplate } from '../lib/helpers';

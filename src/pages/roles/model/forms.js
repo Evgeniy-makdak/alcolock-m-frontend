@@ -1,5 +1,5 @@
-import FormStateBuilder from '@shared/lib/form_state_builder';
-import ValidationRules from '@shared/validations/validation_rules';
+import { FormStateBuilder } from '@shared/lib/form_state_builder';
+import { ValidationRules } from '@shared/validations/validation_rules';
 
 const initData = {
   role: '',

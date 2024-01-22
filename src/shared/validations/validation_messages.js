@@ -1,4 +1,4 @@
-export default class ValidationMessages {
+export class ValidationMessages {
   static required = 'Обязательное поле';
   static notValidEmail = 'Некорректная почта';
   static notValidPhone = 'Некорректный номер';

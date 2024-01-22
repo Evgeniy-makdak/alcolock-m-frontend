@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import AppConstants from '@app/lib/app_constants';
-import RoutePaths from '@app/lib/route_paths';
-import RoleForm from '@entities/roles/ui/RoleForm';
-import EditTable from '@features/edit_table/ui/EditTable';
+import { AppConstants, RoutePaths } from '@app';
+import { RoleForm } from '@entities/roles_form';
+import { EditTable } from '@features/edit_table';
 import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';
-import { useNavigate } from 'react-router-dom';
 
 import {
   ADD_POPUP_TITLE,

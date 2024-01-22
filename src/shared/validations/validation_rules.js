@@ -1,6 +1,6 @@
-import ValidationMessages from './validation_messages';
+import { ValidationMessages } from './validation_messages';
 
-export default class ValidationRules {
+export class ValidationRules {
   static requiredValidation(value) {
     let checkedValue = value;
     if (Array.isArray(value)) {

@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
 
-const FormCheckbox = ({ formSelectors, fieldParams, disabled = false }) => {
+export const FormCheckbox = ({ formSelectors, fieldParams, disabled = false }) => {
   const value = formSelectors.useFormDataValue(fieldParams.name) ?? false;
   const setValue = formSelectors.useSetFormDataValue(fieldParams.name);
 
@@ -18,5 +18,3 @@ const FormCheckbox = ({ formSelectors, fieldParams, disabled = false }) => {
     </div>
   );
 };
-
-export default FormCheckbox;
