@@ -6,7 +6,7 @@ import { Form } from '@shared/ui/form';
 import { Input } from '@shared/ui/input';
 
 export const GroupForm = ({ onValidSubmit, formSelectors, selectedItem }) => {
-  // TODO => убрать сторы или добавить к форме или прокидывать через пропс
+  // TODO => убрать сторы или добавить инициализацию стора к форме или прокидывать через пропсы
   const user = userStore.userData.useValue();
   const setInitData = formSelectors.useSetInitFormData();
 

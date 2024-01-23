@@ -1,12 +1,12 @@
-export class RoutePaths {
-  static root = '/';
-  static auth = '/authorization';
-  static events = '/events';
-  static users = '/users';
-  static roles = '/roles';
-  static groups = '/groups';
-  static tc = '/tc';
-  static alkozamki = '/alkozamki';
-  static attachments = '/attachments';
-  static autoService = '/auto_service';
+export enum RoutePaths {
+  root = '/',
+  auth = '/authorization',
+  events = '/events',
+  users = '/users',
+  roles = '/roles',
+  groups = '/groups',
+  tc = '/tc',
+  alkozamki = '/alkozamki',
+  attachments = '/attachments',
+  autoService = '/auto_service',
 }

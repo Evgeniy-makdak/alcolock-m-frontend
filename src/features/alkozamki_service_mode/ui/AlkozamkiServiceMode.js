@@ -19,6 +19,15 @@ import { Popup } from '@shared/ui/popup';
 import { Formatters } from '@shared/utils/formatters';
 import { SearchMethods } from '@shared/utils/global_methods';
 
+import {
+  DriverOperatorState,
+  EventType,
+  OperatorAction,
+  RequestType,
+  ServiceModeInfoActionTypes,
+  ServiceModeInfoRequestType,
+  ServiceModeInfoType,
+} from '../lib/const';
 import style from './AlkozamkiServiceMode.module.scss';
 
 // TODO => вынести все лишние функции в lib - компонент очень раздут
@@ -42,13 +51,18 @@ export const AlkozamkiServiceMode = ({
     const lastEvent = SearchMethods.findMostRecentEvent(outerActionData.events);
     const requestType = SearchMethods.findFirstRequestEvent(outerActionData.events)?.eventType;
     const isAcknowledged = !!(outerActionData.events ?? []).find(
-      (event) => event.eventType === 'APP_ACKNOWLEDGED',
+      (event) => event.eventType === EventType.APP_ACKNOWLEDGED,
     );
 
     if (
-      ['OFFLINE_DEACTIVATION', 'OFFLINE_ACTIVATION'].includes(lastEvent?.eventType) ||
+      [ServiceModeInfoType.OFFLINE_DEACTIVATION, ServiceModeInfoType.OFFLINE_ACTIVATION].includes(
+        lastEvent?.eventType,
+      ) ||
       isAcknowledged ||
-      (['REJECTED', 'ACCEPTED'].includes(lastEvent?.eventType) && requestType === 'SERVER_REQUEST')
+      ([ServiceModeInfoType.REJECTED, ServiceModeInfoType.ACCEPTED].includes(
+        lastEvent?.eventType,
+      ) &&
+        requestType === RequestType.SERVER_REQUEST)
     ) {
       seenAutoService(outerActionData?.id)
         .then(() => {
@@ -131,7 +145,7 @@ export const AlkozamkiServiceMode = ({
       duration: action ? (action?.events ?? [])[0]?.extra?.duration ?? null : null,
       requestType: requestEvent?.eventType ?? null,
       isAcknowledged: !!(action?.events ?? []).find(
-        (event) => event.eventType === 'APP_ACKNOWLEDGED',
+        (event) => event.eventType === EventType.APP_ACKNOWLEDGED,
       ),
     };
   };
@@ -171,20 +185,21 @@ export const AlkozamkiServiceMode = ({
   const getButtons = () => {
     try {
       const serviceModeInfo = serviceModeInfoMapper(data);
-      console.log('serviceModeInfo', serviceModeInfo);
+
       const isServiceMode = data?.mode === 'MAINTENANCE';
       if (serviceModeInfo.action) {
         const time = Formatters.parseISO8601Duration(serviceModeInfo.duration);
         const timeFormat = time ? `${time.hours}:${time.minutes}:${time.seconds}` : '-';
 
         switch (serviceModeInfo.type) {
-          case 'SERVER_REQUEST':
+          case ServiceModeInfoType.SERVER_REQUEST:
             const servText =
-              serviceModeInfo.action.type === 'SERVICE_MODE_DEACTIVATE' ? (
+              serviceModeInfo.action.type === ServiceModeInfoActionTypes.SERVICE_MODE_DEACTIVATE ? (
                 <span>
                   <b>Выключение</b>
                 </span>
-              ) : serviceModeInfo.action.type === 'SERVICE_MODE_ACTIVATE' ? (
+              ) : serviceModeInfo.action.type ===
+                ServiceModeInfoActionTypes.SERVICE_MODE_ACTIVATE ? (
                 <span>
                   <b>Включение на {timeFormat}</b>
                 </span>
@@ -204,13 +219,14 @@ export const AlkozamkiServiceMode = ({
                 </div>
               </>
             );
-          case 'APP_REQUEST':
+          case ServiceModeInfoType.APP_REQUEST:
             const appText =
-              serviceModeInfo.action.type === 'SERVICE_MODE_DEACTIVATE' ? (
+              serviceModeInfo.action.type === ServiceModeInfoActionTypes.SERVICE_MODE_DEACTIVATE ? (
                 <span>
                   <b>Выключение</b>
                 </span>
-              ) : serviceModeInfo.action.type === 'SERVICE_MODE_ACTIVATE' ? (
+              ) : serviceModeInfo.action.type ===
+                ServiceModeInfoActionTypes.SERVICE_MODE_ACTIVATE ? (
                 <span>
                   <b>Включение на {timeFormat}</b>
                 </span>
@@ -235,13 +251,15 @@ export const AlkozamkiServiceMode = ({
                 </div>
               </>
             );
-          case 'REJECTED':
-            if (serviceModeInfo.requestType === 'SERVER_REQUEST') {
-              return serviceModeInfo.action.type === 'SERVICE_MODE_DEACTIVATE' ? (
+          case ServiceModeInfoType.REJECTED:
+            if (serviceModeInfo.requestType === ServiceModeInfoRequestType.SERVER_REQUEST) {
+              return serviceModeInfo.action.type ===
+                ServiceModeInfoActionTypes.SERVICE_MODE_DEACTIVATE ? (
                 <span>
                   <b>Выключение отклонено</b> водителем
                 </span>
-              ) : serviceModeInfo.action.type === 'SERVICE_MODE_ACTIVATE' ? (
+              ) : serviceModeInfo.action.type ===
+                ServiceModeInfoActionTypes.SERVICE_MODE_ACTIVATE ? (
                 <span>
                   <b>Включение отклонено</b> водителем
                 </span>
@@ -257,20 +275,22 @@ export const AlkozamkiServiceMode = ({
             } else {
               return <span>Ожидание подтверждения приложения</span>;
             }
-          case 'ACCEPTED':
-            if (serviceModeInfo.requestType === 'SERVER_REQUEST') {
-              return serviceModeInfo.action.type === 'SERVICE_MODE_DEACTIVATE' ? (
+          case ServiceModeInfoType.ACCEPTED:
+            if (serviceModeInfo.requestType === ServiceModeInfoRequestType.SERVER_REQUEST) {
+              return serviceModeInfo.action.type ===
+                ServiceModeInfoActionTypes.SERVICE_MODE_ACTIVATE ? (
                 <span>
                   <b>Выключение подтверждено</b> водителем
                 </span>
-              ) : serviceModeInfo.action.type === 'SERVICE_MODE_ACTIVATE' ? (
+              ) : serviceModeInfo.action.type ===
+                ServiceModeInfoActionTypes.SERVICE_MODE_DEACTIVATE ? (
                 <span>
                   <b>Включение подтверждено</b> водителем
                 </span>
               ) : (
                 '-'
               );
-            } else if (serviceModeInfo.requestType === 'APP_REQUEST') {
+            } else if (serviceModeInfo.requestType === ServiceModeInfoRequestType.APP_REQUEST) {
               if (serviceModeInfo.isAcknowledged) {
                 return <span>Подтвержденно приложением</span>;
               } else {
@@ -279,9 +299,9 @@ export const AlkozamkiServiceMode = ({
             } else {
               return <span>Ожидание подтверждения приложения</span>;
             }
-          case 'OFFLINE_DEACTIVATION':
+          case ServiceModeInfoType.OFFLINE_DEACTIVATION:
             return <span>Выключен в оффлайн-режиме</span>;
-          case 'OFFLINE_ACTIVATION':
+          case ServiceModeInfoType.OFFLINE_ACTIVATION:
             return <span>Включен в оффлайн-режиме на {timeFormat}</span>;
           default:
             return null;
@@ -309,22 +329,22 @@ export const AlkozamkiServiceMode = ({
 
   const getText = () => {
     switch (data.state) {
-      case 'OFFLINE_SWITCH':
-        if (data.process === 'SWITCHING_ON') {
+      case DriverOperatorState.OFFLINE_SWITCH:
+        if (data.process === OperatorAction.SWITCHING_ON) {
           return <span>Включен в оффлайн-режиме на 10:10:10</span>;
-        } else if (data.process === 'SWITCHING_OFF') {
+        } else if (data.process === OperatorAction.SWITCHING_OFF) {
           return <span>Выключен в оффлайн-режиме</span>;
         } else {
           return '';
         }
-      case 'DRIVER_WAITING':
-        if (data.process === 'SWITCHING_ON') {
+      case DriverOperatorState.DRIVER_WAITING:
+        if (data.process === OperatorAction.SWITCHING_ON) {
           return (
             <span>
               <b>Включение на 10:10:10</b>
             </span>
           );
-        } else if (data.process === 'SWITCHING_OFF') {
+        } else if (data.process === OperatorAction.SWITCHING_OFF) {
           return (
             <span>
               <b>Выключение</b>
@@ -333,14 +353,14 @@ export const AlkozamkiServiceMode = ({
         } else {
           return '';
         }
-      case 'OPERATOR_WAITING':
-        if (data.process === 'SWITCHING_ON') {
+      case DriverOperatorState.OPERATOR_WAITING:
+        if (data.process === OperatorAction.SWITCHING_ON) {
           return (
             <span>
               <b>Включение на 10:10:10</b>
             </span>
           );
-        } else if (data.process === 'SWITCHING_OFF') {
+        } else if (data.process === OperatorAction.SWITCHING_OFF) {
           return (
             <span>
               <b>Выключение</b>
@@ -349,14 +369,14 @@ export const AlkozamkiServiceMode = ({
         } else {
           return '';
         }
-      case 'DRIVER_ACCEPT':
-        if (data.process === 'SWITCHING_ON') {
+      case DriverOperatorState.DRIVER_ACCEPT:
+        if (data.process === OperatorAction.SWITCHING_ON) {
           return (
             <span>
               <b>Включение на 10:10:10 подтверждено</b> водителем
             </span>
           );
-        } else if (data.process === 'SWITCHING_OFF') {
+        } else if (data.process === OperatorAction.SWITCHING_OFF) {
           return (
             <span>
               <b>Выключение подтверждено</b> водителем
@@ -365,14 +385,14 @@ export const AlkozamkiServiceMode = ({
         } else {
           return '';
         }
-      case 'DRIVER_CANCEL':
-        if (data.process === 'SWITCHING_ON') {
+      case DriverOperatorState.DRIVER_CANCEL:
+        if (data.process === OperatorAction.SWITCHING_ON) {
           return (
             <span>
               <b>Включение на 10:10:10 отклонено</b> водителем
             </span>
           );
-        } else if (data.process === 'SWITCHING_OFF') {
+        } else if (data.process === OperatorAction.SWITCHING_OFF) {
           return (
             <span>
               <b>Выключение отклонено</b> водителем

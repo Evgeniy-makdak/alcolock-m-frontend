@@ -51,7 +51,8 @@ export const GroupInfo = ({ selectedGroupId, updateInfo, onClose }) => {
       styles={{
         wrapper: (base) => ({
           ...base,
-          display: 'flex',
+          display: 'block',
+          width: '100%',
           height: '100vh',
           flex: '1 1 0',
           overflow: 'hidden',

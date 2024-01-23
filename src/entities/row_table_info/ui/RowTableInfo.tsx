@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import style from './RowTableInfo.module.scss';
 
@@ -7,7 +7,13 @@ const Tabs = {
   history: 'history',
 };
 
-export const RowTableInfo = ({ infoContent, historyContent }) => {
+interface RowTableInfoProps {
+  infoContent?: ReactNode | string;
+  historyContent?: ReactNode | string;
+}
+
+// TODO => Сделать универсальной для всех страниц
+export const RowTableInfo = ({ infoContent, historyContent }: RowTableInfoProps) => {
   const [activeTab, setActiveTab] = useState(Tabs.info);
 
   return (

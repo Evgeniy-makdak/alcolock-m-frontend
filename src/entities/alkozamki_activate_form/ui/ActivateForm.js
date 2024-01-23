@@ -3,6 +3,8 @@ import { Form } from '@shared/ui/form';
 import { Input } from '@shared/ui/input';
 import { Loader } from '@shared/ui/loader';
 
+import { LABEL_TEXT } from '../lib/const';
+
 export const ActivateForm = ({ formSelectors, onValidSubmit }) => {
   const loading = eventsStore.activateServiceLoading.useValue();
 
@@ -14,7 +16,7 @@ export const ActivateForm = ({ formSelectors, onValidSubmit }) => {
           fieldParams={{
             type: 'number',
             name: 'duration',
-            label: 'Период активации, ч',
+            label: LABEL_TEXT,
           }}
         />
       </Form>

@@ -5,7 +5,7 @@ import { AlkozamkiForm } from '@entities/alkozamki_form';
 import { RowTableInfo } from '@entities/row_table_info';
 import { EditTable } from '@features/edit_table';
 import { EventsHistory, HistoryTypes } from '@features/events_history';
-import { UserPermissionsTypes } from '@features/menu_button/model/effects';
+import { UserPermissionsTypes } from '@features/menu_button';
 import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';
 import { useToggle } from '@shared/hooks/useToggle';
@@ -68,13 +68,13 @@ const Alkozamki = () => {
           editFormSelectors={editAlkozamokFormSelectors}
           uploadListPromise={uploadAlkozamkiList}
           deleteItemPromise={
-            userData?.permissions.alcolocks === UserPermissionsTypes.create ? deleteItem : null
+            userData?.permissions.alcolocks === UserPermissionsTypes.CREATE ? deleteItem : null
           }
           addItemPromise={
-            userData?.permissions.alcolocks === UserPermissionsTypes.create ? addItem : null
+            userData?.permissions.alcolocks === UserPermissionsTypes.CREATE ? addItem : null
           }
           editItemPromise={
-            userData.permissions.alcolocks === UserPermissionsTypes.create ? changeItem : null
+            userData.permissions.alcolocks === UserPermissionsTypes.CREATE ? changeItem : null
           }
           deletePopupParams={{
             title: DELETE_POPUP_TITLE,

@@ -1,7 +1,7 @@
 import { AppConstants } from '@app';
 import { AttachmentsForm } from '@entities/attachments_form';
 import { EditTable } from '@features/edit_table';
-import { UserPermissionsTypes } from '@features/menu_button/model/effects';
+import { UserPermissionsTypes } from '@features/menu_button';
 import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
@@ -40,12 +40,12 @@ const Attachments = () => {
         editFormSelectors={editAttachmentFormSelectors}
         uploadListPromise={uploadAttachments}
         deleteItemPromise={
-          userData?.permissions.attachments === UserPermissionsTypes.create
+          userData?.permissions.attachments === UserPermissionsTypes.CREATE
             ? deleteAttachment
             : null
         }
         addItemPromise={
-          userData?.permissions.attachments === UserPermissionsTypes.create ? addAttachment : null
+          userData?.permissions.attachments === UserPermissionsTypes.CREATE ? addAttachment : null
         }
         deletePopupParams={{
           title: DELETE_POPUP_TITLE,

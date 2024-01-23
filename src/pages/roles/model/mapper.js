@@ -1,10 +1,11 @@
+import { Entitys } from '@features/menu_button/lib/const';
 import { Formatters } from '@shared/utils/formatters';
 
 export default class RolesMapper {
   static toApi(data) {
-    const userPermissions = this._getPermissions('USER', data.user_control);
-    const devicesPermissions = this._getPermissions('DEVICE', data.alkozamki_control);
-    const carPermissions = this._getPermissions('VEHICLE', data.car_control);
+    const userPermissions = this._getPermissions(Entitys.USER, data.user_control);
+    const devicesPermissions = this._getPermissions(Entitys.DEVICE, data.alkozamki_control);
+    const carPermissions = this._getPermissions(Entitys.VEHICLE, data.car_control);
 
     return {
       name: data.role,

@@ -1,4 +1,5 @@
-import { RoutePaths } from '@app';
+import { RoutePaths } from '@app/index';
+import { ExtractTypeFromArray } from '@shared/types/utility';
 
 export const NAV_LINKS = [
   {
@@ -34,3 +35,6 @@ export const NAV_LINKS = [
     name: 'Привязки',
   },
 ];
+
+export type TypeNavLinks = typeof NAV_LINKS;
+export type TypeNavLink = ExtractTypeFromArray<TypeNavLinks>;

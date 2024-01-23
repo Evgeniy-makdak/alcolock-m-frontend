@@ -5,7 +5,7 @@ import { RowTableInfo } from '@entities/row_table_info';
 import { VehiclesForm } from '@entities/vehicles_form';
 import { EditTable } from '@features/edit_table';
 import { EventsHistory, HistoryTypes } from '@features/events_history/ui/EventsHistory';
-import { UserPermissionsTypes } from '@features/menu_button/model/effects';
+import { UserPermissionsTypes } from '@features/menu_button';
 import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';
 import { useToggle } from '@shared/hooks/useToggle';
@@ -77,13 +77,13 @@ const Vehicles = () => {
           editFormSelectors={editCarFormSelectors}
           uploadListPromise={uploadCarsList}
           deleteItemPromise={
-            userData?.permissions.cars === UserPermissionsTypes.create ? deleteCar : null
+            userData?.permissions.cars === UserPermissionsTypes.CREATE ? deleteCar : null
           }
           addItemPromise={
-            userData?.permissions.cars === UserPermissionsTypes.create ? addCar : null
+            userData?.permissions.cars === UserPermissionsTypes.CREATE ? addCar : null
           }
           editItemPromise={
-            userData?.permissions.cars === UserPermissionsTypes.create ? changeCar : null
+            userData?.permissions.cars === UserPermissionsTypes.CREATE ? changeCar : null
           }
           deletePopupParams={{
             title: DELETE_POPUP_TITLE,

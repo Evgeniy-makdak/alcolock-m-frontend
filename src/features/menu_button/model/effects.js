@@ -5,18 +5,14 @@ import { AuthStatus, appAuthStatusState, appLoadingState } from '@app/model/stor
 import { cookieManager } from '@shared/utils/cookie_manager';
 
 import UserApi from '../api/user_api';
+import { Entitys, UserPermissionsTypes } from '../lib/const';
 import { changePasswordErrorState, changePasswordLoadingState, userState } from './store';
-
-export const UserPermissionsTypes = {
-  create: 'CREATE',
-  read: 'READ',
-};
 
 const permissionsNormalize = (permissionsList, entity) => {
   if (permissionsList.includes(`PERMISSION_${entity}_CREATE`)) {
-    return UserPermissionsTypes.create;
+    return UserPermissionsTypes.CREATE;
   } else if (permissionsList.includes(`PERMISSION_${entity}_READ`)) {
-    return UserPermissionsTypes.read;
+    return UserPermissionsTypes.READ;
   } else {
     return null;
   }
@@ -24,17 +20,17 @@ const permissionsNormalize = (permissionsList, entity) => {
 
 const permissionsMapper = (permissionsList) => {
   const permissions = {
-    users: permissionsNormalize(permissionsList, 'USER'),
-    cars: permissionsNormalize(permissionsList, 'VEHICLE'),
+    users: permissionsNormalize(permissionsList, Entitys.USER),
+    cars: permissionsNormalize(permissionsList, Entitys.VEHICLE),
     attachments: null,
-    alcolocks: permissionsNormalize(permissionsList, 'DEVICE'),
+    alcolocks: permissionsNormalize(permissionsList, Entitys.DEVICE),
   };
 
   if (
-    permissions.users === UserPermissionsTypes.create &&
-    permissions.cars === UserPermissionsTypes.create
+    permissions.users === UserPermissionsTypes.CREATE &&
+    permissions.cars === UserPermissionsTypes.CREATE
   ) {
-    permissions.attachments = UserPermissionsTypes.create;
+    permissions.attachments = UserPermissionsTypes.CREATE;
   } else if (!!permissions.users && !!permissions.cars) {
     permissions.attachments = UserPermissionsTypes.read;
   }

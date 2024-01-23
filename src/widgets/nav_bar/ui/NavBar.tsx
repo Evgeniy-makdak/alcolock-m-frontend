@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { RoutePaths } from '@app';
+import { RoutePaths } from '@app/index';
 import { MenuButton } from '@features/menu_button';
 import { userStore } from '@features/menu_button/model/store';
 import { BranchSelect } from '@features/nav_bar_branch_select';
@@ -9,7 +9,7 @@ import { checkAutoServiceCount } from '@pages/auto_service/model/effects';
 import { autoServiceStore } from '@pages/auto_service/model/store';
 import { Logo } from '@shared/ui/logo';
 
-import { NAV_LINKS } from '../lib/const';
+import { NAV_LINKS, TypeNavLink } from '../lib/const';
 import style from './NavBar.module.scss';
 
 export const NavBar = () => {
@@ -29,7 +29,7 @@ export const NavBar = () => {
     }, 60000);
   }, [updateNotificationsCount]);
 
-  const permissionsFilter = (item) => {
+  const permissionsFilter = (item: TypeNavLink) => {
     // TODO => убрать столько условий, слишком сложен для понимания и редактирования
     return item.path === RoutePaths.groups || item.path === RoutePaths.roles
       ? userData?.isAdmin

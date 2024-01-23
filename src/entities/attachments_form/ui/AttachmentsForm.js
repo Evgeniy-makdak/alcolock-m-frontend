@@ -11,6 +11,8 @@ import { Loader } from '@shared/ui/loader';
 import { SearchSelect } from '@shared/ui/search_select';
 import { Formatters } from '@shared/utils/formatters';
 
+import { LABEL_TEXT } from '../lib/const';
+
 export const AttachmentsForm = ({ formSelectors, onValidSubmit, selectedItem }) => {
   const setInitData = formSelectors.useSetInitFormData();
   const user = userStore.userData.useValue();
@@ -63,8 +65,8 @@ export const AttachmentsForm = ({ formSelectors, onValidSubmit, selectedItem }) 
           <SearchSelect
             formSelectors={formSelectors}
             fieldParams={{
-              name: 'vehicle',
-              label: 'ТС',
+              name: LABEL_TEXT.vehicle.name,
+              label: LABEL_TEXT.vehicle.label,
             }}
             valueFormatter={carSelectValueFormatter}
             onSearch={(query) => searchCars({ query })}
@@ -73,8 +75,8 @@ export const AttachmentsForm = ({ formSelectors, onValidSubmit, selectedItem }) 
           <SearchSelect
             formSelectors={formSelectors}
             fieldParams={{
-              name: 'driver',
-              label: 'Водитель',
+              name: LABEL_TEXT.driver.name,
+              label: LABEL_TEXT.driver.label,
             }}
             valueFormatter={driverSelectValueFormatter}
             onSearch={searchDrivers}

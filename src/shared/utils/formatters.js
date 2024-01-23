@@ -1,3 +1,5 @@
+import { Entitys } from '@features/menu_button/lib/const';
+
 export class Formatters {
   static formatISODate(isoDate) {
     if (!isoDate) return '-';
@@ -59,20 +61,20 @@ export class Formatters {
 
         switch (availableMethod) {
           case 'CREATE':
-            if (permissionArea === 'DEVICE') {
+            if (permissionArea === Entitys.DEVICE) {
               rolePermissions.alkozamki_control = 1;
-            } else if (permissionArea === 'VEHICLE') {
+            } else if (permissionArea === Entitys.VEHICLE) {
               rolePermissions.car_control = 1;
-            } else if (permissionArea === 'USER') {
+            } else if (permissionArea === Entitys.USER) {
               rolePermissions.user_control = 1;
             }
             break;
           case 'READ':
-            if (permissionArea === 'DEVICE') {
+            if (permissionArea === Entitys.DEVICE) {
               rolePermissions.alkozamki_control = 2;
-            } else if (permissionArea === 'VEHICLE') {
+            } else if (permissionArea === Entitys.VEHICLE) {
               rolePermissions.car_control = 2;
-            } else if (permissionArea === 'USER') {
+            } else if (permissionArea === Entitys.USER) {
               rolePermissions.user_control = 2;
             }
             break;
