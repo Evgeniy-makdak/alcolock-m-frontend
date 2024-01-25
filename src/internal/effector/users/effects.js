@@ -46,7 +46,7 @@ export const uploadUsersList = createEffect((
     endDate,
     groupId
   }) => {
-  const queryTrimmed = (query ?? '').trim()
+  const queryTrimmed = Formatters.removeExtraSpaces(query ?? '')
   let queries = ''
   const userData = userState.$store.getState()
   const selectedBranch = userData?.isAdmin
@@ -71,9 +71,7 @@ export const uploadUsersList = createEffect((
   }
 
   if (queryTrimmed.length) {
-    queries += `&any.firstName.contains=${queryTrimmed}`
-    queries += `&any.middleName.contains=${queryTrimmed}`
-    queries += `&any.lastName.contains=${queryTrimmed}`
+    queries += `&any.match.contains=${queryTrimmed}`
     queries += `&any.email.contains=${queryTrimmed}`
   }
 
@@ -198,7 +196,7 @@ export const changeUser = createEffect((payload) => {
 })
 
 export const searchUsers = createEffect(({query, excludeGroupId}) => {
-  const trimmedQuery = query?.trim() ?? null
+  const trimmedQuery = Formatters.removeExtraSpaces(query ?? '')
   const userData = userState.$store.getState()
   const selectedBranch = userData?.isAdmin
     ? selectedBranchState.$store.getState()
@@ -207,10 +205,7 @@ export const searchUsers = createEffect(({query, excludeGroupId}) => {
   lastSearchUsersRequest.$store.getState()?.abort()
 
   if (trimmedQuery) {
-    queries += `&any.lastName.contains=${trimmedQuery}`
-    queries += `&any.firstName.contains=${trimmedQuery}`
-    queries += `&any.middleName.contains=${trimmedQuery}`
-    queries += `&any.email.contains=${trimmedQuery}`
+    queries += `&any.match.contains=${trimmedQuery}`
   }
 
   if (excludeGroupId) {
@@ -258,7 +253,7 @@ export const searchDrivers = createEffect(query => {
   const selectedBranch = userData?.isAdmin
     ? selectedBranchState.$store.getState()
     : (userData?.assignment.branch ?? {id: 10})
-  const trimmedQuery = query?.trim() ?? null
+  const trimmedQuery = Formatters.removeExtraSpaces(query ?? '')
   let queries = '&sort=lastName,ASC'
   const lastRequest = lastSearchDriversRequest.$store.getState()
   lastRequest?.abort()
@@ -266,10 +261,7 @@ export const searchDrivers = createEffect(query => {
   queries += `&all.driver.id.specified=true`
 
   if (trimmedQuery) {
-    queries += `&any.lastName.contains=${trimmedQuery}`
-    queries += `&any.firstName.contains=${trimmedQuery}`
-    queries += `&any.middleName.contains=${trimmedQuery}`
-    queries += `&any.email.contains=${trimmedQuery}`
+    queries += `&any.match.contains=${trimmedQuery}`
   }
 
   if (selectedBranch) {

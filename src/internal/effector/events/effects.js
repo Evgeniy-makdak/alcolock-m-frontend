@@ -9,6 +9,7 @@ import {
 import EventsApi from "../../../data/api/events/events_api";
 import {selectedBranchState} from "../selected_branch/store";
 import {userState} from "../user/store";
+import Formatters from "../../utils/formatters";
 
 export const EventsSortTypes = {
   byUserName: 'byUserName',
@@ -50,7 +51,7 @@ export const uploadEvents = createEffect((
   }) => {
   eventsLoadingState.setState(true)
 
-  const queryTrimmed = (query ?? '').trim()
+  const queryTrimmed = Formatters.removeExtraSpaces(query ?? '')
   let queries = ''
   const userData = userState.$store.getState()
   const selectedBranch = userData?.isAdmin
@@ -74,12 +75,8 @@ export const uploadEvents = createEffect((
   }
 
   if (queryTrimmed.length) {
-    queries += `&any.createdBy.lastName.contains=${queryTrimmed}`
-    queries += `&any.createdBy.firstName.contains=${queryTrimmed}`
-    queries += `&any.createdBy.middleName.contains=${queryTrimmed}`
-    queries += `&any.vehicleRecord.registrationNumber.contains=${queryTrimmed}`
-    queries += `&any.vehicleRecord.manufacturer.contains=${queryTrimmed}`
-    queries += `&any.vehicleRecord.model.contains=${queryTrimmed}`
+    queries += `&any.createdBy.match.contains=${queryTrimmed}`
+    queries += `&any.vehicleRecord.match.contains=${queryTrimmed}`
   }
 
   if (selectedBranch) {

@@ -120,5 +120,9 @@ export default class Formatters {
         : '00'
     }
   }
+
+  static removeExtraSpaces(str) {
+    return str.replace(/\s+/g, ' ').trim();
+  }
 }
 

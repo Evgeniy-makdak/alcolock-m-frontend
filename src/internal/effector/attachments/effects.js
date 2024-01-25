@@ -8,6 +8,7 @@ import AttachmentsApi from "../../../data/api/attachments/attachments_api";
 import AttachmentsMapper from "./mapper";
 import {selectedBranchState} from "../selected_branch/store";
 import {userState} from "../user/store";
+import Formatters from "../../utils/formatters";
 
 export const AttachmentsSortTypes = {
   byName: 'byName',
@@ -50,7 +51,7 @@ export const uploadAttachments = createEffect((
     endDate
   }) => {
   attachmentsLoadingState.setState(true)
-  const queryTrimmed = (query ?? '').trim()
+  const queryTrimmed = Formatters.removeExtraSpaces(query ?? '')
   let queries = ''
   const userData = userState.$store.getState()
   const selectedBranch = userData?.isAdmin
@@ -74,12 +75,9 @@ export const uploadAttachments = createEffect((
   }
 
   if (queryTrimmed.length) {
-    queries += `&any.vehicle.monitoringDevice.name.contains=${queryTrimmed}`
-    queries += `&any.vehicle.monitoringDevice.serialNumber.contains=${queryTrimmed}`
-    queries += `&any.vehicle.manufacturer.contains=${queryTrimmed}`
-    queries += `&any.vehicle.model.contains=${queryTrimmed}`
-    queries += `&any.vehicle.registrationNumber.contains=${queryTrimmed}`
-    queries += `&any.driver.userAccount.lastName.contains=${queryTrimmed}`
+    queries += `&any.vehicle.monitoringDevice.match.contains=${queryTrimmed}`
+    queries += `&any.vehicle.match.contains=${queryTrimmed}`
+    queries += `&any.driver.userAccount.match.contains=${queryTrimmed}`
   }
 
   if (selectedBranch) {

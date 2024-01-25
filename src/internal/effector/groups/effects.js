@@ -14,6 +14,7 @@ import {allUsersListState} from "../users/store";
 import {allAlkozamkiState} from "../alkozamki/store";
 import {allCarsListState} from "../vehicles/store";
 import GroupsApi from "../../../data/api/groups/groups_api";
+import Formatters from "../../utils/formatters";
 
 export const GroupsSortTypes = {
   byName: 'byName',
@@ -50,7 +51,7 @@ export const uploadGroupsList = createEffect((
     groupsListLoadingState.setState(true)
   }
 
-  const queryTrimmed = (query?? '').trim()
+  const queryTrimmed = Formatters.removeExtraSpaces(query ?? '')
   let queries = ''
   lastGetGroupsListRequestState.$store.getState()?.abort()
 
@@ -240,7 +241,7 @@ export const searchGroups = createEffect((query) => {
   lastSearchGroupsRequest.$store.getState()?.abort()
   let queries = ''
 
-  if (query?.trim().length) {
+  if (Formatters.removeExtraSpaces(query ?? '').length) {
     queries += `&all.name.contains=${query}`
   }
 

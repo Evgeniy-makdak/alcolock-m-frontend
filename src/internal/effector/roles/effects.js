@@ -11,6 +11,7 @@ import {
 import Sorts from "../../utils/sortes";
 import RolesApi from "../../../data/api/roles/roles_api";
 import RolesMapper from "./mapper";
+import Formatters from "../../utils/formatters";
 
 export const RolesSortTypes = {
   byRole: 'byRole',
@@ -41,7 +42,7 @@ export const uploadRolesList = createEffect((
     query
   }) => {
   rolesListLoadingState.setState(true)
-  const queryTrimmed = (query ?? '').trim()
+  const queryTrimmed = Formatters.removeExtraSpaces(query ?? '')
   let queries = ''
   lastGetRolesListRequest.$store.getState()?.abort()
 

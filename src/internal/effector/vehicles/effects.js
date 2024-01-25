@@ -12,6 +12,7 @@ import {
 import VehiclesApi from "../../../data/api/vehicles/vehicles_api";
 import {selectedBranchState} from "../selected_branch/store";
 import {userState} from "../user/store";
+import Formatters from "../../utils/formatters";
 
 export const CarsSortTypes = {
   byMake: 'byMake',
@@ -55,7 +56,7 @@ export const uploadCarsList = createEffect((
     groupId
   }) => {
   carsLoadingState.setState(true)
-  const queryTrimmed = (query?? '').trim()
+  const queryTrimmed = Formatters.removeExtraSpaces(query ?? '')
   let queries = ''
   const userData = userState.$store.getState()
   const selectedBranch = userData?.isAdmin
@@ -79,10 +80,8 @@ export const uploadCarsList = createEffect((
   }
 
   if (queryTrimmed.length) {
-    queries += `&any.model.contains=${queryTrimmed}`
-    queries += `&any.manufacturer.contains=${queryTrimmed}`
+    queries += `&any.match.contains=${queryTrimmed}`
     queries += `&any.vin.contains=${queryTrimmed}`
-    queries += `&any.registrationNumber.contains=${queryTrimmed}`
   }
 
   if (groupId) {
@@ -202,7 +201,7 @@ export const searchCarsByRegistrationNumber = createEffect((query = null) => {
   const selectedBranch = userData?.isAdmin
     ? selectedBranchState.$store.getState()
     : (userData?.assignment.branch ?? {id: 10})
-  const trimmedQuery = query?.trim() ?? null
+  const trimmedQuery = Formatters.removeExtraSpaces(query ?? '')
   let queries = '&sort=manufacturer,ASC'
   lastSearchByRegistrationNumberRequest.$store.getState()?.abort()
 
@@ -244,7 +243,7 @@ export const searchCarsByRegistrationNumber = createEffect((query = null) => {
 })
 
 export const searchCarsManufacturers = createEffect((query = null) => {
-  const trimmedQuery = query?.trim() ?? null
+  const trimmedQuery = Formatters.removeExtraSpaces(query ?? '')
   let queries = '&sort=match,ASC'
   lastSearchByManufacturersRequest.$store.getState()?.abort()
 
@@ -284,15 +283,13 @@ export const searchCars = createEffect(({query, withoutAlcolock, withoutDriver, 
   const selectedBranch = userData?.isAdmin
     ? selectedBranchState.$store.getState()
     : (userData?.assignment.branch ?? {id: 10})
-  const trimmedQuery = query?.trim() ?? null
+  const trimmedQuery = Formatters.removeExtraSpaces(query ?? '')
   let queries = '&sort=manufacturer,ASC'
   const lastRequest = lastSearchRequest.$store.getState()
   lastRequest?.abort()
 
   if (trimmedQuery) {
-    queries += `&any.registrationNumber.contains=${trimmedQuery}`
-    queries += `&any.model.contains=${trimmedQuery}`
-    queries += `&any.manufacturer.contains=${trimmedQuery}`
+    queries += `&any.match.contains=${trimmedQuery}`
   }
 
   if (withoutAlcolock) {

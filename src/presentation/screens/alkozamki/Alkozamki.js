@@ -16,7 +16,7 @@ import {
   getRowsTemplate,
   HEADERS,
 } from "./const";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useToggle} from "../../../internal/hooks/useToggle";
 import Aside from "../../shared/components/aside/Aside";
 import RowTableInfo from "../../shared/components/row_table_info/RowTableInfo";
@@ -34,6 +34,13 @@ const Alkozamki = () => {
   const loading = alkozamkiStore.alkozamkiLoading.useValue()
   const selectedBranch = selectedBranchStore.selectedBranch.useValue()
   const userData = userStore.userData.useValue()
+
+  useEffect(() => {
+    setInterval(() => {
+      toggleUpdateTable()
+      toggleUpdateInfo()
+    }, 60000)
+  }, [])
 
   const onClickRow = (id) => setSelectedAlcolockId(id)
   const handleCloseAside = () => setSelectedAlcolockId(null)

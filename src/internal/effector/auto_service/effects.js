@@ -10,6 +10,7 @@ import AppConstants from "../../app_constants";
 import {userState} from "../user/store";
 import {selectedBranchState} from "../selected_branch/store";
 import EventsApi from "../../../data/api/events/events_api";
+import Formatters from "../../utils/formatters";
 
 export const AutoServiceSortTypes = {
   byState: 'byState',
@@ -19,40 +20,6 @@ export const AutoServiceSortTypes = {
   bySerial: 'bySerial',
   byDate: 'byDate'
 }
-
-const sort = (list, orderType) => {
-  switch (orderType) {
-    case AutoServiceSortTypes.byState:
-      return list.sort((a, b) => Sorts.sortByLocaleCompare(
-        AppConstants.alcolockServiceTypes.find(item => item.value === a.state).label,
-        AppConstants.alcolockServiceTypes.find(item => item.value === b.state).label,
-      ))
-    case AutoServiceSortTypes.byProcess:
-      return list.sort((a, b) => Sorts.sortByLocaleCompare(
-        AppConstants.alcolockServiceProcesses.find(item => item.value === a.process).label,
-        AppConstants.alcolockServiceProcesses.find(item => item.value === b.process).label
-      ))
-    case AutoServiceSortTypes.byDriver:
-      return list.sort((a, b) => {
-        const aCar = `${a.alcolock.car.make} ${a.alcolock.car.model} ${a.alcolock.car.license}`
-        const bCar = `${b.alcolock.car.make} ${b.alcolock.car.model} ${b.alcolock.car.license}`
-        return Sorts.sortByLocaleCompare(a.driver.name, b.driver.name)
-      })
-    case AutoServiceSortTypes.byCar:
-      return list.sort((a, b) => {
-        const aCar = `${a.alcolock.car.make} ${a.alcolock.car.model} ${a.alcolock.car.license}`
-        const bCar = `${b.alcolock.car.make} ${b.alcolock.car.model} ${b.alcolock.car.license}`
-        return Sorts.sortByLocaleCompare(aCar, bCar)
-      })
-    case AutoServiceSortTypes.bySerial:
-      return list.sort((a, b) => Sorts.sortByLocaleCompare(a.alcolock.serial, b.alcolock.serial))
-    case AutoServiceSortTypes.byDate:
-      return list.sort((a, b) => Sorts.sortByDate(a.date, b.date))
-    default:
-      return list
-  }
-}
-
 const getSortQuery = (orderType, order) => {
   const orderStr = ',' + order.toUpperCase()
 
@@ -72,7 +39,7 @@ const getSortQuery = (orderType, order) => {
 
 export const checkAutoServiceCount = createEffect(() => {
   if (lastGetAutoServiceListRequest.$store.getState()) return
-  let queries = '&all.type.in=SERVICE_MODE_ACTIVATE,SERVICE_MODE_DEACTIVATE&all.seen.in=false&all.events.eventType.notEquals=TIMEOUT'
+  let queries = '&all.type.in=SERVICE_MODE_ACTIVATE,SERVICE_MODE_DEACTIVATE&all.seen.in=false&all.events.eventType.notEquals=TIMEOUT&all.status.notIn=INVALID'
   const {promise, controller} = EventsApi.getList(
     {
       page: 0,
@@ -106,9 +73,9 @@ export const uploadAutoServiceList = createEffect((
   }) => {
   lastCheckAutoServiceCountRequest.$store.getState()?.abort()
   autoServiceListLoadingState.setState(true)
-  const queryTrimmed = (query?? '').trim()
+  const queryTrimmed = Formatters.removeExtraSpaces(query ?? '')
   let updateCount = true
-  let queries = '&all.type.in=SERVICE_MODE_ACTIVATE,SERVICE_MODE_DEACTIVATE&all.seen.in=false&all.events.eventType.notEquals=TIMEOUT'
+  let queries = '&all.type.in=SERVICE_MODE_ACTIVATE,SERVICE_MODE_DEACTIVATE&all.seen.in=false&all.events.eventType.notEquals=TIMEOUT&all.status.notIn=INVALID'
   lastGetAutoServiceListRequest.$store.getState()?.abort()
   const userData = userState.$store.getState()
   const selectedBranch = userData?.isAdmin
@@ -134,12 +101,8 @@ export const uploadAutoServiceList = createEffect((
   if (queryTrimmed.length) {
     updateCount = false
     queries += `&any.device.serialNumber.contains=${queryTrimmed}`
-    queries += `&any.createdBy.lastName.contains=${queryTrimmed}`
-    queries += `&any.createdBy.firstName.contains=${queryTrimmed}`
-    queries += `&any.createdBy.middleName.contains=${queryTrimmed}`
-    queries += `&any.vehicleRecord.registrationNumber.contains=${queryTrimmed}`
-    queries += `&any.vehicleRecord.manufacturer.contains=${queryTrimmed}`
-    queries += `&any.vehicleRecord.model.contains=${queryTrimmed}`
+    queries += `&any.createdBy.match.contains=${queryTrimmed}`
+    queries += `&any.vehicleRecord.match.contains=${queryTrimmed}`
   }
 
   if (selectedBranch) {
