@@ -1,0 +1,49 @@
+.rolesSelect {
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
+  padding: 16.5px 14px;
+
+  & > span {
+    position: absolute;
+    top: -12px;
+    left: 9px;
+    display: block;
+    background: white;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.4375em;
+    letter-spacing: 0.00938em;
+    transform: scale(0.75);
+  }
+}
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.role {
+  cursor: pointer;
+  padding: 3px 10px;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.16px;
+  line-height: 138.462%;
+  color: #000000de;
+  background: #00000033;
+  border-radius: 100px;
+  white-space: nowrap;
+  opacity: 0.6;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.active {
+  opacity: 1;
+}
+
+.disabled {
+  opacity: 0.3;
+  cursor: auto;
+}

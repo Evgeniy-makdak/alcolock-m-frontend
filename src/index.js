@@ -1,15 +1,23 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.sass';
-import App from './internal/App';
-import {BrowserRouter as Router} from 'react-router-dom';
-import ErrorBoundary from "./presentation/screens/error_boundary/ErrorBoundary";
+import { RouterProvider } from 'react-router-dom';
+
+import StyledEngineProvider from '@mui/material/StyledEngineProvider';
+
+import { routers } from '@app/lib/routers';
+import { ErrorBoundary } from '@layout/error_boundary';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import './index.scss';
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ErrorBoundary>
-    <Router>
-      <App />
-    </Router>
-  </ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <StyledEngineProvider injectFirst>
+        <RouterProvider router={routers} />
+      </StyledEngineProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>,
 );

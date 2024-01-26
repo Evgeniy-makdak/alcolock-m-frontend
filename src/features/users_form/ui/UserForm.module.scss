@@ -1,0 +1,20 @@
+.userForm {
+  & form {
+    display: flex;
+    gap: 86px;
+  }
+}
+
+.column {
+  height: 602px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &:first-child {
+    width: calc(415 / 744 * 100%);
+  }
+  &:last-child {
+    width: calc((744 - 415 - 86) / 744 * 100%);
+  }
+}
