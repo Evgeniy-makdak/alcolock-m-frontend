@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { AppConstants } from '@app';
 import { Info } from '@entities/info';
 import { AlkozamkiServiceMode } from '@features/alkozamki_service_mode';
+// TODO => убрать связь со страницей
 import { getItem } from '@pages/alkozamki/model/effects';
 import { Loader } from '@shared/ui/loader';
 import { Formatters } from '@shared/utils/formatters';

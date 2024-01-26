@@ -18,6 +18,7 @@ import {
 import { RolesSortTypes, addRole, changeRole, deleteRole, uploadRolesList } from '../model/effects';
 import { addRoleFormSelectors, editRoleFormSelectors } from '../model/forms';
 import { rolesStore } from '../model/store';
+import style from './Roles.module.scss';
 
 const Roles = () => {
   const loading = rolesStore.loadingList.useValue();
@@ -57,6 +58,7 @@ const Roles = () => {
           Body: RoleForm,
         }}
         withDate={false}
+        marginControls={style.marginControls}
       />
     </PageWrapper>
   );

@@ -42,6 +42,7 @@ export const EditTable = ({
   withoutAction = false,
   withoutAdd = false,
   additionalActions = [],
+  marginControls = null,
 }) => {
   const [openDeleteModal, toggleDeleteModal] = useToggle();
   const [openAddModal, toggleAddModal] = useToggle();
@@ -354,13 +355,15 @@ export const EditTable = ({
   return (
     <>
       {(withSearch || filtersPanel) && (
-        <TableControl
-          search={onSearch}
-          withSearch={withSearch}
-          withDate={withDate}
-          filtersPanel={filtersPanel}
-          isFiltersActive={isFiltersActive}
-        />
+        <div className={marginControls}>
+          <TableControl
+            search={onSearch}
+            withSearch={withSearch}
+            withDate={withDate}
+            filtersPanel={filtersPanel}
+            isFiltersActive={isFiltersActive}
+          />
+        </div>
       )}
       <Loader
         isLoading={loading}
@@ -420,14 +423,14 @@ export const EditTable = ({
                   key={row.id}
                   onClick={() => (onRowClick ?? (() => {}))(row.id)}
                   sx={{
-                    background: row.id === selectedRow ? 'rgba(246,246,246, .9)' : 'transparent',
+                    background: row.id === selectedRow ? 'rgb(191 191 191 / 90%)' : 'transparent',
                     cursor: onRowClick && row.id !== selectedRow ? 'pointer' : 'unset',
                     '&:hover': {
                       background:
                         onRowClick && row.id !== selectedRow
-                          ? 'rgba(246,246,246, .4)'
+                          ? 'rgba(246,246,246, 1)'
                           : row.id === selectedRow
-                            ? 'rgba(246,246,246, .9)'
+                            ? 'rgb(191 191 191 / 90%)'
                             : 'transparent',
                     },
                   }}>
@@ -533,7 +536,7 @@ export const EditTable = ({
           ]}
         />
       )}
-
+      {/* // TODO => Обертка для таблиц не должна знать о модалках */}
       {!!editPopupParams && (
         <Popup
           isOpen={openEditModal}

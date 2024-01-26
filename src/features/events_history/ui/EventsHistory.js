@@ -131,7 +131,6 @@ export const EventsHistory = ({ type, id }) => {
       styles={{
         wrapper: (base) => ({
           ...base,
-          overflow: 'auto',
           flexGrow: 1,
         }),
       }}>

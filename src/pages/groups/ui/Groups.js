@@ -1,14 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import { AppConstants, RoutePaths } from '@app';
+import { AppConstants } from '@app';
 import { GroupForm } from '@entities/groups_form';
+import { RowTableInfo } from '@entities/row_table_info';
 import { EditTable } from '@features/edit_table';
-import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';
-import { useToggle } from '@shared/hooks/useToggle';
-import { GroupInfo } from '@widgets/groups_info';
+import { Aside } from '@shared/ui/aside';
 
+import { useGroups } from '../hooks/useGroups';
 import { ADD_POPUP_TITLE, DELETE_POPUP_TITLE, EDIT_POPUP_TITLE, HEADERS } from '../lib/const';
 import { getDeletePopupBody, getRowsTemplate } from '../lib/helpers';
 import {
@@ -19,36 +16,19 @@ import {
   uploadGroupsList,
 } from '../model/effects';
 import { addGroupFormSelectors, editGroupFormSelectors } from '../model/forms';
-import { groupsStore } from '../model/store';
+import style from './Group.module.scss';
 
 const Groups = () => {
-  const [selectedGroupId, setSelectedGroupId] = useState(null);
-  const [updateInfo, toggleUpdateInfo] = useToggle();
-  const loading = groupsStore.listLoading.useValue();
-  const navigate = useNavigate();
-  const userData = userStore.userData.useValue();
-
-  useEffect(() => {
-    if (!userData?.isAdmin) {
-      navigate(RoutePaths.events);
-    }
-  }, [userData]);
-
-  const onClickRow = (id) => setSelectedGroupId(id);
-  const handleCloseAside = () => setSelectedGroupId(null);
-
-  const afterDelete = (id) => {
-    if (id === selectedGroupId) {
-      handleCloseAside();
-    }
-  };
-
-  const afterEdit = (id) => {
-    if (id === selectedGroupId) {
-      toggleUpdateInfo();
-    }
-  };
-
+  const {
+    selectedGroupId,
+    onCloseAside,
+    loading,
+    onClickRow,
+    afterDelete,
+    afterEdit,
+    tabs,
+    groupName,
+  } = useGroups();
   return (
     <>
       <PageWrapper>
@@ -80,15 +60,24 @@ const Groups = () => {
           afterDelete={afterDelete}
           onRowClick={onClickRow}
           afterEdit={afterEdit}
+          marginControls={style.marginControls}
         />
       </PageWrapper>
 
       {selectedGroupId && (
-        <GroupInfo
-          selectedGroupId={selectedGroupId}
-          updateInfo={updateInfo}
-          onClose={() => setSelectedGroupId(null)}
-        />
+        <Aside onClose={onCloseAside}>
+          <div className={style.infoTab}>
+            <div className={style.name}>
+              <span>{groupName}</span>
+            </div>
+            {/* <GroupInfo
+              selectedGroupId={selectedGroupId}
+              updateInfo={updateInfo}
+              onClose={() => setSelectedGroupId(null)}
+            /> */}
+            <RowTableInfo key={selectedGroupId} tabs={tabs} />
+          </div>
+        </Aside>
       )}
     </>
   );

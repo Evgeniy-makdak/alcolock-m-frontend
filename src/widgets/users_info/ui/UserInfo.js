@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 
+// TODO => убрать связь со app
 import { AppConstants } from '@app';
 import { Info } from '@entities/info';
+// TODO => убрать связь со страницей
 import { getUser } from '@pages/users/model/effects';
 import { Loader } from '@shared/ui/loader';
 import { Formatters } from '@shared/utils/formatters';

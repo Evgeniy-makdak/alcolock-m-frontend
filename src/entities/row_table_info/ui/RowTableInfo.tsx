@@ -2,37 +2,40 @@ import { ReactNode, useState } from 'react';
 
 import style from './RowTableInfo.module.scss';
 
-const Tabs = {
-  info: 'info',
-  history: 'history',
-};
-
-interface RowTableInfoProps {
-  infoContent?: ReactNode | string;
-  historyContent?: ReactNode | string;
+interface Tab {
+  name: string;
+  content: ReactNode | string;
 }
 
-// TODO => Сделать универсальной для всех страниц
-export const RowTableInfo = ({ infoContent, historyContent }: RowTableInfoProps) => {
-  const [activeTab, setActiveTab] = useState(Tabs.info);
+interface RowTableInfoProps {
+  tabs: Tab[];
+}
+
+export const RowTableInfo = ({ tabs }: RowTableInfoProps) => {
+  const [activeTab, setActiveTab] = useState(0);
+  const nameTabs = tabs.map((tab) => tab.name);
+  const contentTabs = tabs.map((tab) => tab.content);
 
   return (
     <div className={style.rowTableInfo}>
       <div className={style.tabs}>
-        <button
-          className={activeTab === Tabs.info ? style.active : ''}
-          onClick={() => setActiveTab(Tabs.info)}>
-          инфо
-        </button>
-
-        <button
-          className={activeTab === Tabs.history ? style.active : ''}
-          onClick={() => setActiveTab(Tabs.history)}>
-          история
-        </button>
+        {nameTabs.map((name, i) => (
+          <button
+            key={name}
+            className={activeTab === i ? style.active : ''}
+            onClick={() => setActiveTab(i)}>
+            {name}
+          </button>
+        ))}
       </div>
-
-      <div className={style.content}>{activeTab === Tabs.info ? infoContent : historyContent}</div>
+      {contentTabs.map((content, i) => (
+        <div
+          key={i}
+          hidden={activeTab !== i}
+          className={activeTab !== i ? style.contentHidden : style.content}>
+          {content}
+        </div>
+      ))}
     </div>
   );
 };

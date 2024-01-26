@@ -29,7 +29,7 @@ export const Authorization = () => {
 
   useEffect(() => {
     setError(null);
-    if (isAuth) {
+    if (isAuth && !loading) {
       navigate(RoutePaths.events);
     }
 

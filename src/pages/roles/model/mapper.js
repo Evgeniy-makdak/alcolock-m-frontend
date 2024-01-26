@@ -1,5 +1,6 @@
 import { Entitys } from '@features/menu_button/lib/const';
-import { Formatters } from '@shared/utils/formatters';
+
+import { normalizePermissions } from '../lib/normalizePermissions';
 
 export default class RolesMapper {
   static toApi(data) {
@@ -14,7 +15,7 @@ export default class RolesMapper {
   }
 
   static fromApi(data) {
-    const rolesPermissions = Formatters.normalizePermissions(data.userGroupPermissions);
+    const rolesPermissions = normalizePermissions(data.userGroupPermissions);
 
     return {
       role: data.name,

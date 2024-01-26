@@ -1,6 +1,6 @@
 import { AppConstants } from '@app';
-import { Formatters } from '@shared/utils/formatters';
 
+import { normalizePermissions } from '../lib/normalizePermissions';
 import { RolesSortTypes } from '../model/effects';
 
 export const HEADERS = [
@@ -27,7 +27,7 @@ export const HEADERS = [
 ];
 
 export const getRowsTemplate = (item) => {
-  const rolePermissions = Formatters.normalizePermissions(item.userGroupPermissions);
+  const rolePermissions = normalizePermissions(item.userGroupPermissions);
 
   return {
     id: item.id,

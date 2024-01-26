@@ -5,6 +5,7 @@ import { RoutePaths } from '@app/index';
 import { MenuButton } from '@features/menu_button';
 import { userStore } from '@features/menu_button/model/store';
 import { BranchSelect } from '@features/nav_bar_branch_select';
+// TODO => убрать связь со страницей
 import { checkAutoServiceCount } from '@pages/auto_service/model/effects';
 import { autoServiceStore } from '@pages/auto_service/model/store';
 import { Logo } from '@shared/ui/logo';

@@ -7,7 +7,6 @@ import { AppConstants } from '@app';
 import { DateInput } from '@entities/date_input';
 import { CategoriesSelect } from '@entities/users_categories_select';
 import { RolesSelect } from '@entities/users_roles_select';
-import { userMapper } from '@pages/users/hooks/mapper';
 import { getUser } from '@pages/users/model/effects';
 import { usersStore } from '@pages/users/model/store';
 import { ErrorViewer } from '@shared/ui/error_viewer';
@@ -18,6 +17,7 @@ import { PhoneInput } from '@shared/ui/phone_input';
 import { Select } from '@shared/ui/select';
 import { getErrorMessagesFromServer } from '@shared/validations/server_error_handler';
 
+import { mapper } from '../lib/mapper';
 import style from './UserForm.module.scss';
 
 export const UserForm = ({ formSelectors, onValidSubmit, selectedItem = null }) => {
@@ -44,7 +44,7 @@ export const UserForm = ({ formSelectors, onValidSubmit, selectedItem = null }) 
     getUser(selectedItem.id)
       .then((res) => {
         if (res) {
-          setInitData(userMapper(res));
+          setInitData(mapper(res));
         }
       })
       .catch((err) => {

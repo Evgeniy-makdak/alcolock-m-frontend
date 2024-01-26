@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Image } from '@entities/image';
 import { Info } from '@entities/info';
+// TODO => убрать связь со страницей
 import { getEvent } from '@pages/events/model/effects';
 import { Loader } from '@shared/ui/loader';
 import { MapLink } from '@shared/ui/map_link';

@@ -22,6 +22,7 @@ import {
 } from '../model/effects';
 import { addAttachmentFormSelectors, editAttachmentFormSelectors } from '../model/forms';
 import { attachmentsStore } from '../model/store';
+import style from './Attachments.module.scss';
 
 const Attachments = () => {
   const loading = attachmentsStore.attachmentsLoading.useValue();
@@ -62,6 +63,7 @@ const Attachments = () => {
           Body: AttachmentsForm,
         }}
         updateTable={selectedBranch}
+        marginControls={style.marginControls}
       />
     </PageWrapper>
   );

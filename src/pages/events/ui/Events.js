@@ -12,6 +12,7 @@ import { HEADERS, getRowsTemplate } from '../lib/const';
 import { EventsSortTypes, uploadEvents } from '../model/effects';
 import { filtersFormSelectors } from '../model/forms';
 import { eventsStore } from '../model/store';
+import style from './Events.module.scss';
 
 const Events = () => {
   const [selectedEventId, setSelectedEventId] = useState(null);
@@ -60,6 +61,7 @@ const Events = () => {
           withoutAction={true}
           withoutAdd={true}
           updateTable={selectedBranch}
+          marginControls={style.marginControls}
         />
       </PageWrapper>
 

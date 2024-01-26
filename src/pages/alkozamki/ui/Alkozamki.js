@@ -1,18 +1,12 @@
-import { useState } from 'react';
-
 import { AppConstants } from '@app';
 import { AlkozamkiForm } from '@entities/alkozamki_form';
 import { RowTableInfo } from '@entities/row_table_info';
 import { EditTable } from '@features/edit_table';
-import { EventsHistory, HistoryTypes } from '@features/events_history';
 import { UserPermissionsTypes } from '@features/menu_button';
-import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';
-import { useToggle } from '@shared/hooks/useToggle';
-import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import { Aside } from '@shared/ui/aside';
-import { AlkozamkiInfo } from '@widgets/alkozamki_info';
 
+import { useAlkozamki } from '../hooks/useAlkozamki';
 import {
   ADD_POPUP_TITLE,
   DELETE_POPUP_TITLE,
@@ -29,32 +23,21 @@ import {
   uploadAlkozamkiList,
 } from '../model/effects';
 import { addAlkozamokFormSelectors, editAlkozamokFormSelectors } from '../model/forms';
-import { alkozamkiStore } from '../model/store';
+import style from './Alkozamki.module.scss';
 
 const Alkozamki = () => {
-  const [selectedAlcolockId, setSelectedAlcolockId] = useState(null);
-  const [updateInfo, toggleUpdateInfo] = useToggle();
-  const [updateTable, toggleUpdateTable] = useToggle();
-  const loading = alkozamkiStore.alkozamkiLoading.useValue();
-  const selectedBranch = selectedBranchStore.selectedBranch.useValue();
-
-  const userData = userStore.userData.useValue();
-
-  const onClickRow = (id) => setSelectedAlcolockId(id);
-  const handleCloseAside = () => setSelectedAlcolockId(null);
-
-  const afterDelete = (id) => {
-    if (id === selectedAlcolockId) {
-      handleCloseAside();
-    }
-  };
-
-  const afterEdit = (id) => {
-    if (id === selectedAlcolockId) {
-      toggleUpdateInfo();
-    }
-  };
-
+  const {
+    loading,
+    selectedBranch,
+    userData,
+    tabs,
+    updateTable,
+    selectedAlcolockId,
+    onClickRow,
+    afterDelete,
+    afterEdit,
+    handleCloseAside,
+  } = useAlkozamki();
   return (
     <>
       <PageWrapper>
@@ -95,24 +78,13 @@ const Alkozamki = () => {
           afterEdit={afterEdit}
           onRowClick={onClickRow}
           updateTable={[updateTable, selectedBranch]}
+          marginControls={style.marginTableControls}
         />
       </PageWrapper>
 
       {selectedAlcolockId && (
         <Aside onClose={handleCloseAside}>
-          <RowTableInfo
-            infoContent={
-              <AlkozamkiInfo
-                updateData={updateInfo}
-                toggleUpdateInfo={toggleUpdateInfo}
-                selectedAlcolockId={selectedAlcolockId}
-                toggleUpdateTable={toggleUpdateTable}
-              />
-            }
-            historyContent={
-              <EventsHistory type={HistoryTypes.byAlcolock} id={selectedAlcolockId} />
-            }
-          />
+          <RowTableInfo key={selectedAlcolockId} tabs={tabs} />
         </Aside>
       )}
     </>

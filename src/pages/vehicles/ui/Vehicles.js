@@ -1,18 +1,12 @@
-import { useEffect, useState } from 'react';
-
 import { AppConstants } from '@app';
 import { RowTableInfo } from '@entities/row_table_info';
 import { VehiclesForm } from '@entities/vehicles_form';
 import { EditTable } from '@features/edit_table';
-import { EventsHistory, HistoryTypes } from '@features/events_history/ui/EventsHistory';
 import { UserPermissionsTypes } from '@features/menu_button';
-import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';
-import { useToggle } from '@shared/hooks/useToggle';
-import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import { Aside } from '@shared/ui/aside';
-import { VehiclesInfo } from '@widgets/vehicles_info';
 
+import { useVehicles } from '../hooks/useVehicles';
 import {
   ADD_POPUP_TITLE,
   DELETE_POPUP_TITLE,
@@ -21,48 +15,22 @@ import {
   getDeletePopupBody,
   getRowsTemplate,
 } from '../lib/const';
-import {
-  CarsSortTypes,
-  addCar,
-  changeCar,
-  clearVehiclesRequests,
-  deleteCar,
-  uploadCarsList,
-} from '../model/effects';
+import { CarsSortTypes, addCar, changeCar, deleteCar, uploadCarsList } from '../model/effects';
 import { addCarFormSelectors, editCarFormSelectors } from '../model/forms';
-import { vehiclesStore } from '../model/store';
+import style from './Vechicles.module.scss';
 
 const Vehicles = () => {
-  const [selectedCarId, setSelectedCarId] = useState(null);
-  const [updateInfo, toggleUpdateInfo] = useToggle();
-  const loading = vehiclesStore.carsLoading.useValue();
-  const selectedBranch = selectedBranchStore.selectedBranch.useValue();
-  const userData = userStore.userData.useValue();
-
-  useEffect(() => {
-    return () => {
-      clearVehiclesRequests();
-    };
-  }, []);
-
-  useEffect(() => {
-    handleCloseAside();
-  }, [selectedBranch]);
-
-  const onClickRow = (id) => setSelectedCarId(id);
-  const handleCloseAside = () => setSelectedCarId(null);
-
-  const afterDelete = (id) => {
-    if (id === selectedCarId) {
-      handleCloseAside();
-    }
-  };
-
-  const afterEdit = (id) => {
-    if (id === selectedCarId) {
-      toggleUpdateInfo();
-    }
-  };
+  const {
+    handleCloseAside,
+    afterDelete,
+    afterEdit,
+    loading,
+    onClickRow,
+    tabs,
+    userData,
+    selectedCarId,
+    selectedBranch,
+  } = useVehicles();
 
   return (
     <>
@@ -102,15 +70,13 @@ const Vehicles = () => {
           afterEdit={afterEdit}
           onRowClick={onClickRow}
           updateTable={selectedBranch}
+          marginControls={style.marginControls}
         />
       </PageWrapper>
 
       {selectedCarId && (
         <Aside onClose={handleCloseAside}>
-          <RowTableInfo
-            infoContent={<VehiclesInfo updateData={updateInfo} selectedCarId={selectedCarId} />}
-            historyContent={<EventsHistory type={HistoryTypes.byCar} id={selectedCarId} />}
-          />
+          <RowTableInfo key={selectedCarId} tabs={tabs} />
         </Aside>
       )}
     </>
