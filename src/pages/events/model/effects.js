@@ -2,6 +2,7 @@ import { createEffect } from 'effector';
 
 import { userState } from '@features/menu_button/model/store';
 import { selectedBranchState } from '@shared/model/selected_branch/store';
+import { Formatters } from '@shared/utils/formatters';
 
 import EventsApi from '../api/events_api';
 import {
@@ -43,7 +44,7 @@ export const uploadEvents = createEffect(
   ({ page, limit, sortBy, order, query, startDate, endDate, filtersData }) => {
     eventsLoadingState.setState(true);
 
-    const queryTrimmed = (query ?? '').trim();
+    const queryTrimmed = Formatters.removeExtraSpaces(query ?? '');
     let queries = '';
     const userData = userState.$store.getState();
     const selectedBranch = userData?.isAdmin
@@ -67,12 +68,8 @@ export const uploadEvents = createEffect(
     }
 
     if (queryTrimmed.length) {
-      queries += `&any.createdBy.lastName.contains=${queryTrimmed}`;
-      queries += `&any.createdBy.firstName.contains=${queryTrimmed}`;
-      queries += `&any.createdBy.middleName.contains=${queryTrimmed}`;
-      queries += `&any.vehicleRecord.registrationNumber.contains=${queryTrimmed}`;
-      queries += `&any.vehicleRecord.manufacturer.contains=${queryTrimmed}`;
-      queries += `&any.vehicleRecord.model.contains=${queryTrimmed}`;
+      queries += `&any.createdBy.match.contains=${queryTrimmed}`;
+      queries += `&any.vehicleRecord.match.contains=${queryTrimmed}`;
     }
 
     if (selectedBranch) {

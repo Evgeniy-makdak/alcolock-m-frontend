@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { EventsHistory, HistoryTypes } from '@features/events_history';
 import { userStore } from '@features/menu_button/model/store';
@@ -31,6 +31,15 @@ export const useAlkozamki = () => {
       toggleUpdateInfo();
     }
   };
+
+  // TODO => нужно ли это ?
+  useEffect(() => {
+    setInterval(() => {
+      toggleUpdateTable();
+      toggleUpdateInfo();
+    }, 60000);
+  }, []);
+
   const tabs = [
     {
       name: 'ИНФО',

@@ -2,6 +2,7 @@ import { createEffect } from 'effector';
 
 import { userState } from '@features/menu_button/model/store';
 import { selectedBranchState } from '@shared/model/selected_branch/store';
+import { Formatters } from '@shared/utils/formatters';
 
 import AlcolocksApi from '../api/alcolocks_api';
 import AlcolocksMapper from './mapper';
@@ -27,7 +28,7 @@ export const AlcolocksSortTypes = {
 };
 
 const getSortQuery = (orderType, order) => {
-  const orderStr = `,${order.toUpperCase()}`;
+  const orderStr = ',' + order.toUpperCase();
 
   switch (orderType) {
     case AlcolocksSortTypes.byName:
@@ -50,7 +51,7 @@ const getSortQuery = (orderType, order) => {
 export const uploadAlkozamkiList = createEffect(
   ({ page, limit, sortBy, order, query, startDate, endDate, groupId }) => {
     alkozamkiLoadingState.setState(true);
-    const queryTrimmed = (query ?? '').trim();
+    const queryTrimmed = Formatters.removeExtraSpaces(query ?? '');
     let queries = '';
     const userData = userState.$store.getState();
     const selectedBranch = userData?.isAdmin
@@ -74,10 +75,9 @@ export const uploadAlkozamkiList = createEffect(
     }
 
     if (queryTrimmed.length) {
-      queries += `&any.name.contains=${queryTrimmed}`;
-      queries += `&any.serialNumber.contains=${queryTrimmed}`;
-      queries += `&any.createdBy.firstName.contains=${queryTrimmed}`;
-      queries += `&any.createdBy.lastName.contains=${queryTrimmed}`;
+      queries += `&any.vehicleBind.vehicle.match.contains=${queryTrimmed}`;
+      queries += `&any.match.contains=${queryTrimmed}`;
+      queries += `&any.createdBy.match.contains=${queryTrimmed}`;
     }
 
     if (groupId) {
@@ -214,13 +214,12 @@ export const searchAlcolocks = createEffect(({ query, excludeGroupId }) => {
   const selectedBranch = userData?.isAdmin
     ? selectedBranchState.$store.getState()
     : userData?.assignment.branch ?? { id: 10 };
-  const trimmedQuery = query?.trim() ?? null;
+  const trimmedQuery = Formatters.removeExtraSpaces(query ?? '');
   let queries = '';
   lastSearchAlcolocksRequest.$store.getState()?.abort();
 
   if (trimmedQuery) {
-    queries += `&any.name.contains=${trimmedQuery}`;
-    queries += `&any.serialNumber.contains=${trimmedQuery}`;
+    queries += `&any.match.contains=${trimmedQuery}`;
   }
 
   if (excludeGroupId) {

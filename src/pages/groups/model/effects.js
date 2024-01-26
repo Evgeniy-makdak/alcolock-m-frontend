@@ -1,5 +1,7 @@
 import { createEffect } from 'effector/effector.mjs';
 
+import { Formatters } from '@shared/utils/formatters';
+
 import GroupsApi from '../api/groups_api';
 import {
   alcolocksMoveLoadingState,
@@ -40,7 +42,7 @@ export const uploadGroupsList = createEffect(
       groupsListLoadingState.setState(true);
     }
 
-    const queryTrimmed = (query ?? '').trim();
+    const queryTrimmed = Formatters.removeExtraSpaces(query ?? '');
     let queries = '';
     lastGetGroupsListRequestState.$store.getState()?.abort();
 
@@ -231,7 +233,7 @@ export const searchGroups = createEffect((query) => {
   lastSearchGroupsRequest.$store.getState()?.abort();
   let queries = '';
 
-  if (query?.trim().length) {
+  if (Formatters.removeExtraSpaces(query ?? '').length) {
     queries += `&all.name.contains=${query}`;
   }
 

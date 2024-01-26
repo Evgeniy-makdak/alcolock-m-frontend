@@ -1,5 +1,7 @@
 import { createEffect } from 'effector';
 
+import { Formatters } from '@shared/utils/formatters';
+
 import RolesApi from '../api/roles_api';
 import RolesMapper from './mapper';
 import {
@@ -33,7 +35,7 @@ const getSortQuery = (orderType, order) => {
 
 export const uploadRolesList = createEffect(({ page, limit, sortBy, order, query }) => {
   rolesListLoadingState.setState(true);
-  const queryTrimmed = (query ?? '').trim();
+  const queryTrimmed = Formatters.removeExtraSpaces(query ?? '');
   let queries = '';
   lastGetRolesListRequest.$store.getState()?.abort();
 

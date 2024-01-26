@@ -14,7 +14,6 @@ import {
 } from './store';
 
 export const onAuthorization = createEffect((payload) => {
-  console.log('auth => func');
   isAuthorization.setState(true);
   const { data, navigate } = payload;
 

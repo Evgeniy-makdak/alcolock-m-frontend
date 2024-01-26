@@ -88,4 +88,8 @@ export class Formatters {
         : '00',
     };
   }
+
+  static removeExtraSpaces(str: string) {
+    return str.replace(/\s+/g, ' ').trim();
+  }
 }
