@@ -5,6 +5,7 @@ import { Table, TableBody, TableHead, TableRow } from '@mui/material';
 import { AppConstants } from '@app';
 import { EventData } from '@entities/events_data';
 import { getEventsHistory } from '@pages/events/model/effects';
+import { testids } from '@shared/const/testid';
 import { StyledTable } from '@shared/styled_components/styledTable';
 import { Loader } from '@shared/ui/loader';
 import { Formatters } from '@shared/utils/formatters';
@@ -88,7 +89,7 @@ export const EventsHistory = ({ type, id }) => {
   const rows = eventsList.map((event) => {
     return (
       <>
-        <StyledTable.BodyRow key={event.id}>
+        <StyledTable.BodyRow key={event.id} data-testid={testids.EVENT_HISTORY_TABLE_ITEM}>
           <StyledTable.BodyCell>
             {AppConstants.eventTypesList.find((item) => item.value === event.type)?.label ?? '-'}
           </StyledTable.BodyCell>
@@ -117,7 +118,7 @@ export const EventsHistory = ({ type, id }) => {
         {expandRowId === event.id && (
           <TableRow key={`${event.id}-info`}>
             <StyledTable.DataCell colSpan={3}>
-              <EventData type={type} event={event} />
+              <EventData testid={testids.EVENT_HISTORY_TABLE_MAP_LINK} type={type} event={event} />
             </StyledTable.DataCell>
           </TableRow>
         )}

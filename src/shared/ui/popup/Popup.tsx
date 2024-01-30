@@ -12,6 +12,7 @@ interface PopupProps {
   toggleModal: () => void;
   buttons: ReactNode[];
   closeonClickSpace?: boolean;
+  testid?: string;
   onCloseModal: () => void;
   styles: {
     size: string;
@@ -22,6 +23,7 @@ interface PopupProps {
 const DATA_SET = 'poput';
 
 export const Popup = ({
+  testid,
   isOpen,
   headerTitle = '',
   body,
@@ -44,7 +46,11 @@ export const Popup = ({
 
   return isOpen
     ? createPortal(
-        <div data-click-id={DATA_SET} className={`${style.popup} `} onClick={handleClickOutside}>
+        <div
+          data-testid={testid}
+          data-click-id={DATA_SET}
+          className={`${style.popup} `}
+          onClick={handleClickOutside}>
           <div className={`${styles ? styles : style.size} ${style.substr}`}>
             <div className={style.close} onClick={onCloseModal ?? toggleModal}>
               <CloseIcon />

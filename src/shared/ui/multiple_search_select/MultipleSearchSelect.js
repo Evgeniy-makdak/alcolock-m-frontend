@@ -12,6 +12,7 @@ export const MultipleSearchSelect = ({
   onSearch,
   defOptions,
   optionsMapper = (option) => option,
+  testid,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState(defOptions ?? []);
@@ -67,9 +68,16 @@ export const MultipleSearchSelect = ({
     }
   };
 
-  const renderInput = (params) => (
-    <TextField {...params} label={fieldParams.label ?? null} error={!!validations.length} />
-  );
+  const renderInput = (params) => {
+    const prop = {
+      ...params,
+      inputProps: {
+        ...params.inputProps,
+        'data-testid': testid,
+      },
+    };
+    return <TextField {...prop} label={fieldParams.label ?? null} error={!!validations.length} />;
+  };
 
   const onChange = (event, newValues) => {
     setValues(newValues);
@@ -80,6 +88,12 @@ export const MultipleSearchSelect = ({
 
     return options.filter((option) => !currentValues.includes(option.value));
   };
+
+  const renderOptions = (props, option) => (
+    <li {...props} data-testid={`${testid}_${option.label}`}>
+      {option.label}
+    </li>
+  );
 
   return (
     <div className={style.searchSelect}>
@@ -96,6 +110,7 @@ export const MultipleSearchSelect = ({
           onInputChange={onInputChange}
           inputValue={inputValue}
           getOptionLabel={(option) => option.label}
+          renderOption={renderOptions}
           renderInput={renderInput}
           noOptionsText={'Ничего не найдено'}
         />

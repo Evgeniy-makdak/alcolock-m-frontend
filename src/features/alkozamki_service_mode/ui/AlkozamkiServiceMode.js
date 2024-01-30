@@ -13,6 +13,7 @@ import {
 } from '@pages/events/model/effects';
 import { alcolockActivateFormSelectors } from '@pages/events/model/forms';
 import { eventsStore } from '@pages/events/model/store';
+import { testids } from '@shared/const/testid';
 import { useToggle } from '@shared/hooks/useToggle';
 import { Button, ButtonsType } from '@shared/ui/button';
 import { Popup } from '@shared/ui/popup';
@@ -310,11 +311,19 @@ export const AlkozamkiServiceMode = ({
         return (
           <div className={style.toggles}>
             <button
+              data-testid={
+                testids.page_alcolocks.alcolocks_widget_info
+                  .ALCOLOCKS_WIDGET_INFO_AVTOSERVISE_BUTTON_ON
+              }
               className={!isServiceMode ? style.active : style.disabled}
               onClick={!isServiceMode ? toggleActivatePopup : null}>
               Включить
             </button>
             <button
+              data-testid={
+                testids.page_alcolocks.alcolocks_widget_info
+                  .ALCOLOCKS_WIDGET_INFO_AVTOSERVISE_BUTTON_OFF
+              }
               className={isServiceMode ? style.active : style.disabled}
               onClick={isServiceMode ? toggleDeactivatePopup : null}>
               Выключить

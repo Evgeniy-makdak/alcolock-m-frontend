@@ -5,6 +5,7 @@ import { RoutePaths } from '@app';
 import { onAuthorization } from '@app/model/effects';
 import { AuthStatus, appStore } from '@app/model/store';
 import { InputsColumnWrapper } from '@shared/components/Inputs_column_wrapper/InputsColumnWrapper';
+import { testids } from '@shared/const/testid';
 import { ErrorViewer } from '@shared/ui/error_viewer';
 import { Form } from '@shared/ui/form';
 import { FormCheckbox } from '@shared/ui/form_checkbox';
@@ -74,6 +75,7 @@ export const Authorization = () => {
             }),
           }}>
           <Form
+            testid={testids.page_auth.AUTH_FORM}
             className={style.form}
             formSelectors={authFormSelectors}
             onValidSubmit={handleAuthorization}>
@@ -84,6 +86,7 @@ export const Authorization = () => {
                   name: 'username',
                   label: 'Логин',
                 }}
+                testid={testids.page_auth.AUTH_INPUT_LOGIN}
               />
 
               <Input
@@ -93,6 +96,7 @@ export const Authorization = () => {
                   label: 'Пароль',
                   type: 'password',
                 }}
+                testid={testids.page_auth.AUTH_INPUT_PASSWORD}
               />
 
               <FormCheckbox
@@ -101,6 +105,8 @@ export const Authorization = () => {
                   name: 'rememberMe',
                   label: 'Запомнить меня',
                 }}
+                disabled={false}
+                testid={testids.page_auth.AUTH_INPUT_REMEMBER}
               />
             </InputsColumnWrapper>
           </Form>
@@ -114,7 +120,11 @@ export const Authorization = () => {
             </div>
           )}
 
-          <button className={style.button} disabled={!isValidForm} onClick={handleSubmit}>
+          <button
+            data-testid={testids.page_auth.AUTH_BUTTON_ENTER}
+            className={style.button}
+            disabled={!isValidForm}
+            onClick={handleSubmit}>
             Вход
           </button>
         </Loader>

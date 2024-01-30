@@ -1,5 +1,7 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
 
+import { MySelectDisplayProps } from '@shared/types/utility';
+
 interface FormCheckboxProps {
   disabled: boolean;
   formSelectors: {
@@ -8,12 +10,14 @@ interface FormCheckboxProps {
   };
   fieldParams: { name: string; label: string };
   className: string;
+  testid?: string;
 }
 
 export const FormCheckbox = ({
   formSelectors,
   fieldParams,
   disabled = false,
+  testid,
 }: FormCheckboxProps) => {
   const value = formSelectors.useFormDataValue(fieldParams.name) ?? false;
   const setValue = formSelectors.useSetFormDataValue(fieldParams.name);
@@ -26,7 +30,20 @@ export const FormCheckbox = ({
   return (
     <div>
       <FormControlLabel
-        control={<Checkbox checked={!!value} onChange={onChange} disabled={disabled} />}
+        control={
+          <Checkbox
+            data-testid={testid}
+            id={testid}
+            checked={!!value}
+            onChange={onChange}
+            disabled={disabled}
+            inputProps={
+              {
+                'data-testid': testid,
+              } as MySelectDisplayProps
+            }
+          />
+        }
         label={fieldParams?.label ?? ''}
       />
     </div>

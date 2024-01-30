@@ -14,6 +14,9 @@ import { Popup } from '@shared/ui/popup';
 import style from './EditTable.module.scss';
 
 // TODO => разнести этот компонент на более мелкие компоненты
+// Общая таблица не должна знать о контролах, стилях, шапке, модалках для разных страниц
+// Так же не должна валидировать и управлять любым состоянием универсально для всех страницa
+// В таблице должно остаться только маппинг заголовка и row в body
 export const EditTable = ({
   headers,
   getRowsTemplate,
@@ -43,6 +46,10 @@ export const EditTable = ({
   withoutAdd = false,
   additionalActions = [],
   marginControls = null,
+  tableControl,
+  tableControlTestId,
+  testIdsForTable,
+  toggleModal,
 }) => {
   const [openDeleteModal, toggleDeleteModal] = useToggle();
   const [openAddModal, toggleAddModal] = useToggle();
@@ -354,9 +361,11 @@ export const EditTable = ({
 
   return (
     <>
+      {tableControl}
       {(withSearch || filtersPanel) && (
         <div className={marginControls}>
           <TableControl
+            tableControlTestId={tableControlTestId}
             search={onSearch}
             withSearch={withSearch}
             withDate={withDate}
@@ -374,7 +383,7 @@ export const EditTable = ({
             flexGrow: 1,
           }),
         }}>
-        <Table stickyHeader>
+        <Table stickyHeader data-testid={testIdsForTable && testIdsForTable?.table}>
           <TableHead
             sx={{
               borderTop: '1px solid rgba(0, 0, 0, 0.12)',
@@ -382,7 +391,12 @@ export const EditTable = ({
             <StyledTable.HeaderRow>
               {headers.map((head, i) => {
                 return (
-                  <StyledTable.HeaderCell key={i} sx={head.style ?? {}}>
+                  <StyledTable.HeaderCell
+                    data-testid={
+                      testIdsForTable ? `${testIdsForTable?.headerItem}_${head.label}` : ''
+                    }
+                    key={i}
+                    sx={head.style ?? {}}>
                     {head.sortType ? (
                       <TableSortLabel
                         active={orderBy === head.sortType}
@@ -398,7 +412,8 @@ export const EditTable = ({
               })}
 
               {!withoutAdd && (
-                <StyledTable.HeaderIconCell>
+                <StyledTable.HeaderIconCell
+                  data-testid={testIdsForTable ? `${testIdsForTable?.headerItem}_OPEN_FORM` : ''}>
                   {addItemPromise && (
                     <div
                       style={{
@@ -406,7 +421,7 @@ export const EditTable = ({
                         justifyContent: 'center',
                         maxWidth: '114px',
                       }}>
-                      <StyledTable.TableButton onClick={toggleAddModal}>
+                      <StyledTable.TableButton onClick={toggleModal}>
                         <StyledTable.AddIcon />
                       </StyledTable.TableButton>
                     </div>
@@ -420,6 +435,7 @@ export const EditTable = ({
             {rows.map((row) => {
               return (
                 <StyledTable.BodyRow
+                  data-testid={testIdsForTable && testIdsForTable?.row}
                   key={row.id}
                   onClick={() => (onRowClick ?? (() => {}))(row.id)}
                   sx={{
@@ -448,6 +464,7 @@ export const EditTable = ({
                         {additionalActions.map((elem, i) => {
                           return cloneElement(elem, {
                             ...elem.props,
+                            // 'data-testid': ,
                             key: i,
                             onClick: (e) => elem.props.onClick(e, row.id),
                           });
@@ -461,13 +478,17 @@ export const EditTable = ({
                       {!(row.disabledAction ?? false) && (
                         <div className={style.tableActionsWrapper}>
                           {editItemPromise && (
-                            <StyledTable.TableButton onClick={(e) => onClickEdit(e, row.id)}>
+                            <StyledTable.TableButton
+                              data-testid={testIdsForTable && testIdsForTable?.rowActionEdit}
+                              onClick={(e) => onClickEdit(e, row.id)}>
                               <StyledTable.EditIcon />
                             </StyledTable.TableButton>
                           )}
 
                           {deleteItemPromise && (
-                            <StyledTable.TableButton onClick={(e) => onClickDelete(e, row.id)}>
+                            <StyledTable.TableButton
+                              data-testid={testIdsForTable && testIdsForTable?.rowActionDelete}
+                              onClick={(e) => onClickDelete(e, row.id)}>
                               <StyledTable.DeleteIcon />
                             </StyledTable.TableButton>
                           )}
@@ -506,7 +527,6 @@ export const EditTable = ({
           ]}
         />
       )}
-
       {!!addPopupParams && (
         <Popup
           isOpen={openAddModal}

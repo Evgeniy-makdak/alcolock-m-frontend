@@ -4,6 +4,7 @@ import { RowTableInfo } from '@entities/row_table_info';
 import { EditTable } from '@features/edit_table';
 import { UserPermissionsTypes } from '@features/menu_button';
 import { PageWrapper } from '@layout/page_wrapper';
+import { testids } from '@shared/const/testid';
 import { Aside } from '@shared/ui/aside';
 
 import { useAlkozamki } from '../hooks/useAlkozamki';
@@ -79,6 +80,26 @@ const Alkozamki = () => {
           onRowClick={onClickRow}
           updateTable={[updateTable, selectedBranch]}
           marginControls={style.marginTableControls}
+          tableControlTestId={{
+            inputSearch:
+              testids.page_alcolocks.alcolocks_widget_header.ALCOLOCKS_WIDGET_HEADER_SEARCH_INPUT,
+            inputStart:
+              testids.page_alcolocks.alcolocks_widget_header.ALCOLOCKS_WIDGET_HEADER_FROM_DATE,
+            inputEnd:
+              testids.page_alcolocks.alcolocks_widget_header.ALCOLOCKS_WIDGET_HEADER_TO_DATE,
+          }}
+          testIdsForTable={{
+            table: testids.page_alcolocks.alcolocks_widget_table.ALCOLOCKS_WIDGET_TABLE,
+            headerItem:
+              testids.page_alcolocks.alcolocks_widget_table.ALCOLOCKS_WIDGET_TABLE_HEADER_ITEM,
+            row: testids.page_alcolocks.alcolocks_widget_table.ALCOLOCKS_WIDGET_TABLE_BODY_ITEM,
+            rowActionEdit:
+              testids.page_alcolocks.alcolocks_widget_table
+                .ALCOLOCKS_WIDGET_TABLE_BODY_ITEM_ACTION_EDIT,
+            rowActionDelete:
+              testids.page_alcolocks.alcolocks_widget_table
+                .ALCOLOCKS_WIDGET_TABLE_BODY_ITEM_ACTION_DELETE,
+          }}
         />
       </PageWrapper>
 

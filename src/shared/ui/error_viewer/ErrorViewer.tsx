@@ -4,11 +4,12 @@ import style from './ErrorViewer.module.scss';
 
 interface ErrorViewerProps {
   errorMessages: (ReactNode | string | number)[];
+  testid?: string;
 }
 
-export const ErrorViewer = ({ errorMessages }: ErrorViewerProps) => {
+export const ErrorViewer = ({ errorMessages, testid }: ErrorViewerProps) => {
   return (
-    <div className={style.errorViewer}>
+    <div data-testid={testid} className={style.errorViewer}>
       {errorMessages.map((error, i) => {
         return (
           <span className={style.text} key={i}>

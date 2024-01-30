@@ -1,4 +1,4 @@
-import { AppConstants } from '@app';
+import { AppConstants } from '@app/index';
 import { filtersFormSelectors } from '@pages/events/model/forms';
 import { searchDrivers } from '@pages/users/model/effects';
 import {
@@ -9,7 +9,16 @@ import { MultipleSearchSelect } from '@shared/ui/multiple_search_select';
 
 import style from './EventsFilterPanel.module.scss';
 
-export const EventsFilterPanel = () => {
+interface EventsFilterPanelProps {
+  testids: {
+    users: string;
+    carsByMake: string;
+    carsByLicense: string;
+    eventsByType: string;
+  };
+}
+
+export const EventsFilterPanel = ({ testids }: EventsFilterPanelProps) => {
   return (
     <div className={style.filtersPanel}>
       <MultipleSearchSelect
@@ -20,6 +29,8 @@ export const EventsFilterPanel = () => {
           label: 'Поиск по водителю',
         }}
         onSearch={searchDrivers}
+        defOptions={undefined}
+        testid={testids.users}
       />
 
       <MultipleSearchSelect
@@ -30,6 +41,8 @@ export const EventsFilterPanel = () => {
           label: 'Поиск по марке ТС',
         }}
         onSearch={searchCarsManufacturers}
+        defOptions={undefined}
+        testid={testids.carsByMake}
       />
 
       <MultipleSearchSelect
@@ -40,6 +53,8 @@ export const EventsFilterPanel = () => {
           label: 'Поиск по гос.номеру',
         }}
         onSearch={searchCarsByRegistrationNumber}
+        defOptions={undefined}
+        testid={testids.carsByLicense}
       />
 
       <MultipleSearchSelect
@@ -50,6 +65,8 @@ export const EventsFilterPanel = () => {
           label: 'Тип события',
         }}
         defOptions={AppConstants.eventTypesList}
+        onSearch={undefined}
+        testid={testids.eventsByType}
       />
     </div>
   );

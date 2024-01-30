@@ -14,6 +14,7 @@ export const SearchSelect = ({
   defOptions,
   valueFormatter = (item) => item,
   onSearch,
+  testid,
 }) => {
   const value = formSelectors.useFormDataValue(fieldParams.name);
   const setValue = formSelectors.useSetFormDataValue(fieldParams.name);
@@ -103,7 +104,12 @@ export const SearchSelect = ({
           getOptionLabel={(option) => option.label}
           renderInput={(params) => {
             return (
-              <TextField {...params} label={fieldParams.label ?? ''} error={!!validations.length} />
+              <TextField
+                data-testid={testid}
+                {...params}
+                label={fieldParams.label ?? ''}
+                error={!!validations.length}
+              />
             );
           }}
         />

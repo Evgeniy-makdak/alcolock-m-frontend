@@ -6,7 +6,7 @@ import { ValidationsWrapper } from '@shared/components/validations_wrapper';
 
 import { InputWrapper } from '../../styled_components/styledInputWrapper';
 
-export const PhoneInput = ({ formSelectors, fieldParams, disabled = false }) => {
+export const PhoneInput = ({ formSelectors, fieldParams, disabled = false, testid }) => {
   const value = formSelectors.useFormDataValue(fieldParams.name) ?? '';
   const setValue = formSelectors.useSetFormDataValue(fieldParams.name);
   const validations = formSelectors.useFormValueValidation(fieldParams.name);
@@ -24,6 +24,7 @@ export const PhoneInput = ({ formSelectors, fieldParams, disabled = false }) => 
         <InputMask mask="+7 999 999 99 99" value={value} onChange={onChange}>
           {(inputProps) => (
             <TextField
+              data-testid={testid}
               {...inputProps}
               type="tel"
               label={fieldParams.label ?? null}

@@ -5,9 +5,16 @@ interface FormProps {
   formSelectors: { useSetOnValidSubmit: () => (collback: () => void) => void };
   onValidSubmit: () => void;
   className: string;
+  testid?: string;
 }
 
-export const Form = ({ children, formSelectors, onValidSubmit, className = '' }: FormProps) => {
+export const Form = ({
+  children,
+  formSelectors,
+  onValidSubmit,
+  className = '',
+  testid,
+}: FormProps) => {
   const setOnValidSubmit = formSelectors.useSetOnValidSubmit();
 
   useEffect(() => {
@@ -17,6 +24,7 @@ export const Form = ({ children, formSelectors, onValidSubmit, className = '' }:
   return (
     <div className={`${className}`}>
       <form
+        data-testid={testid}
         onKeyDown={(e) => {
           if (e.code === 'Enter') e.preventDefault();
         }}>

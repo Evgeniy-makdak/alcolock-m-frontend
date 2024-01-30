@@ -4,6 +4,7 @@ import { Image } from '@entities/image';
 import { Info } from '@entities/info';
 // TODO => убрать связь со страницей
 import { getEvent } from '@pages/events/model/effects';
+import { testids } from '@shared/const/testid';
 import { Loader } from '@shared/ui/loader';
 import { MapLink } from '@shared/ui/map_link';
 import { Formatters } from '@shared/utils/formatters';
@@ -40,6 +41,7 @@ export const EventInfo = ({ selectedEventId }) => {
 
         <Info
           withoutPaddings
+          //TODO => вынести все массивы в константы или функции
           fields={[
             {
               label: 'Пользователь:',
@@ -68,6 +70,7 @@ export const EventInfo = ({ selectedEventId }) => {
                 !!eventData?.events[0].latitude &&
                 !!eventData?.events[0].longitude ? (
                   <MapLink
+                    testid={testids.page_events.events_widget_info.EVENTS_WIDGET_INFO_MAPLINK}
                     latitude={eventData.events[0].latitude}
                     longitude={eventData.events[0].longitude}
                   />

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { EventsHistory, HistoryTypes } from '@features/events_history';
 import { userStore } from '@features/menu_button/model/store';
+import { testids } from '@shared/const/testid';
 import { useToggle } from '@shared/hooks/useToggle';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import { AlkozamkiInfo } from '@widgets/alkozamki_info';
@@ -42,6 +43,7 @@ export const useAlkozamki = () => {
 
   const tabs = [
     {
+      testid: testids.page_alcolocks.alcolocks_widget_info.ALCOLOCKS_WIDGET_INFO_TAB_BUTTON_INFO,
       name: 'ИНФО',
       content: (
         <AlkozamkiInfo
@@ -53,6 +55,7 @@ export const useAlkozamki = () => {
       ),
     },
     {
+      testid: testids.page_alcolocks.alcolocks_widget_info.ALCOLOCKS_WIDGET_INFO_TAB_BUTTON_HISTORY,
       name: 'ИСТОРИЯ',
       content: <EventsHistory type={HistoryTypes.byAlcolock} id={selectedAlcolockId} />,
     },

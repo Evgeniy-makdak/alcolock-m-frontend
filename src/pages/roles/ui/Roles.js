@@ -6,6 +6,7 @@ import { RoleForm } from '@entities/roles_form';
 import { EditTable } from '@features/edit_table';
 import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';
+import { testids } from '@shared/const/testid';
 
 import {
   ADD_POPUP_TITLE,
@@ -59,6 +60,21 @@ const Roles = () => {
         }}
         withDate={false}
         marginControls={style.marginControls}
+        tableControlTestId={{
+          inputSearch: testids.page_roles.roles_widget_header.ROLES_WIDGET_HEADER_SEARCH_INPUT,
+          inputStart: testids.page_roles.roles_widget_header.ROLES_WIDGET_HEADER_FROM_DATE,
+          inputEnd: testids.page_roles.roles_widget_header.ROLES_WIDGET_HEADER_TO_DATE,
+          filterButton: testids.page_roles.roles_widget_header.ROLES_WIDGET_HEADER_FILTER_BUTTON,
+        }}
+        testIdsForTable={{
+          table: testids.page_roles.roles_widget_table.ROLES_WIDGET_TABLE,
+          headerItem: testids.page_roles.roles_widget_table.ROLES_WIDGET_TABLE_HEADER_ITEM,
+          row: testids.page_roles.roles_widget_table.ROLES_WIDGET_TABLE_BODY_ITEM,
+          rowActionEdit:
+            testids.page_roles.roles_widget_table.ROLES_WIDGET_TABLE_BODY_ITEM_ACTION_EDIT,
+          rowActionDelete:
+            testids.page_roles.roles_widget_table.ROLES_WIDGET_TABLE_BODY_ITEM_ACTION_DELETE,
+        }}
       />
     </PageWrapper>
   );

@@ -8,6 +8,7 @@ import { BranchSelect } from '@features/nav_bar_branch_select';
 // TODO => убрать связь со страницей
 import { checkAutoServiceCount } from '@pages/auto_service/model/effects';
 import { autoServiceStore } from '@pages/auto_service/model/store';
+import { testids } from '@shared/const/testid';
 import { Logo } from '@shared/ui/logo';
 
 import { NAV_LINKS, TypeNavLink } from '../lib/const';
@@ -56,11 +57,14 @@ export const NavBar = () => {
         {userData?.isAdmin && <BranchSelect />}
 
         <div className={style.links}>
-          {NAV_LINKS.filter(permissionsFilter).map((link) => {
+          {NAV_LINKS.filter(permissionsFilter).map((link, i) => {
             const notification = link.path === RoutePaths.autoService ? notifications : null;
 
             return (
-              <NavLink key={link.path} to={link.path}>
+              <NavLink
+                data-testid={testids.widget_navbar.NAVBAR_LINK[i]} // использую индексы потому, что test атрибуты статичны и не должны меняться
+                key={link.path}
+                to={link.path}>
                 <span>{link.name}</span>
                 {!!notification && <span className={style.notifications}>{notifications}</span>}
               </NavLink>

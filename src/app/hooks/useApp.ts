@@ -32,5 +32,5 @@ export const useApp = () => {
     } else {
       if (location?.pathname === '/') navigate(RoutePaths.events);
     }
-  }, [isAuth]);
+  }, [isAuth, isLoadingApp]);
 };

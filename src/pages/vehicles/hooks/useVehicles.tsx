@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { EventsHistory, HistoryTypes } from '@features/events_history';
 import { userStore } from '@features/menu_button/model/store';
+import { testids } from '@shared/const/testid';
 import { useToggle } from '@shared/hooks/useToggle';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import { VehiclesInfo } from '@widgets/vehicles_info';
@@ -42,10 +43,13 @@ export const useVehicles = () => {
   };
   const tabs = [
     {
+      testid: testids.page_transports.transports_widget_info.TRANSPORTS_WIDGET_INFO_TAB_BUTTON_INFO,
       name: 'ИНФО',
       content: <VehiclesInfo updateData={updateInfo} selectedCarId={selectedCarId} />,
     },
     {
+      testid:
+        testids.page_transports.transports_widget_info.TRANSPORTS_WIDGET_INFO_TAB_BUTTON_HISTORY,
       name: 'ИСТОРИЯ',
       content: <EventsHistory type={HistoryTypes.byCar} id={selectedCarId} />,
     },
