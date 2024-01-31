@@ -9,7 +9,7 @@ interface TableProps<Rows> {
   styles?: string;
 }
 
-export function AppTable<R>({ headers, rows, rowsPerPageOptions, styles }: TableProps<R>) {
+export function Table<R>({ headers, rows, rowsPerPageOptions, styles }: TableProps<R>) {
   return (
     <div className={`${style} ${styles}`}>
       <DataGrid
