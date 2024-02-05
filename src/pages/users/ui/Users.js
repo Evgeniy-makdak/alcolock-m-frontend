@@ -4,6 +4,7 @@ import { EditTable } from '@features/edit_table';
 import { UserPermissionsTypes } from '@features/menu_button';
 import { UserForm } from '@features/users_form';
 import { PageWrapper } from '@layout/page_wrapper';
+import { testids } from '@shared/const/testid';
 import { Aside } from '@shared/ui/aside';
 
 import { useUsers } from '../hooks/useUsers';
@@ -21,15 +22,35 @@ import style from './Users.module.scss';
 
 const Users = () => {
   const {
+    // selectedItem,
+    // toggleEditModal,
+    // toggleAddModal,
+    // openEditModal,
+    // openAddModal,
+    loading,
+    userData,
+    tabs,
+    onClickRow,
     afterDelete,
     afterEdit,
-    loading,
-    onClickRow,
-    tabs,
-    userData,
-    handleCloseAside,
     selectedUserId,
+    handleCloseAside,
     selectedBranch,
+    // items,
+    // itemsCount,
+    // setPage,
+    // handleEditItem,
+    // handleAddItem,
+    // setRowsPerPage,
+    // setOrderBy,
+    // setSelectedItem,
+    // setOrder,
+    // handleCloseEditModal,
+    // handleCloseAddModal,
+    // onSubmitAdd,
+    // onSubmitEdit,
+    // isValidEditForm,
+    // isValidAddForm,
   } = useUsers();
   return (
     <>
@@ -72,6 +93,20 @@ const Users = () => {
           afterEdit={afterEdit}
           updateTable={selectedBranch}
           marginControls={style.marginControls}
+          tableControlTestId={{
+            inputSearch: testids.page_users.users_widget_header.USERS_WIDGET_HEADER_SEARCH_INPUT,
+            inputStart: testids.page_users.users_widget_header.USERS_WIDGET_HEADER_FROM_DATE,
+            inputEnd: testids.page_users.users_widget_header.USERS_WIDGET_HEADER_TO_DATE,
+          }}
+          testIdsForTable={{
+            table: testids.page_users.users_widget_table.USERS_WIDGET_TABLE,
+            headerItem: testids.page_users.users_widget_table.USERS_WIDGET_TABLE_HEADER_ITEM,
+            row: testids.page_users.users_widget_table.USERS_WIDGET_TABLE_BODY_ITEM,
+            rowActionEdit:
+              testids.page_users.users_widget_table.USERS_WIDGET_TABLE_BODY_ITEM_ACTION_EDIT,
+            rowActionDelete:
+              testids.page_users.users_widget_table.USERS_WIDGET_TABLE_BODY_ITEM_ACTION_DELETE,
+          }}
         />
       </PageWrapper>
 
@@ -85,3 +120,56 @@ const Users = () => {
 };
 
 export default Users;
+// {openAddModal && (
+//   <Popup
+//     isOpen={openAddModal}
+//     toggleModal={toggleAddModal}
+//     onCloseModal={toggleAddModal}
+//     headerTitle={ADD_POPUP_TITLE}
+//     closeonClickSpace={false}
+//     styles={style.large}
+//     body={<UserForm formSelectors={addUserFormSelectors} onValidSubmit={handleAddItem} />}
+//     buttons={[
+//       <Button
+//         key={'action_1'}
+//         type={ButtonsType.action}
+//         disabled={!isValidAddForm}
+//         onClick={onSubmitAdd}>
+//         {AppConstants.addTxt}
+//       </Button>,
+//       <Button key={'action_2'} type={ButtonsType.action} onClick={handleCloseAddModal}>
+//         {AppConstants.cancelTxt}
+//       </Button>,
+//     ]}
+//   />
+// )}
+// {/* // TODO => Обертка для таблиц не должна знать о модалках */}
+// {openEditModal && (
+//   <Popup
+//     isOpen={openEditModal}
+//     toggleModal={toggleEditModal}
+//     onCloseModal={toggleEditModal}
+//     closeonClickSpace={false}
+//     headerTitle={EDIT_POPUP_TITLE}
+//     styles={style.large}
+//     body={
+//       <UserForm
+//         formSelectors={editUserFromSelectors}
+//         onValidSubmit={handleEditItem}
+//         selectedItem={selectedItem}
+//       />
+//     }
+//     buttons={[
+//       <Button
+//         key={'action_1'}
+//         type={ButtonsType.action}
+//         disabled={!isValidEditForm}
+//         onClick={onSubmitEdit}>
+//         {AppConstants.saveTxt}
+//       </Button>,
+//       <Button key={'action_2'} type={ButtonsType.action} onClick={handleCloseEditModal}>
+//         {AppConstants.cancelTxt}
+//       </Button>,
+//     ]}
+//   />
+// )}

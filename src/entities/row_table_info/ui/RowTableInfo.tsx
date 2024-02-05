@@ -4,6 +4,7 @@ import style from './RowTableInfo.module.scss';
 
 interface Tab {
   name: string;
+  testid?: string;
   content: ReactNode | string;
 }
 
@@ -13,14 +14,17 @@ interface RowTableInfoProps {
 
 export const RowTableInfo = ({ tabs }: RowTableInfoProps) => {
   const [activeTab, setActiveTab] = useState(0);
-  const nameTabs = tabs.map((tab) => tab.name);
+  const nameTabs = tabs.map((tab) => {
+    return { name: tab.name, testid: tab?.testid };
+  });
   const contentTabs = tabs.map((tab) => tab.content);
 
   return (
     <div className={style.rowTableInfo}>
       <div className={style.tabs}>
-        {nameTabs.map((name, i) => (
+        {nameTabs.map(({ name, testid }, i) => (
           <button
+            data-testid={testid}
             key={name}
             className={activeTab === i ? style.active : ''}
             onClick={() => setActiveTab(i)}>

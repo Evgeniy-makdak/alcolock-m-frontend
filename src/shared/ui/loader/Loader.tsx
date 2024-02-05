@@ -7,11 +7,13 @@ interface LoaderProps {
   children: ReactNode;
   styles: React.CSSProperties;
   isLoading: boolean;
+  testid?: string;
 }
 
-export const Loader = ({ children, isLoading = false, styles = {} }: LoaderProps) => {
+export const Loader = ({ children, isLoading = false, styles = {}, testid }: LoaderProps) => {
   return (
     <LoadingOverlay
+      data-testid={testid}
       active={isLoading}
       spinner={<CircularProgress />}
       styles={{

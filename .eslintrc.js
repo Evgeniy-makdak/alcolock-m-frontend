@@ -46,6 +46,7 @@ function eslintExtends() {
 
 function eslintRules() {
   return {
+    'no-undef': 'off',
     'no-extra-boolean-cast': 'off',
     'no-useless-escape': 'off',
     'react/prop-types': 'off',

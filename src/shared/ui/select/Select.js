@@ -1,10 +1,16 @@
 import { FormControl, InputLabel, MenuItem, Select as MuiSelect } from '@mui/material';
 
 import { ValidationsWrapper } from '@shared/components/validations_wrapper';
+import { InputWrapper } from '@shared/styled_components/styledInputWrapper';
 
-import { InputWrapper } from '../../styled_components/styledInputWrapper';
-
-export const Select = ({ formSelectors, fieldParams, disabled = false, options }) => {
+export const Select = ({
+  formSelectors,
+  fieldParams,
+  disabled = false,
+  options,
+  testidLabel,
+  testidSelect,
+}) => {
   const value = formSelectors.useFormDataValue(fieldParams.name);
   const setValue = formSelectors.useSetFormDataValue(fieldParams.name);
   const validations = formSelectors.useFormValueValidation(fieldParams.name);
@@ -19,6 +25,7 @@ export const Select = ({ formSelectors, fieldParams, disabled = false, options }
         <FormControl fullWidth>
           {fieldParams.label && (
             <InputLabel
+              data-testid={testidLabel}
               shrink={true}
               htmlFor={fieldParams.name}
               sx={{
@@ -29,6 +36,7 @@ export const Select = ({ formSelectors, fieldParams, disabled = false, options }
           )}
 
           <MuiSelect
+            data-testid={testidSelect}
             id={fieldParams.name}
             variant={'outlined'}
             labelId={fieldParams.name}

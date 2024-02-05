@@ -4,6 +4,7 @@ import { EditTable } from '@features/edit_table';
 import { UserPermissionsTypes } from '@features/menu_button';
 import { userStore } from '@features/menu_button/model/store';
 import { PageWrapper } from '@layout/page_wrapper';
+import { testids } from '@shared/const/testid';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
 
 import {
@@ -64,6 +65,27 @@ const Attachments = () => {
         }}
         updateTable={selectedBranch}
         marginControls={style.marginControls}
+        tableControlTestId={{
+          inputSearch:
+            testids.page_attachments.attachments_widget_header
+              .ATTACHMENTS_WIDGET_HEADER_SEARCH_INPUT,
+          inputStart:
+            testids.page_attachments.attachments_widget_header.ATTACHMENTS_WIDGET_HEADER_FROM_DATE,
+          inputEnd:
+            testids.page_attachments.attachments_widget_header.ATTACHMENTS_WIDGET_HEADER_TO_DATE,
+        }}
+        testIdsForTable={{
+          table: testids.page_attachments.attachments_widget_table.ATTACHMENTS_WIDGET_TABLE,
+          headerItem:
+            testids.page_attachments.attachments_widget_table.ATTACHMENTS_WIDGET_TABLE_HEADER_ITEM,
+          row: testids.page_attachments.attachments_widget_table.ATTACHMENTS_WIDGET_TABLE_BODY_ITEM,
+          rowActionEdit:
+            testids.page_attachments.attachments_widget_table
+              .ATTACHMENTS_WIDGET_TABLE_BODY_ITEM_ACTION_EDIT,
+          rowActionDelete:
+            testids.page_attachments.attachments_widget_table
+              .ATTACHMENTS_WIDGET_TABLE_BODY_ITEM_ACTION_DELETE,
+        }}
       />
     </PageWrapper>
   );

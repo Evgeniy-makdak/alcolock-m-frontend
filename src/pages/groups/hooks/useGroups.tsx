@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { RoutePaths } from '@app/index';
 import { userStore } from '@features/menu_button/model/store';
+import { testids } from '@shared/const/testid';
 import { useToggle } from '@shared/hooks/useToggle';
 import { GroupAlcolocksTable } from '@widgets/group_alcolocks_table';
 import { GroupCarTable } from '@widgets/group_card_table';
@@ -55,14 +56,17 @@ export const useGroups = () => {
   };
   const tabs = [
     {
+      testid: testids.page_groups.groups_widget_info.GROUPS_WIDGET_INFO_TAB_USERS_BUTTON,
       name: 'Пользователи',
       content: <GroupUsersTable groupInfo={groupInfo} />,
     },
     {
+      testid: testids.page_groups.groups_widget_info.GROUPS_WIDGET_INFO_TAB_ALCOLOCKS_BUTTON,
       name: 'Алкозамки',
       content: <GroupAlcolocksTable groupInfo={groupInfo} />,
     },
     {
+      testid: testids.page_groups.groups_widget_info.USERS_WIDGET_INFO_TAB_TRANSPORT_BUTTON,
       name: 'Транспорт',
       content: <GroupCarTable groupInfo={groupInfo} />,
     },

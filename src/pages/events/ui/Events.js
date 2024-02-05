@@ -4,6 +4,7 @@ import { AppConstants } from '@app';
 import { EventsFilterPanel } from '@entities/events_filter_panel';
 import { EditTable } from '@features/edit_table';
 import { PageWrapper } from '@layout/page_wrapper';
+import { testids } from '@shared/const/testid';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import { Aside } from '@shared/ui/aside';
 import { EventInfo } from '@widgets/events_info';
@@ -55,13 +56,41 @@ const Events = () => {
           uploadListPromise={uploadEvents}
           onRowClick={handleClickRow}
           selectedRow={selectedEventId}
-          filtersPanel={<EventsFilterPanel />}
+          filtersPanel={
+            <EventsFilterPanel
+              testids={{
+                users:
+                  testids.page_events.events_widget_header.EVENTS_WIDGET_HEADER_FILTER_INPUT_DRIVER,
+                carsByMake:
+                  testids.page_events.events_widget_header
+                    .EVENTS_WIDGET_HEADER_FILTER_INPUT_BRAND_CAR,
+                carsByLicense:
+                  testids.page_events.events_widget_header
+                    .EVENTS_WIDGET_HEADER_FILTER_INPUT_GOS_NUMBER,
+                eventsByType:
+                  testids.page_events.events_widget_header
+                    .EVENTS_WIDGET_HEADER_FILTER_INPUT_TYPE_EVENT,
+              }}
+            />
+          }
           filtersData={filtersData}
           isFiltersActive={isFiltersActive}
           withoutAction={true}
           withoutAdd={true}
           updateTable={selectedBranch}
           marginControls={style.marginControls}
+          tableControlTestId={{
+            inputSearch: testids.page_events.events_widget_header.EVENTS_WIDGET_HEADER_SEARCH_INPUT,
+            inputStart: testids.page_events.events_widget_header.EVENTS_WIDGET_HEADER_FROM_DATE,
+            inputEnd: testids.page_events.events_widget_header.EVENTS_WIDGET_HEADER_TO_DATE,
+            filterButton:
+              testids.page_events.events_widget_header.EVENTS_WIDGET_HEADER_FILTER_BUTTON,
+          }}
+          testIdsForTable={{
+            table: testids.page_events.events_widget_table.EVENTS_WIDGET_TABLE,
+            headerItem: testids.page_events.events_widget_table.EVENTS_WIDGET_TABLE_HEADER_ITEM,
+            row: testids.page_events.events_widget_table.EVENTS_WIDGET_TABLE_BODY_ITEM,
+          }}
         />
       </PageWrapper>
 

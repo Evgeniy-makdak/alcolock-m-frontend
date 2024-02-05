@@ -5,6 +5,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Divider, Menu, MenuItem, Button as MuiButton } from '@mui/material';
 
 import { PasswordForm } from '@entities/password_form';
+import { testids } from '@shared/const/testid';
 import { useToggle } from '@shared/hooks/useToggle';
 import { Button, ButtonsType } from '@shared/ui/button';
 import { Popup } from '@shared/ui/popup';
@@ -69,6 +70,7 @@ export const MenuButton = () => {
   return (
     <div>
       <MuiButton
+        data-testid={testids.widget_navbar.NAVBAR_POPUP_BUTTON}
         onClick={handleClick}
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
@@ -105,11 +107,19 @@ export const MenuButton = () => {
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}>
-        <MenuItem onClick={() => handleClose(ActionTypes.profileEdit)}>Изменить пароль</MenuItem>
+        <MenuItem
+          data-testid={testids.widget_navbar.NAVBAR_POPUP_CHANGE_PASSWORD_BUTTON}
+          onClick={() => handleClose(ActionTypes.profileEdit)}>
+          Изменить пароль
+        </MenuItem>
 
         <Divider />
 
-        <MenuItem onClick={() => handleClose(ActionTypes.exit)}>Выйти</MenuItem>
+        <MenuItem
+          data-testid={testids.widget_navbar.NAVBAR_POPUP_CHANGE_EXIT_BUTTON}
+          onClick={() => handleClose(ActionTypes.exit)}>
+          Выйти
+        </MenuItem>
       </Menu>
 
       <Popup

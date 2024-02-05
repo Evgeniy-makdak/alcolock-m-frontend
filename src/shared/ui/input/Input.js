@@ -14,6 +14,7 @@ export const Input = ({
   disabled = false,
   withChange,
   fieldsErrors = [],
+  testid,
 }) => {
   const value = formSelectors.useFormDataValue(fieldParams.name) ?? '';
   const setValue = formSelectors.useSetFormDataValue(fieldParams.name);
@@ -53,6 +54,9 @@ export const Input = ({
         <ValidationsWrapper validationMsgs={validations}>
           {fieldParams.type === 'password' ? (
             <TextField
+              inputProps={{
+                'data-testid': testid,
+              }}
               label={fieldParams.label ?? null}
               id={fieldParams.name}
               aria-label={'start top'}
@@ -81,6 +85,9 @@ export const Input = ({
             />
           ) : (
             <TextField
+              inputProps={{
+                'data-testid': testid,
+              }}
               label={fieldParams.label ?? null}
               aria-label={'start top'}
               id={fieldParams.name}

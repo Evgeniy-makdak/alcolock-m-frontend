@@ -3,10 +3,18 @@ import { Button as MuiButton } from '@mui/material';
 
 import style from './FilterButton.module.scss';
 
-export const FilterButton = ({ open, toggle, active }) => {
+interface FilterButtonProps {
+  open?: boolean;
+  toggle: () => void;
+  active?: boolean;
+  testid: string;
+}
+
+export const FilterButton = ({ open, toggle, active, testid }: FilterButtonProps) => {
   return (
     <div>
       <MuiButton
+        data-testid={testid}
         onClick={toggle}
         className={`${style.filterButton} ${active ? style.active : style.close}`}>
         <span>Фильтр</span>

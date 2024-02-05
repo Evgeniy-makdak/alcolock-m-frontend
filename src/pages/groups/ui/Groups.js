@@ -3,6 +3,7 @@ import { GroupForm } from '@entities/groups_form';
 import { RowTableInfo } from '@entities/row_table_info';
 import { EditTable } from '@features/edit_table';
 import { PageWrapper } from '@layout/page_wrapper';
+import { testids } from '@shared/const/testid';
 import { Aside } from '@shared/ui/aside';
 
 import { useGroups } from '../hooks/useGroups';
@@ -61,6 +62,20 @@ const Groups = () => {
           onRowClick={onClickRow}
           afterEdit={afterEdit}
           marginControls={style.marginControls}
+          tableControlTestId={{
+            inputSearch: testids.page_groups.groups_widget_header.GROUPS_WIDGET_HEADER_SEARCH_INPUT,
+            inputStart: testids.page_groups.groups_widget_header.GROUPS_WIDGET_HEADER_FROM_DATE,
+            inputEnd: testids.page_groups.groups_widget_header.GROUPS_WIDGET_HEADER_TO_DATE,
+          }}
+          testIdsForTable={{
+            table: testids.page_groups.groups_widget_table.GROUPS_WIDGET_TABLE,
+            headerItem: testids.page_groups.groups_widget_table.GROUPS_WIDGET_TABLE_HEADER_ITEM,
+            row: testids.page_groups.groups_widget_table.GROUPS_WIDGET_TABLE_BODY_ITEM,
+            rowActionEdit:
+              testids.page_groups.groups_widget_table.GROUPS_WIDGET_TABLE_BODY_ITEM_ACTION_EDIT,
+            rowActionDelete:
+              testids.page_groups.groups_widget_table.GROUPS_WIDGET_TABLE_BODY_ITEM_ACTION_DELETE,
+          }}
         />
       </PageWrapper>
 
@@ -70,11 +85,6 @@ const Groups = () => {
             <div className={style.name}>
               <span>{groupName}</span>
             </div>
-            {/* <GroupInfo
-              selectedGroupId={selectedGroupId}
-              updateInfo={updateInfo}
-              onClose={() => setSelectedGroupId(null)}
-            /> */}
             <RowTableInfo key={selectedGroupId} tabs={tabs} />
           </div>
         </Aside>

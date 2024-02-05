@@ -1,6 +1,10 @@
-export const Logo = () => {
+interface LogoProps {
+  testid?: string;
+}
+
+export const Logo = ({ testid }: LogoProps) => {
   return (
-    <div>
+    <div data-testid={testid}>
       <svg
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"

@@ -17,6 +17,12 @@ interface TableControlProps {
   filtersPanel: ReactNode;
   isFiltersActive: boolean;
   margin?: string;
+  tableControlTestId?: {
+    inputStart?: string;
+    inputEnd?: string;
+    inputSearch?: string;
+    filterButton?: string;
+  };
 }
 
 const theme = createTheme({
@@ -46,6 +52,7 @@ export const TableControl = ({
   filtersPanel,
   isFiltersActive,
   margin,
+  tableControlTestId,
 }: TableControlProps) => {
   const [inputValue, setValue] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -86,6 +93,9 @@ export const TableControl = ({
         {withSearch && (
           <ThemeProvider theme={theme}>
             <TextField
+              inputProps={{
+                'data-testid': tableControlTestId && tableControlTestId?.inputSearch,
+              }}
               fullWidth
               placeholder={'Поиск'}
               value={inputValue}
@@ -109,6 +119,7 @@ export const TableControl = ({
         {withDate && (
           <div className={style.datePickers}>
             <input
+              data-testid={tableControlTestId && tableControlTestId?.inputStart}
               type={'date'}
               onChange={onChangeStartDate}
               value={startDate}
@@ -116,6 +127,7 @@ export const TableControl = ({
             />
 
             <input
+              data-testid={tableControlTestId && tableControlTestId?.inputEnd}
               type={'date'}
               onChange={onChangeEndDate}
               value={endDate}
@@ -127,6 +139,7 @@ export const TableControl = ({
 
         {!!filtersPanel && (
           <FilterButton
+            testid={tableControlTestId ? tableControlTestId?.filterButton : ''}
             open={isOpenFilters}
             toggle={toggleIsOpenFilters}
             active={isFiltersActive}

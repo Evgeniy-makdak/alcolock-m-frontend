@@ -2,9 +2,13 @@ import { CircularProgress } from '@mui/material';
 
 import style from './Spinner.module.scss';
 
-export const Spinner = () => {
+interface SpinnerProps {
+  testid?: string;
+}
+
+export const Spinner = ({ testid }: SpinnerProps) => {
   return (
-    <div className={style.wrapper}>
+    <div data-testid={testid} className={style.wrapper}>
       <CircularProgress />
     </div>
   );

@@ -3,6 +3,6 @@
   "prettier.useTabs": true,
   "prettier.printWidth": 125,
   "prettier.singleQuote": true,
-  "cSpell.words": ["craco"],
+  "cSpell.words": ["ALCOLOCKS", "AVTOSERVISE", "craco", "testid", "testids"],
   "explorer.compactFolders": false
 }

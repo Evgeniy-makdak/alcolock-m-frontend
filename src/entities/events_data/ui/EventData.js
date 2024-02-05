@@ -4,7 +4,8 @@ import { Formatters } from '@shared/utils/formatters';
 
 import style from './EventData.module.scss';
 
-export const EventData = ({ event, type }) => {
+export const EventData = ({ event, type, testid }) => {
+  // TODO => почему не передать сюда массив и мэпать
   return (
     <div>
       {type !== HistoryTypes.byUser && (
@@ -81,7 +82,11 @@ export const EventData = ({ event, type }) => {
           {!!(event?.events ?? [])[0] &&
           !!event?.events[0].latitude &&
           !!event?.events[0].longitude ? (
-            <MapLink latitude={event.events[0].latitude} longitude={event.events[0].longitude} />
+            <MapLink
+              testid={testid}
+              latitude={event.events[0].latitude}
+              longitude={event.events[0].longitude}
+            />
           ) : (
             '-'
           )}

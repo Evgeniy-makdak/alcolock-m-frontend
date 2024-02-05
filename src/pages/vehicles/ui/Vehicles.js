@@ -4,6 +4,7 @@ import { VehiclesForm } from '@entities/vehicles_form';
 import { EditTable } from '@features/edit_table';
 import { UserPermissionsTypes } from '@features/menu_button';
 import { PageWrapper } from '@layout/page_wrapper';
+import { testids } from '@shared/const/testid';
 import { Aside } from '@shared/ui/aside';
 
 import { useVehicles } from '../hooks/useVehicles';
@@ -71,6 +72,26 @@ const Vehicles = () => {
           onRowClick={onClickRow}
           updateTable={selectedBranch}
           marginControls={style.marginControls}
+          tableControlTestId={{
+            inputSearch:
+              testids.page_transports.transports_widget_header.TRANSPORT_WIDGET_HEADER_SEARCH_INPUT,
+            inputStart:
+              testids.page_transports.transports_widget_header.TRANSPORT_WIDGET_HEADER_FROM_DATE,
+            inputEnd:
+              testids.page_transports.transports_widget_header.TRANSPORT_WIDGET_HEADER_TO_DATE,
+          }}
+          testIdsForTable={{
+            table: testids.page_transports.transports_widget_table.TRANSPORT_WIDGET_TABLE,
+            headerItem:
+              testids.page_transports.transports_widget_table.TRANSPORT_WIDGET_TABLE_HEADER_ITEM,
+            row: testids.page_transports.transports_widget_table.TRANSPORT_WIDGET_TABLE_BODY_ITEM,
+            rowActionEdit:
+              testids.page_transports.transports_widget_table
+                .TRANSPORT_WIDGET_TABLE_BODY_ITEM_ACTION_EDIT,
+            rowActionDelete:
+              testids.page_transports.transports_widget_table
+                .TRANSPORT_WIDGET_TABLE_BODY_ITEM_ACTION_DELETE,
+          }}
         />
       </PageWrapper>
 

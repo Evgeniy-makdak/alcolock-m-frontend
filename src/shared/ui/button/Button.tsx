@@ -9,6 +9,7 @@ interface ButtonProps {
   onClick: () => void;
   type: ButtonsType;
   disabled: boolean;
+  testid?: string;
 }
 
 export enum ButtonsType {
@@ -30,9 +31,14 @@ export const Button = ({
   onClick,
   type = ButtonsType.new,
   disabled = false,
+  testid,
 }: ButtonProps) => {
   return (
-    <MuiButton className={`button ${ButtonsTypeStyle[type]}`} onClick={onClick} disabled={disabled}>
+    <MuiButton
+      data-testid={testid}
+      className={`button ${ButtonsTypeStyle[type]}`}
+      onClick={onClick}
+      disabled={disabled}>
       {children}
     </MuiButton>
   );
