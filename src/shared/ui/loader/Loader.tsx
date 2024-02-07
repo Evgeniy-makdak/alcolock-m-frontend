@@ -5,8 +5,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 interface LoaderProps {
   children: ReactNode;
-  styles: React.CSSProperties;
-  isLoading: boolean;
+  styles?: React.CSSProperties;
+  isLoading?: boolean;
   testid?: string;
 }
 

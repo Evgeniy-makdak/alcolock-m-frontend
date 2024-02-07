@@ -49,7 +49,6 @@ export const EditTable = ({
   tableControl,
   tableControlTestId,
   testIdsForTable,
-  toggleModal,
 }) => {
   const [openDeleteModal, toggleDeleteModal] = useToggle();
   const [openAddModal, toggleAddModal] = useToggle();
@@ -421,7 +420,7 @@ export const EditTable = ({
                         justifyContent: 'center',
                         maxWidth: '114px',
                       }}>
-                      <StyledTable.TableButton onClick={toggleModal}>
+                      <StyledTable.TableButton onClick={toggleAddModal}>
                         <StyledTable.AddIcon />
                       </StyledTable.TableButton>
                     </div>

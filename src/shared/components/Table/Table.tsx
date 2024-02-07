@@ -1,28 +1,79 @@
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { memo } from 'react';
+
+import { DataGrid, DataGridProps } from '@mui/x-data-grid';
 
 import style from './Table.module.scss';
 
-interface TableProps<Rows> {
-  headers: GridColDef[];
-  rows: Rows[];
-  rowsPerPageOptions?: number[];
+interface TableProps extends DataGridProps {
   styles?: string;
+  testid?: string;
+  pageSize?: number;
+  pageNumber?: number;
+  pointer?: boolean;
 }
 
-export function Table<R>({ headers, rows, rowsPerPageOptions, styles }: TableProps<R>) {
-  return (
-    <div className={`${style} ${styles}`}>
-      <DataGrid
-        rows={rows}
-        columns={headers}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={rowsPerPageOptions ? rowsPerPageOptions : [5, 10, 25]}
-        checkboxSelection
-      />
-    </div>
-  );
-}
+const getStyle = (flag: boolean) => {
+  return {
+    '.MuiDataGrid-columnHeaderTitleContainerContent': {
+      fontWeight: '600',
+    },
+    '.MuiDataGrid-columnHeaders': {
+      backgroundColor: 'rgba(0, 0, 0, 0.13)',
+      borderRadius: '0',
+    },
+    '.MuiDataGrid-row': {
+      cursor: flag ? 'pointer' : 'default',
+    },
+    '.MuiDataGrid-columnHeaderTitle': {
+      fontWeight: '600',
+    },
+    '.MuiSvgIcon-root': {
+      fontSize: '25px',
+    },
+    '.MuiButtonBase-root': {
+      padding: 0,
+    },
+  };
+};
+
+export const Table = memo(
+  ({
+    columns,
+    pageSize = 25,
+    pageNumber = 1,
+    pointer,
+    pageSizeOptions,
+    styles,
+    ...rest
+  }: TableProps) => {
+    const styledHeaders = columns.map((head) => {
+      if (head?.type === 'actions') return { ...head };
+      return { ...head, flex: 1 };
+    });
+
+    return (
+      <div className={styles ? styles : style.table}>
+        <DataGrid
+          {...rest}
+          sx={getStyle(pointer)}
+          disableColumnMenu
+          disableRowSelectionOnClick
+          disableColumnFilter
+          disableColumnSelector
+          disableDensitySelector
+          disableVirtualization
+          disableEval
+          columns={styledHeaders}
+          initialState={{
+            pagination: {
+              paginationModel: { page: pageNumber, pageSize: pageSize },
+            },
+          }}
+          pageSizeOptions={pageSizeOptions ? pageSizeOptions : [25, 50, 75, 100]}
+        />
+      </div>
+    );
+  },
+);
+
+Table.displayName = 'Table';

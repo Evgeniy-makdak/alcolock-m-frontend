@@ -1,24 +1,4 @@
-export interface User {
-  firstName?: string;
-  middleName?: string;
-  lastName?: string;
-  email?: string;
-  id?: string;
-  driver?: {
-    vehicleAllotments: {
-      id?: string;
-      vehicle: Car;
-    }[];
-  };
-}
-
-export interface Car {
-  manufacturer: string;
-  model: string;
-  registrationNumber: string;
-  id?: string;
-  vin?: string;
-}
+import type { ICar, IUser } from '@shared/api/baseTypes';
 
 export class Formatters {
   static formatISODate(isoDate: string | Date) {
@@ -43,7 +23,7 @@ export class Formatters {
     return dateParts.reverse().join('.');
   }
 
-  static nameFormatter(user: User, withPlaceholder = true) {
+  static nameFormatter(user: IUser, withPlaceholder = true) {
     const placeholder = withPlaceholder ? '-' : '';
     if (!user) return placeholder;
     const name = user.firstName ? `${user.firstName} ` : '';
@@ -55,7 +35,7 @@ export class Formatters {
     return `${lastName} ${name} ${middleName}`;
   }
 
-  static carNameFormatter(car: Car, withoutRegistrationNumber = false) {
+  static carNameFormatter(car: ICar, withoutRegistrationNumber = false) {
     if (!car) return '-';
 
     if (withoutRegistrationNumber) {

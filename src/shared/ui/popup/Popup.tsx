@@ -3,18 +3,20 @@ import { createPortal } from 'react-dom';
 
 import CloseIcon from '@mui/icons-material/Close';
 
+import { testids } from '@shared/const/testid';
+
 import style from './Popup.module.scss';
 
 interface PopupProps {
   isOpen: boolean;
-  headerTitle: string;
-  body: string | ReactNode;
+  headerTitle?: string;
+  body?: string | ReactNode;
   toggleModal: () => void;
-  buttons: ReactNode[];
+  buttons?: ReactNode[];
   closeonClickSpace?: boolean;
   testid?: string;
   onCloseModal: () => void;
-  styles: {
+  styles?: {
     size: string;
     substr: string;
   };
@@ -35,10 +37,9 @@ export const Popup = ({
 }: PopupProps) => {
   const handleClickOutside = (e: React.SyntheticEvent<HTMLDivElement>) => {
     const { target } = e;
-    // If event target not an HTMLButtonElement, exit
-    if (!(target instanceof HTMLButtonElement)) {
-      return;
-    }
+    if (!('dataset' in target)) return;
+    if (typeof target.dataset !== 'object') return;
+    if (!('clickId' in target.dataset)) return;
     if (target?.dataset?.clickId && closeonClickSpace) {
       (onCloseModal ?? toggleModal)();
     }
@@ -47,14 +48,17 @@ export const Popup = ({
   return isOpen
     ? createPortal(
         <div
-          data-testid={testid}
+          data-testid={`${testids.POPUP}_${testid}`}
           data-click-id={DATA_SET}
           className={`${style.popup} `}
           onClick={handleClickOutside}>
           <div className={`${styles ? styles : style.size} ${style.substr}`}>
-            <div className={style.close} onClick={onCloseModal ?? toggleModal}>
+            <button
+              data-testid={`${testids.POPUP_CLOSE_BUTTON}_${testid}`}
+              className={style.close}
+              onClick={onCloseModal ?? toggleModal}>
               <CloseIcon />
-            </div>
+            </button>
 
             <div className={style.header}>
               <h4 className={style.title}>{headerTitle}</h4>
@@ -62,7 +66,7 @@ export const Popup = ({
 
             <div className={style.body}>{body}</div>
 
-            <div className={style.buttons}>{buttons}</div>
+            {buttons && <div className={style.buttons}>{buttons}</div>}
           </div>
         </div>,
         document.getElementById('root'),

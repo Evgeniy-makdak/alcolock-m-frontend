@@ -1,6 +1,6 @@
-import { Car } from '@shared/utils/formatters';
+import { ICar } from '@shared/api/baseTypes';
 
-export const getCarsRowsTemplate = (car: Car) => ({
+export const getCarsRowsTemplate = (car: ICar) => ({
   id: car.id,
   values: [
     {
