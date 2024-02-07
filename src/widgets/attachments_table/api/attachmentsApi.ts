@@ -13,6 +13,7 @@ export const useAttachmentsApi = (options: PartialQueryOptions) => {
       options.page,
     ],
     queryFn: () => AttachmentsApi.getList(options),
+    refetchInterval: 10000,
   });
   const { mutate } = useMutation({
     mutationFn: (id: number) => {

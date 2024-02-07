@@ -113,12 +113,12 @@ export class AttachmentsApi {
     return getQuery<IAttachmentItems[]>({ url });
   }
 
-  static createItem(
-    url: string,
-    data: AttachmentsCreateData,
-    headers?: AxiosRequestConfig['headers'],
-  ) {
-    return postQuery<void, AttachmentsCreateData>({ url, data, headers });
+  static getCreateAttachmentApiURL = () => {
+    return 'api/vehicle-driver-allotments';
+  };
+
+  static createItem(data: AttachmentsCreateData, headers?: AxiosRequestConfig['headers']) {
+    return postQuery({ url: this.getCreateAttachmentApiURL(), data, headers });
   }
   // static createItem(data: any) {
   //   const params = {
