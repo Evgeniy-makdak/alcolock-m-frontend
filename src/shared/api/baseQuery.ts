@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { API_URL } from '@shared/const/config';
 import { SortTypes, SortsTypes } from '@shared/const/types';
@@ -27,6 +27,14 @@ export interface QueryOptions {
   id: string;
 }
 
+const returnHeaders = (headers: AxiosRequestConfig['headers']): AxiosRequestConfig['headers'] => {
+  return new AxiosHeaders({
+    ...headers,
+    Authorization: `Bearer ${cookieManager.get('bearer')}`,
+    Accept: '*/*',
+  });
+};
+
 export function getQuery<T>({
   headers,
   url,
@@ -37,11 +45,7 @@ export function getQuery<T>({
   const requestUrl = `${API_URL}${url}`;
   return axios
     .get<any, AxiosResponse<T, any>>(requestUrl, {
-      headers: {
-        ...headers,
-        Authorization: `Bearer ${cookieManager.get('bearer')}`,
-        Accept: '*/*',
-      },
+      headers: returnHeaders(headers),
     })
     .then((res) => res);
 }
@@ -57,11 +61,7 @@ export function postQuery<T, D>({
 }) {
   const requestUrl = `${API_URL}${url}`;
   return axios.post<any, AxiosResponse<T, any>>(requestUrl, data, {
-    headers: {
-      ...headers,
-      Authorization: `Bearer ${cookieManager.get('bearer')}`,
-      Accept: '*/*',
-    },
+    headers: returnHeaders(headers),
   });
 }
 
@@ -75,10 +75,6 @@ export function deleteQuery<T>({
   const requestUrl = `${API_URL}${url}`;
   return axios.delete<any, AxiosResponse<T, any>>(requestUrl, {
     httpsAgent: 'fetch',
-    headers: {
-      ...headers,
-      Authorization: `Bearer ${cookieManager.get('bearer')}`,
-      Accept: '*/*',
-    },
+    headers: returnHeaders(headers),
   });
 }
