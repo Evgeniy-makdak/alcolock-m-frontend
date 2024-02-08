@@ -1,10 +1,11 @@
-import { Car, Formatters } from '@shared/utils/formatters';
+import { ICar } from '@shared/api/baseTypes';
+import { Formatters } from '@shared/utils/formatters';
 
 export const getAlcolocksRowsTemplate = (item: {
   id?: string;
   name?: string;
   serialNumber?: string;
-  vehicleBind?: { vehicle?: Car };
+  vehicleBind?: { vehicle?: ICar };
 }) => ({
   id: item.id,
   values: [

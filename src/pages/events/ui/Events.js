@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { AppConstants } from '@app';
-import { EventsFilterPanel } from '@entities/events_filter_panel';
 import { EditTable } from '@features/edit_table';
+import { EventsFilterPanel } from '@features/events_filter_panel';
 import { PageWrapper } from '@layout/page_wrapper';
 import { testids } from '@shared/const/testid';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';

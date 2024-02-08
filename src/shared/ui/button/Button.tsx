@@ -5,10 +5,10 @@ import { Button as MuiButton } from '@mui/material';
 import style from './Button.module.scss';
 
 interface ButtonProps {
-  children: ReactNode;
+  children?: ReactNode;
   onClick: () => void;
-  type: ButtonsType;
-  disabled: boolean;
+  type?: ButtonsType;
+  disabled?: boolean;
   testid?: string;
 }
 
@@ -29,7 +29,7 @@ const ButtonsTypeStyle = {
 export const Button = ({
   children,
   onClick,
-  type = ButtonsType.new,
+  type = ButtonsType.action,
   disabled = false,
   testid,
 }: ButtonProps) => {
