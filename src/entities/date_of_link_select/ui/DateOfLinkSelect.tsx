@@ -1,25 +1,28 @@
-import type { Path, UseFormRegister } from 'react-hook-form';
-
-import { SearchMultipleSelect } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import {
+  SearchMultipleSelect,
+  type Value,
+} from '@shared/ui/search_multiple_select/SearchMultipleSelect';
 
 import { useDateOfLinkSelect } from '../hooks/useDateOfLinkSelect';
 
 interface DateCreateSelectProps<T> {
-  onSelectDate: (value: number[] | number) => void;
-  register: UseFormRegister<T>;
+  setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
+  value: Value[];
   testid?: string;
   multiple?: boolean;
   label?: string;
+  name: keyof T;
   error?: boolean;
 }
 
 export function DateOfLinkSelect<T>({
-  onSelectDate,
-  register,
   testid,
   multiple = true,
   label,
   error,
+  setValueStore,
+  value,
+  name,
 }: DateCreateSelectProps<T>) {
   const { dateCreate, isLoading, onChange, onReset } = useDateOfLinkSelect();
   return (
@@ -29,11 +32,11 @@ export function DateOfLinkSelect<T>({
       onInputChange={onChange}
       textFieldLabel={label}
       loading={isLoading}
+      value={value}
       values={dateCreate}
-      onSelect={onSelectDate}
-      register={register}
+      setValueStore={setValueStore}
       testid={testid}
-      name={'dateLink' as Path<T>}
+      name={name}
       multiple={multiple}
     />
   );

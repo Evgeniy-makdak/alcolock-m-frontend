@@ -1,12 +1,16 @@
+import { ResetFilters } from '@entities/reset_filters/ui/ResetFilters';
 import { FilterButton } from '@entities/table_filter_button';
 import { AttachmentAddForm } from '@features/attachments_add_form';
-import { AttachmentsFilterPanel } from '@features/attachments_filter_panel';
+import {
+  AttachmentsFilterPanel,
+  attachmentsFilterPanelStore,
+} from '@features/attachments_filter_panel';
 import { Table } from '@shared/components/Table/Table';
 import { ButtonFormWrapper } from '@shared/components/button_form_wrapper/ButtonFormWrapper';
 import { TableHeaderWrapper } from '@shared/components/table_header_wrapper/ui/TableHeaderWrapper';
 import { testids } from '@shared/const/testid';
 import { Button } from '@shared/ui/button';
-import { InputDates } from '@shared/ui/input_date/InputDate';
+import { InputsDates } from '@shared/ui/inputs_dates/InputsDates';
 import { Popup } from '@shared/ui/popup';
 import { SearchInput } from '@shared/ui/search_input/SearchInput';
 
@@ -22,18 +26,24 @@ export const AttachmentsTable = () => {
     setInput,
     rows,
     headers,
-    paginationModelChange,
-    handleChangeDate,
-    listenFiletrs,
-    toggleOpenModal,
-    closeModal,
-    openModal,
+    changeTableState,
+    openAppAttachModal,
+    closeAppAttachModal,
+    toggleAppAttachModal,
     closeDeleteModal,
     toggleOpenDeleteModal,
     openDeleteModal,
     selectAttachment,
     deleteAttachment,
+    apiRef,
+    changeTableSorts,
+    changeEndDate,
+    changeStartDate,
+    clearDates,
+    endDate,
+    startDate,
   } = useAttachmentsTable();
+  const resetFilters = attachmentsFilterPanelStore((state) => state.resetFilters);
   return (
     <>
       <TableHeaderWrapper>
@@ -46,15 +56,18 @@ export const AttachmentsTable = () => {
           onClear={() => setInput('')}
           setState={setInput}
         />
-        <InputDates
+        <InputsDates
+          onClear={clearDates}
           inputStartTestId={
             testids.page_attachments.attachments_widget_header.ATTACHMENTS_WIDGET_HEADER_FROM_DATE
           }
           inputEndTestId={
             testids.page_attachments.attachments_widget_header.ATTACHMENTS_WIDGET_HEADER_TO_DATE
           }
-          onChangeStartDate={(e) => handleChangeDate(e, 'start')}
-          onChangeEndDate={(e) => handleChangeDate(e, 'end')}
+          onChangeStartDate={changeStartDate}
+          onChangeEndDate={changeEndDate}
+          valueStartDatePicker={startDate}
+          valueEndDatePicker={endDate}
         />
         <FilterButton
           open={openFilters}
@@ -64,10 +77,15 @@ export const AttachmentsTable = () => {
               .ATTACHMENTS_WIDGET_HEADER_FILTER_BUTTON
           }
         />
+        <ResetFilters title="Сбросить фильтры" reset={() => (resetFilters(), clearDates())} />
       </TableHeaderWrapper>
-      {openFilters && <AttachmentsFilterPanel listener={listenFiletrs} />}
+      {openFilters && <AttachmentsFilterPanel />}
       <Table
-        onPaginationModelChange={paginationModelChange}
+        rowCount={100}
+        paginationMode="server"
+        onSortModelChange={changeTableSorts}
+        apiRef={apiRef}
+        onPaginationModelChange={changeTableState}
         pageNumber={page}
         loading={isLoading}
         columns={headers}
@@ -76,11 +94,11 @@ export const AttachmentsTable = () => {
       <Popup
         testid={testids.page_attachments.attachments_popup_add_attach.ATTACHMENTS_ADD_ATTACH}
         closeonClickSpace={false}
-        toggleModal={toggleOpenModal}
+        toggleModal={toggleAppAttachModal}
         headerTitle="Привязка Алкозамка"
-        onCloseModal={closeModal}
-        isOpen={openModal}
-        body={<AttachmentAddForm onClose={closeModal} />}
+        onCloseModal={closeAppAttachModal}
+        isOpen={openAppAttachModal}
+        body={<AttachmentAddForm onClose={closeAppAttachModal} />}
       />
       <Popup
         testid={testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}

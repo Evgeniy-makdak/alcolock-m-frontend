@@ -455,7 +455,7 @@ export const AlkozamkiServiceMode = ({
         toggleModal={toggleDeactivatePopup}
         buttons={[
           <Button key={'action_1'} type={ButtonsType.action} onClick={handleDeactivate}>
-            {'Отключть'}
+            {'Отключить'}
           </Button>,
           <Button key={'action_2'} type={ButtonsType.action} onClick={toggleDeactivatePopup}>
             {AppConstants.cancelTxt}

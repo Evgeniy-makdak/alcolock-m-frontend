@@ -64,6 +64,11 @@ export const Table = memo(
           disableVirtualization
           disableEval
           columns={styledHeaders}
+          slotProps={{
+            pagination: {
+              labelRowsPerPage: ' Строк на странице',
+            },
+          }}
           initialState={{
             pagination: {
               paginationModel: { page: pageNumber, pageSize: pageSize },

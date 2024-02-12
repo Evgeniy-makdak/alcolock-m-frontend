@@ -1,29 +1,35 @@
-import type { Path, UseFormRegister } from 'react-hook-form';
-
-import { SearchMultipleSelect } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import {
+  SearchMultipleSelect,
+  type Value,
+} from '@shared/ui/search_multiple_select/SearchMultipleSelect';
 
 import { useUserSelect } from '../hooks/useUserSelect';
 
 interface UsersSelectProps<T> {
-  onSelectDriver: (value: number[] | number) => void;
-  register: UseFormRegister<T>;
+  onSelectDriver?: (value: number[] | number) => void;
   testid?: string;
   multiple?: boolean;
   label?: string;
   error?: boolean;
+  name: keyof T;
+  value?: Value[];
+  setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
 }
 
 export function UsersSelect<T>({
   onSelectDriver,
-  register,
   testid,
-  multiple = true,
+  multiple,
   label,
   error,
+  value,
+  name,
+  setValueStore,
 }: UsersSelectProps<T>) {
   const { onChange, isLoading, onReset, driversList } = useUserSelect();
   return (
     <SearchMultipleSelect
+      setValueStore={setValueStore}
       error={error}
       onReset={onReset}
       onInputChange={onChange}
@@ -31,10 +37,10 @@ export function UsersSelect<T>({
       loading={isLoading}
       values={driversList}
       onSelect={onSelectDriver}
-      register={register}
       testid={testid}
-      name={'driverId' as Path<T>}
+      name={name}
       multiple={multiple}
+      value={value}
     />
   );
 }

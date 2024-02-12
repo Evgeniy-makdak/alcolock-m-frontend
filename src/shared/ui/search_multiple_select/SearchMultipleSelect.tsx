@@ -1,4 +1,4 @@
-import { type Path, type UseFormRegister } from 'react-hook-form';
+import { type Control } from 'react-hook-form';
 
 import { Autocomplete, TextField } from '@mui/material';
 
@@ -20,11 +20,18 @@ interface SearchMultipleSelectProps<T> {
   loading?: boolean;
   values: Value[];
   validations?: any[];
-  name: Path<T>;
-  register: UseFormRegister<T>;
+  name: keyof T;
+  register?: any;
+  value?: Value[];
   onSelect?: (value: number[] | number) => void;
   onInputChange?: (value: string) => void;
   onReset?: () => void;
+  control?: Control<T, any>;
+  setValueStore?: (
+    type: keyof T,
+    value: string | Value | Value[] | (string | Value | Value[])[],
+  ) => void;
+  inputValue?: string;
 }
 
 export function SearchMultipleSelect<T>({
@@ -35,10 +42,11 @@ export function SearchMultipleSelect<T>({
   validations,
   onReset,
   values,
+  value = [],
+  inputValue,
   multiple,
   name,
-  register,
-  onSelect,
+  setValueStore,
   onInputChange,
 }: SearchMultipleSelectProps<T>) {
   const debouncedFunc = debounce(500, onInputChange);
@@ -58,18 +66,21 @@ export function SearchMultipleSelect<T>({
       {option.label}
     </li>
   );
-
   return (
     <div className={style.searchSelect}>
       <ValidationsWrapper validationMsgs={validations ? validations : []}>
         <Autocomplete
+          value={multiple ? value : values.find((op) => op.value === value[0]?.value)}
           fullWidth
-          {...register(name)}
           freeSolo
-          multiple={multiple ? true : false}
-          options={!loading ? values : []}
+          multiple={multiple}
+          isOptionEqualToValue={(option, value) => {
+            if (!Array.isArray(option) && !Array.isArray(value))
+              return option.value === value.value;
+          }}
+          options={values}
           loading={loading}
-          onReset={() => console.log('res')}
+          inputValue={inputValue}
           onInputChange={(_e, value, reason) => {
             if (reason === 'clear') {
               onReset && onReset();
@@ -79,17 +90,7 @@ export function SearchMultipleSelect<T>({
             debouncedFunc(value);
           }}
           onChange={(_e, value) => {
-            if (typeof value === 'string') return;
-            if (Array.isArray(value)) {
-              onSelect(
-                value.map((val) => {
-                  if (typeof val === 'string') return;
-                  return val.value;
-                }),
-              );
-              return;
-            }
-            onSelect(value?.value);
+            setValueStore(name, value);
           }}
           loadingText={'Загрузка...'}
           renderOption={renderOptions}

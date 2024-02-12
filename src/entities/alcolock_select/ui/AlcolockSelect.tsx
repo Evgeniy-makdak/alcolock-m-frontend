@@ -1,27 +1,31 @@
-import type { Path, UseFormRegister } from 'react-hook-form';
-
-import { SearchMultipleSelect } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import {
+  SearchMultipleSelect,
+  type Value,
+} from '@shared/ui/search_multiple_select/SearchMultipleSelect';
 
 import { useAlcolockSelect } from '../hooks/useAlcolockSelect';
 
 interface AlcolockSelectProps<T> {
-  onSelectAlcolock: (value: number[] | number) => void;
-  register: UseFormRegister<T>;
+  setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
+  value: Value[];
   testid?: string;
   multiple?: boolean;
   label?: string;
   error?: boolean;
+  name: keyof T;
 }
 
 export function AlcolockSelect<T>({
-  onSelectAlcolock,
-  register,
+  setValueStore,
   error,
   label,
   multiple,
+  value,
   testid,
+  name,
 }: AlcolockSelectProps<T>) {
   const { onChange, isLoading, onReset, alcolockList } = useAlcolockSelect();
+
   return (
     <SearchMultipleSelect
       error={error}
@@ -30,11 +34,11 @@ export function AlcolockSelect<T>({
       textFieldLabel={label}
       loading={isLoading}
       values={alcolockList}
-      onSelect={onSelectAlcolock}
-      register={register}
+      setValueStore={setValueStore}
       testid={testid}
-      name={'alcolocks' as Path<T>}
-      multiple={multiple ? false : true}
+      value={value}
+      name={name}
+      multiple={multiple}
     />
   );
 }

@@ -6,64 +6,62 @@ import { UsersCreateAttachSelect } from '@entities/users_create_attach_select';
 import { UsersSelect } from '@entities/users_select';
 import { testids } from '@shared/const/testid';
 
-import {
-  AttachmentsFilterPanelProps,
-  useAttachmentsFilterPanel,
-} from '../hooks/useAttachmentsFilterPanel';
+import { useAttachmentsFilterPanel } from '../hooks/useAttachmentsFilterPanel';
 
-export const AttachmentsFilterPanel = ({ listener }: AttachmentsFilterPanelProps) => {
-  const {
-    register,
-    onChangeDriver,
-    onChangeCar,
-    onChangeAlcolocks,
-    onChangeCreateLink,
-    onChangeDateLink,
-  } = useAttachmentsFilterPanel({
-    listener,
-  });
+export const AttachmentsFilterPanel = () => {
+  const { filters, setFilters } = useAttachmentsFilterPanel();
 
   return (
     <FilterPanel>
       <UsersSelect
+        multiple={true}
+        name="driverId"
+        setValueStore={setFilters}
+        value={filters.driverId}
         testid={
           testids.page_attachments.attachments_widget_header
             .ATTACHMENTS_WIDGET_HEADER_FILTER_INPUT_DRIVER
         }
         label="Поиск по водителю"
-        onSelectDriver={onChangeDriver}
-        register={register}
       />
       <CarsSelect
+        multiple={true}
+        name="carId"
         testid={
           testids.page_attachments.attachments_widget_header
             .ATTACHMENTS_WIDGET_HEADER_FILTER_INPUT_CAR
         }
-        register={register}
-        onSelectCar={onChangeCar}
+        setValueStore={setFilters}
+        value={filters.carId}
         label="Поиск по ТС"
       />
       <UsersCreateAttachSelect
+        multiple={true}
+        name="createLink"
         testid={
           testids.page_attachments.attachments_widget_header
             .ATTACHMENTS_WIDGET_HEADER_FILTER_INPUT_CREATE_LINK
         }
         label="Поиск по создавшему привязку"
-        onSelectUserCreateAttach={onChangeCreateLink}
-        register={register}
+        setValueStore={setFilters}
+        value={filters.createLink}
       />
       <AlcolockSelect
+        multiple={true}
         label="Поиск по алкозамку"
-        onSelectAlcolock={onChangeAlcolocks}
-        register={register}
+        setValueStore={setFilters}
+        value={filters.alcolocks}
         testid={
           testids.page_attachments.attachments_widget_header
             .ATTACHMENTS_WIDGET_HEADER_FILTER_INPUT_ALCOLOKS
         }
+        name="alcolocks"
       />
       <DateOfLinkSelect
-        register={register}
-        onSelectDate={onChangeDateLink}
+        multiple={true}
+        name="dateLink"
+        setValueStore={setFilters}
+        value={filters.dateLink}
         label="Поиск по дате привязки"
         testid={
           testids.page_attachments.attachments_widget_header

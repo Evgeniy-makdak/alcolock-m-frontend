@@ -10,7 +10,6 @@ export const useDateOfLinkSelect = () => {
   const onChange = (value: string) => {
     setSearchQuery(value);
   };
-
   const { data, isLoading } = useQuery({
     queryKey: [QueryKeys.ATTACHMENT_LIST],
     queryFn: () => AttachmentsApi.getList({ searchQuery }),

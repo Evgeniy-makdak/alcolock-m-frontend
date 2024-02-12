@@ -1,49 +1,49 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 
-import { GridPaginationModel } from '@mui/x-data-grid';
+import type { Dayjs } from 'dayjs';
 
-import type { Filters } from '@features/attachments_filter_panel';
+import { filterButtonStore } from '@entities/table_filter_button';
+import { storageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
+import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
 import { useToggle } from '@shared/hooks/useToggle';
+import { Formatters } from '@shared/utils/formatters';
 
 import { useAttachmentsApi } from '../api/attachmentsApi';
 import { useGetColumns } from '../lib/getColumns';
 import { useGetRows } from '../lib/getRows';
-import { useAttachmentsTableStore } from '../model/attachmentsTableStore';
+import { useAttachmentsDateStore } from '../model/attachmentsDateStore';
+
+interface InputsDate {
+  startDate: null | Dayjs;
+  endDate: null | Dayjs;
+}
 
 export const useAttachmentsTable = () => {
+  const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
+    storageKeys.ATTACHMENTS_TABLE_SORTS,
+  );
   const [selectAttachment, setSelectAttachment] = useState<null | { id: number; text: string }>(
     null,
   );
-  const [openFilters, toggleOpenFilters] = useToggle(false);
-  const [openModal, toggleOpenModal, closeModal] = useToggle(false);
+  const { openFilters, toggleFilters } = filterButtonStore((state) => state);
+
+  const [openAppAttachModal, toggleAppAttachModal, closeAppAttachModal] = useToggle(false);
   const [openDeleteModal, toggleOpenDeleteModal, closeDeleteModal] = useToggle(false);
-  const [_filters, setFilters] = useState<Filters>({
-    userId: '',
-    carsId: '',
-  });
+
   const [input, setInput] = useState('');
-  const [inputsDate, setInputsDate] = useState({
-    startDate: '',
-    endDate: '',
-  });
+  const { changeEndDate, changeStartDate, clearDates, endDate, startDate } =
+    useAttachmentsDateStore();
 
   const [inputWidthDelay] = useDebounce(input, 500);
-  const { countsElementsOnPage, page, setCountElementsOnPage, setPage } = useAttachmentsTableStore(
-    (state) => state,
-  );
-
-  const listenFiletrs = (filter: keyof Filters, value: string) => {
-    setFilters((prev) => ({ ...prev, [prev[filter]]: value }));
-  };
 
   const { data, isLoading, mutate } = useAttachmentsApi({
     searchQuery: inputWidthDelay,
-    endDate: inputsDate.endDate,
-    startDate: inputsDate.startDate,
-    page,
-    limit: countsElementsOnPage,
+    endDate: Formatters.formatToISODate(endDate),
+    startDate: Formatters.formatToISODate(startDate),
+    page: state.page,
+    limit: state.pageSize,
   });
   const rows = useGetRows(data);
 
@@ -52,21 +52,7 @@ export const useAttachmentsTable = () => {
     toggleOpenDeleteModal();
   };
 
-  const headers = useGetColumns(toggleOpenModal, handleClickDeleteAttachment);
-
-  const paginationModelChange = (state: GridPaginationModel) => {
-    setPage(state.page);
-    setCountElementsOnPage(state.pageSize);
-  };
-
-  const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>, type: 'start' | 'end') => {
-    setInputsDate((prev) => {
-      if (type === 'start') {
-        return { ...prev, startDate: e.target.value };
-      }
-      return { ...prev, endDate: e.target.value };
-    });
-  };
+  const headers = useGetColumns(toggleAppAttachModal, handleClickDeleteAttachment);
 
   const deleteAttachment = () => {
     if (!selectAttachment) return;
@@ -75,22 +61,25 @@ export const useAttachmentsTable = () => {
   };
 
   return {
-    inputsDate,
-    setInputsDate,
+    endDate,
+    startDate,
+    changeStartDate,
+    changeEndDate,
     isLoading,
     openFilters,
-    toggleOpenFilters,
+    clearDates,
+    toggleOpenFilters: toggleFilters,
     setInput,
-    page,
+    page: state.page,
     input,
     rows,
     headers,
-    paginationModelChange,
-    handleChangeDate,
-    listenFiletrs,
-    closeModal,
-    toggleOpenModal,
-    openModal,
+    changeTableState,
+    closeAppAttachModal,
+    toggleAppAttachModal,
+    openAppAttachModal,
+    changeTableSorts,
+    apiRef,
     closeDeleteModal,
     openDeleteModal,
     toggleOpenDeleteModal,

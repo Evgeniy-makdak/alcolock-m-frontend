@@ -1,25 +1,28 @@
-import type { Path, UseFormRegister } from 'react-hook-form';
-
-import { SearchMultipleSelect } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import {
+  SearchMultipleSelect,
+  type Value,
+} from '@shared/ui/search_multiple_select/SearchMultipleSelect';
 
 import { useUsersCreateAttachSelect } from '../hooks/useUsersCreateAttachSelect';
 
 interface UsersCreateAttachSelectProps<T> {
-  onSelectUserCreateAttach: (value: number[] | number) => void;
-  register: UseFormRegister<T>;
+  setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
+  value: Value[];
   testid?: string;
   multiple?: boolean;
   label?: string;
   error?: boolean;
+  name: keyof T;
 }
 
 export function UsersCreateAttachSelect<T>({
-  onSelectUserCreateAttach,
-  register,
+  setValueStore,
+  value,
   testid,
   multiple = true,
   label,
   error,
+  name,
 }: UsersCreateAttachSelectProps<T>) {
   const { createdBy, isLoading, onChange, onReset } = useUsersCreateAttachSelect();
   return (
@@ -30,10 +33,10 @@ export function UsersCreateAttachSelect<T>({
       textFieldLabel={label}
       loading={isLoading}
       values={createdBy}
-      onSelect={onSelectUserCreateAttach}
-      register={register}
+      setValueStore={setValueStore}
+      value={value}
       testid={testid}
-      name={'createLink' as Path<T>}
+      name={name}
       multiple={multiple}
     />
   );
