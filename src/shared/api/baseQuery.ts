@@ -29,12 +29,10 @@ export interface QueryOptions {
 }
 
 const returnHeaders = (headers: AxiosRequestConfig['headers']): AxiosRequestConfig['headers'] => {
+  const isAuth = headers?.isAuth ?? true;
   return new AxiosHeaders({
     ...headers,
-    Authorization:
-      headers?.isAuth === undefined || headers?.isAuth
-        ? `Bearer ${cookieManager.get('bearer')}`
-        : '',
+    Authorization: isAuth ? `Bearer ${cookieManager.get('bearer')}` : '',
     Accept: '*/*',
   });
 };

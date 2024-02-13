@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useAttachmentsApi = (options: PartialQueryOptions) => {
   const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [
       QueryKeys.ATTACHMENT_LIST,
       options.searchQuery,
@@ -13,7 +13,7 @@ export const useAttachmentsApi = (options: PartialQueryOptions) => {
       options.page,
     ],
     queryFn: () => AttachmentsApi.getList(options),
-    refetchInterval: 10000,
+    refetchInterval: 30000,
   });
   const { mutate } = useMutation({
     mutationFn: (id: number) => {
@@ -26,5 +26,5 @@ export const useAttachmentsApi = (options: PartialQueryOptions) => {
       queryClient.refetchQueries({ queryKey: [QueryKeys.ATTACHMENT_LIST] });
     },
   });
-  return { data: data?.data, count: data?.data.length, isLoading, mutate };
+  return { data: data?.data, count: data?.data.length, isLoading, mutate, refetch };
 };

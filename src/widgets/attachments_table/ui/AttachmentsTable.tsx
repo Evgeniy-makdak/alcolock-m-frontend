@@ -1,4 +1,3 @@
-import { ResetFilters } from '@entities/reset_filters/ui/ResetFilters';
 import { FilterButton } from '@entities/table_filter_button';
 import { AttachmentAddForm } from '@features/attachments_add_form';
 import {
@@ -12,6 +11,7 @@ import { testids } from '@shared/const/testid';
 import { Button } from '@shared/ui/button';
 import { InputsDates } from '@shared/ui/inputs_dates/InputsDates';
 import { Popup } from '@shared/ui/popup';
+import { ResetFilters } from '@shared/ui/reset_filters/ResetFilters';
 import { SearchInput } from '@shared/ui/search_input/SearchInput';
 
 import { useAttachmentsTable } from '../hooks/useAttachmentsTable';

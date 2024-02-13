@@ -4,7 +4,7 @@ import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ru';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
-import { MenuItem, ThemeProvider, createTheme } from '@mui/material';
+import { MenuItem, type Theme, ThemeProvider, createTheme } from '@mui/material';
 import {
   DatePicker,
   type DatePickerProps,
@@ -22,47 +22,47 @@ dayjs.extend(updateLocale);
 dayjs.updateLocale('ru', {
   weekStart: 1,
 });
-const newTheme = (theme: any) =>
-  createTheme({
-    ...theme,
-    components: {
-      MuiInputBase: {
-        styleOverrides: {
-          root: {
-            width: '161px',
-            height: '30px',
-            backgroundColor: '#f1f1f1',
-          },
-        },
-      },
-      MuiPickersSlideTransition: {
-        styleOverrides: {
-          root: {
-            maxHeight: 200,
-            minHeight: '150px !important',
-            height: 200,
-          },
-        },
-      },
-      MuiDateCalendar: {
-        styleOverrides: {
-          root: {
-            height: 'auto',
-          },
-        },
-      },
-      MuiPickersLayout: {
-        styleOverrides: {
-          root: {
-            paddingBottom: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            maxHeight: 350,
-          },
+
+const newTheme = (theme?: Theme) => ({
+  ...theme,
+  components: {
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          width: '161px',
+          height: '30px',
+          backgroundColor: '#f1f1f1',
         },
       },
     },
-  });
+    MuiPickersSlideTransition: {
+      styleOverrides: {
+        root: {
+          maxHeight: 200,
+          minHeight: '150px !important',
+          height: 200,
+        },
+      },
+    },
+    MuiDateCalendar: {
+      styleOverrides: {
+        root: {
+          height: 'auto',
+        },
+      },
+    },
+    MuiPickersLayout: {
+      styleOverrides: {
+        root: {
+          paddingBottom: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          maxHeight: 350,
+        },
+      },
+    },
+  },
+});
 
 const CustomMenuItem = (props: PickersActionBarProps) => {
   const { onClear } = props;
@@ -85,10 +85,12 @@ const CustomMenuItem = (props: PickersActionBarProps) => {
   );
 };
 
+const theme = createTheme(newTheme());
+
 export const InputDate = (props: InputDateProps) => {
   return (
     <LocalizationProvider adapterLocale="ru" dateAdapter={AdapterDayjs}>
-      <ThemeProvider theme={newTheme}>
+      <ThemeProvider theme={theme}>
         <DatePicker
           {...props}
           slots={{

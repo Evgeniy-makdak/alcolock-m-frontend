@@ -38,21 +38,20 @@ export const useAttachmentsTable = () => {
 
   const [inputWidthDelay] = useDebounce(input, 500);
 
-  const { data, isLoading, mutate } = useAttachmentsApi({
+  const { data, isLoading, mutate, refetch } = useAttachmentsApi({
     searchQuery: inputWidthDelay,
     endDate: Formatters.formatToISODate(endDate),
     startDate: Formatters.formatToISODate(startDate),
     page: state.page,
     limit: state.pageSize,
   });
-  const rows = useGetRows(data);
 
   const handleClickDeleteAttachment = (id: number, text: string) => {
     setSelectAttachment({ id, text });
     toggleOpenDeleteModal();
   };
-
-  const headers = useGetColumns(toggleAppAttachModal, handleClickDeleteAttachment);
+  const rows = useGetRows(data);
+  const headers = useGetColumns(toggleAppAttachModal, handleClickDeleteAttachment, refetch);
 
   const deleteAttachment = () => {
     if (!selectAttachment) return;
@@ -61,6 +60,7 @@ export const useAttachmentsTable = () => {
   };
 
   return {
+    refetch,
     endDate,
     startDate,
     changeStartDate,

@@ -16,11 +16,16 @@ const getStyle = (flag: boolean) => {
   return {
     '.MuiDataGrid-columnHeaderTitleContainerContent': {
       fontWeight: '600',
+      minWidth: '150%',
     },
     '.MuiDataGrid-columnHeaders': {
       backgroundColor: 'rgba(0, 0, 0, 0.13)',
       borderRadius: '0',
     },
+    '.MuiDataGrid-columnHeader': {
+      minWidth: '150px',
+    },
+
     '.MuiDataGrid-row': {
       cursor: flag ? 'pointer' : 'default',
     },
