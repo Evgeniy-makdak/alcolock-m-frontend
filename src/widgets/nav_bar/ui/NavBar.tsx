@@ -6,7 +6,6 @@ import { MenuButton } from '@features/menu_button';
 import { userStore } from '@features/menu_button/model/store';
 import { BranchSelect } from '@features/nav_bar_branch_select';
 // TODO => убрать связь со страницей
-import { checkAutoServiceCount } from '@pages/auto_service/model/effects';
 import { autoServiceStore } from '@pages/auto_service/model/store';
 import { testids } from '@shared/const/testid';
 import { Logo } from '@shared/ui/logo';
@@ -20,15 +19,14 @@ export const NavBar = () => {
   const updateNotificationsCount = autoServiceStore.updateNotificationsCount.useValue();
 
   useEffect(() => {
-    checkAutoServiceCount().catch((err) => {
-      console.log('checkAutoServiceCount error', err?.response);
-    });
-
-    setInterval(() => {
-      checkAutoServiceCount().catch((err) => {
-        console.log('checkAutoServiceCount error', err?.response);
-      });
-    }, 60000);
+    // checkAutoServiceCount().catch((err) => {
+    //   console.log('checkAutoServiceCount error', err?.response);
+    // });
+    // setInterval(() => {
+    //   checkAutoServiceCount().catch((err) => {
+    //     console.log('checkAutoServiceCount error', err?.response);
+    //   });
+    // }, 60000);
   }, [updateNotificationsCount]);
 
   const permissionsFilter = (item: TypeNavLink) => {

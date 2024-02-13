@@ -3,7 +3,7 @@ import { useEvent, useStore } from 'effector-react';
 
 export class StateBuilder<T> {
   $store: Store<T>;
-  setState: Event<void>;
+  setState: Event<any>;
   resetStore: Event<void>;
   constructor(initValue: T | null = null) {
     this.$store = createStore<T>(initValue);

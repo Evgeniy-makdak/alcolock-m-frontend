@@ -18,8 +18,11 @@
 }
 
 .form {
-  width: 320px;
+  width: 350px;
   margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .button {
@@ -65,4 +68,10 @@
   top: 32px;
   left: 30px;
   width: 220px;
+}
+.loader {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }

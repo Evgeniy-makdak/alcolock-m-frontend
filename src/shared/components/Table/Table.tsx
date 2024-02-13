@@ -66,7 +66,8 @@ export const Table = memo(
           columns={styledHeaders}
           slotProps={{
             pagination: {
-              labelRowsPerPage: ' Строк на странице',
+              labelDisplayedRows: ({ from, to, count }) => `${from}-${to} из ${count}`,
+              labelRowsPerPage: 'Строк на странице',
             },
           }}
           initialState={{

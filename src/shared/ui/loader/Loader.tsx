@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import LoadingOverlay from 'react-loading-overlay-ts';
+import LoadingOverlay, { type LoadingOverLayProps } from 'react-loading-overlay-ts';
 
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -8,11 +8,19 @@ interface LoaderProps {
   styles?: React.CSSProperties;
   isLoading?: boolean;
   testid?: string;
+  props?: LoadingOverLayProps;
 }
 
-export const Loader = ({ children, isLoading = false, styles = {}, testid }: LoaderProps) => {
+export const Loader = ({
+  children,
+  isLoading = false,
+  styles = {},
+  testid,
+  props,
+}: LoaderProps) => {
   return (
     <LoadingOverlay
+      {...props}
       data-testid={testid}
       active={isLoading}
       spinner={<CircularProgress />}

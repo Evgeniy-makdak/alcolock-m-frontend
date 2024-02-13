@@ -81,6 +81,7 @@ export const AttachmentsTable = () => {
       </TableHeaderWrapper>
       {openFilters && <AttachmentsFilterPanel />}
       <Table
+        // TODO => кол-во элементов должно приходить с бэка
         rowCount={100}
         paginationMode="server"
         onSortModelChange={changeTableSorts}

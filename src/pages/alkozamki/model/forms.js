@@ -17,7 +17,7 @@ const initValidations = {
 
 const validator = () => ({
   name: ValidationRules.requiredValidation,
-  serialNumber: ValidationRules.requiredValidation,
+  serialNumber: ValidationRules.serialNumberValidator,
   serviceId: ValidationRules.UUID4Validation,
 });
 

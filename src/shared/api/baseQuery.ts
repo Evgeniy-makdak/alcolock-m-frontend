@@ -1,4 +1,5 @@
 import axios, { AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { enqueueSnackbar } from 'notistack';
 
 import { API_URL } from '@shared/const/config';
 import { SortTypes, SortsTypes } from '@shared/const/types';
@@ -30,7 +31,10 @@ export interface QueryOptions {
 const returnHeaders = (headers: AxiosRequestConfig['headers']): AxiosRequestConfig['headers'] => {
   return new AxiosHeaders({
     ...headers,
-    Authorization: `Bearer ${cookieManager.get('bearer')}`,
+    Authorization:
+      headers?.isAuth === undefined || headers?.isAuth
+        ? `Bearer ${cookieManager.get('bearer')}`
+        : '',
     Accept: '*/*',
   });
 };
@@ -47,7 +51,10 @@ export function getQuery<T>({
     .get<any, AxiosResponse<T, any>>(requestUrl, {
       headers: returnHeaders(headers),
     })
-    .then((res) => res);
+    .catch((error) => {
+      enqueueSnackbar(`Ошибка запроса - ${error?.message}`, { variant: 'error' });
+      return { data: error };
+    });
 }
 
 export function postQuery<T, D>({
@@ -60,9 +67,14 @@ export function postQuery<T, D>({
   data: D;
 }) {
   const requestUrl = `${API_URL}${url}`;
-  return axios.post<any, AxiosResponse<T, any>>(requestUrl, data, {
-    headers: returnHeaders(headers),
-  });
+  return axios
+    .post<any, AxiosResponse<T, any>>(requestUrl, data, {
+      headers: returnHeaders(headers),
+    })
+    .catch((error) => {
+      enqueueSnackbar(`Ошибка запроса - ${error?.message}`, { variant: 'error' });
+      return { data: error };
+    });
 }
 
 export function deleteQuery<T>({
@@ -73,8 +85,13 @@ export function deleteQuery<T>({
   url: string;
 }) {
   const requestUrl = `${API_URL}${url}`;
-  return axios.delete<any, AxiosResponse<T, any>>(requestUrl, {
-    httpsAgent: 'fetch',
-    headers: returnHeaders(headers),
-  });
+  return axios
+    .delete<any, AxiosResponse<T, any>>(requestUrl, {
+      httpsAgent: 'fetch',
+      headers: returnHeaders(headers),
+    })
+    .catch((error) => {
+      enqueueSnackbar(`Ошибка запроса - ${error?.message}`, { variant: 'error' });
+      return { data: error };
+    });
 }
