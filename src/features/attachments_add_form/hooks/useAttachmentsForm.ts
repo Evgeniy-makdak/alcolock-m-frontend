@@ -1,38 +1,34 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useForm } from 'react-hook-form';
 
+import { getArrayValues } from '@shared/lib/getValuesFromForm';
+import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+
 import { useCreateAttachment } from '../api/createAttachment';
 
 interface AttachmentAddForm {
-  carId: number | null | undefined;
-  driverId: number | null | undefined;
+  carId: Value[];
+  driverId: Value[];
 }
 
 export const useAttachmentsForm = () => {
-  const { register, setValue, getValues, setError, clearErrors, formState } =
+  const { register, setValue, getValues, setError, clearErrors, watch, formState } =
     useForm<AttachmentAddForm>({
       defaultValues: {
-        carId: null,
-        driverId: null,
+        carId: [],
+        driverId: [],
       },
     });
   const mutation = useCreateAttachment();
-
-  const onSelectCar = (value: number[] | number) => {
+  const onSelect = (type: keyof AttachmentAddForm, value: string | Value | (string | Value)[]) => {
+    const values = getArrayValues(value);
     clearErrors(['driverId', 'carId']);
-    if (Array.isArray(value)) return;
-    setValue('carId', value);
-  };
-
-  const onSelectDriver = (value: number[] | number) => {
-    clearErrors(['driverId', 'carId']);
-    if (Array.isArray(value)) return;
-    setValue('driverId', value);
+    setValue(type, values);
   };
 
   const onAddAtachment = () => {
-    const driverId = getValues('driverId');
-    const vehicleId = getValues('carId');
+    const driverId = getValues('driverId')[0]?.value;
+    const vehicleId = getValues('carId')[0]?.value;
     if (!driverId || !vehicleId) {
       !driverId && setError('driverId', {});
       !vehicleId && setError('carId', {});
@@ -45,9 +41,10 @@ export const useAttachmentsForm = () => {
   };
 
   return {
+    driverId: watch('driverId'),
+    carId: watch('carId'),
+    onSelect,
     register,
-    onSelectCar,
-    onSelectDriver,
     onAddAtachment,
     errorDriver: formState.errors?.driverId ? true : false,
     errorCar: formState.errors?.carId ? true : false,

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Autocomplete, TextField } from '@mui/material';
 
+import { storageKeys } from '@shared/const/storageKeys';
 import { testids } from '@shared/const/testid';
 import { useLocalStorage } from '@shared/hooks/useLocalStorage';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
@@ -20,7 +21,7 @@ const valueFormatter = (value) => {
 export const BranchSelect = () => {
   const [selectedBranch, setSelectedBranch] = selectedBranchStore.selectedBranch.useState();
   const { state: office, setItemState: setOffice } = useLocalStorage({
-    key: 'office',
+    key: storageKeys.OFFICE,
     value: selectedBranch,
   });
   const [loading, setLoading] = useState(false);

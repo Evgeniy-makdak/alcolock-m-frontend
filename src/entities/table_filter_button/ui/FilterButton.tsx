@@ -12,20 +12,18 @@ interface FilterButtonProps {
 
 export const FilterButton = ({ open, toggle, active, testid }: FilterButtonProps) => {
   return (
-    <div>
-      <MuiButton
-        data-testid={testid}
-        onClick={toggle}
-        className={`${style.filterButton} ${active ? style.active : style.close}`}>
-        <span>Фильтр</span>
+    <MuiButton
+      data-testid={testid}
+      onClick={toggle}
+      className={`${style.filterButton} ${active ? style.active : style.close}`}>
+      <span>Фильтр</span>
 
-        <ArrowDropDownIcon
-          sx={{
-            transform: `rotate(${open ? 180 : 0}deg)`,
-            transition: 'all .15s ease',
-          }}
-        />
-      </MuiButton>
-    </div>
+      <ArrowDropDownIcon
+        sx={{
+          transform: `rotate(${open ? 180 : 0}deg)`,
+          transition: 'all .15s ease',
+        }}
+      />
+    </MuiButton>
   );
 };

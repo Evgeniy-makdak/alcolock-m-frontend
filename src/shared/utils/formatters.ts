@@ -1,3 +1,6 @@
+import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
+
 import type { ICar, IUser } from '@shared/api/baseTypes';
 
 export class Formatters {
@@ -14,6 +17,13 @@ export class Formatters {
     const seconds = String(date.getSeconds()).padStart(2, '0');
 
     return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+  }
+
+  static formatToISODate(date: Dayjs | null | undefined) {
+    if (!date) return '';
+    if (!dayjs(date).isValid()) return '';
+
+    return dayjs(date).toISOString();
   }
 
   static convertDateFormat(dateStr: string) {

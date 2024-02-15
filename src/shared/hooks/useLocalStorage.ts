@@ -39,20 +39,15 @@ export function useLocalStorage<T>({
     setState(data);
   }
 
-  function setItemState(value: T) {
-    setItem(keyRef.current, value);
-    setState(value);
+  function setItemState(newValue: T) {
+    setItem(keyRef.current, newValue);
+    setState(newValue);
   }
 
   function clearState(key: string) {
     removeItem(key);
     setState(null);
   }
-
-  //   useEffect(() => {
-  //     if (action === Actions.GET || !action) {
-  //     }
-  //   }, []);
 
   return { state, getState, setItemState, clearState };
 }

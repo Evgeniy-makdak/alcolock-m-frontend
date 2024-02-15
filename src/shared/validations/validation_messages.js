@@ -8,4 +8,5 @@ export class ValidationMessages {
   static notValidName = 'Не соответствует формату ФИО';
   static notValidVin = 'Не соответсвует формату VIN';
   static notValidPasswordLength = 'Пароль должен быть длинее 3 символов';
+  static notValidSerialNumber = 'Серийный номер должен содержать от 1 до 20 символов';
 }

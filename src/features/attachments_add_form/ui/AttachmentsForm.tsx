@@ -13,31 +13,30 @@ interface AttachmentAddFormProps {
 }
 
 export const AttachmentAddForm = ({ onClose }: AttachmentAddFormProps) => {
-  const { register, onSelectDriver, onSelectCar, onAddAtachment, errorCar, errorDriver } =
-    useAttachmentsForm();
+  const { carId, driverId, onSelect, onAddAtachment, errorCar, errorDriver } = useAttachmentsForm();
   return (
     <Loader>
       <InputsColumnWrapper>
         <CarsSelect
+          name="carId"
           testid={
             testids.page_attachments.attachments_popup_add_attach.ATTACHMENTS_ADD_ATTACH_INPUT_CAR
           }
           error={errorCar}
           label="TC"
-          multiple={false}
-          register={register}
-          onSelectCar={onSelectCar}
+          value={carId}
+          setValueStore={onSelect}
         />
 
         <UsersSelect
+          value={driverId}
+          setValueStore={onSelect}
           testid={
             testids.page_attachments.attachments_popup_add_attach.ATTACHMENTS_ADD_ATTACH_INPUT_USER
           }
           error={errorDriver}
           label="Водитель"
-          multiple={false}
-          onSelectDriver={onSelectDriver}
-          register={register}
+          name="driverId"
         />
       </InputsColumnWrapper>
       <ButtonFormWrapper>

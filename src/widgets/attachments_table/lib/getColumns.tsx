@@ -1,10 +1,17 @@
 import { useMemo } from 'react';
 
+import type { AxiosResponse } from 'axios';
+
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { GridActionsCellItem, GridColDef, type GridColumnHeaderParams } from '@mui/x-data-grid';
 
+import type { IAttachmentItems } from '@shared/api/baseQuerys';
 import { testids } from '@shared/const/testid';
+import { Refetch } from '@shared/ui/refetch/Refetch';
+import type { QueryObserverResult } from '@tanstack/react-query';
+
+import style from '../ui/AttachmentsTable.module.scss';
 
 export enum ValuesHeader {
   DRIVER = 'DRIVER',
@@ -25,6 +32,15 @@ const setTestIds = (row: GridColumnHeaderParams<any, any, any>) => {
 export const useGetColumns = (
   toggle: () => void,
   toggleDelete: (id: number, text: string) => void,
+  refetch: () => Promise<
+    QueryObserverResult<
+      | AxiosResponse<IAttachmentItems[], any>
+      | {
+          data: any;
+        },
+      Error
+    >
+  >,
 ): GridColDef[] => {
   return useMemo(
     () => [
@@ -81,25 +97,28 @@ export const useGetColumns = (
         },
         renderHeader: () => {
           return (
-            <span
-              onClick={toggle}
-              data-testid={
-                testids.page_attachments.attachments_widget_table
-                  .ATTACHMENTS_WIDGET_TABLE_HEADER_ITEM_OPEN_MODAL
-              }>
-              <GridActionsCellItem
-                key={'delete'}
+            <div className={style.headerAction}>
+              <Refetch onClick={refetch} />
+              <span
+                onClick={toggle}
                 data-testid={
                   testids.page_attachments.attachments_widget_table
                     .ATTACHMENTS_WIDGET_TABLE_HEADER_ITEM_OPEN_MODAL
-                }
-                icon={<AddIcon style={{ color: '#000' }} />}
-                label="Delete"
-              />
-            </span>
+                }>
+                <GridActionsCellItem
+                  key={'delete'}
+                  data-testid={
+                    testids.page_attachments.attachments_widget_table
+                      .ATTACHMENTS_WIDGET_TABLE_HEADER_ITEM_OPEN_MODAL
+                  }
+                  icon={<AddIcon style={{ color: '#000' }} />}
+                  label="Delete"
+                />
+              </span>
+            </div>
           );
         },
-        width: 50,
+        width: 120,
         hideable: false,
         align: 'center',
       },

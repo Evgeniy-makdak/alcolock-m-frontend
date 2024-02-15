@@ -115,3 +115,9 @@ export interface IAlcolocks {
     lastName?: string;
   };
 }
+
+export interface AuthError {
+  field: string;
+  message: string;
+  objectName: string;
+}

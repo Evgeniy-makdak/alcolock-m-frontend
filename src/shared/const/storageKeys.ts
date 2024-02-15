@@ -1,0 +1,4 @@
+export enum storageKeys {
+  OFFICE = 'OFFICE',
+  ATTACHMENTS_TABLE_SORTS = 'ATTACHMENTS_TABLE_SORTS',
+}
