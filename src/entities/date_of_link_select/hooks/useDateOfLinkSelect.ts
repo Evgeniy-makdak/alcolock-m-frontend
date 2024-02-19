@@ -1,9 +1,11 @@
 import { useState } from 'react';
 
-import { AttachmentsApi, QueryKeys } from '@shared/api/baseQuerys';
+import { AttachmentsApi } from '@shared/api/baseQuerys';
+import { QueryKeys } from '@shared/const/storageKeys';
+import { mapOptions } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
 import { useQuery } from '@tanstack/react-query';
 
-import { mapOptions } from '../lib/mapOptions';
+import { adapterMapOptions } from '../lib/adapterMapOptions';
 
 export const useDateOfLinkSelect = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,6 +20,6 @@ export const useDateOfLinkSelect = () => {
     setSearchQuery('');
   };
 
-  const dateCreate = mapOptions(data?.data || []);
+  const dateCreate = mapOptions(data?.data, adapterMapOptions);
   return { onChange, isLoading, onReset, dateCreate };
 };

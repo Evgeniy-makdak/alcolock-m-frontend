@@ -9,7 +9,26 @@ import style from './SearchMultipleSelect.module.scss';
 
 export interface Value {
   label: string;
-  value: number;
+  value: number | string;
+}
+
+export function mapOptions<T>(
+  values: T[],
+  adapter: (data: T) => [] | [string, number | string],
+): Value[] {
+  if (!Array.isArray(values)) return [];
+  const readyArr: Value[] = [];
+  values.map((data) => {
+    const vals = adapter(data);
+
+    if (!vals.length) return;
+    const [label, value] = vals;
+    readyArr.push({
+      label,
+      value,
+    });
+  });
+  return readyArr;
 }
 
 interface SearchMultipleSelectProps<T> {
@@ -49,7 +68,7 @@ export function SearchMultipleSelect<T>({
   setValueStore,
   onInputChange,
 }: SearchMultipleSelectProps<T>) {
-  const debouncedFunc = debounce(500, onInputChange);
+  const debouncedFunc = debounce({ time: 500, callBack: onInputChange });
   const renderInput = (params: any) => {
     const prop = {
       ...params,
@@ -89,8 +108,11 @@ export function SearchMultipleSelect<T>({
             if (!debouncedFunc) return;
             debouncedFunc(value);
           }}
-          onChange={(_e, value) => {
+          onChange={(_e, value, reson) => {
             setValueStore(name, value);
+            if (reson === 'selectOption') {
+              onReset && onReset();
+            }
           }}
           loadingText={'Загрузка...'}
           renderOption={renderOptions}

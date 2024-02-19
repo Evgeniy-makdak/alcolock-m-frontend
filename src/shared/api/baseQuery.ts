@@ -1,32 +1,8 @@
 import axios, { AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { enqueueSnackbar } from 'notistack';
 
 import { API_URL } from '@shared/const/config';
-import { SortTypes, SortsTypes } from '@shared/const/types';
+import type { IError } from '@shared/types/BaseQueryTypes';
 import { cookieManager } from '@shared/utils/cookie_manager';
-
-export interface QueryOptions {
-  page: number;
-  equals: string;
-  limit: number | string;
-  sortBy: SortTypes;
-  searchQuery: string;
-  order: SortsTypes;
-  startDate: string;
-  endDate: string;
-  filterOptions?: {
-    drivers?: string;
-    users: string;
-    brandCar?: string;
-    gosNumber?: string;
-    typeOfEvent?: string;
-    cars?: string;
-    alcolock?: string;
-    createLink?: string;
-    dateLink?: string;
-  };
-  id: string;
-}
 
 const returnHeaders = (headers: AxiosRequestConfig['headers']): AxiosRequestConfig['headers'] => {
   const isAuth = headers?.isAuth ?? true;
@@ -45,14 +21,9 @@ export function getQuery<T>({
   url: string;
 }) {
   const requestUrl = `${API_URL}${url}`;
-  return axios
-    .get<any, AxiosResponse<T, any>>(requestUrl, {
-      headers: returnHeaders(headers),
-    })
-    .catch((error) => {
-      enqueueSnackbar(`Ошибка запроса - ${error?.message}`, { variant: 'error' });
-      return { data: error };
-    });
+  return axios.get<IError, AxiosResponse<T, IError>>(requestUrl, {
+    headers: returnHeaders(headers),
+  });
 }
 
 export function postQuery<T, D>({
@@ -65,14 +36,9 @@ export function postQuery<T, D>({
   data: D;
 }) {
   const requestUrl = `${API_URL}${url}`;
-  return axios
-    .post<any, AxiosResponse<T, any>>(requestUrl, data, {
-      headers: returnHeaders(headers),
-    })
-    .catch((error) => {
-      enqueueSnackbar(`Ошибка запроса - ${error?.message}`, { variant: 'error' });
-      return { data: error };
-    });
+  return axios.post<IError, AxiosResponse<T, IError>>(requestUrl, data, {
+    headers: returnHeaders(headers),
+  });
 }
 
 export function deleteQuery<T>({
@@ -83,13 +49,8 @@ export function deleteQuery<T>({
   url: string;
 }) {
   const requestUrl = `${API_URL}${url}`;
-  return axios
-    .delete<any, AxiosResponse<T, any>>(requestUrl, {
-      httpsAgent: 'fetch',
-      headers: returnHeaders(headers),
-    })
-    .catch((error) => {
-      enqueueSnackbar(`Ошибка запроса - ${error?.message}`, { variant: 'error' });
-      return { data: error };
-    });
+  return axios.delete<IError, AxiosResponse<T, IError>>(requestUrl, {
+    httpsAgent: 'fetch',
+    headers: returnHeaders(headers),
+  });
 }

@@ -2,7 +2,7 @@ import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSele
 
 export const getStringFromArrayValues = (values: (string | Value)[] | Value) => {
   if (Array.isArray(values)) {
-    const arr: number[] = [];
+    const arr: (number | string)[] = [];
     values.map((item) => {
       if (typeof item === 'string') return;
       arr.push(item.value);

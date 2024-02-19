@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { AppConstants } from '@app';
 import { Info } from '@entities/info';
 // TODO => убрать связь со страницей
+import { TypeOfRows } from '@entities/info/lib/getTypeOfRowIconLabel';
 import { getCar } from '@pages/vehicles/model/effects';
 import { Loader } from '@shared/ui/loader';
 import { Formatters } from '@shared/utils/formatters';
@@ -28,44 +29,63 @@ export const VehiclesInfo = ({ selectedCarId, updateData }) => {
       });
   }, [selectedCarId, updateData]);
 
+  const vin = carData?.vin ?? '-';
+  const gosNumber = carData?.registrationNumber ?? '-';
+  const dateRegistry = Formatters.formatISODate(carData?.createdAt);
   return (
     <Loader isLoading={loading}>
       <Info
         fields={[
           {
-            label: 'Марка:',
-            value: carData?.manufacturer ?? '-',
+            label: 'Марка',
+            type: TypeOfRows.MARK,
+            value: { label: carData?.manufacturer ?? '-' },
           },
           {
-            label: 'Модель:',
-            value: carData?.model ?? '-',
+            label: 'Модель',
+            type: TypeOfRows.CAR,
+            value: { label: carData?.model ?? '-' },
           },
           {
-            label: 'VIN:',
-            value: carData?.vin ?? '-',
+            label: 'VIN',
+            type: TypeOfRows.SERIAL_NUMBER,
+            value: { label: carData?.vin ?? '-', copyble: vin === '-' ? false : true },
           },
           {
-            label: 'Государственный номер:',
-            value: carData?.registrationNumber ?? '-',
+            label: 'Государственный номер',
+            type: TypeOfRows.GOS_NUMBER,
+            value: { label: gosNumber, copyble: gosNumber === '-' ? false : true },
           },
           {
-            label: 'Год выпуска:',
-            value: carData?.year ?? '-',
+            label: 'Год выпуска',
+            type: TypeOfRows.DATE,
+            value: { label: carData?.year ?? '-' },
           },
           {
-            label: 'Цвет:',
-            value:
-              AppConstants.carColorsList.find((color) => color.value === carData?.color)?.label ??
-              '-',
+            label: 'Цвет',
+            type: TypeOfRows.COLOR,
+            value: {
+              label:
+                AppConstants.carColorsList.find((color) => color.value === carData?.color)?.label ??
+                '-',
+            },
           },
           {
-            label: 'Тип:',
-            value:
-              AppConstants.carTypesList.find((type) => type.value === carData?.type)?.label ?? '-',
+            label: 'Тип',
+            type: TypeOfRows.CATEGORY,
+            value: {
+              label:
+                AppConstants.carTypesList.find((type) => type.value === carData?.type)?.label ??
+                '-',
+            },
           },
           {
-            label: 'Дата регистрации:',
-            value: Formatters.formatISODate(carData?.createdAt),
+            label: 'Дата регистрации',
+            type: TypeOfRows.DATE,
+            value: {
+              label: Formatters.formatISODate(carData?.createdAt),
+              copyble: dateRegistry === '-' ? false : true,
+            },
           },
         ]}
       />

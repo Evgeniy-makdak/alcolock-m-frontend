@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
+import { mapOptions } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+
 import { useAlcolockListQuery } from '../api/alcolockListQuery';
-import { mapOptions } from '../lib/mapOptions';
+import { adapterMapOptions } from '../lib/adapterMapOptions';
 
 export const useAlcolockSelect = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,6 +15,6 @@ export const useAlcolockSelect = () => {
     setSearchQuery('');
   };
 
-  const alcolockList = mapOptions(data);
+  const alcolockList = mapOptions(data, adapterMapOptions);
   return { onChange, isLoading, onReset, alcolockList };
 };

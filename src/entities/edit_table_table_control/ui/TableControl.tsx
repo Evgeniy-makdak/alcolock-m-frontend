@@ -6,8 +6,8 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useToggle } from '@shared/hooks/useToggle';
+import { FilterButton } from '@shared/ui/table_filter_button';
 
-import { FilterButton } from '../../table_filter_button';
 import style from './TableControl.module.scss';
 
 interface TableControlProps {

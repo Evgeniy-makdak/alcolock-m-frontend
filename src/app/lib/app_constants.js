@@ -309,6 +309,82 @@ export class AppConstants {
     //   value: 'd',
     //   label: 'Ошибка устройства',
     // },
+
+    /**
+     * 
+     *     {
+      value: 'ALCOLOCK_EVENT_IGNITION_STARTED',
+      label: 'Включение зажигания',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_IGNITION_STOPPED',
+      label: 'Выключение зажигания',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_ENGINE_BLOCKED',
+      label: 'Блокировка двигателя',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_ENGINE_UNBLOCKED',
+      label: 'Разблокировка двигателя',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_STARTED_MAINTENANCE_MODE',
+      label: 'Включение в сервисном режиме',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_STARTED_REGULAR_MODE',
+      label: 'Включение',
+    },
+    {
+      value: 'SERVICE_MODE_ACTIVATE',
+      label: 'Переход в сервисный режим',
+    },
+    {
+      value: 'SERVICE_MODE_DEACTIVATE',
+      label: 'Выход из сервисного режима',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_MAINTENANCE_MODE_ON',
+      label: 'Переход в режим "Автосервис"',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_MAINTENANCE_MODE_OFF',
+      label: 'Выход из режима "Автосервис"',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_EMERGENCY_MODE_ON',
+      label: 'Переход в аварийный режим',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_EMERGENCY_MODE_OFF',
+      label: 'Выход из аварийного режима',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_DOOR_OPENED',
+      label: 'Открытие двери',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_DOOR_CLOSED',
+      label: 'Закрытие двери',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_BLOCKED_UNAUTHORIZED',
+      label: 'Блокировка при неразрешенном движении',
+    },
+    {
+      value: 'ALCOLOCK_EVENT_BLOCKED_TIMEOUT',
+      label: 'Блокировка по истечении таймера',
+    },
+    {
+      value: 'SOBRIETY_TEST',
+      label: 'Тестирование',
+    },
+    {
+      value: 'ALCOLOCK_ERROR',
+      label: 'Ошибка устройства',
+    },
+     */
   ];
 
   static sobrietyTypesList = [

@@ -5,7 +5,7 @@ import { enqueueSnackbar } from 'notistack';
 
 import { RoutePaths } from '@app/index';
 import { AuthStatus, appAuthStatusState, appTokenState, refreshTokenState } from '@app/model/store';
-import type { AuthError } from '@shared/api/baseTypes';
+import type { AuthError } from '@shared/types/BaseQueryTypes';
 import { cookieManager } from '@shared/utils/cookie_manager';
 import { ValidationRules } from '@shared/validations/validation_rules';
 
@@ -27,16 +27,18 @@ export const useAuthorization = () => {
 
       return;
     }
-    if (data.data.idToken) {
+    const idToken = data?.data?.idToken;
+    if (idToken) {
       // TODO избавить приложение от использования токенов в store
       // Токены должны быть только в cookie и бэк должен вернуть ошибку
       // not auth например и приложение должно перекинуться на авторизацию
-      cookieManager.set('bearer', data.data.idToken);
-      appTokenState.setState(data.data.idToken);
+      cookieManager.set('bearer', idToken);
+      appTokenState.setState(idToken);
 
-      if (data?.data?.refreshToken) {
-        cookieManager.set('refresh', data?.data?.refreshToken);
-        refreshTokenState.setState(data?.data?.refreshToken);
+      const refreshToken = data.data?.refreshToken;
+      if (refreshToken) {
+        cookieManager.set('refresh', refreshToken);
+        refreshTokenState.setState(refreshToken);
       }
 
       appAuthStatusState.setState(AuthStatus.auth);

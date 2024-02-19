@@ -1,4 +1,6 @@
-import { AttachmentsApi, type AttachmentsCreateData, QueryKeys } from '@shared/api/baseQuerys';
+import { AttachmentsApi } from '@shared/api/baseQuerys';
+import { QueryKeys } from '@shared/const/storageKeys';
+import type { AttachmentsCreateData } from '@shared/types/BaseQueryTypes';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useCreateAttachment = () => {

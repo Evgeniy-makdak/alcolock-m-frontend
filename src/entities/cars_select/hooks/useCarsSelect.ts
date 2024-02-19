@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
-import { useCarListQuery } from '../api/carListQuery';
-import { mapOptions } from '../lib/mapOptions';
+import { mapOptions } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+
+import { useCarListQuery } from '../api/useCarListQuery';
+import { adapterMapOptions } from '../lib/adapterMapOptions';
 
 export const useCarsSelect = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,6 +15,6 @@ export const useCarsSelect = () => {
   };
   const { data, isLoading } = useCarListQuery({ searchQuery });
 
-  const carList = mapOptions(data);
+  const carList = mapOptions(data, adapterMapOptions);
   return { onChange, onReset, isLoading, carList };
 };

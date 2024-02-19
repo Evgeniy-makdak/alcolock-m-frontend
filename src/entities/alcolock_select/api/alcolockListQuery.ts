@@ -1,4 +1,5 @@
-import { AlcolocksApi, type PartialQueryOptions, QueryKeys } from '@shared/api/baseQuerys';
+import { AlcolocksApi, type PartialQueryOptions } from '@shared/api/baseQuerys';
+import { QueryKeys } from '@shared/const/storageKeys';
 import { useQuery } from '@tanstack/react-query';
 
 export const useAlcolockListQuery = (options: PartialQueryOptions) => {

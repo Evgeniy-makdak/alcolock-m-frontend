@@ -1,4 +1,4 @@
-import type { IUser } from '@shared/api/baseTypes';
+import type { IUser } from '@shared/types/BaseQueryTypes';
 import { Formatters } from '@shared/utils/formatters';
 
 export const getUsersRowsTemplate = (item: IUser) => {

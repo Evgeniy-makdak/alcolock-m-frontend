@@ -1,4 +1,4 @@
-import { ICar } from '@shared/api/baseTypes';
+import { ICar } from '@shared/types/BaseQueryTypes';
 
 export const getCarsRowsTemplate = (car: ICar) => ({
   id: car.id,

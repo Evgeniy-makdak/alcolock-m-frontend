@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 
-import { debounce } from 'lodash';
-
 import ReplayIcon from '@mui/icons-material/Replay';
 import type { SvgIconProps } from '@mui/material';
+
+import { debounce } from '@shared/lib/debounce';
 
 import style from './Refetch.module.scss';
 
 export const Refetch = ({
+  testId,
   onClick,
   rest,
   styles,
 }: {
+  testId?: string;
   onClick?: () => void;
   rest?: SvgIconProps;
   styles?: string;
@@ -29,10 +31,13 @@ export const Refetch = ({
     }, 500);
     return () => clearTimeout(timeout);
   }, [animate]);
-  const debounced = debounce(onClickAnimate, 500);
+  const debounced = debounce({ time: 800, eventHandler: onClickAnimate });
   return (
     <>
-      <button className={`${style.button} ${styles}`} onClick={debounced}>
+      <button
+        data-testid={testId}
+        className={`${style.button} ${styles}`}
+        onClick={() => debounced()}>
         <ReplayIcon className={animate} {...rest} />
       </button>
     </>
