@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { AppConstants } from '@app';
 import { Info } from '@entities/info';
 // TODO => убрать связь со страницей
+import { TypeOfRows } from '@entities/info/lib/getTypeOfRowIconLabel';
 import { getUser } from '@pages/users/model/effects';
 import { Loader } from '@shared/ui/loader';
 import { Formatters } from '@shared/utils/formatters';
@@ -25,59 +26,90 @@ export const UserInfo = ({ selectedUserId, updateData }) => {
       .catch(() => setLoading(false));
   }, [selectedUserId, updateData]);
 
+  const numberPhone = userData?.phone;
+  const email = userData?.email;
+  const access = userData
+    ? AppConstants.accessList.find((access) => access.value === userData.disabled)?.label ?? '-'
+    : '-';
+  const numberVU = userData?.driver?.licenseCode;
+  const name = Formatters.nameFormatter(userData);
+
+  const role = (userData?.groupMembership || []).map((group) => {
+    return {
+      label: group.group.name,
+      color: 'info',
+    };
+  });
   return (
     <Loader isLoading={loading}>
       <Info
         fields={[
           {
-            label: 'Пользователь:',
-            value: Formatters.nameFormatter(userData),
+            label: 'Пользователь',
+            type: TypeOfRows.USER,
+            value: {
+              copyble: name === '-' ? false : true,
+              label: name,
+            },
           },
           {
-            label: 'Дата рождения:',
-            value: Formatters.convertDateFormat(userData?.birthDate),
+            label: 'Дата рождения',
+            type: TypeOfRows.BIRTHDAY,
+            value: { label: Formatters.convertDateFormat(userData?.birthDate) },
           },
           {
-            label: 'Номер телефона:',
-            value: userData?.phone ?? '-',
+            label: 'Номер телефона',
+            type: TypeOfRows.PHONE,
+            value: { label: numberPhone ?? '-', copyble: numberPhone && true },
           },
           {
-            label: 'Почта:',
-            value: userData?.email ?? '-',
+            label: 'Почта',
+            type: TypeOfRows.EMAIL,
+            value: { label: email ?? '-', copyble: email && true },
           },
           {
-            label: 'Роли:',
-            value:
-              userData?.groupMembership
-                ?.map((group) => {
-                  return group.group.name;
-                })
-                .join(', ') ?? '-',
+            label: 'Роли',
+            type: TypeOfRows.ROLE,
+            value: role.length
+              ? role
+              : {
+                  label: '-',
+                },
           },
           {
-            label: 'Доступ:',
-            value: userData
-              ? AppConstants.accessList.find((access) => access.value === userData.disabled)
-                  ?.label ?? '-'
-              : '-',
+            label: 'Доступ',
+            type: TypeOfRows.ACCESS,
+
+            value: {
+              color: userData?.disabled ? 'error' : 'success',
+              label: access,
+            },
           },
           {
             label: 'Номер ВУ:',
-            value: userData?.driver?.licenseCode ?? '-',
+            type: TypeOfRows.NUMBER_VU,
+            value: { label: numberVU ?? '-', copyble: numberVU && true },
           },
           {
             label: 'Дата выдачи:',
-            value: Formatters.convertDateFormat(userData?.driver?.licenseIssueDate),
+            type: TypeOfRows.DATE,
+            value: { label: Formatters.convertDateFormat(userData?.driver?.licenseIssueDate) },
           },
           {
-            label: 'Срок:',
-            value: Formatters.convertDateFormat(userData?.driver?.licenseExpirationDate),
+            label: 'Срок',
+            type: TypeOfRows.DATE,
+            value: {
+              label: Formatters.convertDateFormat(userData?.driver?.licenseExpirationDate),
+            },
           },
           {
-            label: 'Категории:',
-            value: (userData?.driver?.licenseClass ?? []).length
-              ? userData?.driver.licenseClass.join(', ')
-              : '-',
+            label: 'Категории',
+            type: TypeOfRows.CATEGORY,
+            value: {
+              label: (userData?.driver?.licenseClass ?? []).length
+                ? userData?.driver.licenseClass.join(', ')
+                : '-',
+            },
           },
         ]}
       />

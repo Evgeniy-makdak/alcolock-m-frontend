@@ -1,4 +1,5 @@
-import { type PartialQueryOptions, QueryKeys, UsersApi } from '@shared/api/baseQuerys';
+import { type PartialQueryOptions, UsersApi } from '@shared/api/baseQuerys';
+import { QueryKeys } from '@shared/const/storageKeys';
 import { useQuery } from '@tanstack/react-query';
 
 export const useUserListQuery = (options: PartialQueryOptions) => {

@@ -1,17 +1,12 @@
-import { AttachmentsApi, PartialQueryOptions, QueryKeys } from '@shared/api/baseQuerys';
+import { AttachmentsApi, PartialQueryOptions } from '@shared/api/baseQuerys';
+import { QueryKeys } from '@shared/const/storageKeys';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useAttachmentsApi = (options: PartialQueryOptions) => {
   const queryClient = useQueryClient();
+
   const { data, isLoading, refetch } = useQuery({
-    queryKey: [
-      QueryKeys.ATTACHMENT_LIST,
-      options.searchQuery,
-      options.startDate,
-      options.endDate,
-      options.limit,
-      options.page,
-    ],
+    queryKey: [QueryKeys.ATTACHMENT_LIST, ...Object.values(options)],
     queryFn: () => AttachmentsApi.getList(options),
     refetchInterval: 30000,
   });

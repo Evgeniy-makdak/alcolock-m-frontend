@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import type { GridRowsProp } from '@mui/x-data-grid';
 
-import { IAttachmentItems } from '@shared/api/baseQuerys';
+import { IAttachmentItems } from '@shared/types/BaseQueryTypes';
 import { Formatters } from '@shared/utils/formatters';
 
 import { ValuesHeader } from './getColumns';

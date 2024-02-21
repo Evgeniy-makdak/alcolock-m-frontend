@@ -1,8 +1,9 @@
 import { memo } from 'react';
 
-import { DataGrid, DataGridProps } from '@mui/x-data-grid';
+import { DataGridProps, type GridColumnHeaderParams } from '@mui/x-data-grid';
 
 import style from './Table.module.scss';
+import { CustomNoRowsOverlay, StyledDataGrid, getStyle } from './styledTable';
 
 interface TableProps extends DataGridProps {
   styles?: string;
@@ -12,33 +13,11 @@ interface TableProps extends DataGridProps {
   pointer?: boolean;
 }
 
-const getStyle = (flag: boolean) => {
-  return {
-    '.MuiDataGrid-columnHeaderTitleContainerContent': {
-      fontWeight: '600',
-      minWidth: '150%',
-    },
-    '.MuiDataGrid-columnHeaders': {
-      backgroundColor: 'rgba(0, 0, 0, 0.13)',
-      borderRadius: '0',
-    },
-    '.MuiDataGrid-columnHeader': {
-      minWidth: '150px',
-    },
-
-    '.MuiDataGrid-row': {
-      cursor: flag ? 'pointer' : 'default',
-    },
-    '.MuiDataGrid-columnHeaderTitle': {
-      fontWeight: '600',
-    },
-    '.MuiSvgIcon-root': {
-      fontSize: '25px',
-    },
-    '.MuiButtonBase-root': {
-      padding: 0,
-    },
-  };
+export const setTestIdsToHeaderColumns = (
+  row: GridColumnHeaderParams<any, any, any>,
+  testId: string,
+) => {
+  return <span data-testid={`${testId}_${row.colDef.field}`}>{row.colDef.headerName}</span>;
 };
 
 export const Table = memo(
@@ -58,17 +37,20 @@ export const Table = memo(
 
     return (
       <div className={styles ? styles : style.table}>
-        <DataGrid
+        <StyledDataGrid
           {...rest}
           sx={getStyle(pointer)}
           disableColumnMenu
-          disableRowSelectionOnClick
           disableColumnFilter
           disableColumnSelector
           disableDensitySelector
           disableVirtualization
           disableEval
           columns={styledHeaders}
+          getRowClassName={() => `super-app-theme`}
+          slots={{
+            noResultsOverlay: CustomNoRowsOverlay,
+          }}
           slotProps={{
             pagination: {
               labelDisplayedRows: ({ from, to, count }) => `${from}-${to} из ${count}`,

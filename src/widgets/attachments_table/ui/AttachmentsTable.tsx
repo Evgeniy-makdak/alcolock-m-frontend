@@ -1,4 +1,3 @@
-import { FilterButton } from '@entities/table_filter_button';
 import { AttachmentAddForm } from '@features/attachments_add_form';
 import {
   AttachmentsFilterPanel,
@@ -13,37 +12,15 @@ import { InputsDates } from '@shared/ui/inputs_dates/InputsDates';
 import { Popup } from '@shared/ui/popup';
 import { ResetFilters } from '@shared/ui/reset_filters/ResetFilters';
 import { SearchInput } from '@shared/ui/search_input/SearchInput';
+import { FilterButton } from '@shared/ui/table_filter_button';
 
 import { useAttachmentsTable } from '../hooks/useAttachmentsTable';
 
 export const AttachmentsTable = () => {
-  const {
-    input,
-    isLoading,
-    openFilters,
-    page,
-    toggleOpenFilters,
-    setInput,
-    rows,
-    headers,
-    changeTableState,
-    openAppAttachModal,
-    closeAppAttachModal,
-    toggleAppAttachModal,
-    closeDeleteModal,
-    toggleOpenDeleteModal,
-    openDeleteModal,
-    selectAttachment,
-    deleteAttachment,
-    apiRef,
-    changeTableSorts,
-    changeEndDate,
-    changeStartDate,
-    clearDates,
-    endDate,
-    startDate,
-  } = useAttachmentsTable();
+  const { addModalData, deleteAttachModalData, filtersData, tableData } = useAttachmentsTable();
   const resetFilters = attachmentsFilterPanelStore((state) => state.resetFilters);
+  const hasActiveFilters = attachmentsFilterPanelStore((state) => state.hasActiveFilters);
+
   return (
     <>
       <TableHeaderWrapper>
@@ -52,76 +29,81 @@ export const AttachmentsTable = () => {
             testids.page_attachments.attachments_widget_header
               .ATTACHMENTS_WIDGET_HEADER_SEARCH_INPUT
           }
-          value={input}
-          onClear={() => setInput('')}
-          setState={setInput}
+          value={filtersData.input}
+          onClear={() => filtersData.setInput('')}
+          setState={filtersData.setInput}
         />
         <InputsDates
-          onClear={clearDates}
+          onClear={filtersData.clearDates}
           inputStartTestId={
             testids.page_attachments.attachments_widget_header.ATTACHMENTS_WIDGET_HEADER_FROM_DATE
           }
           inputEndTestId={
             testids.page_attachments.attachments_widget_header.ATTACHMENTS_WIDGET_HEADER_TO_DATE
           }
-          onChangeStartDate={changeStartDate}
-          onChangeEndDate={changeEndDate}
-          valueStartDatePicker={startDate}
-          valueEndDatePicker={endDate}
+          onChangeStartDate={filtersData.changeStartDate}
+          onChangeEndDate={filtersData.changeEndDate}
+          valueStartDatePicker={filtersData.startDate}
+          valueEndDatePicker={filtersData.endDate}
         />
         <FilterButton
-          open={openFilters}
-          toggle={toggleOpenFilters}
+          active={hasActiveFilters}
+          open={filtersData.openFilters}
+          toggle={filtersData.toggleFilters}
           testid={
             testids.page_attachments.attachments_widget_header
               .ATTACHMENTS_WIDGET_HEADER_FILTER_BUTTON
           }
         />
-        <ResetFilters title="Сбросить фильтры" reset={() => (resetFilters(), clearDates())} />
+        <ResetFilters
+          title="Сбросить фильтры"
+          reset={() => (resetFilters(), filtersData.clearDates())}
+        />
       </TableHeaderWrapper>
-      {openFilters && <AttachmentsFilterPanel />}
+      <AttachmentsFilterPanel open={filtersData.openFilters} />
       <Table
         // TODO => кол-во элементов должно приходить с бэка
         rowCount={100}
         paginationMode="server"
-        onSortModelChange={changeTableSorts}
-        apiRef={apiRef}
-        onPaginationModelChange={changeTableState}
-        pageNumber={page}
-        loading={isLoading}
-        columns={headers}
-        rows={rows}
+        onSortModelChange={tableData.changeTableSorts}
+        apiRef={tableData.apiRef}
+        onPaginationModelChange={tableData.changeTableState}
+        pageNumber={tableData.page}
+        loading={tableData.isLoading}
+        columns={tableData.headers}
+        rows={tableData.rows}
       />
       <Popup
         testid={testids.page_attachments.attachments_popup_add_attach.ATTACHMENTS_ADD_ATTACH}
         closeonClickSpace={false}
-        toggleModal={toggleAppAttachModal}
+        toggleModal={addModalData.toggleAppAttachModal}
         headerTitle="Привязка Алкозамка"
-        onCloseModal={closeAppAttachModal}
-        isOpen={openAppAttachModal}
-        body={<AttachmentAddForm onClose={closeAppAttachModal} />}
+        onCloseModal={addModalData.closeAppAttachModal}
+        isOpen={addModalData.openAppAttachModal}
+        body={<AttachmentAddForm onClose={addModalData.closeAppAttachModal} />}
       />
       <Popup
         testid={testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}
         closeonClickSpace={false}
-        onCloseModal={closeDeleteModal}
-        isOpen={openDeleteModal}
+        onCloseModal={deleteAttachModalData.closeDeleteModal}
+        isOpen={deleteAttachModalData.openDeleteModal}
         headerTitle="Удаление привязки Алкозамка"
-        toggleModal={toggleOpenDeleteModal}
+        toggleModal={deleteAttachModalData.toggleOpenDeleteModal}
         body={
           <div>
             <p>
-              Вы действительно хотите удалить привязку <b>{selectAttachment?.text}</b>
+              Вы действительно хотите удалить привязку{' '}
+              <b>{deleteAttachModalData.selectAttachment?.text}</b>
             </p>
             <ButtonFormWrapper>
               <Button
                 testid={`${testids.POPUP_ACTION_BUTTON}_${testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}`}
-                onClick={deleteAttachment}>
+                onClick={deleteAttachModalData.deleteAttachment}>
                 удалить
               </Button>
               <Button
                 testid={`${testids.POPUP_CANCEL_BUTTON}_${testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}`}
-                onClick={closeDeleteModal}>
+                onClick={deleteAttachModalData.closeDeleteModal}>
                 отмена
               </Button>
             </ButtonFormWrapper>

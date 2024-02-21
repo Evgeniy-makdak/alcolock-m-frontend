@@ -1,9 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 
-import type { Dayjs } from 'dayjs';
-
-import { filterButtonStore } from '@entities/table_filter_button';
 import { storageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
@@ -13,12 +9,7 @@ import { Formatters } from '@shared/utils/formatters';
 import { useAttachmentsApi } from '../api/attachmentsApi';
 import { useGetColumns } from '../lib/getColumns';
 import { useGetRows } from '../lib/getRows';
-import { useAttachmentsDateStore } from '../model/attachmentsDateStore';
-
-interface InputsDate {
-  startDate: null | Dayjs;
-  endDate: null | Dayjs;
-}
+import { useAttachmentsStore } from '../model/attachmentsStore';
 
 export const useAttachmentsTable = () => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
@@ -27,14 +18,20 @@ export const useAttachmentsTable = () => {
   const [selectAttachment, setSelectAttachment] = useState<null | { id: number; text: string }>(
     null,
   );
-  const { openFilters, toggleFilters } = filterButtonStore((state) => state);
 
   const [openAppAttachModal, toggleAppAttachModal, closeAppAttachModal] = useToggle(false);
   const [openDeleteModal, toggleOpenDeleteModal, closeDeleteModal] = useToggle(false);
 
   const [input, setInput] = useState('');
-  const { changeEndDate, changeStartDate, clearDates, endDate, startDate } =
-    useAttachmentsDateStore();
+  const {
+    changeEndDate,
+    changeStartDate,
+    clearDates,
+    endDate,
+    startDate,
+    openFilters,
+    toggleFilters,
+  } = useAttachmentsStore();
 
   const [inputWidthDelay] = useDebounce(input, 500);
 
@@ -59,31 +56,46 @@ export const useAttachmentsTable = () => {
     closeDeleteModal();
   };
 
-  return {
-    refetch,
-    endDate,
-    startDate,
-    changeStartDate,
-    changeEndDate,
-    isLoading,
-    openFilters,
-    clearDates,
-    toggleOpenFilters: toggleFilters,
-    setInput,
-    page: state.page,
-    input,
+  const tableData = {
+    ...state,
+    apiRef,
     rows,
     headers,
     changeTableState,
+    changeTableSorts,
+    isLoading,
+  };
+
+  const filtersData = {
+    changeEndDate,
+    changeStartDate,
+    clearDates,
+    endDate,
+    startDate,
+    openFilters,
+    toggleFilters,
+    setInput,
+    input,
+  };
+
+  const addModalData = {
     closeAppAttachModal,
     toggleAppAttachModal,
     openAppAttachModal,
-    changeTableSorts,
-    apiRef,
+  };
+
+  const deleteAttachModalData = {
     closeDeleteModal,
     openDeleteModal,
     toggleOpenDeleteModal,
     selectAttachment,
     deleteAttachment,
+  };
+
+  return {
+    deleteAttachModalData,
+    addModalData,
+    tableData,
+    filtersData,
   };
 };

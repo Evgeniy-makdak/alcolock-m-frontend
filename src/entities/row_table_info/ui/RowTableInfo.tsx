@@ -26,7 +26,7 @@ export const RowTableInfo = ({ tabs }: RowTableInfoProps) => {
           <button
             data-testid={testid}
             key={name}
-            className={activeTab === i ? style.active : ''}
+            className={`${activeTab === i ? style.active : ''} ${style.buttonTab}`}
             onClick={() => setActiveTab(i)}>
             {name}
           </button>

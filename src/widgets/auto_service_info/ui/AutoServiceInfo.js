@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { AppConstants } from '@app';
 import { Info } from '@entities/info';
+import { TypeOfRows } from '@entities/info/lib/getTypeOfRowIconLabel';
 import { AlkozamkiServiceMode } from '@features/alkozamki_service_mode';
 // TODO => убрать связь со страницей
 import { autoServiceStore } from '@pages/auto_service/model/store';
@@ -40,6 +41,16 @@ export const AutoServiceInfo = ({
         setLoading(false);
       });
   }, [selectedId, updateData]);
+  const naming = itemData?.device?.name ?? '-';
+  const serialNumber = itemData?.device?.serialNumber ?? '-';
+  const car = Formatters.carNameFormatter(itemData?.device?.vehicleBind?.vehicle);
+  const carForCopy = Formatters.carNameFormatter(
+    itemData?.device?.vehicleBind?.vehicle,
+    false,
+    false,
+  );
+  const name = Formatters.nameFormatter(itemData?.device?.createdBy);
+  const date = Formatters.formatISODate(itemData?.device?.createdAt);
 
   return (
     <Loader isLoading={loading} styles={{ wrapper: (base) => ({ ...base, height: '100%' }) }}>
@@ -48,30 +59,43 @@ export const AutoServiceInfo = ({
           // TODO => вынести массив с заголовками для таблиц из верстки в константы
           fields={[
             {
-              label: 'Наименование:',
-              value: itemData?.device?.name ?? '-',
+              label: 'Наименование',
+              type: TypeOfRows.NAMING,
+              value: { label: naming, copyble: naming === '-' ? false : true },
             },
             {
-              label: 'Режим работы:',
-              value:
-                AppConstants.alkolockWorkModes.find((mode) => mode.value === itemData?.device?.mode)
-                  ?.label ?? '-',
+              label: 'Режим работы',
+              type: TypeOfRows.MODE,
+              value: {
+                label:
+                  AppConstants.alkolockWorkModes.find(
+                    (mode) => mode.value === itemData?.device?.mode,
+                  )?.label ?? '-',
+              },
             },
             {
-              label: 'Серийный номер:',
-              value: itemData?.device?.serialNumber ?? '-',
+              label: 'Серийный номер',
+              type: TypeOfRows.SERIAL_NUMBER,
+              value: { label: serialNumber, copyble: serialNumber === '-' ? false : true },
             },
             {
-              label: 'Установлен на ТС:',
-              value: Formatters.carNameFormatter(itemData?.device?.vehicleBind?.vehicle),
+              label: 'Установлен на ТС',
+              type: TypeOfRows.CAR,
+              value: {
+                label: car,
+                copyText: carForCopy,
+                copyble: car === '-' ? false : true,
+              },
             },
             {
-              label: 'Кем привязан:',
-              value: Formatters.nameFormatter(itemData?.device?.createdBy),
+              label: 'Кем привязан',
+              type: TypeOfRows.USER,
+              value: { label: name, copyble: name === '-' ? false : true },
             },
             {
-              label: 'Дата установки:',
-              value: Formatters.formatISODate(itemData?.device?.createdAt),
+              label: 'Дата установки',
+              type: TypeOfRows.DATE,
+              value: { label: date, copyble: date === '-' ? false : true },
             },
           ]}
         />

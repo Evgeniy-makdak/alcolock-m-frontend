@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
+import { mapOptions } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+
 import { useUserListQuery } from '../api/userListQuery';
-import { mapOptions } from '../lib/mapOptions';
+import { adapterMapOptions } from '../lib/adapterMapOptions';
 
 export const useUserSelect = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,6 +14,6 @@ export const useUserSelect = () => {
   const onReset = () => {
     setSearchQuery('');
   };
-  const driversList = mapOptions(data);
+  const driversList = mapOptions(data, adapterMapOptions);
   return { onChange, isLoading, onReset, driversList };
 };

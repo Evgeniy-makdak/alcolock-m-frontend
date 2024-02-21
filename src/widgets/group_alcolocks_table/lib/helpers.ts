@@ -1,4 +1,4 @@
-import { ICar } from '@shared/api/baseTypes';
+import { ICar } from '@shared/types/BaseQueryTypes';
 import { Formatters } from '@shared/utils/formatters';
 
 export const getAlcolocksRowsTemplate = (item: {

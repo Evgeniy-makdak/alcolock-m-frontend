@@ -2,40 +2,20 @@ import type { AxiosRequestConfig } from 'axios';
 
 import { userState } from '@features/menu_button/model/store';
 import { lastGetVehiclesListRequestState } from '@pages/vehicles/model/store';
-import { SortTypes } from '@shared/const/types';
-import { selectedBranchState } from '@shared/model/selected_branch/store';
-import { Formatters } from '@shared/utils/formatters';
 
-import { QueryOptions, deleteQuery, getQuery, postQuery } from './baseQuery';
-import { type IAlcolocks, ICar, IUser } from './baseTypes';
-
-export enum QueryKeys {
-  USER_LIST = 'USER_LIST',
-  DRIVER_LIST = 'DRIVER_LIST',
-  CAR_LIST = 'CAR_LIST',
-  ATTACHMENT_LIST = 'ATTACHMENT_LIST',
-  ALCOLOCK_LIST = 'ALCOLOCK_LIST',
-}
-
-export interface IAttachmentItems {
-  createdAt: string;
-  createdBy: IUser;
-  id: number;
-  driver: {
-    id: number;
-    licenseClass: string[];
-    licenseCode: string;
-    licenseExpirationDate: string;
-    licenseIssueDate: string;
-    userAccount: IUser;
-  };
-  vehicle: ICar;
-}
-
-export interface AttachmentsCreateData {
-  driverId: number;
-  vehicleId: number;
-}
+import { SortTypes } from '../const/types';
+import { selectedBranchState } from '../model/selected_branch/store';
+import {
+  type AttachmentsCreateData,
+  type IAlcolocks,
+  type IAttachmentItems,
+  ICar,
+  type IDeviceAction,
+  IUser,
+} from '../types/BaseQueryTypes';
+import type { QueryOptions } from '../types/QueryTypes';
+import { Formatters } from '../utils/formatters';
+import { deleteQuery, getQuery, postQuery } from './baseQuery';
 
 export type PartialQueryOptions = Partial<QueryOptions>;
 
@@ -198,6 +178,15 @@ const getSortQueryCar = (orderType: SortTypes, order: string) => {
 };
 
 export class CarsApi {
+  static getMarksCarURL = ({ page, limit, searchQuery }: PartialQueryOptions) => {
+    const trimmedQuery = Formatters.removeExtraSpaces(searchQuery ?? '');
+    let queries = '&sort=match,ASC';
+
+    if (trimmedQuery) {
+      queries += `&match=${trimmedQuery}`;
+    }
+    return `api/vehicles/manufacturers?page=${page || 0}&size=${limit || 20}${queries}`;
+  };
   static getCarListURL = ({
     page,
     limit,
@@ -233,7 +222,9 @@ export class CarsApi {
 
     if (queryTrimmed.length) {
       queries += `&any.match.contains=${queryTrimmed}`;
-      queries += `&any.vin.contains=${queryTrimmed}`;
+      // TODO написать более подходящую реализацию формирования query параметров
+      // сейчас у каждого запроса (машин или гос номеров) есть специфика по формированию параметров
+      !sortBy && (queries += `&any.vin.contains=${queryTrimmed}`);
     }
 
     if (id) {
@@ -247,8 +238,13 @@ export class CarsApi {
     }
     return `api/vehicles?page=${page || 0}&size=${limit || 20}${queries}`;
   };
+
   static getCarsList(options: PartialQueryOptions) {
     return getQuery<ICar[]>({ url: this.getCarListURL(options) });
+  }
+
+  static getMarksCarList(options: PartialQueryOptions) {
+    return getQuery<string[]>({ url: this.getMarksCarURL(options) });
   }
 }
 
@@ -310,5 +306,94 @@ export class AlcolocksApi {
 
   static getList(options: PartialQueryOptions) {
     return getQuery<IAlcolocks[]>({ url: this.getAlcolocksURL(options) });
+  }
+}
+
+const getSortQuery = (orderType: SortTypes, order: string) => {
+  const orderStr = ',' + order.toUpperCase();
+
+  switch (orderType) {
+    case SortTypes.byUserName:
+      return `&sort=createdBy.lastName${orderStr}`;
+    case SortTypes.byCarMake:
+      return `&sort=vehicleRecord.manufacturer${orderStr}`;
+    case SortTypes.byCarLicense:
+      return `&sort=vehicleRecord.registrationNumber${orderStr}`;
+    case SortTypes.byEventType:
+      return `&sort=type${orderStr}`;
+    case SortTypes.byDate:
+      return `&sort=createdAt${orderStr}`;
+    default:
+      return '';
+  }
+};
+export class EventsApi {
+  // TODO => написать общую функцию по формированию query параметров
+  static getEventsApiURL({
+    page,
+    limit,
+    searchQuery,
+    startDate,
+    endDate,
+    order,
+    sortBy,
+    filterOptions,
+  }: PartialQueryOptions) {
+    const queryTrimmed = Formatters.removeExtraSpaces(searchQuery ?? '');
+    let queries = '';
+    const userData = userState.$store.getState();
+    const selectedBranch = userData?.isAdmin
+      ? selectedBranchState.$store.getState()
+      : userData?.assignment.branch ?? { id: 10 };
+
+    if (startDate) {
+      const date = new Date(startDate).toISOString();
+      queries += `&all.createdAt.greaterThanOrEqual=${date}`;
+    }
+
+    if (endDate) {
+      const date = new Date(endDate).toISOString();
+      queries += `&all.createdAt.lessThanOrEqual=${date}`;
+    }
+
+    if (sortBy && order) {
+      queries += getSortQuery(sortBy, order);
+    }
+
+    if (queryTrimmed.length) {
+      queries += `&any.createdBy.match.contains=${queryTrimmed}`;
+      queries += `&any.vehicleRecord.match.contains=${queryTrimmed}`;
+    }
+
+    if (selectedBranch) {
+      queries += `&all.device.assignment.branch.id.equals=${selectedBranch.id}`;
+    } else {
+      queries += `&all.device.assignment.branch.id.equals=10`;
+    }
+
+    if (filterOptions) {
+      if ((filterOptions?.users ?? '').length) {
+        queries += `&any.events.user.id.in=${filterOptions.users}`;
+      }
+
+      if ((filterOptions?.carsByMake ?? '').length) {
+        queries += `&any.vehicleRecord.manufacturer.in=${filterOptions.carsByMake}`;
+      }
+
+      if ((filterOptions?.carsByLicense ?? '').length) {
+        queries += `&any.vehicleRecord.registrationNumber.in=${filterOptions.carsByLicense}`;
+      }
+
+      if ((filterOptions?.eventsByType ?? '').length) {
+        queries += `&any.type.in=${filterOptions.eventsByType}`;
+      }
+    }
+    return `api/device-actions?page=${page || 0}&size=${limit || 20}${queries}`;
+  }
+  static getList(options: PartialQueryOptions) {
+    return getQuery<IDeviceAction[]>({ url: this.getEventsApiURL(options) });
+  }
+  static getEventItem(id: string | number) {
+    return getQuery<IDeviceAction>({ url: `api/device-actions/${id}` });
   }
 }
