@@ -15,7 +15,7 @@ interface PopupProps {
   buttons?: ReactNode[];
   closeonClickSpace?: boolean;
   testid?: string;
-  onCloseModal: () => void;
+  onCloseModal?: () => void;
   styles?: {
     size: string;
     substr: string;

@@ -114,10 +114,10 @@ export const GroupCarTable = ({ groupInfo }) => {
           />
         }
         buttons={[
-          <Button key={'action_1'} type={ButtonsType.action} onClick={onClickSwitch}>
+          <Button key={'action_1'} typeButton={ButtonsType.action} onClick={onClickSwitch}>
             Переместить
           </Button>,
-          <Button key={'action_2'} type={ButtonsType.action} onClick={handleCloseSwitchPopup}>
+          <Button key={'action_2'} typeButton={ButtonsType.action} onClick={handleCloseSwitchPopup}>
             {AppConstants.cancelTxt}
           </Button>,
         ]}

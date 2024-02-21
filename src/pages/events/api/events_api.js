@@ -20,7 +20,7 @@ export default class EventsApi {
     return request(params);
   }
 
-  static activateServiceMode(deviceId, data) {
+  static activateServiceMode(data) {
     const params = {
       url: `api/device-actions`,
       method: 'POST',

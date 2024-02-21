@@ -137,12 +137,12 @@ export const MenuButton = () => {
         buttons={[
           <Button
             key={'action_1'}
-            type={ButtonsType.action}
+            typeButton={ButtonsType.action}
             disabled={!isValidForm}
             onClick={onSubmit}>
             Сохранить
           </Button>,
-          <Button key={'action_2'} type={ButtonsType.action} onClick={handleCloseModal}>
+          <Button key={'action_2'} typeButton={ButtonsType.action} onClick={handleCloseModal}>
             Отменить
           </Button>,
         ]}

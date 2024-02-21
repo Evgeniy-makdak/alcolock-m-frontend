@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { RoutePaths } from '@app/index';
@@ -6,46 +5,17 @@ import { MenuButton } from '@features/menu_button';
 import { userStore } from '@features/menu_button/model/store';
 import { BranchSelect } from '@features/nav_bar_branch_select';
 // TODO => убрать связь со страницей
-import { autoServiceStore } from '@pages/auto_service/model/store';
 import { testids } from '@shared/const/testid';
 import { Logo } from '@shared/ui/logo';
 
-import { NAV_LINKS, TypeNavLink } from '../lib/const';
+import { useNavBar } from '../hooks/useNavBar';
+import { NAV_LINKS } from '../lib/const';
 import style from './NavBar.module.scss';
 
 export const NavBar = () => {
-  const notifications = autoServiceStore.notificationsCount.useValue();
   const userData = userStore.userData.useValue();
-  const updateNotificationsCount = autoServiceStore.updateNotificationsCount.useValue();
-
-  useEffect(() => {
-    // checkAutoServiceCount().catch((err) => {
-    //   console.log('checkAutoServiceCount error', err?.response);
-    // });
-    // setInterval(() => {
-    //   checkAutoServiceCount().catch((err) => {
-    //     console.log('checkAutoServiceCount error', err?.response);
-    //   });
-    // }, 60000);
-  }, [updateNotificationsCount]);
-
-  const permissionsFilter = (item: TypeNavLink) => {
-    // TODO => убрать столько условий, слишком сложен для понимания и редактирования
-    return item.path === RoutePaths.groups || item.path === RoutePaths.roles
-      ? userData?.isAdmin
-      : item.path === RoutePaths.users
-        ? !!userData?.permissions.users
-        : item.path === RoutePaths.tc
-          ? !!userData?.permissions.cars
-          : item.path === RoutePaths.alkozamki
-            ? !!userData?.permissions.alcolocks
-            : item.path === RoutePaths.attachments
-              ? !!userData?.permissions.attachments
-              : item.path === RoutePaths.autoService
-                ? !!userData?.permissions.alkozamki || userData?.isAdmin
-                : true;
-  };
-
+  const { permissionsFilter, length } = useNavBar();
+  console.log(length);
   return (
     <div className={style.navBar}>
       <div>
@@ -56,15 +26,16 @@ export const NavBar = () => {
 
         <div className={style.links}>
           {NAV_LINKS.filter(permissionsFilter).map((link, i) => {
-            const notification = link.path === RoutePaths.autoService ? notifications : null;
+            const notification = link.path === RoutePaths.autoService ? length : null;
 
             return (
               <NavLink
-                data-testid={testids.widget_navbar.NAVBAR_LINK[i]} // использую индексы потому, что test атрибуты статичны и не должны меняться
+                // использую индексы потому, что test атрибуты статичны и не должны меняться
+                data-testid={testids.widget_navbar.NAVBAR_LINK[i]}
                 key={link.path}
                 to={link.path}>
                 <span>{link.name}</span>
-                {!!notification && <span className={style.notifications}>{notifications}</span>}
+                {!!notification && <span className={style.notifications}>{notification}</span>}
               </NavLink>
             );
           })}

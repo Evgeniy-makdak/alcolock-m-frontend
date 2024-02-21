@@ -33,7 +33,7 @@ export function postQuery<T, D>({
 }: {
   headers?: AxiosRequestConfig['headers'];
   url: string;
-  data: D;
+  data?: D;
 }) {
   const requestUrl = `${API_URL}${url}`;
   return axios.post<IError, AxiosResponse<T, IError>>(requestUrl, data, {

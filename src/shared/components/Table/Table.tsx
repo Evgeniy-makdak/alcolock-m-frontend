@@ -1,6 +1,9 @@
 import { memo } from 'react';
 
-import { DataGridProps, type GridColumnHeaderParams } from '@mui/x-data-grid';
+import { ThemeProvider, createTheme } from '@mui/material';
+import { ruRU as coreRuRU } from '@mui/material/locale';
+import { type DataGridProps, type GridColumnHeaderParams, ruRU } from '@mui/x-data-grid';
+import { ruRU as pickersruRU } from '@mui/x-date-pickers/locales';
 
 import style from './Table.module.scss';
 import { CustomNoRowsOverlay, StyledDataGrid, getStyle } from './styledTable';
@@ -12,6 +15,12 @@ interface TableProps extends DataGridProps {
   pageNumber?: number;
   pointer?: boolean;
 }
+const theme = createTheme(
+  {},
+  ruRU, // x-data-grid translations
+  pickersruRU, // x-date-pickers translations
+  coreRuRU, // core translations
+);
 
 export const setTestIdsToHeaderColumns = (
   row: GridColumnHeaderParams<any, any, any>,
@@ -37,33 +46,29 @@ export const Table = memo(
 
     return (
       <div className={styles ? styles : style.table}>
-        <StyledDataGrid
-          {...rest}
-          sx={getStyle(pointer)}
-          disableColumnMenu
-          disableColumnFilter
-          disableColumnSelector
-          disableDensitySelector
-          disableVirtualization
-          disableEval
-          columns={styledHeaders}
-          getRowClassName={() => `super-app-theme`}
-          slots={{
-            noResultsOverlay: CustomNoRowsOverlay,
-          }}
-          slotProps={{
-            pagination: {
-              labelDisplayedRows: ({ from, to, count }) => `${from}-${to} из ${count}`,
-              labelRowsPerPage: 'Строк на странице',
-            },
-          }}
-          initialState={{
-            pagination: {
-              paginationModel: { page: pageNumber, pageSize: pageSize },
-            },
-          }}
-          pageSizeOptions={pageSizeOptions ? pageSizeOptions : [25, 50, 75, 100]}
-        />
+        <ThemeProvider theme={theme}>
+          <StyledDataGrid
+            {...rest}
+            sx={getStyle(pointer)}
+            disableColumnMenu
+            disableColumnFilter
+            disableColumnSelector
+            disableDensitySelector
+            disableVirtualization
+            disableEval
+            columns={styledHeaders}
+            getRowClassName={() => `super-app-theme`}
+            slots={{
+              noResultsOverlay: CustomNoRowsOverlay,
+            }}
+            initialState={{
+              pagination: {
+                paginationModel: { page: pageNumber, pageSize: pageSize },
+              },
+            }}
+            pageSizeOptions={pageSizeOptions ? pageSizeOptions : [25, 50, 75, 100]}
+          />
+        </ThemeProvider>
       </div>
     );
   },

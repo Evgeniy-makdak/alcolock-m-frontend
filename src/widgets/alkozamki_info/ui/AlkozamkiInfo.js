@@ -11,12 +11,7 @@ import { Formatters } from '@shared/utils/formatters';
 
 import style from './AlkozamkiInfo.module.scss';
 
-export const AlkozamkiInfo = ({
-  updateData,
-  selectedAlcolockId,
-  toggleUpdateInfo,
-  toggleUpdateTable,
-}) => {
+export const AlkozamkiInfo = ({ updateData, selectedAlcolockId }) => {
   const [itemData, setItemData] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +34,6 @@ export const AlkozamkiInfo = ({
   const serialNumber = itemData?.serialNumber ?? '-';
   const car = Formatters.carNameFormatter(itemData?.vehicleBind?.vehicle);
   const carForCopy = Formatters.carNameFormatter(itemData?.vehicleBind?.vehicle, false, false);
-
   const name = Formatters.nameFormatter(itemData?.createdBy);
   const date = Formatters.formatISODate(itemData?.createdAt);
   return (
@@ -100,13 +94,7 @@ export const AlkozamkiInfo = ({
           ]}
         />
 
-        {itemData && !!itemData.vehicleBind && (
-          <AlkozamkiServiceMode
-            data={itemData}
-            toggleUpdateInfo={toggleUpdateInfo}
-            toggleUpdateTable={toggleUpdateTable}
-          />
-        )}
+        {itemData && !!itemData.vehicleBind && <AlkozamkiServiceMode alkolock={itemData} />}
       </div>
     </Loader>
   );
