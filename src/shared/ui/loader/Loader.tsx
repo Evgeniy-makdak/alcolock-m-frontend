@@ -3,7 +3,9 @@ import LoadingOverlay, { type LoadingOverLayProps } from 'react-loading-overlay-
 
 import CircularProgress from '@mui/material/CircularProgress';
 
-interface LoaderProps {
+import style from './Loader.module.scss';
+
+interface LoaderProps extends LoadingOverLayProps {
   children: ReactNode;
   styles?: React.CSSProperties;
   isLoading?: boolean;
@@ -24,12 +26,12 @@ export const Loader = ({
       data-testid={testid}
       active={isLoading}
       spinner={<CircularProgress />}
+      className={`${props?.className} ${style.loader}`}
       styles={{
         overlay: (base: React.CSSProperties) => ({
           ...base,
-          background: 'rgba(255, 255, 255, 0.65)',
           backdropFilter: 'blur(1px)',
-          minHeight: '88px',
+          background: 'rgba(255, 255, 255, 0.65)',
         }),
         ...styles,
       }}

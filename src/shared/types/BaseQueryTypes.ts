@@ -78,6 +78,30 @@ export interface ICar {
   };
 }
 
+interface IActiveActions {
+  id: number;
+  uuid: string;
+  type: string;
+  status: string;
+  startedAt: string;
+  finishedAt: string;
+  vehicleRecord: {
+    registrationNumber: string;
+    manufacturer: string;
+    model: string;
+    year: number;
+    vin: string;
+  };
+  vehicle: {
+    id: number;
+    branchId: number;
+  };
+  seen: boolean;
+  events: Event[];
+  createdAt: string;
+  createdBy: IUser;
+}
+
 export interface IAlcolocks {
   id: number;
   name: string;
@@ -86,25 +110,12 @@ export interface IAlcolocks {
   mode: string;
   modeUpdatedAt: string;
   lastModifiedAt: string;
-  activeActions: [];
+  activeActions: IActiveActions[];
   createdAt: string;
   vehicleBind: {
-    createdBy: {
-      id: number;
-      email: string;
-      firstName: string;
-      middleName: string;
-      lastName: string;
-    };
+    createdBy: IUser;
     createdAt: string;
-    vehicle: {
-      id: number;
-      registrationNumber: string;
-      manufacturer: string;
-      model: string;
-      type: string;
-      color: string;
-    };
+    vehicle: ICar;
   };
 
   assignment: {
@@ -122,13 +133,7 @@ export interface IAlcolocks {
     };
   };
 
-  createdBy: {
-    id: number;
-    email: string;
-    firstName: string;
-    middleName: string;
-    lastName: string;
-  };
+  createdBy: IUser;
 
   lastModifiedBy: {
     id: number;
@@ -143,6 +148,7 @@ export interface Event {
   eventType: string;
   extra: {
     qrCode: string;
+    duration: string;
   };
   id: number;
   latitude: number;
@@ -158,6 +164,22 @@ export interface Event {
   user: { id: number; branchId: number };
 }
 
+export interface ISummary {
+  photoFileName: any;
+  testResult?: string;
+  stateError?: string;
+  stateErrorCode?: string;
+  appErrorCode: string;
+  appErrorMessage: string;
+  exhaleError: string;
+  exhaleErrorCode: number;
+  initiator: number;
+  lat: number;
+  lon: number;
+  qrCode: string;
+  result: string;
+}
+
 export interface IDeviceAction {
   createdAt: string;
   finishedAt: string;
@@ -170,21 +192,7 @@ export interface IDeviceAction {
   createdBy: IUser;
   device: IAlcolocks;
   events: Event[];
-  summary: {
-    photoFileName: any;
-    testResult?: string;
-    stateError?: string;
-    stateErrorCode?: string;
-    appErrorCode: string;
-    appErrorMessage: string;
-    exhaleError: string;
-    exhaleErrorCode: number;
-    initiator: number;
-    lat: number;
-    lon: number;
-    qrCode: string;
-    result: string;
-  };
+  summary: ISummary;
   vehicleRecord: ICar;
 }
 
@@ -202,4 +210,36 @@ export interface AuthError {
   field: string;
   message: string;
   objectName: string;
+}
+
+export interface Branch {
+  id: number;
+  name: string;
+}
+
+interface Assignment {
+  branch: Branch;
+  createdAt: string;
+  createdBy: IUser;
+}
+
+interface GroupMembership {
+  id: 11;
+  group: { id: number; name: string; systemGenerated: boolean };
+}
+
+export type ID = string | number | null | undefined;
+
+export interface IAccount {
+  activated: boolean;
+  assignment: Assignment;
+  disabled: boolean;
+  email: string;
+  firstName: string;
+  groupMembership: GroupMembership[];
+  id: number;
+  lastName: string;
+  login: string;
+  middleName: string;
+  permissions: string[];
 }

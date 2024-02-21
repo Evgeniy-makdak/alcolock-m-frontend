@@ -33,10 +33,10 @@ export const useAttachmentsTable = () => {
     toggleFilters,
   } = useAttachmentsStore();
 
-  const [inputWidthDelay] = useDebounce(input, 500);
+  const [searchQuery] = useDebounce(input, 500);
 
   const { data, isLoading, mutate, refetch } = useAttachmentsApi({
-    searchQuery: inputWidthDelay,
+    searchQuery,
     endDate: Formatters.formatToISODate(endDate),
     startDate: Formatters.formatToISODate(startDate),
     page: state.page,

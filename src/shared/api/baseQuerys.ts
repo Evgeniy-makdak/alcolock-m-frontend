@@ -7,9 +7,11 @@ import { SortTypes } from '../const/types';
 import { selectedBranchState } from '../model/selected_branch/store';
 import {
   type AttachmentsCreateData,
+  type IAccount,
   type IAlcolocks,
   type IAttachmentItems,
   ICar,
+  type ID,
   type IDeviceAction,
   IUser,
 } from '../types/BaseQueryTypes';
@@ -41,10 +43,10 @@ const getSortQueryAttachments = (orderType: SortTypes, order: string) => {
 };
 
 export class AttachmentsApi {
-  static getAttachmentsDeleteItemURL = (id: number) => {
+  private static getAttachmentsDeleteItemURL = (id: number) => {
     return `api/vehicle-driver-allotments/${id}`;
   };
-  static getAttachmentURL({
+  private static getAttachmentURL({
     endDate,
     limit,
     order,
@@ -129,7 +131,7 @@ export class AttachmentsApi {
 }
 
 export class UsersApi {
-  static getUserListURL = ({ page, limit, searchQuery }: PartialQueryOptions) => {
+  private static getUserListURL = ({ page, limit, searchQuery }: PartialQueryOptions) => {
     const userData = userState.$store.getState();
     const selectedBranch = userData?.isAdmin
       ? selectedBranchState.$store.getState()
@@ -178,7 +180,7 @@ const getSortQueryCar = (orderType: SortTypes, order: string) => {
 };
 
 export class CarsApi {
-  static getMarksCarURL = ({ page, limit, searchQuery }: PartialQueryOptions) => {
+  private static getMarksCarURL = ({ page, limit, searchQuery }: PartialQueryOptions) => {
     const trimmedQuery = Formatters.removeExtraSpaces(searchQuery ?? '');
     let queries = '&sort=match,ASC';
 
@@ -187,7 +189,7 @@ export class CarsApi {
     }
     return `api/vehicles/manufacturers?page=${page || 0}&size=${limit || 20}${queries}`;
   };
-  static getCarListURL = ({
+  private static getCarListURL = ({
     page,
     limit,
     sortBy,
@@ -270,7 +272,7 @@ const getSortQueryAlcoloks = (orderType: SortTypes, order: string) => {
 };
 
 export class AlcolocksApi {
-  static getAlcolocksURL({
+  private static getAlcolocksURL({
     page,
     limit,
     searchQuery,
@@ -327,9 +329,22 @@ const getSortQuery = (orderType: SortTypes, order: string) => {
       return '';
   }
 };
+
+interface EventsOptions extends PartialQueryOptions {
+  userId: ID;
+  carId: ID;
+  alcolockId: ID;
+}
+
+export interface ActivateServiceModeOptions {
+  duration: number | undefined | null;
+  deviceId: ID;
+  isDeactivate: boolean;
+}
+
 export class EventsApi {
   // TODO => написать общую функцию по формированию query параметров
-  static getEventsApiURL({
+  private static getEventsApiURL({
     page,
     limit,
     searchQuery,
@@ -390,10 +405,133 @@ export class EventsApi {
     }
     return `api/device-actions?page=${page || 0}&size=${limit || 20}${queries}`;
   }
+
+  private static getEventListForAutoServiceURL({
+    page,
+    limit,
+    searchQuery,
+    startDate,
+    endDate,
+    order,
+    sortBy,
+  }: PartialQueryOptions) {
+    const queryTrimmed = Formatters.removeExtraSpaces(searchQuery ?? '');
+    let queries =
+      '&all.type.in=SERVICE_MODE_ACTIVATE,SERVICE_MODE_DEACTIVATE&all.seen.in=false&all.events.eventType.notEquals=TIMEOUT&all.status.notIn=INVALID';
+
+    const userData = userState.$store.getState();
+    const selectedBranch = userData?.isAdmin
+      ? selectedBranchState.$store.getState()
+      : userData?.assignment.branch ?? { id: 10 };
+
+    if (startDate) {
+      const date = new Date(startDate).toISOString();
+      queries += `&all.createdAt.greaterThanOrEqual=${date}`;
+    }
+
+    if (endDate) {
+      const date = new Date(endDate).toISOString();
+      queries += `&all.createdAt.lessThanOrEqual=${date}`;
+    }
+
+    if (sortBy && order) {
+      queries += getSortQuery(sortBy, order);
+    }
+
+    if (queryTrimmed.length) {
+      queries += `&any.device.serialNumber.contains=${queryTrimmed}`;
+      queries += `&any.createdBy.match.contains=${queryTrimmed}`;
+      queries += `&any.vehicleRecord.match.contains=${queryTrimmed}`;
+    }
+
+    if (selectedBranch) {
+      queries += `&all.device.assignment.branch.id.equals=${selectedBranch.id}`;
+    } else {
+      queries += `&all.device.assignment.branch.id.equals=10`;
+    }
+    return `api/device-actions?page=${page || 0}&size=${limit || 20}${queries}`;
+  }
+
+  private static getEventsHistoryURL({ alcolockId, carId, userId, page, limit }: EventsOptions) {
+    let queries = '';
+    const userData = userState.$store.getState();
+    const selectedBranch = userData?.isAdmin
+      ? selectedBranchState.$store.getState()
+      : userData?.assignment.branch ?? { id: 10 };
+
+    if (userId) {
+      queries += `&all.events.user.id.equals=${userId}`;
+    }
+
+    if (carId) {
+      queries += `&all.vehicle.id.in=${carId}`;
+    }
+
+    if (alcolockId) {
+      queries += `&all.device.id.in=${alcolockId}`;
+    }
+
+    if (selectedBranch) {
+      queries += `&all.device.assignment.branch.id.equals=${selectedBranch.id}`;
+    } else {
+      queries += `&all.device.assignment.branch.id.equals=10`;
+    }
+    return `api/device-actions?page=${page}&size=${limit}${queries}`;
+  }
+
   static getList(options: PartialQueryOptions) {
     return getQuery<IDeviceAction[]>({ url: this.getEventsApiURL(options) });
   }
   static getEventItem(id: string | number) {
     return getQuery<IDeviceAction>({ url: `api/device-actions/${id}` });
+  }
+  static getEventListForAutoService(options: PartialQueryOptions) {
+    return getQuery<IDeviceAction[]>({ url: this.getEventListForAutoServiceURL(options) });
+  }
+
+  static getEventsHistory(options: EventsOptions) {
+    return getQuery<IDeviceAction[]>({ url: this.getEventsHistoryURL(options) });
+  }
+
+  static activateServiceMode({
+    duration,
+    deviceId,
+    isDeactivate = false,
+  }: ActivateServiceModeOptions) {
+    const requestData = isDeactivate
+      ? {
+          deviceId,
+          type: 'SERVICE_MODE_DEACTIVATE',
+        }
+      : {
+          duration: duration * 3600,
+          deviceId,
+          type: 'SERVICE_MODE_ACTIVATE',
+        };
+    return postQuery<IDeviceAction, any>({ url: `api/device-actions`, data: requestData });
+  }
+  static cancelActivateService(id: ID) {
+    return postQuery<IDeviceAction, any>({ url: `api/device-actions/${id}/cancel` });
+  }
+
+  static rejectActivateService(id: ID) {
+    return postQuery<IDeviceAction, any>({ url: `api/device-actions/${id}/reject` });
+  }
+
+  static acceptActivateService(id: ID) {
+    return postQuery<IDeviceAction, any>({ url: `api/device-actions/${id}/accept` });
+  }
+  static seenAutoService(id: ID) {
+    return postQuery<IDeviceAction, any>({ url: `api/device-actions/${id}/seen` });
+  }
+}
+
+export class AccountApi {
+  private static getAccountURL() {
+    return `api/account`;
+  }
+
+  static getAccountData() {
+    return getQuery<IAccount>({ url: this.getAccountURL() });
   }
 }

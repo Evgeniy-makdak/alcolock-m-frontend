@@ -45,14 +45,7 @@ export const useAlkozamki = () => {
     {
       testid: testids.page_alcolocks.alcolocks_widget_info.ALCOLOCKS_WIDGET_INFO_TAB_BUTTON_INFO,
       name: 'ИНФО',
-      content: (
-        <AlkozamkiInfo
-          updateData={updateInfo}
-          toggleUpdateInfo={toggleUpdateInfo}
-          selectedAlcolockId={selectedAlcolockId}
-          toggleUpdateTable={toggleUpdateTable}
-        />
-      ),
+      content: <AlkozamkiInfo updateData={updateInfo} selectedAlcolockId={selectedAlcolockId} />,
     },
     {
       testid: testids.page_alcolocks.alcolocks_widget_info.ALCOLOCKS_WIDGET_INFO_TAB_BUTTON_HISTORY,

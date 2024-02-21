@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 
-import { Button as MuiButton } from '@mui/material';
+import { type ButtonProps, Button as MuiButton } from '@mui/material';
 
 import style from './Button.module.scss';
 
-interface ButtonProps {
+interface MyButtonProps extends ButtonProps {
   children?: ReactNode;
-  onClick: () => void;
-  type?: ButtonsType;
+  onClick?: () => void;
+  typeButton?: ButtonsType;
   disabled?: boolean;
   testid?: string;
 }
@@ -29,15 +29,20 @@ const ButtonsTypeStyle = {
 export const Button = ({
   children,
   onClick,
-  type = ButtonsType.action,
+  typeButton = ButtonsType.action,
   disabled = false,
   testid,
-}: ButtonProps) => {
+  ...rest
+}: MyButtonProps) => {
   return (
     <MuiButton
+      {...rest}
       data-testid={testid}
-      className={`button ${ButtonsTypeStyle[type]}`}
-      onClick={onClick}
+      className={`button ${ButtonsTypeStyle[typeButton]}`}
+      onClick={() => {
+        if (!onClick) return;
+        onClick();
+      }}
       disabled={disabled}>
       {children}
     </MuiButton>

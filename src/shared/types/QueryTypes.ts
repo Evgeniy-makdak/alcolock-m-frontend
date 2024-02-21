@@ -3,6 +3,8 @@ import type { AxiosResponse } from 'axios';
 import type { SortTypes, SortsTypes } from '@shared/const/types';
 import type { QueryObserverResult } from '@tanstack/react-query';
 
+import type { ID } from './BaseQueryTypes';
+
 export type RefetchType<T> = () => Promise<
   QueryObserverResult<
     | AxiosResponse<T, any>
@@ -22,7 +24,8 @@ export interface QueryOptions {
   order: SortsTypes;
   startDate: string;
   endDate: string;
-  filterOptions?: {
+  selectedBranch: ID;
+  filterOptions: {
     drivers?: string;
     users?: string;
     brandCar?: string;

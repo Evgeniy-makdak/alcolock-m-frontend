@@ -7,16 +7,14 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(duration);
 dayjs.extend(utc);
 
-export const TimeCell = ({ time, id, updateInfo }) => {
-  const [timeDifference, setTimeDifference] = useState('');
+interface TimeCellProps {
+  time: string;
+  id: string | number;
+  refetch: () => void;
+}
 
-  useEffect(() => {
-    if (time && !timeDifference.length) {
-      setTimeout(() => {
-        updateInfo();
-      }, 500);
-    }
-  }, [timeDifference]);
+export const TimeCell = ({ time, id, refetch }: TimeCellProps) => {
+  const [timeDifference, setTimeDifference] = useState('');
 
   useEffect(() => {
     if (!time) return;
@@ -26,8 +24,9 @@ export const TimeCell = ({ time, id, updateInfo }) => {
       const diff = targetTime.diff(now);
 
       if (diff <= 0) {
-        clearInterval(timer);
         setTimeDifference('');
+        refetch();
+        clearInterval(timer);
         return;
       }
 
@@ -35,7 +34,7 @@ export const TimeCell = ({ time, id, updateInfo }) => {
       const hours = String(diffDuration.hours()).padStart(2, '0');
       const minutes = String(diffDuration.minutes()).padStart(2, '0');
       const seconds = String(diffDuration.seconds()).padStart(2, '0');
-      updateInfo();
+
       setTimeDifference(`${hours}:${minutes}:${seconds}`);
     }, 300);
 

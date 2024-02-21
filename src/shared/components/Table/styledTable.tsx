@@ -29,8 +29,13 @@ export const getStyle = (flag: boolean) => {
     },
   };
 };
+
 const getBackgroundColor = (mode: string) => (mode === 'dark' ? '#000' : '#ffffff');
-const getBackgroundColorIcon = (mode: string) => (mode === 'dark' ? '#ffffff ' : '#000');
+const getColorIcon = (mode: string) => (mode === 'dark' ? '#ffffff ' : '#000');
+const getBackgroundColorIconHover = (mode: string) =>
+  mode === 'dark' ? '#000' : 'rgba(134, 134, 134, 0.712)';
+const getBackgroundColorIconHoverSelected = (mode: string) =>
+  mode === 'dark' ? '#00000' : 'rgba(0,0,0,0.5)';
 const getHoverBackgroundColor = (mode: string) =>
   mode === 'dark' ? '#000' : 'rgba(172, 172, 172, 0.507)';
 
@@ -40,11 +45,11 @@ const getSelectedHoverBackgroundColor = (mode: string) => (mode === 'dark' ? '#0
 export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   '& .super-app-theme': {
     '& .MuiButtonBase-root:hover': {
-      backgroundColor: theme.palette.mode === 'dark' ? '#000' : 'rgba(134, 134, 134, 0.712)',
-      color: getBackgroundColorIcon(theme.palette.mode),
+      backgroundColor: getBackgroundColorIconHover(theme.palette.mode),
+      color: getColorIcon(theme.palette.mode),
     },
     '& .MuiSvgIcon-root': {
-      color: getBackgroundColorIcon(theme.palette.mode),
+      color: getColorIcon(theme.palette.mode),
     },
     backgroundColor: getBackgroundColor(theme.palette.mode),
     '&:hover': {
@@ -55,8 +60,8 @@ export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
         color: getBackgroundColor(theme.palette.mode),
       },
       '& .MuiButtonBase-root:hover': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#00000' : 'rgba(0,0,0,0.5)',
-        color: getBackgroundColorIcon(theme.palette.mode),
+        backgroundColor: getBackgroundColorIconHoverSelected(theme.palette.mode),
+        color: getColorIcon(theme.palette.mode),
       },
       backgroundColor: getSelectedBackgroundColor(theme.palette.mode),
       color: '#fff',

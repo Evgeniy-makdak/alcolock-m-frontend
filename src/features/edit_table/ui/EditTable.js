@@ -517,10 +517,10 @@ export const EditTable = ({
           headerTitle={deletePopupParams?.title}
           body={deletePopupParams?.getBody(selectedItem)}
           buttons={[
-            <Button key={'action_1'} type={ButtonsType.action} onClick={handleDelete}>
+            <Button key={'action_1'} typeButton={ButtonsType.action} onClick={handleDelete}>
               {AppConstants.deleteTxt}
             </Button>,
-            <Button key={'action_2'} type={ButtonsType.action} onClick={toggleDeleteModal}>
+            <Button key={'action_2'} typeButton={ButtonsType.action} onClick={toggleDeleteModal}>
               {AppConstants.cancelTxt}
             </Button>,
           ]}
@@ -544,12 +544,12 @@ export const EditTable = ({
           buttons={[
             <Button
               key={'action_1'}
-              type={ButtonsType.action}
+              typeButton={ButtonsType.action}
               disabled={!isValidAddForm}
               onClick={onSubmitAdd}>
               {AppConstants.addTxt}
             </Button>,
-            <Button key={'action_2'} type={ButtonsType.action} onClick={handleCloseAddModal}>
+            <Button key={'action_2'} typeButton={ButtonsType.action} onClick={handleCloseAddModal}>
               {AppConstants.cancelTxt}
             </Button>,
           ]}
@@ -574,12 +574,12 @@ export const EditTable = ({
           buttons={[
             <Button
               key={'action_1'}
-              type={ButtonsType.action}
+              typeButton={ButtonsType.action}
               disabled={!isValidEditForm}
               onClick={onSubmitEdit}>
               {AppConstants.saveTxt}
             </Button>,
-            <Button key={'action_2'} type={ButtonsType.action} onClick={handleCloseEditModal}>
+            <Button key={'action_2'} typeButton={ButtonsType.action} onClick={handleCloseEditModal}>
               {AppConstants.cancelTxt}
             </Button>,
           ]}
