@@ -2,6 +2,7 @@ import { createEffect } from 'effector';
 
 import { userState } from '@features/menu_button/model/store';
 import { selectedBranchState } from '@shared/model/selected_branch/store';
+import { DateUtils } from '@shared/utils/DateUtils';
 import { Formatters } from '@shared/utils/formatters';
 
 import UsersApi from '../api/users_api';
@@ -60,8 +61,7 @@ export const uploadUsersList = createEffect(
     }
 
     if (endDate) {
-      const date = new Date(endDate).toISOString();
-      queries += `&all.createdAt.lessThanOrEqual=${date}`;
+      queries += `&all.createdAt.lessThan=${DateUtils.getEndFilterDate(endDate)}`;
     }
 
     if (sortBy && order) {
@@ -263,7 +263,7 @@ export const searchDrivers = createEffect((query) => {
   queries += `&all.driver.id.specified=true`;
 
   if (trimmedQuery) {
-    queries += `&any.match.contains=${trimmedQuery}`;
+    queries += `&any.email.contains=${trimmedQuery}`;
   }
 
   if (selectedBranch) {

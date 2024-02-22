@@ -2,6 +2,7 @@ import type { AxiosRequestConfig } from 'axios';
 
 import { userState } from '@features/menu_button/model/store';
 import { lastGetVehiclesListRequestState } from '@pages/vehicles/model/store';
+import { DateUtils } from '@shared/utils/DateUtils';
 
 import { SortTypes } from '../const/types';
 import { selectedBranchState } from '../model/selected_branch/store';
@@ -68,8 +69,7 @@ export class AttachmentsApi {
     }
 
     if (endDate) {
-      const date = new Date(endDate).toISOString();
-      queries += `&all.createdAt.lessThanOrEqual=${date}`;
+      queries += `&all.createdAt.lessThan=${DateUtils.getEndFilterDate(endDate)}`;
     }
 
     if (sortBy && order) {
@@ -142,7 +142,7 @@ export class UsersApi {
     queries += `&all.driver.id.specified=true`;
 
     if (trimmedQuery) {
-      queries += `&any.match.contains=${trimmedQuery}`;
+      queries += `&any.email.contains=${trimmedQuery}`;
     }
 
     if (selectedBranch) {
@@ -214,8 +214,7 @@ export class CarsApi {
     }
 
     if (endDate) {
-      const date = new Date(endDate).toISOString();
-      queries += `&all.createdAt.lessThanOrEqual=${date}`;
+      queries += `&all.createdAt.lessThan=${DateUtils.getEndFilterDate(endDate)}`;
     }
 
     if (sortBy && order) {
@@ -290,8 +289,7 @@ export class AlcolocksApi {
     }
 
     if (endDate) {
-      const date = new Date(endDate).toISOString();
-      queries += `&all.createdAt.lessThanOrEqual=${date}`;
+      queries += `&all.createdAt.lessThan=${DateUtils.getEndFilterDate(endDate)}`;
     }
 
     if (sortBy && order) {
@@ -343,6 +341,7 @@ export interface ActivateServiceModeOptions {
 }
 
 export class EventsApi {
+  private static EVENTS_TYPES_BLACKLIST = ['SERVICE_MODE_ACTIVATE', 'SERVICE_MODE_DEACTIVATE'];
   // TODO => написать общую функцию по формированию query параметров
   private static getEventsApiURL({
     page,
@@ -355,7 +354,8 @@ export class EventsApi {
     filterOptions,
   }: PartialQueryOptions) {
     const queryTrimmed = Formatters.removeExtraSpaces(searchQuery ?? '');
-    let queries = '';
+    const blacklistEventsTypes = this.EVENTS_TYPES_BLACKLIST.join(',');
+    let queries = `&all.type.notIn=${blacklistEventsTypes}`;
     const userData = userState.$store.getState();
     const selectedBranch = userData?.isAdmin
       ? selectedBranchState.$store.getState()
@@ -367,8 +367,7 @@ export class EventsApi {
     }
 
     if (endDate) {
-      const date = new Date(endDate).toISOString();
-      queries += `&all.createdAt.lessThanOrEqual=${date}`;
+      queries += `&all.createdAt.lessThan=${DateUtils.getEndFilterDate(endDate)}`;
     }
 
     if (sortBy && order) {
@@ -426,12 +425,11 @@ export class EventsApi {
 
     if (startDate) {
       const date = new Date(startDate).toISOString();
-      queries += `&all.createdAt.greaterThanOrEqual=${date}`;
+      queries += `&all.events.occurredAt.greaterThanOrEqual=${date}`;
     }
 
     if (endDate) {
-      const date = new Date(endDate).toISOString();
-      queries += `&all.createdAt.lessThanOrEqual=${date}`;
+      queries += `&all.events.occurredAt.lessThan=${DateUtils.getEndFilterDate(endDate)}`;
     }
 
     if (sortBy && order) {

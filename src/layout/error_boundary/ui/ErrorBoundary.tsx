@@ -25,9 +25,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   render() {
     if (this.state.hasError) {
-      return <h1>Ошибка UI</h1>;
+      return (
+        <div>
+          <h2>Ошибка UI.</h2>
+          {/* <details style={{ whiteSpace: 'pre-wrap' }}>
+            {this.state.error && this.state.error.toString()}
+            <br />
+            {this.state.errorInfo.componentStack}
+          </details> */}
+        </div>
+      );
     }
 
-    return <>{this.props.children}</>;
+    return this.props.children;
   }
 }

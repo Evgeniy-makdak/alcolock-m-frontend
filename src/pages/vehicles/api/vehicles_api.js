@@ -51,9 +51,9 @@ export default class VehiclesApi {
     return request(params);
   }
 
-  static switchBranch(id, groupId) {
+  static switchBranch(id, groupId, isPairSwitch) {
     const params = {
-      url: `api/vehicles/${id}/assign/${groupId}`,
+      url: `api/vehicles/${id}/assign/${groupId}?withDevice=${isPairSwitch}`,
       method: 'POST',
     };
 

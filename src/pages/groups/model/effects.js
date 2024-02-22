@@ -1,5 +1,6 @@
 import { createEffect } from 'effector/effector.mjs';
 
+import { DateUtils } from '@shared/utils/DateUtils';
 import { Formatters } from '@shared/utils/formatters';
 
 import GroupsApi from '../api/groups_api';
@@ -52,8 +53,7 @@ export const uploadGroupsList = createEffect(
     }
 
     if (endDate) {
-      const date = new Date(endDate).toISOString();
-      queries += `&all.createdAt.lessThanOrEqual=${date}`;
+      queries += `&all.createdAt.lessThan=${DateUtils.getEndFilterDate(endDate)}`;
     }
 
     if (sortBy && order) {
