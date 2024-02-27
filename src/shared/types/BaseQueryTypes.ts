@@ -102,7 +102,8 @@ interface IActiveActions {
   createdBy: IUser;
 }
 
-export interface IAlcolocks {
+export interface IAlcolock {
+  modeResetAt?: string;
   id: number;
   name: string;
   serialNumber: number;
@@ -190,7 +191,7 @@ export interface IDeviceAction {
   type: string;
   uuid: string;
   createdBy: IUser;
-  device: IAlcolocks;
+  device: IAlcolock;
   events: Event[];
   summary: ISummary;
   vehicleRecord: ICar;

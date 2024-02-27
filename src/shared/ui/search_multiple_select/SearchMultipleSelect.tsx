@@ -69,6 +69,7 @@ export function SearchMultipleSelect<T>({
   onInputChange,
 }: SearchMultipleSelectProps<T>) {
   const debouncedFunc = debounce({ time: 500, callBack: onInputChange });
+
   const renderInput = (params: any) => {
     const prop = {
       ...params,
@@ -85,11 +86,19 @@ export function SearchMultipleSelect<T>({
       {option.label}
     </li>
   );
+  const matchValue = multiple ? value : values.find((op) => op.value === value[0]?.value);
+
+  const readyValues = matchValue || multiple ? values : [...value, ...values];
+
+  const readyValue =
+    multiple || matchValue ? matchValue : readyValues.find((op) => op.value === value[0]?.value);
+
   return (
     <div className={style.searchSelect}>
       <ValidationsWrapper validationMsgs={validations ? validations : []}>
         <Autocomplete
-          value={multiple ? value : values.find((op) => op.value === value[0]?.value)}
+          //TODO => из-за этого есть баг при печатании на клавиатуре
+          value={readyValue || []}
           fullWidth
           freeSolo
           multiple={multiple}
@@ -97,7 +106,7 @@ export function SearchMultipleSelect<T>({
             if (!Array.isArray(option) && !Array.isArray(value))
               return option.value === value.value;
           }}
-          options={values}
+          options={readyValues}
           loading={loading}
           inputValue={inputValue}
           onInputChange={(_e, value, reason) => {
@@ -106,6 +115,7 @@ export function SearchMultipleSelect<T>({
             }
             if (reason !== 'input') return;
             if (!debouncedFunc) return;
+
             debouncedFunc(value);
           }}
           onChange={(_e, value, reson) => {

@@ -1,3 +1,5 @@
+import { Stack } from '@mui/material';
+
 import { Image } from '@entities/image';
 import { Info } from '@entities/info';
 // TODO => убрать связь со страницей
@@ -15,7 +17,11 @@ export const EventInfo = ({ selectedEventId }: EventInfo) => {
   return (
     <Loader isLoading={isLoading}>
       <div className={style.eventInfo}>
-        {!!data?.summary?.photoFileName && <Image url={data.summary.photoFileName} />}
+        {!!data?.summary?.photoFileName && (
+          <Stack alignItems={'center'} justifyContent={'center'} minHeight={410}>
+            <Image url={data.summary.photoFileName} />
+          </Stack>
+        )}
         <Info withoutPaddings fields={fields} />
       </div>
     </Loader>

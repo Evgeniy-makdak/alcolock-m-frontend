@@ -9,7 +9,7 @@ import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined';
 import CommuteOutlinedIcon from '@mui/icons-material/CommuteOutlined';
 import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import FifteenMpOutlinedIcon from '@mui/icons-material/FifteenMpOutlined';
 import Filter4Icon from '@mui/icons-material/Filter4';
 import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
@@ -52,6 +52,31 @@ export enum TypeOfRows {
   MODE = 'MODE',
 }
 
+const TypeOfRowIcons: TypeOfRowIconsType = {
+  MODE: <ModelTrainingOutlinedIcon color="info" />,
+  NAMING: <DriveFileRenameOutlineOutlinedIcon color="info" />,
+  COLOR: <ColorLensOutlinedIcon color="info" />,
+  GOS_NUMBER: <FifteenMpOutlinedIcon color="info" />,
+  MARK: <CommuteOutlinedIcon color="info" />,
+  NUMBER_VU: <CoPresentOutlinedIcon color="info" />,
+  SERIAL_NUMBER: <NumbersIcon color="info" />,
+  USER: <PersonIcon color="info" />,
+  CAR: <DirectionsCarOutlinedIcon color="info" />,
+  CODE_ERROR: <Filter4Icon color="error" />,
+  ERROR: <ErrorOutlineIcon color="error" />,
+  COORDS: <MapOutlinedIcon color="info" />,
+  MG_ON_LITER: <FormatColorFillIcon color={'info'} />,
+  RESULT: <GppGoodOutlinedIcon color="info" />,
+  BIRTHDAY: <CakeOutlinedIcon color="info" />,
+  PHONE: <LocalPhoneOutlinedIcon color="info" />,
+  EMAIL: <AlternateEmailOutlinedIcon color="info" />,
+  ROLE: <SupervisorAccountOutlinedIcon color="info" />,
+  ACCESS: <VpnKeyOutlinedIcon color="info" />,
+  DATE: <CalendarMonthOutlinedIcon color="info" />,
+  TERM: <GavelOutlinedIcon color="info" />,
+  CATEGORY: <CategoryOutlinedIcon color="info" />,
+};
+
 const CustomChipValue = (props: ChipProps) => (
   <Chip className={style.labelText} variant="filled" {...props} />
 );
@@ -91,137 +116,13 @@ export const getTypeOfRowIconLabel = (
   props?: ChipProps,
 ) => {
   const readyProps = { ...props, label };
-  const TypeOfRowIcons: TypeOfRowIconsType = {
-    MODE: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <ModelTrainingOutlinedIcon color="info" />,
-      },
-    }),
-    NAMING: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <DriveFileRenameOutlineOutlinedIcon color="info" />,
-      },
-    }),
-    COLOR: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <ColorLensOutlinedIcon color="info" />,
-      },
-    }),
-    GOS_NUMBER: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <FifteenMpOutlinedIcon color="info" />,
-      },
-    }),
-    MARK: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <CommuteOutlinedIcon color="info" />,
-      },
-    }),
-    NUMBER_VU: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <CoPresentOutlinedIcon color="info" />,
-      },
-    }),
-    SERIAL_NUMBER: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <NumbersIcon color="info" />,
-      },
-    }),
-    USER: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <PersonIcon color="info" />,
-      },
-    }),
-    CAR: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <DirectionsCarOutlinedIcon color="info" />,
-      },
-    }),
-    CODE_ERROR: CustomChip({ props: { ...readyProps, icon: <Filter4Icon color="error" /> } }),
-    ERROR: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <ErrorOutlineIcon color="error" />,
-      },
-    }),
-    COORDS: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <MapOutlinedIcon color="info" />,
-      },
-    }),
-    MG_ON_LITER: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <FormatColorFillIcon color={'info'} />,
-      },
-    }),
-    RESULT: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <GppGoodOutlinedIcon color="info" />,
-      },
-    }),
-    BIRTHDAY: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <CakeOutlinedIcon color="info" />,
-      },
-    }),
-    PHONE: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <LocalPhoneOutlinedIcon color="info" />,
-      },
-    }),
-    EMAIL: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <AlternateEmailOutlinedIcon color="info" />,
-      },
-    }),
-    ROLE: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <SupervisorAccountOutlinedIcon color="info" />,
-      },
-    }),
-    ACCESS: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <VpnKeyOutlinedIcon color="info" />,
-      },
-    }),
-    DATE: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <CalendarMonthOutlinedIcon color="info" />,
-      },
-    }),
-    TERM: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <GavelOutlinedIcon color="info" />,
-      },
-    }),
 
-    CATEGORY: CustomChip({
-      props: {
-        ...readyProps,
-        icon: <CategoryOutlinedIcon color="info" />,
-      },
-    }),
-  };
-  const ReadyChip = TypeOfRowIcons[type];
+  const ReadyIcon = TypeOfRowIcons[type];
 
-  return ReadyChip;
+  return CustomChip({
+    props: {
+      ...readyProps,
+      icon: <>{ReadyIcon}</>,
+    },
+  });
 };

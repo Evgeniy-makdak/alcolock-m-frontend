@@ -9,7 +9,7 @@ import { selectedBranchState } from '../model/selected_branch/store';
 import {
   type AttachmentsCreateData,
   type IAccount,
-  type IAlcolocks,
+  type IAlcolock,
   type IAttachmentItems,
   ICar,
   type ID,
@@ -18,7 +18,7 @@ import {
 } from '../types/BaseQueryTypes';
 import type { QueryOptions } from '../types/QueryTypes';
 import { Formatters } from '../utils/formatters';
-import { deleteQuery, getQuery, postQuery } from './baseQuery';
+import { deleteQuery, getQuery, postQuery, putQuery } from './baseQuery';
 
 export type PartialQueryOptions = Partial<QueryOptions>;
 
@@ -44,7 +44,7 @@ const getSortQueryAttachments = (orderType: SortTypes, order: string) => {
 };
 
 export class AttachmentsApi {
-  private static getAttachmentsDeleteItemURL = (id: number) => {
+  private static getAttachmentsDeleteItemURL = (id: ID) => {
     return `api/vehicle-driver-allotments/${id}`;
   };
   private static getAttachmentURL({
@@ -125,7 +125,7 @@ export class AttachmentsApi {
   //   };
   // }
 
-  static deleteItem(id: number, headers?: AxiosRequestConfig['headers']) {
+  static deleteItem(id: ID, headers?: AxiosRequestConfig['headers']) {
     return deleteQuery<void>({ url: this.getAttachmentsDeleteItemURL(id), headers });
   }
 }
@@ -304,9 +304,91 @@ export class AlcolocksApi {
     return `api/monitoring-devices?page=${page || 0}&size=${limit || 20}${queries}`;
   }
 
-  static getList(options: PartialQueryOptions) {
-    return getQuery<IAlcolocks[]>({ url: this.getAlcolocksURL(options) });
+  private static getAlcolockListURL({
+    page,
+    limit,
+    searchQuery,
+    startDate,
+    endDate,
+    order,
+    sortBy,
+    filterOptions,
+  }: PartialQueryOptions) {
+    const queryTrimmed = Formatters.removeExtraSpaces(searchQuery ?? '');
+    let queries = '';
+    const userData = userState.$store.getState();
+    const selectedBranch = userData?.isAdmin
+      ? selectedBranchState.$store.getState()
+      : userData?.assignment.branch ?? { id: 10 };
+
+    if (startDate) {
+      const date = new Date(startDate).toISOString();
+      queries += `&all.createdAt.greaterThanOrEqual=${date}`;
+    }
+
+    if (endDate) {
+      queries += `&all.createdAt.lessThan=${DateUtils.getEndFilterDate(endDate)}`;
+    }
+
+    if (sortBy && order) {
+      queries += getSortQuery(sortBy, order);
+    }
+
+    if (queryTrimmed.length) {
+      queries += `&any.vehicleBind.vehicle.match.contains=${queryTrimmed}`;
+      queries += `&any.match.contains=${queryTrimmed}`;
+      queries += `&any.createdBy.match.contains=${queryTrimmed}`;
+    }
+
+    if (filterOptions?.groupId) {
+      queries += `&all.assignment.branch.id.in=${filterOptions?.groupId}`;
+    } else {
+      if (selectedBranch) {
+        queries += `&all.assignment.branch.id.equals=${selectedBranch?.id}`;
+      } else {
+        queries += `&all.assignment.branch.id.equals=10`;
+      }
+    }
+
+    return `api/monitoring-devices?page=${page}&size=${limit}${queries}`;
   }
+
+  private static getAlkolockURL(id: ID) {
+    return `api/monitoring-devices/${id}`;
+  }
+
+  private static getCreateAlkolocksURL() {
+    return `api/monitoring-devices`;
+  }
+
+  static getList(options: PartialQueryOptions) {
+    return getQuery<IAlcolock[]>({ url: this.getAlcolocksURL(options) });
+  }
+  static getListAlcolocks(options: PartialQueryOptions) {
+    return getQuery<IAlcolock[]>({ url: this.getAlcolockListURL(options) });
+  }
+  static deleteAlkolock(id: ID) {
+    return deleteQuery({ url: this.getAlkolockURL(id) });
+  }
+
+  static getAlkolock(id: ID) {
+    return getQuery<IAlcolock>({ url: this.getAlkolockURL(id) });
+  }
+
+  static createItem(data: CreateAlcolockData) {
+    return postQuery({ url: this.getCreateAlkolocksURL(), data });
+  }
+  static changeItem(data: CreateAlcolockData, id: ID) {
+    return putQuery({ url: this.getAlkolockURL(id), data });
+  }
+}
+
+export interface CreateAlcolockData {
+  vehicleId?: ID;
+  branchId: ID;
+  name: string;
+  serviceId: string | number;
+  serialNumber: number | string;
 }
 
 const getSortQuery = (orderType: SortTypes, order: string) => {

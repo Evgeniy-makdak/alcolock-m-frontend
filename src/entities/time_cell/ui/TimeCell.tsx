@@ -10,7 +10,7 @@ dayjs.extend(utc);
 interface TimeCellProps {
   time: string;
   id: string | number;
-  refetch: () => void;
+  refetch?: () => void;
 }
 
 export const TimeCell = ({ time, id, refetch }: TimeCellProps) => {
@@ -25,7 +25,7 @@ export const TimeCell = ({ time, id, refetch }: TimeCellProps) => {
 
       if (diff <= 0) {
         setTimeDifference('');
-        refetch();
+        refetch && refetch();
         clearInterval(timer);
         return;
       }

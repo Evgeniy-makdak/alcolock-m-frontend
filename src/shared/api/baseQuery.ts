@@ -41,6 +41,21 @@ export function postQuery<T, D>({
   });
 }
 
+export function putQuery<T, D>({
+  headers,
+  url,
+  data,
+}: {
+  headers?: AxiosRequestConfig['headers'];
+  url: string;
+  data?: D;
+}) {
+  const requestUrl = `${API_URL}${url}`;
+  return axios.put<IError, AxiosResponse<T, IError>>(requestUrl, data, {
+    headers: returnHeaders(headers),
+  });
+}
+
 export function deleteQuery<T>({
   headers,
   url,

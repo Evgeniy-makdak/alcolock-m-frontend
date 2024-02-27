@@ -1,13 +1,12 @@
+import { AttachmentDeleteForm } from '@features/attachment_delete_form';
 import { AttachmentAddForm } from '@features/attachments_add_form';
 import {
   AttachmentsFilterPanel,
   attachmentsFilterPanelStore,
 } from '@features/attachments_filter_panel';
 import { Table } from '@shared/components/Table/Table';
-import { ButtonFormWrapper } from '@shared/components/button_form_wrapper/ButtonFormWrapper';
 import { TableHeaderWrapper } from '@shared/components/table_header_wrapper/ui/TableHeaderWrapper';
 import { testids } from '@shared/const/testid';
-import { Button } from '@shared/ui/button';
 import { InputsDates } from '@shared/ui/inputs_dates/InputsDates';
 import { Popup } from '@shared/ui/popup';
 import { ResetFilters } from '@shared/ui/reset_filters/ResetFilters';
@@ -87,27 +86,12 @@ export const AttachmentsTable = () => {
         closeonClickSpace={false}
         onCloseModal={deleteAttachModalData.closeDeleteModal}
         isOpen={deleteAttachModalData.openDeleteModal}
-        headerTitle="Удаление привязки Алкозамка"
         toggleModal={deleteAttachModalData.toggleOpenDeleteModal}
         body={
-          <div>
-            <p>
-              Вы действительно хотите удалить привязку{' '}
-              <b>{deleteAttachModalData.selectAttachment?.text}</b>
-            </p>
-            <ButtonFormWrapper>
-              <Button
-                testid={`${testids.POPUP_ACTION_BUTTON}_${testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}`}
-                onClick={deleteAttachModalData.deleteAttachment}>
-                удалить
-              </Button>
-              <Button
-                testid={`${testids.POPUP_CANCEL_BUTTON}_${testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}`}
-                onClick={deleteAttachModalData.closeDeleteModal}>
-                отмена
-              </Button>
-            </ButtonFormWrapper>
-          </div>
+          <AttachmentDeleteForm
+            closeModal={deleteAttachModalData.closeDeleteModal}
+            attach={deleteAttachModalData.selectAttachment}
+          />
         }
       />
     </>

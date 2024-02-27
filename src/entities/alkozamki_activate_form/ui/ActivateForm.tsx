@@ -1,17 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useForm } from 'react-hook-form';
-
 import { TextField } from '@mui/material';
 
 import { AppConstants } from '@app/index';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { InputsColumnWrapper } from '@shared/components/Inputs_column_wrapper';
 import { ButtonFormWrapper } from '@shared/components/button_form_wrapper/ButtonFormWrapper';
 import { Button, ButtonsType } from '@shared/ui/button';
 import { Loader } from '@shared/ui/loader';
 
+import { useActivateForm } from '../hooks/useActivateForm';
 import { LABEL_TEXT } from '../lib/const';
-import { schema } from '../lib/validation';
 import style from './ActivateForm.module.scss';
 
 interface ActivateForm {
@@ -21,19 +18,7 @@ interface ActivateForm {
 }
 
 export const ActivateForm = ({ onValidSubmit, isLoading, handleClosePopup }: ActivateForm) => {
-  const {
-    register,
-    handleSubmit,
-    formState: {
-      errors: { duration },
-    },
-    // TODO => следить за обновлением библиотеки, должны исправить в 8 версии
-  } = useForm<any>({
-    defaultValues: { duration: 1 },
-    resolver: yupResolver(schema),
-  });
-  const error = duration ? duration.message.toString() : '';
-
+  const { error, duration, handleSubmit, register } = useActivateForm();
   return (
     <Loader isLoading={isLoading}>
       <form onSubmit={handleSubmit((data) => onValidSubmit(data?.duration))}>

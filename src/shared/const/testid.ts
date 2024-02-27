@@ -172,6 +172,9 @@ export const testids = {
       ALCOLOCKS_WIDGET_INFO_AVTOSERVISE_BUTTON_ON: 'ALCOLOCKS_WIDGET_INFO_AVTOSERVISE_BUTTON_ON',
       ALCOLOCKS_WIDGET_INFO_AVTOSERVISE_BUTTON_OFF: 'ALCOLOCKS_WIDGET_INFO_AVTOSERVISE_BUTTON_OFF',
     },
+    alcolocks_popup_add_alcolock: {
+      ALCOLOCK_ADD_ATTACH_INPUT_CAR: 'ALCOLOCK_ADD_ATTACH_INPUT_CAR',
+    },
   },
   page_avto_service: {
     avto_service_widget_header: {

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { testids } from '@shared/const/testid';
 import { useToggle } from '@shared/hooks/useToggle';
-import type { IAlcolocks, ID, IDeviceAction } from '@shared/types/BaseQueryTypes';
+import type { IAlcolock, ID, IDeviceAction } from '@shared/types/BaseQueryTypes';
 import { Formatters } from '@shared/utils/formatters';
 import { SearchMethods } from '@shared/utils/global_methods';
 
@@ -17,7 +17,7 @@ import {
 import { serviceModeInfoMapper } from '../lib/serviceModeInfoMapper';
 import style from '../ui/AlkozamkiServiceMode.module.scss';
 
-export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: IAlcolocks) => {
+export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: IAlcolock) => {
   const {
     activateServiceModeMutation,
     cancelMutation,
@@ -239,7 +239,7 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
         );
       }
     } catch (err) {
-      console.log('Ошибка в отображении режима автосервиса', err);
+      return <>Ошибка в отображении режима автосервиса</>;
     }
   };
 
@@ -321,7 +321,8 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
   //       return '';
   //   }
   // };
-
+  const modeResetAt = alkolock?.modeResetAt || null;
+  const hasTime = modeResetAt && alkolock?.mode === ServiceModeInfoType.MAINTENANCE;
   return {
     getButtons,
     handleDeactivate,
@@ -332,5 +333,7 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
     toggleActivatePopup,
     toggleDeactivatePopup,
     isLoadingActivateServiceModeMutation,
+    modeResetAt,
+    hasTime,
   };
 };

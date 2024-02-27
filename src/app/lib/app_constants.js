@@ -267,8 +267,6 @@ export class AppConstants {
     alcolockEventBlockedUnauthorized: 'ALCOLOCK_EVENT_BLOCKED_UNAUTHORIZED',
     alcolockEventBlockedTimeout: 'ALCOLOCK_EVENT_BLOCKED_TIMEOUT',
     alcolockError: 'ALCOLOCK_ERROR',
-
-    // device-action types
     sobrietyTest: 'SOBRIETY_TEST',
   });
 
@@ -278,22 +276,6 @@ export class AppConstants {
       label: 'Включение',
       errCode: 0x01,
     },
-    // {
-    //   value: 'q',
-    //   label: 'Включение зажигания',
-    // },
-    // {
-    //   value: 'w',
-    //   label: 'Выключение зажигания',
-    // },
-    // {
-    //   value: 'e',
-    //   label: 'Блокировка двигателя',
-    // },
-    // {
-    //   value: 'r',
-    //   label: 'Разблокировка двигателя',
-    // },
     {
       value: 'SERVICE_MODE_ACTIVATE',
       label: 'Переход в сервисный режим',
@@ -302,26 +284,6 @@ export class AppConstants {
       value: 'SERVICE_MODE_DEACTIVATE',
       label: 'Выход из сервисного режима',
     },
-    // {
-    //   value: 'y',
-    //   label: 'Переход в аварийный режим',
-    // },
-    // {Включение в сервисном режиме
-    //   value: 'u',
-    //   label: 'Выход из аварийного режима',
-    // },
-    // {
-    //   value: 'a',
-    //   label: 'Закрытие двери',
-    // },
-    // {
-    //   value: 'b',
-    //   label: 'Блокировка при неразрешенном движении',
-    // },
-    // {
-    //   value: 'c',
-    //   label: 'Блокировка по истечении таймера',
-    // },
     {
       value: this.EVENT_TYPES.alcolockEventStartedMaintenanceMode,
       label: 'Включение в сервисном режиме',
@@ -388,58 +350,16 @@ export class AppConstants {
       value: this.EVENT_TYPES.sobrietyTest,
       label: 'Тестирование',
     },
-    // {
-    //   value: 'd',Блокировка двигателя
-    //   label: 'Ошибка устройства',
-    // },
-
-    /**
-     * 
 
     {
       value: 'ALCOLOCK_EVENT_IGNITION_STOPPED',
       label: 'Выключение зажигания',
     },
 
-
-
     {
-      value: 'SERVICE_MODE_ACTIVATE',
-      label: 'Переход в сервисный режим',
-    },
-    {
-      value: 'SERVICE_MODE_DEACTIVATE',
-      label: 'Выход из сервисного режима',
-    },
-    {
-      value: 'ALCOLOCK_EVENT_MAINTENANCE_MODE_ON',
+      value: this.EVENT_TYPES.alcolockEventMaintenanceModeOn,
       label: 'Переход в режим "Автосервис"',
     },
-    {
-      value: 'ALCOLOCK_EVENT_MAINTENANCE_MODE_OFF',
-      label: 'Выход из режима "Автосервис"',
-    },
-    {
-      value: 'ALCOLOCK_EVENT_DOOR_CLOSED',
-      label: 'Закрытие двери',
-    },
-    {
-      value: 'ALCOLOCK_EVENT_BLOCKED_UNAUTHORIZED',
-      label: 'Блокировка при неразрешенном движении',
-    },
-    {
-      value: 'ALCOLOCK_EVENT_BLOCKED_TIMEOUT',
-      label: 'Блокировка по истечении таймера',
-    },
-    {
-      value: 'SOBRIETY_TEST',
-      label: 'Тестирование',
-    },
-    {
-      value: 'ALCOLOCK_ERROR',
-      label: 'Ошибка устройства',
-    },
-     */
   ];
 
   static sobrietyTypesList = [

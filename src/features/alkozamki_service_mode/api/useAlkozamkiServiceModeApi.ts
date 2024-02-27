@@ -21,7 +21,13 @@ const onError = (error: AxiosError<IError>) => {
   enqueueSnackbar({ message: message, variant: 'error' });
 };
 
-const updateQueries = [QueryKeys.AVTOSERVISE_EVENTS_ITEM, QueryKeys.AUTO_SERVICE_EVENTS_LIST];
+const updateQueries = [
+  QueryKeys.AVTOSERVISE_EVENTS_ITEM,
+  QueryKeys.AUTO_SERVICE_EVENTS_LIST,
+  QueryKeys.ALCOLOCK_LIST,
+  QueryKeys.ALKOLOCK_ITEM,
+  QueryKeys.ALKOLOCK_LIST_TABLE,
+];
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const useAlkozamkiServiceModeApi = () => {
