@@ -2,12 +2,14 @@ import { createEffect } from 'effector';
 
 import { userState } from '@features/menu_button/model/store';
 import { selectedBranchState } from '@shared/model/selected_branch/store';
+import { DateUtils } from '@shared/utils/DateUtils';
 import { Formatters } from '@shared/utils/formatters';
 
 import AlcolocksApi from '../api/alcolocks_api';
 import AlcolocksMapper from './mapper';
 import {
   alcolockBranchSwitchLoadingState,
+  alcolockErrorState,
   alkozamkiLoadingState,
   allAlkozamkiState,
   changeAlcolcokLoadingState,
@@ -66,8 +68,7 @@ export const uploadAlkozamkiList = createEffect(
     }
 
     if (endDate) {
-      const date = new Date(endDate).toISOString();
-      queries += `&all.createdAt.lessThanOrEqual=${date}`;
+      queries += `&all.createdAt.lessThan=${DateUtils.getEndFilterDate(endDate)}`;
     }
 
     if (sortBy && order) {
@@ -152,6 +153,7 @@ export const addItem = createEffect((data) => {
   return promise
     .then(({ res }) => res)
     .catch((err) => {
+      alcolockErrorState.setState(err);
       throw err;
     })
     .finally(() => createAlcolcokLoadingState.setState(false));
@@ -189,6 +191,7 @@ export const changeItem = createEffect((payload) => {
   return promise
     .then(({ res }) => res)
     .catch((err) => {
+      alcolockErrorState.setState(err);
       throw err;
     })
     .finally(() => changeAlcolcokLoadingState.setState(false));
@@ -260,7 +263,11 @@ export const searchAlcolocks = createEffect(({ query, excludeGroupId }) => {
 export const switchAlcolockGroup = createEffect((payload) => {
   alcolockBranchSwitchLoadingState.setState(true);
 
-  const { promise } = AlcolocksApi.switchBranch(payload.alcolockId, payload.groupId);
+  const { promise } = AlcolocksApi.switchBranch(
+    payload.alcolockId,
+    payload.groupId,
+    payload.isPairSwitch,
+  );
 
   return promise
     .then((res) => res)

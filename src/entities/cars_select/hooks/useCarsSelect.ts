@@ -10,6 +10,7 @@ export const useCarsSelect = () => {
   const onChange = (value: string) => {
     setSearchQuery(value);
   };
+
   const onReset = () => {
     setSearchQuery('');
   };

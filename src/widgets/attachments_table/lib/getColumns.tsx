@@ -75,7 +75,7 @@ export const useGetColumns = (
         renderCell: ({ row }) => {
           return (
             <GridActionsCellItem
-              onClick={() => toggleDelete(row.id, row.alcolocks)}
+              onClick={() => toggleDelete(row.id, row?.ALCOLOKS)}
               key={'delete'}
               data-testid={
                 testids.page_attachments.attachments_widget_table

@@ -18,6 +18,7 @@ export enum ServiceModeInfoType {
   ACCEPTED = 'ACCEPTED',
   OFFLINE_DEACTIVATION = 'OFFLINE_DEACTIVATION',
   OFFLINE_ACTIVATION = 'OFFLINE_ACTIVATION',
+  MAINTENANCE = 'MAINTENANCE',
 }
 
 export enum ServiceModeInfoRequestType {

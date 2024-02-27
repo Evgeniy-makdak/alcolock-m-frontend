@@ -11,7 +11,7 @@ export const createAlcolcokLoadingState = new StateBuilder(false);
 export const changeAlcolcokLoadingState = new StateBuilder(false);
 export const lastSearchAlcolocksRequest = new StateBuilder(null);
 export const alcolockBranchSwitchLoadingState = new StateBuilder(false);
-
+export const alcolockErrorState = new StateBuilder(null);
 export const alkozamkiStore = {
   alkozamkiLoading: alkozamkiLoadingState.createHooks(),
   alkozamkiList: alkozamkiListState.createHooks(),
@@ -20,4 +20,5 @@ export const alkozamkiStore = {
   creating: createAlcolcokLoadingState.createHooks(),
   changing: changeAlcolcokLoadingState.createHooks(),
   alcolockBranchSwitchLoading: alcolockBranchSwitchLoadingState.createHooks(),
+  error: alcolockErrorState.createHooks(),
 };

@@ -51,9 +51,9 @@ export default class AlcolocksApi {
     return request(params);
   }
 
-  static switchBranch(id, groupId) {
+  static switchBranch(id, groupId, isPairSwitch) {
     const params = {
-      url: `api/monitoring-devices/${id}/assign/${groupId}`,
+      url: `api/monitoring-devices/${id}/assign/${groupId}?withVehicle=${isPairSwitch}`,
       method: 'POST',
     };
 

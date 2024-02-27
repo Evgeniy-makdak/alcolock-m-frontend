@@ -29,6 +29,8 @@ export const chipColor: { [key: string]: ChipProps['color'] } = {
   'Оператор отклонил': 'error',
   'Водитель отклонил': 'secondary',
   'Офлайн-переключение': 'secondary',
+  'Водитель подтвердил': 'success',
+  'Оператор подтвердил': 'success',
 };
 
 const getStatus = (item: IDeviceAction) => {

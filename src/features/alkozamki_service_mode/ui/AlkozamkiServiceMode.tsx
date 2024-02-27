@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { Stack, Typography } from '@mui/material';
+
 import { AppConstants } from '@app/index';
 import { ActivateForm } from '@entities/alkozamki_activate_form';
-import type { IAlcolocks, IDeviceAction } from '@shared/types/BaseQueryTypes';
+import { TimeCell } from '@entities/time_cell';
+import type { IAlcolock, IDeviceAction } from '@shared/types/BaseQueryTypes';
 import { Button, ButtonsType } from '@shared/ui/button';
 import { Popup } from '@shared/ui/popup';
 
@@ -9,12 +12,17 @@ import { useAlkozamkiServiceMode } from '../hooks/useAlkozamkiServiceMode';
 import style from './AlkozamkiServiceMode.module.scss';
 
 interface AlkozamkiServiceModeProps {
-  deviceAction: IDeviceAction;
-  alkolock: IAlcolocks;
+  deviceAction?: IDeviceAction;
+  alkolock: IAlcolock;
+  refetch?: () => void;
 }
 
 // TODO => вынести все лишние функции в lib - компонент очень раздут
-export const AlkozamkiServiceMode = ({ deviceAction, alkolock }: AlkozamkiServiceModeProps) => {
+export const AlkozamkiServiceMode = ({
+  deviceAction,
+  alkolock,
+  refetch,
+}: AlkozamkiServiceModeProps) => {
   const {
     getButtons,
     handleActivate,
@@ -25,14 +33,28 @@ export const AlkozamkiServiceMode = ({ deviceAction, alkolock }: AlkozamkiServic
     toggleActivatePopup,
     toggleDeactivatePopup,
     isLoadingActivateServiceModeMutation,
+    modeResetAt,
+    hasTime,
   } = useAlkozamkiServiceMode(deviceAction, alkolock);
 
   return (
     <>
       <div className={style.alcolockServiceMode}>
-        <span className={style.name}>Режим "Автосервис": </span>
-        {/* {getText()} */}
-        {getButtons()}
+        <Stack spacing={2} direction={'column'}>
+          <span className={style.name}>Режим "Автосервис": </span>
+          {/* {getText()} */}
+          {hasTime && (
+            <Stack spacing={2} direction={'row'}>
+              <Typography fontSize={22} fontWeight={600}>
+                Выключение через
+              </Typography>
+              <Typography fontSize={22} fontWeight={400}>
+                <TimeCell refetch={refetch} time={modeResetAt} id={alkolock.id} />
+              </Typography>
+            </Stack>
+          )}
+          {getButtons()}
+        </Stack>
       </div>
 
       <Popup

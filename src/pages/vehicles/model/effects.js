@@ -2,6 +2,7 @@ import { createEffect } from 'effector';
 
 import { userState } from '@features/menu_button/model/store';
 import { selectedBranchState } from '@shared/model/selected_branch/store';
+import { DateUtils } from '@shared/utils/DateUtils';
 import { Formatters } from '@shared/utils/formatters';
 
 import VehiclesApi from '../api/vehicles_api';
@@ -66,8 +67,7 @@ export const uploadCarsList = createEffect(
     }
 
     if (endDate) {
-      const date = new Date(endDate).toISOString();
-      queries += `&all.createdAt.lessThanOrEqual=${date}`;
+      queries += `&all.createdAt.lessThan=${DateUtils.getEndFilterDate(endDate)}`;
     }
 
     if (sortBy && order) {

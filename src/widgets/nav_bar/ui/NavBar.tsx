@@ -15,7 +15,7 @@ import style from './NavBar.module.scss';
 export const NavBar = () => {
   const userData = userStore.userData.useValue();
   const { permissionsFilter, length } = useNavBar();
-  console.log(length);
+
   return (
     <div className={style.navBar}>
       <div>

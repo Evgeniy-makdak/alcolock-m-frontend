@@ -35,7 +35,7 @@ export const useAttachmentsTable = () => {
 
   const [searchQuery] = useDebounce(input, 500);
 
-  const { data, isLoading, mutate, refetch } = useAttachmentsApi({
+  const { data, isLoading, refetch } = useAttachmentsApi({
     searchQuery,
     endDate: Formatters.formatToISODate(endDate),
     startDate: Formatters.formatToISODate(startDate),
@@ -49,12 +49,6 @@ export const useAttachmentsTable = () => {
   };
   const rows = useGetRows(data);
   const headers = useGetColumns(toggleAppAttachModal, handleClickDeleteAttachment, refetch);
-
-  const deleteAttachment = () => {
-    if (!selectAttachment) return;
-    mutate(selectAttachment.id);
-    closeDeleteModal();
-  };
 
   const tableData = {
     ...state,
@@ -89,7 +83,6 @@ export const useAttachmentsTable = () => {
     openDeleteModal,
     toggleOpenDeleteModal,
     selectAttachment,
-    deleteAttachment,
   };
 
   return {
