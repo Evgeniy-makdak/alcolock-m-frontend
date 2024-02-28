@@ -1,1 +1,1 @@
-export { EventsHistory, HistoryTypes } from './ui/EventsHistory';
+export { EventsHistory } from './ui/EventsHistory';

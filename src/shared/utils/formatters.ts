@@ -34,7 +34,7 @@ export class Formatters {
     return dateParts.reverse().join('.');
   }
 
-  static nameFormatter(user: IUser, withPlaceholder = true) {
+  static nameFormatter(user: Partial<IUser>, withPlaceholder = true) {
     const placeholder = withPlaceholder ? '-' : '';
     if (!user) return placeholder;
     const name = user.firstName ? `${user.firstName} ` : '';

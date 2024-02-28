@@ -38,6 +38,7 @@ export interface QueryOptions {
     carsByMake?: string;
     carsByLicense?: string;
     eventsByType?: string;
+    branchId?: ID;
     groupId?: string;
   };
   id: string;

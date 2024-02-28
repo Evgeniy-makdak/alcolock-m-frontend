@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { attachmentsFilterPanelStore } from '@features/attachments_filter_panel';
 import { storageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
@@ -32,7 +33,7 @@ export const useAttachmentsTable = () => {
     openFilters,
     toggleFilters,
   } = useAttachmentsStore();
-
+  const filters = attachmentsFilterPanelStore((state) => state.filters);
   const [searchQuery] = useDebounce(input, 500);
 
   const { data, isLoading, refetch } = useAttachmentsApi({
@@ -41,6 +42,13 @@ export const useAttachmentsTable = () => {
     startDate: Formatters.formatToISODate(startDate),
     page: state.page,
     limit: state.pageSize,
+    filterOptions: {
+      drivers: Formatters.getStringForQueryParams(filters.driverId),
+      cars: Formatters.getStringForQueryParams(filters.carId),
+      createLink: Formatters.getStringForQueryParams(filters.createLink),
+      alcolock: Formatters.getStringForQueryParams(filters?.alcolocks),
+      dateLink: Formatters.getStringForQueryParams(filters?.dateLink),
+    },
   });
 
   const handleClickDeleteAttachment = (id: number, text: string) => {
