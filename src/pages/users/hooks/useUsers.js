@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { AppConstants } from '@app/index';
-import { EventsHistory, HistoryTypes } from '@features/events_history';
+import { HistoryTypes } from '@entities/events_data';
+import { EventsHistory } from '@features/events_history';
 import { UserPermissionsTypes } from '@features/menu_button';
 import { userStore } from '@features/menu_button/model/store';
 import { testids } from '@shared/const/testid';

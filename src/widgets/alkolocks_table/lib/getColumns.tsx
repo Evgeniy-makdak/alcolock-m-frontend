@@ -77,7 +77,7 @@ export const useGetColumns = (
         filterable: false,
         renderCell: ({ row }) => {
           return (
-            <>
+            <div className={style.controls}>
               <GridActionsCellItem
                 data-testid={
                   testids.page_attachments.attachments_widget_table
@@ -98,7 +98,7 @@ export const useGetColumns = (
                 icon={<DeleteIcon />}
                 label="Delete"
               />
-            </>
+            </div>
           );
         },
         renderHeader: () => {

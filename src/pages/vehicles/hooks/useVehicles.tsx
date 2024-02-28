@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { EventsHistory, HistoryTypes } from '@features/events_history';
+import { HistoryTypes } from '@entities/events_data';
+import { EventsHistory } from '@features/events_history';
 import { userStore } from '@features/menu_button/model/store';
 import { testids } from '@shared/const/testid';
 import { useToggle } from '@shared/hooks/useToggle';

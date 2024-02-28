@@ -1,20 +1,16 @@
 import { AttachmentsApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
+import { useUpdateQueries } from '@shared/hooks/useUpdateQuerys';
 import type { AttachmentsCreateData } from '@shared/types/BaseQueryTypes';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+
+const updateQuerys = [QueryKeys.ATTACHMENT_LIST];
 
 export const useCreateAttachment = () => {
-  const queryClient = useQueryClient();
+  const updateQuerysFn = useUpdateQueries();
   const { mutate } = useMutation({
-    mutationFn: (data: AttachmentsCreateData) => {
-      return AttachmentsApi.createItem(data, {
-        'Content-Type': 'application/json',
-        'Accept-Language': 'ru,en;q=0.9',
-      });
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: [QueryKeys.ATTACHMENT_LIST] });
-    },
+    mutationFn: (data: AttachmentsCreateData) => AttachmentsApi.createItem(data),
+    onSuccess: () => updateQuerysFn(updateQuerys),
   });
   return mutate;
 };

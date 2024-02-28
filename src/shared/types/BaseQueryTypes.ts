@@ -97,7 +97,7 @@ interface IActiveActions {
     branchId: number;
   };
   seen: boolean;
-  events: Event[];
+  events: IEvent[];
   createdAt: string;
   createdBy: IUser;
 }
@@ -145,7 +145,7 @@ export interface IAlcolock {
   };
 }
 
-export interface Event {
+export interface IEvent {
   eventType: string;
   extra: {
     qrCode: string;
@@ -160,7 +160,7 @@ export interface Event {
     email: string;
     firstName: string;
     lastName: string;
-    middleName: string;
+    middleName: string | null;
   };
   user: { id: number; branchId: number };
 }
@@ -192,9 +192,10 @@ export interface IDeviceAction {
   uuid: string;
   createdBy: IUser;
   device: IAlcolock;
-  events: Event[];
+  events: IEvent[];
   summary: ISummary;
   vehicleRecord: ICar;
+  action: { type: string };
 }
 
 export interface IError {

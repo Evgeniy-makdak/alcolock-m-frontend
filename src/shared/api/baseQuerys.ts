@@ -22,6 +22,23 @@ import { deleteQuery, getQuery, postQuery, putQuery } from './baseQuery';
 
 export type PartialQueryOptions = Partial<QueryOptions>;
 
+const getSelectBranchQueryUrl = ({
+  page,
+  parametrs,
+  outherBranch,
+}: {
+  page?: string;
+  parametrs?: string;
+  outherBranch?: ID;
+}) => {
+  const userData = userState.$store.getState();
+  const selectedBranch = userData?.isAdmin
+    ? selectedBranchState.$store.getState()
+    : userData?.assignment.branch ?? { id: 10 };
+
+  return `${parametrs ? parametrs : ''}&all.${page ? page + '.' : ''}assignment.branch.id.${outherBranch ? 'in=' + outherBranch : 'equals=' + selectedBranch.id}`;
+};
+
 const getSortQueryAttachments = (orderType: SortTypes, order: string) => {
   const orderStr = ',' + order.toUpperCase();
 
@@ -55,13 +72,15 @@ export class AttachmentsApi {
     searchQuery,
     sortBy,
     startDate,
+    filterOptions,
   }: PartialQueryOptions) {
     const queryTrimmed = Formatters.removeExtraSpaces(searchQuery ?? '');
-    let queries = '';
-    const userData = userState.$store.getState();
-    const selectedBranch = userData?.isAdmin
-      ? selectedBranchState.$store.getState()
-      : userData?.assignment.branch ?? { id: 10 };
+    let queries = getSelectBranchQueryUrl({ page: 'vehicle' });
+    const drivers = filterOptions?.drivers;
+    const tc = filterOptions?.cars;
+    const createAttach = filterOptions?.createLink;
+    const alcolock = filterOptions?.alcolock;
+    const dateLink = filterOptions?.dateLink;
 
     if (startDate) {
       const date = new Date(startDate).toISOString();
@@ -82,12 +101,22 @@ export class AttachmentsApi {
       queries += `&any.driver.userAccount.match.contains=${queryTrimmed}`;
     }
 
-    if (selectedBranch) {
-      queries += `&all.vehicle.assignment.branch.id.equals=${selectedBranch.id}`;
-    } else {
-      queries += `&all.vehicle.assignment.branch.id.equals=10`;
+    if (!!drivers) {
+      queries += `&any.vehicle.driver.id.in=${drivers}`;
     }
-    return `api/vehicle-driver-allotments?page=${page || 0}&size=${limit}${queries}`;
+    if (!!tc) {
+      queries += `&any.vehicle.registrationNumber.match=${tc}`;
+    }
+    if (!!createAttach) {
+      queries += `&any.vehicle.createdBy.id.in=${createAttach}`;
+    }
+    if (!!alcolock) {
+      queries += `&any.vehicle.monitoringDevice.id.in=${alcolock}`;
+    }
+    if (!!dateLink) {
+      queries += `&any.vehicle.createdAt.match=${dateLink}`;
+    }
+    return `api/vehicle-driver-allotments?page=${page || 0}&size=${limit || 25}${queries}`;
   }
 
   static getList(options: PartialQueryOptions) {
@@ -132,24 +161,13 @@ export class AttachmentsApi {
 
 export class UsersApi {
   private static getUserListURL = ({ page, limit, searchQuery }: PartialQueryOptions) => {
-    const userData = userState.$store.getState();
-    const selectedBranch = userData?.isAdmin
-      ? selectedBranchState.$store.getState()
-      : userData?.assignment.branch ?? { id: 10 };
     const trimmedQuery = Formatters.removeExtraSpaces(searchQuery ?? '');
-    let queries = '&sort=lastName,ASC';
-
-    queries += `&all.driver.id.specified=true`;
+    let queries = getSelectBranchQueryUrl({ parametrs: `&all.driver.id.specified=true` });
 
     if (trimmedQuery) {
       queries += `&any.email.contains=${trimmedQuery}`;
     }
 
-    if (selectedBranch) {
-      queries += `&all.assignment.branch.id.equals=${selectedBranch.id}`;
-    } else {
-      queries += `&all.assignment.branch.id.equals=10`;
-    }
     return `api/users?page=${page || 0}&size=${limit || 20}${queries}`;
   };
 
@@ -200,11 +218,7 @@ export class CarsApi {
     id,
   }: PartialQueryOptions): string => {
     const queryTrimmed = Formatters.removeExtraSpaces(searchQuery ?? '');
-    let queries = '';
-    const userData = userState.$store.getState();
-    const selectedBranch = userData?.isAdmin
-      ? selectedBranchState.$store.getState()
-      : userData?.assignment.branch ?? { id: 10 };
+    let queries = getSelectBranchQueryUrl({ outherBranch: id });
 
     lastGetVehiclesListRequestState.$store.getState()?.abort();
 
@@ -226,16 +240,6 @@ export class CarsApi {
       // TODO написать более подходящую реализацию формирования query параметров
       // сейчас у каждого запроса (машин или гос номеров) есть специфика по формированию параметров
       !sortBy && (queries += `&any.vin.contains=${queryTrimmed}`);
-    }
-
-    if (id) {
-      queries += `&all.assignment.branch.id.in=${id}`;
-    } else {
-      if (selectedBranch) {
-        queries += `&all.assignment.branch.id.equals=${selectedBranch.id}`;
-      } else {
-        queries += `&all.assignment.branch.id.equals=10`;
-      }
     }
     return `api/vehicles?page=${page || 0}&size=${limit || 20}${queries}`;
   };
@@ -315,11 +319,7 @@ export class AlcolocksApi {
     filterOptions,
   }: PartialQueryOptions) {
     const queryTrimmed = Formatters.removeExtraSpaces(searchQuery ?? '');
-    let queries = '';
-    const userData = userState.$store.getState();
-    const selectedBranch = userData?.isAdmin
-      ? selectedBranchState.$store.getState()
-      : userData?.assignment.branch ?? { id: 10 };
+    let queries = getSelectBranchQueryUrl({ outherBranch: filterOptions?.branchId });
 
     if (startDate) {
       const date = new Date(startDate).toISOString();
@@ -338,16 +338,6 @@ export class AlcolocksApi {
       queries += `&any.vehicleBind.vehicle.match.contains=${queryTrimmed}`;
       queries += `&any.match.contains=${queryTrimmed}`;
       queries += `&any.createdBy.match.contains=${queryTrimmed}`;
-    }
-
-    if (filterOptions?.groupId) {
-      queries += `&all.assignment.branch.id.in=${filterOptions?.groupId}`;
-    } else {
-      if (selectedBranch) {
-        queries += `&all.assignment.branch.id.equals=${selectedBranch?.id}`;
-      } else {
-        queries += `&all.assignment.branch.id.equals=10`;
-      }
     }
 
     return `api/monitoring-devices?page=${page}&size=${limit}${queries}`;
@@ -410,10 +400,10 @@ const getSortQuery = (orderType: SortTypes, order: string) => {
   }
 };
 
-interface EventsOptions extends PartialQueryOptions {
-  userId: ID;
-  carId: ID;
-  alcolockId: ID;
+export interface EventsOptions extends PartialQueryOptions {
+  userId?: ID;
+  carId?: ID;
+  alcolockId?: ID;
 }
 
 export interface ActivateServiceModeOptions {
@@ -437,11 +427,15 @@ export class EventsApi {
   }: PartialQueryOptions) {
     const queryTrimmed = Formatters.removeExtraSpaces(searchQuery ?? '');
     const blacklistEventsTypes = this.EVENTS_TYPES_BLACKLIST.join(',');
-    let queries = `&all.type.notIn=${blacklistEventsTypes}`;
-    const userData = userState.$store.getState();
-    const selectedBranch = userData?.isAdmin
-      ? selectedBranchState.$store.getState()
-      : userData?.assignment.branch ?? { id: 10 };
+    let queries = getSelectBranchQueryUrl({
+      parametrs: `&all.type.notIn=${blacklistEventsTypes}&sort=events.occurredAt,DESC`,
+      page: 'device',
+    });
+
+    const users = filterOptions?.users;
+    const carsByMake = filterOptions?.carsByMake;
+    const carsByLicense = filterOptions?.carsByLicense;
+    const eventsByType = filterOptions?.eventsByType;
 
     if (startDate) {
       const date = new Date(startDate).toISOString();
@@ -461,29 +455,22 @@ export class EventsApi {
       queries += `&any.vehicleRecord.match.contains=${queryTrimmed}`;
     }
 
-    if (selectedBranch) {
-      queries += `&all.device.assignment.branch.id.equals=${selectedBranch.id}`;
-    } else {
-      queries += `&all.device.assignment.branch.id.equals=10`;
+    if (!!users) {
+      queries += `&any.events.user.id.in=${filterOptions.users}`;
     }
 
-    if (filterOptions) {
-      if ((filterOptions?.users ?? '').length) {
-        queries += `&any.events.user.id.in=${filterOptions.users}`;
-      }
-
-      if ((filterOptions?.carsByMake ?? '').length) {
-        queries += `&any.vehicleRecord.manufacturer.in=${filterOptions.carsByMake}`;
-      }
-
-      if ((filterOptions?.carsByLicense ?? '').length) {
-        queries += `&any.vehicleRecord.registrationNumber.in=${filterOptions.carsByLicense}`;
-      }
-
-      if ((filterOptions?.eventsByType ?? '').length) {
-        queries += `&any.type.in=${filterOptions.eventsByType}`;
-      }
+    if (!!carsByMake) {
+      queries += `&any.vehicleRecord.manufacturer.in=${filterOptions.carsByMake}`;
     }
+
+    if (!!carsByLicense) {
+      queries += `&any.vehicleRecord.registrationNumber.in=${filterOptions.carsByLicense}`;
+    }
+
+    if (!!eventsByType) {
+      queries += `&any.type.in=${filterOptions.eventsByType}`;
+    }
+
     return `api/device-actions?page=${page || 0}&size=${limit || 20}${queries}`;
   }
 
@@ -497,14 +484,11 @@ export class EventsApi {
     sortBy,
   }: PartialQueryOptions) {
     const queryTrimmed = Formatters.removeExtraSpaces(searchQuery ?? '');
-    let queries =
-      '&all.type.in=SERVICE_MODE_ACTIVATE,SERVICE_MODE_DEACTIVATE&all.seen.in=false&all.events.eventType.notEquals=TIMEOUT&all.status.notIn=INVALID';
-
-    const userData = userState.$store.getState();
-    const selectedBranch = userData?.isAdmin
-      ? selectedBranchState.$store.getState()
-      : userData?.assignment.branch ?? { id: 10 };
-
+    let queries = getSelectBranchQueryUrl({
+      parametrs:
+        '&all.type.in=SERVICE_MODE_ACTIVATE,SERVICE_MODE_DEACTIVATE&all.seen.in=false&all.events.eventType.notEquals=TIMEOUT&all.status.notIn=INVALID',
+      page: 'device',
+    });
     if (startDate) {
       const date = new Date(startDate).toISOString();
       queries += `&all.events.occurredAt.greaterThanOrEqual=${date}`;
@@ -524,20 +508,13 @@ export class EventsApi {
       queries += `&any.vehicleRecord.match.contains=${queryTrimmed}`;
     }
 
-    if (selectedBranch) {
-      queries += `&all.device.assignment.branch.id.equals=${selectedBranch.id}`;
-    } else {
-      queries += `&all.device.assignment.branch.id.equals=10`;
-    }
     return `api/device-actions?page=${page || 0}&size=${limit || 20}${queries}`;
   }
 
   private static getEventsHistoryURL({ alcolockId, carId, userId, page, limit }: EventsOptions) {
-    let queries = '';
-    const userData = userState.$store.getState();
-    const selectedBranch = userData?.isAdmin
-      ? selectedBranchState.$store.getState()
-      : userData?.assignment.branch ?? { id: 10 };
+    let queries = getSelectBranchQueryUrl({
+      page: 'device',
+    });
 
     if (userId) {
       queries += `&all.events.user.id.equals=${userId}`;
@@ -551,11 +528,6 @@ export class EventsApi {
       queries += `&all.device.id.in=${alcolockId}`;
     }
 
-    if (selectedBranch) {
-      queries += `&all.device.assignment.branch.id.equals=${selectedBranch.id}`;
-    } else {
-      queries += `&all.device.assignment.branch.id.equals=10`;
-    }
     return `api/device-actions?page=${page}&size=${limit}${queries}`;
   }
 
