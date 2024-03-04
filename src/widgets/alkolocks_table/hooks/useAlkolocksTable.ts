@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
+import { InputSearchDelay } from '@shared/const/config';
 import { storageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
@@ -22,12 +23,11 @@ export const useAlkolocksTable = () => {
   const [changeAlkolockId, setChangeAlkolockId] = useState<ID>(null);
 
   const [openAddAlcolockModal, toggleAddAlcolockModal, closeAddAlcolockModal] = useToggle(false);
-  const [openDeleteModal, toggleOpenDeleteModal, closeDeleteModal] = useToggle(false);
 
   const [input, setInput] = useState('');
   const { changeEndDate, changeStartDate, clearDates, endDate, startDate } = useAlcolocksStore();
 
-  const [searchQuery] = useDebounce(input, 500);
+  const [searchQuery] = useDebounce(input, InputSearchDelay);
 
   const { data, isLoading, refetch } = useAlkolocksApi({
     searchQuery,
@@ -35,14 +35,18 @@ export const useAlkolocksTable = () => {
     startDate: Formatters.formatToISODate(startDate),
     page: state.page,
     limit: state.pageSize,
+    sortBy: state?.sortModel[0]?.field,
+    order: state?.sortModel[0]?.sort,
   });
 
-  const handleClickDeletetAlcolock = (id: ID, text?: string) => {
+  const handleClickDeletetAlcolock = (id: ID, text?: ReactNode) => {
     setDeleteAlcolock({
       id,
       text,
     });
-    toggleOpenDeleteModal();
+  };
+  const closeDeleteModal = () => {
+    setDeleteAlcolock(null);
   };
 
   const handleClickAddAlkolock = (id: ID) => {
@@ -61,11 +65,6 @@ export const useAlkolocksTable = () => {
   const closeEditModal = () => {
     closeAddAlcolockModal();
     setChangeAlkolockId(null);
-  };
-
-  const handleCloseDeleteModal = () => {
-    closeDeleteModal();
-    setDeleteAlcolock(null);
   };
 
   const tableData = {
@@ -97,9 +96,6 @@ export const useAlkolocksTable = () => {
 
   const deleteAlcolockModalData = {
     closeDeleteModal,
-    openDeleteModal,
-    toggleOpenDeleteModal,
-    handleCloseDeleteModal,
     deleteAlcolock,
   };
 

@@ -1,6 +1,8 @@
 import type { AxiosResponse } from 'axios';
 
-import type { SortTypes, SortsTypes } from '@shared/const/types';
+import type { GridSortDirection } from '@mui/x-data-grid';
+
+import type { SortTypes } from '@shared/const/types';
 import type { QueryObserverResult } from '@tanstack/react-query';
 
 import type { ID } from './BaseQueryTypes';
@@ -19,9 +21,9 @@ export interface QueryOptions {
   page: number;
   equals: string;
   limit: number | string;
-  sortBy: SortTypes;
+  sortBy: SortTypes | string;
   searchQuery: string;
-  order: SortsTypes;
+  order: GridSortDirection;
   startDate: string;
   endDate: string;
   selectedBranch: ID;
@@ -39,7 +41,9 @@ export interface QueryOptions {
     carsByLicense?: string;
     eventsByType?: string;
     branchId?: ID;
+    notBranchId?: ID;
     groupId?: string;
+    excludeId?: ID;
   };
-  id: string;
+  id: ID;
 }

@@ -6,7 +6,6 @@ export const getStyle = (flag: boolean) => {
   return {
     overflowX: 'scroll',
     overflowY: 'hidden',
-    minWidth: '1350px',
     '.MuiDataGrid-columnHeaderTitleContainerContent': {
       fontWeight: '600',
     },

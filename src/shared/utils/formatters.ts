@@ -46,16 +46,27 @@ export class Formatters {
     return `${lastName} ${name} ${middleName}`;
   }
 
-  static carNameFormatter(car: ICar, withoutRegistrationNumber = false, read = true) {
+  static carNameFormatter(
+    car: ICar,
+    withoutRegistrationNumber = false,
+    read = true,
+    vieBranch = false,
+  ) {
     if (!car) return '-';
 
+    const getBrnach = (string: string) => {
+      if (!vieBranch) return string;
+      const branch = car?.assignment?.branch?.name;
+      return `${string} - ${branch}`;
+    };
+
     if (!read && !withoutRegistrationNumber) {
-      return `${car.manufacturer} ${car.model} ${car.registrationNumber}`;
+      return getBrnach(`${car.manufacturer} ${car.model} ${car.registrationNumber}`);
     }
     if (withoutRegistrationNumber) {
-      return `${car.manufacturer} ${car.model}`;
+      return getBrnach(`${car.manufacturer} ${car.model}`);
     } else if (read && !withoutRegistrationNumber) {
-      return `${car.manufacturer} ${car.model} ( ${car.registrationNumber} )`;
+      return getBrnach(`${car.manufacturer} ${car.model} ( ${car.registrationNumber} )`);
     }
   }
 

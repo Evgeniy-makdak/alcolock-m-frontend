@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { cloneElement, useEffect, useRef, useState } from 'react';
 
 import { Table, TableBody, TableHead, TableSortLabel } from '@mui/material';

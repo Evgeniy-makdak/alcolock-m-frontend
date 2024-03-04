@@ -21,9 +21,7 @@ export const AlkolockDeleteForm = ({
         <Typography variant="h6" fontWeight={700}>
           Удаление Алкозамка
         </Typography>
-        <Typography>
-          Вы действительно хотите удалить Алкозамок <b>{alkolock?.text}?</b>
-        </Typography>
+        <Typography>Вы действительно хотите удалить Алкозамок {alkolock?.text}</Typography>
         <ButtonFormWrapper>
           <Button
             testid={`${testids.POPUP_ACTION_BUTTON}_${testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}`}

@@ -29,7 +29,7 @@ const newTheme = (theme?: Theme) => ({
     MuiInputBase: {
       styleOverrides: {
         root: {
-          width: '161px',
+          width: '181px',
           height: '30px',
           backgroundColor: '#f1f1f1',
         },

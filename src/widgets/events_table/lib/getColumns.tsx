@@ -4,6 +4,7 @@ import { type GridColDef, type GridColumnHeaderParams } from '@mui/x-data-grid';
 
 import { setTestIdsToHeaderColumns } from '@shared/components/Table/Table';
 import { testids } from '@shared/const/testid';
+import { SortTypes } from '@shared/const/types';
 import type { IDeviceAction } from '@shared/types/BaseQueryTypes';
 import type { RefetchType } from '@shared/types/QueryTypes';
 import { Refetch } from '@shared/ui/refetch/Refetch';
@@ -11,11 +12,11 @@ import { Refetch } from '@shared/ui/refetch/Refetch';
 import style from '../ui/EventsTable.module.scss';
 
 export enum ValuesHeader {
-  DATE = 'DATE',
-  INTITIATOR = 'INTITIATOR',
-  TC = 'TC',
-  NUMBER_CAR = 'NUMBER_CAR',
-  TYPE_OF_EVENT = 'TYPE_OF_EVENT',
+  DATE_OCCURRENT = SortTypes.DATE_OCCURRENT,
+  INTITIATOR = SortTypes.CREATED_BY,
+  TC = SortTypes.TC,
+  GOS_NUMBER = SortTypes.GOS_NUMBER,
+  TYPE_OF_EVENT = SortTypes.TYPE_OF_EVENT,
 }
 
 const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
@@ -31,7 +32,7 @@ export const useGetColumns = (refetch: RefetchType<IDeviceAction[]>): GridColDef
       {
         renderHeader: setTestIdsToHeaderColumnsAdapter,
         headerName: 'Дата',
-        field: ValuesHeader.DATE,
+        field: ValuesHeader.DATE_OCCURRENT,
       },
       {
         renderHeader: setTestIdsToHeaderColumnsAdapter,
@@ -47,7 +48,7 @@ export const useGetColumns = (refetch: RefetchType<IDeviceAction[]>): GridColDef
       {
         renderHeader: setTestIdsToHeaderColumnsAdapter,
         headerName: 'Номер',
-        field: ValuesHeader.NUMBER_CAR,
+        field: ValuesHeader.GOS_NUMBER,
       },
       {
         renderHeader: setTestIdsToHeaderColumnsAdapter,

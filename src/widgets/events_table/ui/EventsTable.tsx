@@ -50,6 +50,7 @@ export const EventsTable = ({ handleClickRow }: EventsTable) => {
       </TableHeaderWrapper>
       <EventsFilterPanel open={filtersData.openFilters} />
       <Table
+        sortingMode="server"
         // TODO => кол-во элементов должно приходить с бэка
         rowCount={100}
         paginationMode="server"

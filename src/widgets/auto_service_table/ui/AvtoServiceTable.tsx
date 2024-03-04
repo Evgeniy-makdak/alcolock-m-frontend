@@ -42,6 +42,7 @@ export const AvtoServiceTable = ({ handleClickRow }: AvtoServiceTableProps) => {
         <ResetFilters title="Сбросить фильтры" reset={() => filterData.clearDates()} />
       </TableHeaderWrapper>
       <Table
+        sortingMode="server"
         // TODO => кол-во элементов должно приходить с бэка
         rowCount={100}
         paginationMode="server"

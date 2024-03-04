@@ -24,3 +24,15 @@ export const getArrayValues = (values: (string | Value)[] | Value | string): Val
   }
   return [values];
 };
+
+export const getArrayFromValues = (values: (string | Value)[] | Value) => {
+  if (Array.isArray(values)) {
+    const arr: (number | string)[] = [];
+    values.map((item) => {
+      if (typeof item === 'string') return;
+      arr.push(item.value);
+    });
+    return arr;
+  }
+  return [values.value];
+};

@@ -47,6 +47,7 @@ export const AlkolocksTable = ({ handleClickRow }: AlkolocksTableProps) => {
       </TableHeaderWrapper>
       <Table
         // TODO => кол-во элементов должно приходить с бэка
+        sortingMode="server"
         rowCount={100}
         paginationMode="server"
         onSortModelChange={tableData.changeTableSorts}
@@ -70,8 +71,8 @@ export const AlkolocksTable = ({ handleClickRow }: AlkolocksTableProps) => {
         toggleModal={addModalData.closeAddAlcolockModal}
       />
       <Popup
-        isOpen={deleteAlcolockModalData.openDeleteModal}
-        toggleModal={deleteAlcolockModalData.toggleOpenDeleteModal}
+        isOpen={!!deleteAlcolockModalData.deleteAlcolock}
+        toggleModal={deleteAlcolockModalData.closeDeleteModal}
         body={
           <AlkolockDeleteForm
             closeDeleteModal={deleteAlcolockModalData.closeDeleteModal}

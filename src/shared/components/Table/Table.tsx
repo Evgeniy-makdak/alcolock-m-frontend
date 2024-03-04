@@ -26,7 +26,7 @@ export const setTestIdsToHeaderColumns = (
   row: GridColumnHeaderParams<any, any, any>,
   testId: string,
 ) => {
-  return <span data-testid={`${testId}_${row.colDef.field}`}>{row.colDef.headerName}</span>;
+  return <span data-testid={`${testId}_${row?.colDef?.field}`}>{row?.colDef?.headerName}</span>;
 };
 
 export const Table = memo(

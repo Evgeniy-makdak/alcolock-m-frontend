@@ -1,56 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-import { RoutePaths } from '@app/index';
-import { userStore } from '@features/menu_button/model/store';
 import { testids } from '@shared/const/testid';
-import { useToggle } from '@shared/hooks/useToggle';
+import type { ID } from '@shared/types/BaseQueryTypes';
 import { GroupAlcolocksTable } from '@widgets/group_alcolocks_table';
-import { GroupCarTable } from '@widgets/group_card_table';
+import { GroupCarTable } from '@widgets/group_car_table';
 import { GroupUsersTable } from '@widgets/group_users_table';
 
-import { getGroup } from '../model/effects';
-import { groupsStore } from '../model/store';
+import { useGroupsApi } from '../api/useGroupsApi';
 
 export const useGroups = () => {
-  const [selectedGroupId, setSelectedGroupId] = useState(null);
-  const [updateInfo, toggleUpdateInfo] = useToggle();
-  const loading = groupsStore.listLoading.useValue();
-  const navigate = useNavigate();
-  const userData = userStore.userData.useValue();
-  const [groupInfo, setGroupInfo] = useState(null);
-  const loadingGroupData = groupsStore.groupLoading.useValue();
-
-  useEffect(() => {
-    if (!selectedGroupId) return;
-
-    getGroup(selectedGroupId).then((res) => {
-      if (res) {
-        setGroupInfo(res);
-      }
-    });
-  }, [selectedGroupId, updateInfo]);
-
-  useEffect(() => {
-    if (!userData?.isAdmin) {
-      navigate(RoutePaths.events);
-    }
-  }, [userData]);
-
+  const [selectedGroupId, setSelectedGroupId] = useState<null | ID>(null);
+  const { branch, isLoading } = useGroupsApi(selectedGroupId);
   const onClickRow = (id: string) => setSelectedGroupId(id);
-  const handleCloseAside = () => setSelectedGroupId(null);
 
-  const afterDelete = (id: string) => {
-    if (id === selectedGroupId) {
-      handleCloseAside();
-    }
-  };
-
-  const afterEdit = (id: string) => {
-    if (id === selectedGroupId) {
-      toggleUpdateInfo();
-    }
-  };
   const onCloseAside = () => {
     setSelectedGroupId(null);
   };
@@ -58,27 +20,25 @@ export const useGroups = () => {
     {
       testid: testids.page_groups.groups_widget_info.GROUPS_WIDGET_INFO_TAB_USERS_BUTTON,
       name: 'Пользователи',
-      content: <GroupUsersTable groupInfo={groupInfo} />,
+      content: <GroupUsersTable groupInfo={branch} />,
     },
     {
       testid: testids.page_groups.groups_widget_info.GROUPS_WIDGET_INFO_TAB_ALCOLOCKS_BUTTON,
       name: 'Алкозамки',
-      content: <GroupAlcolocksTable groupInfo={groupInfo} />,
+      content: <GroupAlcolocksTable groupInfo={branch} />,
     },
     {
-      testid: testids.page_groups.groups_widget_info.USERS_WIDGET_INFO_TAB_TRANSPORT_BUTTON,
+      testid: testids.page_groups.groups_widget_info.GROUPS_WIDGET_INFO_TAB_USERS_BUTTON,
       name: 'Транспорт',
-      content: <GroupCarTable groupInfo={groupInfo} />,
+      content: <GroupCarTable groupInfo={branch} />,
     },
   ];
   return {
-    groupName: groupInfo?.name ?? '-',
+    groupName: branch?.name ?? '-',
     selectedGroupId,
-    loading: loading || loadingGroupData,
     onClickRow,
-    afterDelete,
-    afterEdit,
     onCloseAside,
     tabs,
+    isLoading,
   };
 };

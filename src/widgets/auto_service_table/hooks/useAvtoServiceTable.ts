@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 
+import { InputSearchDelay } from '@shared/const/config';
 import { storageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
@@ -17,13 +18,15 @@ export const useAvtoServiceTable = () => {
   );
   const [input, setInput] = useState('');
   const { changeEndDate, changeStartDate, clearDates, endDate, startDate } = useAutoServiceStore();
-  const [searchQuery] = useDebounce(input, 500);
+  const [searchQuery] = useDebounce(input, InputSearchDelay);
   const { data, isLoading, refetch } = useAvtoServiceEventsApi({
     searchQuery,
     page: state.page,
     limit: state.pageSize,
     endDate: Formatters.formatToISODate(endDate),
     startDate: Formatters.formatToISODate(startDate),
+    sortBy: state?.sortModel[0]?.field,
+    order: state?.sortModel[0]?.sort,
   });
   const deviceActions = data?.data;
   const columns = useGetColumns(refetch);

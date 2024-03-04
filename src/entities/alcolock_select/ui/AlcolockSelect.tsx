@@ -1,3 +1,4 @@
+import type { ID } from '@shared/types/BaseQueryTypes';
 import {
   SearchMultipleSelect,
   type Value,
@@ -13,6 +14,9 @@ interface AlcolockSelectProps<T> {
   label?: string;
   error?: boolean;
   name: keyof T;
+  vieBranch?: boolean;
+  branchId?: ID;
+  notInBranch?: ID;
 }
 
 export function AlcolockSelect<T>({
@@ -23,8 +27,15 @@ export function AlcolockSelect<T>({
   value,
   testid,
   name,
+  vieBranch,
+  branchId,
+  notInBranch,
 }: AlcolockSelectProps<T>) {
-  const { onChange, isLoading, onReset, alcolockList } = useAlcolockSelect();
+  const { onChange, isLoading, onReset, alcolockList } = useAlcolockSelect(
+    vieBranch,
+    branchId,
+    notInBranch,
+  );
 
   return (
     <SearchMultipleSelect

@@ -1,8 +1,8 @@
-import type { IAttachmentItems } from '@shared/types/BaseQueryTypes';
+import type { IAttachmentItems, ID } from '@shared/types/BaseQueryTypes';
 
 export const adapterMapOptions = (
   item: IAttachmentItems,
-  arr: number[],
+  arr: ID[],
 ): [string, number | string] | [] => {
   if (arr.find((val) => val === item.createdBy.id)) return [];
   arr.push(item.createdBy.id);

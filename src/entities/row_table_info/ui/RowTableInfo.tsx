@@ -18,7 +18,6 @@ export const RowTableInfo = ({ tabs }: RowTableInfoProps) => {
     return { name: tab.name, testid: tab?.testid };
   });
   const contentTabs = tabs.map((tab) => tab.content);
-
   return (
     <div className={style.rowTableInfo}>
       <div className={style.tabs}>
@@ -32,14 +31,15 @@ export const RowTableInfo = ({ tabs }: RowTableInfoProps) => {
           </button>
         ))}
       </div>
-      {contentTabs.map((content, i) => (
-        <div
-          key={i}
-          hidden={activeTab !== i}
-          className={activeTab !== i ? style.contentHidden : style.content}>
-          {content}
-        </div>
-      ))}
+      {contentTabs.map((content, i) => {
+        return (
+          activeTab === i && (
+            <div key={i} className={activeTab !== i ? style.contentHidden : style.content}>
+              {content}
+            </div>
+          )
+        );
+      })}
     </div>
   );
 };

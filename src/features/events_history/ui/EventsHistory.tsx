@@ -36,4 +36,3 @@ export const EventsHistory = (props: EventsHistory) => {
     </Loader>
   );
 };
-export { HistoryTypes };

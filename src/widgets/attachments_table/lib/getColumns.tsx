@@ -6,6 +6,7 @@ import { GridActionsCellItem, GridColDef, type GridColumnHeaderParams } from '@m
 
 import { setTestIdsToHeaderColumns } from '@shared/components/Table/Table';
 import { testids } from '@shared/const/testid';
+import { SortTypes } from '@shared/const/types';
 import type { IAttachmentItems } from '@shared/types/BaseQueryTypes';
 import type { RefetchType } from '@shared/types/QueryTypes';
 import { Refetch } from '@shared/ui/refetch/Refetch';
@@ -13,12 +14,12 @@ import { Refetch } from '@shared/ui/refetch/Refetch';
 import style from '../ui/AttachmentsTable.module.scss';
 
 export enum ValuesHeader {
-  DRIVER = 'DRIVER',
-  ALCOLOKS = 'ALCOLOKS',
-  SERIAL_NUMBER = 'SERIAL_NUMBER',
-  TC = 'TC',
-  WHO_LINK = 'WHO_LINK',
-  DATE_LINK = 'DATE_LINK',
+  DRIVER = SortTypes.DRIVER,
+  ALCOLOKS = SortTypes.ALCOLOKS,
+  SERIAL_NUMBER = SortTypes.SERIAL_NUMBER,
+  TC = SortTypes.TC,
+  WHO_LINK = SortTypes.WHO_LINK,
+  DATE_LINK = SortTypes.DATE_CREATE,
 }
 
 const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
@@ -39,6 +40,7 @@ export const useGetColumns = (
         renderHeader: setTestIdsToHeaderColumnsAdapter,
         headerName: 'Алкозамок',
         field: ValuesHeader.ALCOLOKS,
+        sortable: false,
       },
       {
         renderHeader: setTestIdsToHeaderColumnsAdapter,

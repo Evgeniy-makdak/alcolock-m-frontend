@@ -4,12 +4,13 @@ import { Autocomplete, TextField } from '@mui/material';
 
 import { ValidationsWrapper } from '@shared/components/validations_wrapper';
 import { debounce } from '@shared/lib/debounce';
+import type { ID } from '@shared/types/BaseQueryTypes';
 
 import style from './SearchMultipleSelect.module.scss';
 
 export interface Value {
   label: string;
-  value: number | string;
+  value: ID;
 }
 
 export function mapOptions<T>(
