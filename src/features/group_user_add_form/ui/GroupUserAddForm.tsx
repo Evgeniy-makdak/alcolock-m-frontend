@@ -36,7 +36,6 @@ export const GroupUserAddForm: FC<GroupUserAddFormProps> = ({ close, branchId })
         notInBranch={branchId}
         vieBranch
         multiple
-        sort
         name="userId"
         error={error}
         value={users}

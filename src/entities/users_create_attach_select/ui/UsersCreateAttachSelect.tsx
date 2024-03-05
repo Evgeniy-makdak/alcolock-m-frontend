@@ -15,29 +15,15 @@ interface UsersCreateAttachSelectProps<T> {
   name: keyof T;
 }
 
-export function UsersCreateAttachSelect<T>({
-  setValueStore,
-  value,
-  testid,
-  multiple = true,
-  label,
-  error,
-  name,
-}: UsersCreateAttachSelectProps<T>) {
+export function UsersCreateAttachSelect<T>(props: UsersCreateAttachSelectProps<T>) {
   const { createdBy, isLoading, onChange, onReset } = useUsersCreateAttachSelect();
   return (
     <SearchMultipleSelect
-      error={error}
       onReset={onReset}
       onInputChange={onChange}
-      textFieldLabel={label}
-      loading={isLoading}
+      isLoading={isLoading}
       values={createdBy}
-      setValueStore={setValueStore}
-      value={value}
-      testid={testid}
-      name={name}
-      multiple={multiple}
+      {...props}
     />
   );
 }

@@ -20,31 +20,19 @@ interface CarsSelectProps<T> {
 }
 
 export function CarsSelect<T>({
-  testid,
-  multiple,
-  label,
-  error,
-  setValueStore,
-  value,
-  name,
   vieBranch = false,
   branchId,
   notInBranch,
+  ...rest
 }: CarsSelectProps<T>) {
   const { onChange, onReset, isLoading, carList } = useCarsSelect(vieBranch, branchId, notInBranch);
   return (
     <SearchMultipleSelect
-      error={error}
       onReset={onReset}
       onInputChange={onChange}
-      textFieldLabel={label}
-      loading={isLoading}
-      value={value}
+      isLoading={isLoading}
       values={carList}
-      setValueStore={setValueStore}
-      testid={testid}
-      name={name}
-      multiple={multiple}
+      {...rest}
     />
   );
 }

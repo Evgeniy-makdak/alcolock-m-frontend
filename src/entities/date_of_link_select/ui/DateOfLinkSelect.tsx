@@ -15,29 +15,15 @@ interface DateCreateSelectProps<T> {
   error?: boolean;
 }
 
-export function DateOfLinkSelect<T>({
-  testid,
-  multiple = true,
-  label,
-  error,
-  setValueStore,
-  value,
-  name,
-}: DateCreateSelectProps<T>) {
+export function DateOfLinkSelect<T>(props: DateCreateSelectProps<T>) {
   const { dateCreate, isLoading, onChange, onReset } = useDateOfLinkSelect();
   return (
     <SearchMultipleSelect
-      error={error}
       onReset={onReset}
       onInputChange={onChange}
-      textFieldLabel={label}
-      loading={isLoading}
-      value={value}
+      isLoading={isLoading}
       values={dateCreate}
-      setValueStore={setValueStore}
-      testid={testid}
-      name={name}
-      multiple={multiple}
+      {...props}
     />
   );
 }

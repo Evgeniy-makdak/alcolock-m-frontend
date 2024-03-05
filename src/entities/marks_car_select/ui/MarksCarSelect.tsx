@@ -16,31 +16,15 @@ interface MarksCarSelectProps<T> {
   setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
 }
 
-export function MarksCarSelect<T>({
-  onSelectMarkCar,
-  testid,
-  multiple,
-  label,
-  error,
-  value,
-  name,
-  setValueStore,
-}: MarksCarSelectProps<T>) {
+export function MarksCarSelect<T>(props: MarksCarSelectProps<T>) {
   const { onChange, isLoading, onReset, marksCarList } = useMarksCarSelect();
   return (
     <SearchMultipleSelect
-      setValueStore={setValueStore}
-      error={error}
       onReset={onReset}
       onInputChange={onChange}
-      textFieldLabel={label}
-      loading={isLoading}
+      isLoading={isLoading}
       values={marksCarList}
-      onSelect={onSelectMarkCar}
-      testid={testid}
-      name={name}
-      multiple={multiple}
-      value={value}
+      {...props}
     />
   );
 }

@@ -646,7 +646,15 @@ export class EventsApi {
     return `api/device-actions?page=${page || 0}&size=${limit || 20}${queries}`;
   }
 
-  private static getEventsHistoryURL({ alcolockId, carId, userId, page, limit }: EventsOptions) {
+  private static getEventsHistoryURL({
+    alcolockId,
+    carId,
+    userId,
+    page,
+    limit,
+    order,
+    sortBy,
+  }: EventsOptions) {
     let queries = getSelectBranchQueryUrl({
       page: 'device',
     });
@@ -663,7 +671,11 @@ export class EventsApi {
       queries += `&all.device.id.in=${alcolockId}`;
     }
 
-    return `api/device-actions?page=${page}&size=${limit}${queries}`;
+    if (order && sortBy) {
+      queries += this.getSortQueryEvents(sortBy, order);
+    }
+
+    return `api/device-actions?page=${page || 0}&size=${limit || 50}${queries}`;
   }
 
   static getList(options: PartialQueryOptions) {
