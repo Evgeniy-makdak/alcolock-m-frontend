@@ -20,16 +20,10 @@ interface AlcolockSelectProps<T> {
 }
 
 export function AlcolockSelect<T>({
-  setValueStore,
-  error,
-  label,
-  multiple,
-  value,
-  testid,
-  name,
   vieBranch,
   branchId,
   notInBranch,
+  ...rest
 }: AlcolockSelectProps<T>) {
   const { onChange, isLoading, onReset, alcolockList } = useAlcolockSelect(
     vieBranch,
@@ -39,17 +33,11 @@ export function AlcolockSelect<T>({
 
   return (
     <SearchMultipleSelect
-      error={error}
       onReset={onReset}
       onInputChange={onChange}
-      textFieldLabel={label}
-      loading={isLoading}
+      isLoading={isLoading}
       values={alcolockList}
-      setValueStore={setValueStore}
-      testid={testid}
-      value={value}
-      name={name}
-      multiple={multiple}
+      {...rest}
     />
   );
 }

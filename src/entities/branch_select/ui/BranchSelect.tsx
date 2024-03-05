@@ -17,30 +17,15 @@ type BranchSelectProps<T> = {
   filter?: ID;
 };
 
-export function BranchSelect<T>({
-  testid,
-  multiple,
-  label,
-  error,
-  setValueStore,
-  value,
-  name,
-  filter,
-}: BranchSelectProps<T>) {
+export function BranchSelect<T>({ filter, ...rest }: BranchSelectProps<T>) {
   const { onChange, onReset, isLoading, branchList } = useBranchSelect(filter);
   return (
     <SearchMultipleSelect
-      error={error}
       onReset={onReset}
       onInputChange={onChange}
-      textFieldLabel={label}
-      loading={isLoading}
-      value={value}
+      isLoading={isLoading}
       values={branchList}
-      setValueStore={setValueStore}
-      testid={testid}
-      name={name}
-      multiple={multiple}
+      {...rest}
     />
   );
 }

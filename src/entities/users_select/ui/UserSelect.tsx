@@ -14,7 +14,6 @@ interface UsersSelectProps<T> {
   error?: boolean;
   name: keyof T;
   value?: Value[];
-  sort?: boolean;
   vieBranch?: boolean;
   branchId?: ID;
   notInBranch?: ID;
@@ -22,39 +21,25 @@ interface UsersSelectProps<T> {
 }
 
 export function UsersSelect<T>({
-  onSelectDriver,
-  testid,
-  multiple,
-  label,
-  error,
-  value,
-  name,
-  sort,
   vieBranch,
-  setValueStore,
   branchId,
   notInBranch,
+  onSelectDriver,
+  ...rest
 }: UsersSelectProps<T>) {
   const { onChange, isLoading, onReset, driversList } = useUserSelect(
-    sort,
     vieBranch,
     branchId,
     notInBranch,
   );
   return (
     <SearchMultipleSelect
-      setValueStore={setValueStore}
-      error={error}
       onReset={onReset}
       onInputChange={onChange}
-      textFieldLabel={label}
-      loading={isLoading}
+      isLoading={isLoading}
       values={driversList}
       onSelect={onSelectDriver}
-      testid={testid}
-      name={name}
-      multiple={multiple}
-      value={value}
+      {...rest}
     />
   );
 }

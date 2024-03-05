@@ -32,16 +32,15 @@ export function mapOptions<T>(
   return readyArr;
 }
 
-interface SearchMultipleSelectProps<T> {
-  testid: string;
+export interface SearchMultipleSelectProps<T> {
+  testid?: string;
   error?: boolean;
-  textFieldLabel?: string;
+  label?: string;
   multiple?: boolean;
-  loading?: boolean;
+  isLoading?: boolean;
   values: Value[];
   validations?: any[];
   name: keyof T;
-  register?: any;
   value?: Value[];
   onSelect?: (value: number[] | number) => void;
   onInputChange?: (value: string) => void;
@@ -56,9 +55,9 @@ interface SearchMultipleSelectProps<T> {
 
 export function SearchMultipleSelect<T>({
   testid,
-  textFieldLabel,
+  label,
   error,
-  loading,
+  isLoading,
   validations,
   onReset,
   values,
@@ -79,7 +78,7 @@ export function SearchMultipleSelect<T>({
         'data-testid': testid,
       },
     };
-    return <TextField {...prop} label={textFieldLabel} error={error} />;
+    return <TextField {...prop} label={label} error={error} />;
   };
 
   const renderOptions = (props: React.HTMLAttributes<HTMLLIElement>, option: Value) => (
@@ -108,7 +107,7 @@ export function SearchMultipleSelect<T>({
               return option.value === value.value;
           }}
           options={readyValues}
-          loading={loading}
+          loading={isLoading}
           inputValue={inputValue}
           onInputChange={(_e, value, reason) => {
             if (reason === 'clear') {

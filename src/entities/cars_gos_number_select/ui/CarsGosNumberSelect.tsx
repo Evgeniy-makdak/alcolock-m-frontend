@@ -6,7 +6,7 @@ import {
 import { useCarsGosNumberSelect } from '../hooks/useCarsGosNumberSelect';
 
 interface CarsGosNumberSelectProps<T> {
-  testid?: string;
+  testid: string;
   multiple?: boolean;
   label?: string;
   error?: boolean;
@@ -15,29 +15,15 @@ interface CarsGosNumberSelectProps<T> {
   value: Value[];
 }
 
-export function CarsGosNumberSelect<T>({
-  testid,
-  multiple,
-  label,
-  error,
-  setValueStore,
-  value,
-  name,
-}: CarsGosNumberSelectProps<T>) {
+export function CarsGosNumberSelect<T>(props: CarsGosNumberSelectProps<T>) {
   const { onChange, onReset, isLoading, carList } = useCarsGosNumberSelect();
   return (
     <SearchMultipleSelect
-      error={error}
       onReset={onReset}
       onInputChange={onChange}
-      textFieldLabel={label}
-      loading={isLoading}
-      value={value}
+      isLoading={isLoading}
       values={carList}
-      setValueStore={setValueStore}
-      testid={testid}
-      name={name}
-      multiple={multiple}
+      {...props}
     />
   );
 }

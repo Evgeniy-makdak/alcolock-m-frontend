@@ -16,28 +16,7 @@ interface TypeEventSelectProps<T> {
   setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
 }
 
-export function TypeEventSelect<T>({
-  onSelect,
-  testid,
-  multiple,
-  label,
-  error,
-  value,
-  name,
-  setValueStore,
-}: TypeEventSelectProps<T>) {
+export function TypeEventSelect<T>(props: TypeEventSelectProps<T>) {
   const { marksCarList } = useTypeEventSelect();
-  return (
-    <SearchMultipleSelect
-      setValueStore={setValueStore}
-      error={error}
-      textFieldLabel={label}
-      values={marksCarList}
-      onSelect={onSelect}
-      testid={testid}
-      name={name}
-      multiple={multiple}
-      value={value}
-    />
-  );
+  return <SearchMultipleSelect values={marksCarList} {...props} />;
 }
