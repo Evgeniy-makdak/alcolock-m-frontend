@@ -5,20 +5,20 @@ export interface IUser {
   activated: boolean;
   email: string;
   login: string;
-  id: number;
+  id: ID;
   lastModifiedBy: {
     email: string;
     firstName: string;
-    id: 1;
+    id: ID;
     lastName: string;
     middleName: string;
   };
   assignment: {
-    branch: { id: number; name: string };
+    branch: { id: ID; name: string };
     createdAt: string;
     createdBy: {
       name: string;
-      id: number;
+      id: ID;
       email: string;
       firstName: string;
       middleName: string;
@@ -33,7 +33,7 @@ export interface IUser {
     licenseIssueDate: string;
     vehicleAllotments: {
       vehicle: ICar;
-      id: number;
+      id: ID;
     }[];
   };
   disabled: boolean;
@@ -42,9 +42,9 @@ export interface IUser {
 export interface IAttachmentItems {
   createdAt: string;
   createdBy: IUser;
-  id: number;
+  id: ID;
   driver: {
-    id: number;
+    id: ID;
     licenseClass: string[];
     licenseCode: string;
     licenseExpirationDate: string;
@@ -75,6 +75,10 @@ export interface ICar {
     serviceId: string;
     mode: string;
     modeUpdatedAt: string;
+  };
+  assignment?: {
+    branch: { id: ID; name?: string };
+    createdAt: string;
   };
 }
 
@@ -244,4 +248,28 @@ export interface IAccount {
   login: string;
   middleName: string;
   permissions: string[];
+}
+
+export interface IBranch {
+  id: ID;
+  name: string;
+  parentOffice: string;
+  childOffices: string[];
+  createdAt: string;
+  createdBy: {
+    id: ID;
+    email: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
+  };
+  lastModifiedAt: string;
+  lastModifiedBy: {
+    id: ID;
+    email: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
+  };
+  systemGenerated: boolean;
 }

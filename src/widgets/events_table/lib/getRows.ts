@@ -12,12 +12,12 @@ export const useGetRows = (data: IDeviceAction[]): GridRowsProp => {
   const mapData = (Array.isArray(data) ? data : []).map((item) => {
     return {
       id: item.id,
-      [ValuesHeader.DATE]: Formatters.formatISODate(item.createdAt) ?? '-',
+      [ValuesHeader.DATE_OCCURRENT]: Formatters.formatISODate(item.createdAt) ?? '-',
       [ValuesHeader.INTITIATOR]: Formatters.nameFormatter(item.createdBy) ?? '-',
       [ValuesHeader.TC]: item.vehicleRecord
         ? Formatters.carNameFormatter(item.vehicleRecord, true)
         : '-',
-      [ValuesHeader.NUMBER_CAR]: item.vehicleRecord?.registrationNumber ?? '-',
+      [ValuesHeader.GOS_NUMBER]: item.vehicleRecord?.registrationNumber ?? '-',
       [ValuesHeader.TYPE_OF_EVENT]:
         AppConstants.eventTypesList.find((type) => type.value === item?.type)?.label ?? '-',
     };

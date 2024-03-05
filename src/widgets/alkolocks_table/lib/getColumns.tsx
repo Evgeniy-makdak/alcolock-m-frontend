@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { type ReactNode, useMemo } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,6 +7,7 @@ import { GridActionsCellItem, GridColDef, type GridColumnHeaderParams } from '@m
 
 import { setTestIdsToHeaderColumns } from '@shared/components/Table/Table';
 import { testids } from '@shared/const/testid';
+import { SortTypes } from '@shared/const/types';
 import type { IAlcolock, ID } from '@shared/types/BaseQueryTypes';
 import type { RefetchType } from '@shared/types/QueryTypes';
 import { Refetch } from '@shared/ui/refetch/Refetch';
@@ -14,12 +15,12 @@ import { Refetch } from '@shared/ui/refetch/Refetch';
 import style from '../ui/AlkolocksTable.module.scss';
 
 export enum ValuesHeader {
-  NAMING = 'NAMING',
-  SERIAL_NUMBER = 'SERIAL_NUMBER',
-  TC = 'TC',
-  OPERATING_MODE = 'OPERATING_MODE',
-  HOW_LINK = 'HOW_LINK',
-  DATA_INSTALLATION = 'DATA_INSTALLATION',
+  NAMING = SortTypes.NAMING,
+  SERIAL_NUMBER = SortTypes.SERIAL_NUMBER,
+  TC = SortTypes.TC,
+  OPERATING_MODE = SortTypes.OPERATING_MODE,
+  WHO_LINK = SortTypes.WHO_LINK,
+  DATA_INSTALLATION = SortTypes.DATA_INSTALLATION,
 }
 
 const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
@@ -31,7 +32,7 @@ const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, 
 
 export const useGetColumns = (
   refetch: RefetchType<IAlcolock[]>,
-  toggleDelete: (id: string, text?: string) => void,
+  toggleDelete: (id: string, text?: ReactNode) => void,
   toggle: () => void,
   setChangeAlkolockId: (id: ID) => void,
 ): GridColDef[] => {
@@ -61,7 +62,7 @@ export const useGetColumns = (
       {
         renderHeader: setTestIdsToHeaderColumnsAdapter,
         headerName: 'Кем привязан',
-        field: ValuesHeader.HOW_LINK,
+        field: ValuesHeader.WHO_LINK,
         minWidth: 220,
       },
       {
@@ -89,7 +90,14 @@ export const useGetColumns = (
                 onClick={() => setChangeAlkolockId(row.id)}
               />
               <GridActionsCellItem
-                onClick={() => toggleDelete(row.id, `${row.NAMING} ${row.SERIAL_NUMBER}`)}
+                onClick={() =>
+                  toggleDelete(
+                    row.id,
+                    <>
+                      {row.NAMING} {row.SERIAL_NUMBER} с привязанным к нему ТС <b>{row?.TC}</b>
+                    </>,
+                  )
+                }
                 key={'delete'}
                 data-testid={
                   testids.page_attachments.attachments_widget_table

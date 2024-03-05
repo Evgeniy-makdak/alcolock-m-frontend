@@ -6,6 +6,7 @@ import { GridColDef, type GridColumnHeaderParams } from '@mui/x-data-grid';
 import { TimeCell } from '@entities/time_cell';
 import { setTestIdsToHeaderColumns } from '@shared/components/Table/Table';
 import { testids } from '@shared/const/testid';
+import { SortTypes } from '@shared/const/types';
 import type { IAttachmentItems } from '@shared/types/BaseQueryTypes';
 import type { RefetchType } from '@shared/types/QueryTypes';
 import { Refetch } from '@shared/ui/refetch/Refetch';
@@ -14,13 +15,13 @@ import style from '../ui/AvtoServiceTable.module.scss';
 import { chipColor } from './getRows';
 
 export enum ValuesHeader {
-  DATE = 'DATE',
-  SERIAL_NUMBER = 'SERIAL_NUMBER',
-  TC = 'TC',
-  INITIATOR = 'INITIATOR',
-  STATE = 'STATE',
-  PROCESS = 'PROCESS',
-  EXPIRES = 'EXPIRES',
+  DATE = SortTypes.DATE_CREATE,
+  SERIAL_NUMBER = SortTypes.SERIAL_NUMBER,
+  TC = SortTypes.TC,
+  INITIATOR = SortTypes.CREATED_BY,
+  STATE = SortTypes.STATE,
+  PROCESS = SortTypes.PROCESS,
+  EXPIRES = SortTypes.EXPIRES,
 }
 
 const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
@@ -63,16 +64,19 @@ export const useGetColumns = (refetch: RefetchType<IAttachmentItems[]>): GridCol
           const state = params?.row?.state || '';
           return <Chip className={style.chipFont} color={chipColor[state]} label={state} />;
         },
+        sortable: false,
       },
       {
         renderHeader: setTestIdsToHeaderColumnsAdapter,
         headerName: 'Процесс',
         field: ValuesHeader.PROCESS,
+        sortable: false,
       },
       {
         renderHeader: setTestIdsToHeaderColumnsAdapter,
         headerName: 'Истекает',
         field: ValuesHeader.EXPIRES,
+        sortable: false,
         renderCell: (params) => {
           return (
             <TimeCell

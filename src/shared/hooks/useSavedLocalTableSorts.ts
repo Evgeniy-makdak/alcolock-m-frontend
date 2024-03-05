@@ -51,7 +51,7 @@ export const useSavedLocalTableSorts = (
     apiRef?.current?.setPage && apiRef?.current?.setPage(state.page);
     apiRef?.current?.setPageSize && apiRef?.current?.setPageSize(state.pageSize);
     apiRef?.current?.setSortModel && apiRef?.current?.setSortModel(state.sortModel);
-  }, []);
+  }, [apiRef?.current]);
 
   return [state, apiRef, changeTableState, changeTableSorts];
 };

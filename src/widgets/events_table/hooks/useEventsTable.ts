@@ -2,6 +2,7 @@
 import { useState } from 'react';
 
 import { eventsFilterPanelStore } from '@features/events_filter_panel';
+import { InputSearchDelay } from '@shared/const/config';
 import { storageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
@@ -19,7 +20,7 @@ export const useEventsTable = () => {
   const { resetFilters, filters, hasActiveFilters } = eventsFilterPanelStore();
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [inputWidthDelay] = useDebounce(searchQuery, 500);
+  const [inputWidthDelay] = useDebounce(searchQuery, InputSearchDelay);
   const {
     changeEndDate,
     changeStartDate,
@@ -42,6 +43,8 @@ export const useEventsTable = () => {
       carsByLicense: Formatters.getStringForQueryParams(filters.gosNumber),
       eventsByType: Formatters.getStringForQueryParams(filters.typeEvent),
     },
+    sortBy: state?.sortModel[0]?.field,
+    order: state?.sortModel[0]?.sort,
   });
 
   const rows = useGetRows(data?.data || []);

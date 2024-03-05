@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { attachmentsFilterPanelStore } from '@features/attachments_filter_panel';
+import { InputSearchDelay } from '@shared/const/config';
 import { storageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
@@ -16,12 +17,12 @@ export const useAttachmentsTable = () => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
     storageKeys.ATTACHMENTS_TABLE_SORTS,
   );
-  const [selectAttachment, setSelectAttachment] = useState<null | { id: number; text: string }>(
-    null,
-  );
+  const [selectDeleteAttachment, setSelectDeleteAttachment] = useState<null | {
+    id: number;
+    text: string;
+  }>(null);
 
   const [openAppAttachModal, toggleAppAttachModal, closeAppAttachModal] = useToggle(false);
-  const [openDeleteModal, toggleOpenDeleteModal, closeDeleteModal] = useToggle(false);
 
   const [input, setInput] = useState('');
   const {
@@ -34,7 +35,7 @@ export const useAttachmentsTable = () => {
     toggleFilters,
   } = useAttachmentsStore();
   const filters = attachmentsFilterPanelStore((state) => state.filters);
-  const [searchQuery] = useDebounce(input, 500);
+  const [searchQuery] = useDebounce(input, InputSearchDelay);
 
   const { data, isLoading, refetch } = useAttachmentsApi({
     searchQuery,
@@ -49,12 +50,18 @@ export const useAttachmentsTable = () => {
       alcolock: Formatters.getStringForQueryParams(filters?.alcolocks),
       dateLink: Formatters.getStringForQueryParams(filters?.dateLink),
     },
+    sortBy: state?.sortModel[0]?.field,
+    order: state?.sortModel[0]?.sort,
   });
 
   const handleClickDeleteAttachment = (id: number, text: string) => {
-    setSelectAttachment({ id, text });
-    toggleOpenDeleteModal();
+    setSelectDeleteAttachment({ id, text });
   };
+
+  const closeDeleteModal = () => {
+    setSelectDeleteAttachment(null);
+  };
+
   const rows = useGetRows(data);
   const headers = useGetColumns(toggleAppAttachModal, handleClickDeleteAttachment, refetch);
 
@@ -88,9 +95,8 @@ export const useAttachmentsTable = () => {
 
   const deleteAttachModalData = {
     closeDeleteModal,
-    openDeleteModal,
-    toggleOpenDeleteModal,
-    selectAttachment,
+    openDeleteModal: !!selectDeleteAttachment,
+    selectDeleteAttachment,
   };
 
   return {

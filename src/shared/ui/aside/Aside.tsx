@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { IconButton } from '@mui/material';
 
 import { testids } from '@shared/const/testid';
 
@@ -17,9 +18,13 @@ export const Aside = ({ children, onClose, testid }: AsideProps) => {
     <div data-testid={testid} className={style.aside}>
       {children}
 
-      <div data-testid={testids.INFO_TAB_CLOSE_BUTTON} className={style.close} onClick={onClose}>
+      <IconButton
+        color="info"
+        data-testid={testids.INFO_TAB_CLOSE_BUTTON}
+        className={style.close}
+        onClick={onClose}>
         <ArrowBackIosNewIcon />
-      </div>
+      </IconButton>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export const useCarListQuery = (options: PartialQueryOptions) => {
   const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.CAR_LIST, options.searchQuery],
+    queryKey: [QueryKeys.CAR_LIST, ...Object.values(options)],
     queryFn: () => CarsApi.getCarsList(options),
   });
   return { data: data?.data || [], isLoading };

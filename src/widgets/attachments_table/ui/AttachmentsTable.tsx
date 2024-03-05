@@ -62,6 +62,7 @@ export const AttachmentsTable = () => {
       <AttachmentsFilterPanel open={filtersData.openFilters} />
       <Table
         // TODO => кол-во элементов должно приходить с бэка
+        sortingMode="server"
         rowCount={100}
         paginationMode="server"
         onSortModelChange={tableData.changeTableSorts}
@@ -86,11 +87,11 @@ export const AttachmentsTable = () => {
         closeonClickSpace={false}
         onCloseModal={deleteAttachModalData.closeDeleteModal}
         isOpen={deleteAttachModalData.openDeleteModal}
-        toggleModal={deleteAttachModalData.toggleOpenDeleteModal}
+        toggleModal={deleteAttachModalData.closeDeleteModal}
         body={
           <AttachmentDeleteForm
             closeModal={deleteAttachModalData.closeDeleteModal}
-            attach={deleteAttachModalData.selectAttachment}
+            attach={deleteAttachModalData.selectDeleteAttachment}
           />
         }
       />

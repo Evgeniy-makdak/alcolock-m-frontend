@@ -1,7 +1,7 @@
 import { type AxiosError } from 'axios';
 import { enqueueSnackbar } from 'notistack';
 
-import { postQuery } from '@shared/api/baseQuery';
+import { postQuery } from '@shared/api/baseQueryTypes';
 import type { IError } from '@shared/types/BaseQueryTypes';
 import { useMutation } from '@tanstack/react-query';
 

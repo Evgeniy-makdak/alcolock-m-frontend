@@ -1,3 +1,4 @@
+import type { ID } from '@shared/types/BaseQueryTypes';
 import {
   SearchMultipleSelect,
   type Value,
@@ -13,6 +14,9 @@ interface CarsSelectProps<T> {
   setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
   name: keyof T;
   value: Value[];
+  branchId?: ID;
+  notInBranch?: ID;
+  vieBranch?: boolean;
 }
 
 export function CarsSelect<T>({
@@ -23,8 +27,11 @@ export function CarsSelect<T>({
   setValueStore,
   value,
   name,
+  vieBranch = false,
+  branchId,
+  notInBranch,
 }: CarsSelectProps<T>) {
-  const { onChange, onReset, isLoading, carList } = useCarsSelect();
+  const { onChange, onReset, isLoading, carList } = useCarsSelect(vieBranch, branchId, notInBranch);
   return (
     <SearchMultipleSelect
       error={error}
