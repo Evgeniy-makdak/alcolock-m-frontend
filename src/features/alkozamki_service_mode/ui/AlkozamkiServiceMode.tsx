@@ -59,9 +59,8 @@ export const AlkozamkiServiceMode = ({
 
       <Popup
         isOpen={openActivatePopup}
-        headerTitle={'Включить режима “Автосервис”?'}
+        headerTitle={'Включить режим “Автосервис”?'}
         toggleModal={toggleActivatePopup}
-        closeonClickSpace={false}
         body={
           <ActivateForm
             isLoading={isLoadingActivateServiceModeMutation}
