@@ -51,6 +51,7 @@ export interface SearchMultipleSelectProps<T> {
     value: string | Value | Value[] | (string | Value | Value[])[],
   ) => void;
   inputValue?: string;
+  helperText?: string;
 }
 
 export function SearchMultipleSelect<T>({
@@ -65,6 +66,7 @@ export function SearchMultipleSelect<T>({
   inputValue,
   multiple,
   name,
+  helperText,
   setValueStore,
   onInputChange,
 }: SearchMultipleSelectProps<T>) {
@@ -78,7 +80,7 @@ export function SearchMultipleSelect<T>({
         'data-testid': testid,
       },
     };
-    return <TextField {...prop} label={label} error={error} />;
+    return <TextField helperText={helperText} {...prop} label={label} error={error} />;
   };
 
   const renderOptions = (props: React.HTMLAttributes<HTMLLIElement>, option: Value) => (

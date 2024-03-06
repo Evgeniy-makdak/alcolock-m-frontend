@@ -1,3 +1,5 @@
+import type { PartialQueryOptions } from '@shared/api/baseQuerys';
+
 export interface IUser {
   firstName: string;
   middleName: string;
@@ -67,7 +69,8 @@ export interface ICar {
   registrationNumber: string;
   type: string;
   vin: string;
-  year: string;
+  year: number;
+  createdAt: string;
   monitoringDevice: {
     id: string;
     name: string;
@@ -272,4 +275,38 @@ export interface IBranch {
     lastName: string;
   };
   systemGenerated: boolean;
+}
+
+export interface CreateCarBody extends ChangeCarBody {
+  branchId: ID;
+}
+
+export interface ChangeCarBody {
+  registrationNumber: string;
+  manufacturer: string;
+  model: string;
+  year: number;
+  vin: string;
+  type: ID;
+  color: ID;
+}
+
+export interface CreateAlcolockData {
+  vehicleId?: ID;
+  branchId: ID;
+  name: string;
+  serviceId: string | number;
+  serialNumber: number | string;
+}
+
+export interface EventsOptions extends PartialQueryOptions {
+  userId?: ID;
+  carId?: ID;
+  alcolockId?: ID;
+}
+
+export interface ActivateServiceModeOptions {
+  duration: number | undefined | null;
+  deviceId: ID;
+  isDeactivate: boolean;
 }

@@ -5,14 +5,9 @@ import 'dayjs/locale/ru';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
 import { MenuItem, type Theme, ThemeProvider, createTheme } from '@mui/material';
-import {
-  DatePicker,
-  type DatePickerProps,
-  LocalizationProvider,
-  type PickersActionBarProps,
-} from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker, type DatePickerProps, type PickersActionBarProps } from '@mui/x-date-pickers';
 
+import { MuiLocalizationProvider } from '@shared/components/mui_localization_provider';
 import { DATE_FORMAT_FOR_DISPLAYS } from '@shared/const/dateFormat';
 
 interface InputDateProps extends DatePickerProps<Dayjs> {
@@ -89,7 +84,7 @@ const theme = createTheme(newTheme());
 
 export const InputDate = (props: InputDateProps) => {
   return (
-    <LocalizationProvider adapterLocale="ru" dateAdapter={AdapterDayjs}>
+    <MuiLocalizationProvider>
       <ThemeProvider theme={theme}>
         <DatePicker
           {...props}
@@ -119,7 +114,6 @@ export const InputDate = (props: InputDateProps) => {
               id: `SWITCH_VIEW_BUTTON`,
             },
             textField: {
-              placeholder: 'ДД.ММ.ГГГГ',
               id: `TEXT_FIELD ${props.testid}_TEXT_FIELD`,
             },
             clearButton: {
@@ -129,6 +123,6 @@ export const InputDate = (props: InputDateProps) => {
           format={DATE_FORMAT_FOR_DISPLAYS}
         />
       </ThemeProvider>
-    </LocalizationProvider>
+    </MuiLocalizationProvider>
   );
 };
