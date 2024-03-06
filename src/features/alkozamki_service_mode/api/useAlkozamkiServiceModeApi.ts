@@ -1,11 +1,11 @@
 import type { AxiosError } from 'axios';
 import { enqueueSnackbar } from 'notistack';
 
-import { type ActivateServiceModeOptions, EventsApi } from '@shared/api/baseQuerys';
+import { EventsApi } from '@shared/api/baseQuerys';
 import { StatusCode } from '@shared/const/statusCode';
 import { QueryKeys } from '@shared/const/storageKeys';
 import { useUpdateQueries } from '@shared/hooks/useUpdateQuerys';
-import type { ID, IError } from '@shared/types/BaseQueryTypes';
+import type { ActivateServiceModeOptions, ID, IError } from '@shared/types/BaseQueryTypes';
 import { useMutation } from '@tanstack/react-query';
 
 const messageCode: { [key: number]: string } = {

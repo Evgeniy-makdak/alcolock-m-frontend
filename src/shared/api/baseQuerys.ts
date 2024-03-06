@@ -9,7 +9,12 @@ import { DateUtils } from '@shared/utils/DateUtils';
 import { SortTypes } from '../const/types';
 import { selectedBranchState } from '../model/selected_branch/store';
 import {
+  type ActivateServiceModeOptions,
   type AttachmentsCreateData,
+  type ChangeCarBody,
+  type CreateAlcolockData,
+  type CreateCarBody,
+  type EventsOptions,
   type IAccount,
   type IAlcolock,
   type IAttachmentItems,
@@ -226,9 +231,9 @@ export class CarsApi {
         return `&sort=vin${orderStr}`;
       case SortTypes.GOS_NUMBER:
         return `&sort=registrationNumber${orderStr}`;
-      case SortTypes.byManufacture:
+      case SortTypes.YEAR:
         return `&sort=year${orderStr}`;
-      case SortTypes.byDate:
+      case SortTypes.DATE_CREATE:
         return `&sort=createdAt${orderStr}`;
       default:
         return '';
@@ -296,6 +301,21 @@ export class CarsApi {
 
   static getMarksCarList(options: PartialQueryOptions) {
     return getQuery<string[]>({ url: this.getMarksCarURL(options) });
+  }
+  static getGetManufacturer() {
+    return getQuery<string[]>({ url: `api/vehicles/manufacturers` });
+  }
+  static getCar(id: ID) {
+    return getQuery<ICar>({ url: `api/vehicles/${id}` });
+  }
+  static changeCar(data: ChangeCarBody, id: ID) {
+    return putQuery({ url: `api/vehicles/${id}`, data });
+  }
+  static deleteCar(id: ID) {
+    return deleteQuery({ url: `api/vehicles/${id}` });
+  }
+  static createCar(data: CreateCarBody) {
+    return postQuery({ url: `api/vehicles`, data });
   }
   static switchBranch(options: PartialQueryOptions, isPairSwitch: boolean) {
     return postQuery<ICar, any>({ url: this.getCarSwitchBranchUrl(options, isPairSwitch) });
@@ -454,14 +474,6 @@ export class AlcolocksApi {
   }
 }
 
-export interface CreateAlcolockData {
-  vehicleId?: ID;
-  branchId: ID;
-  name: string;
-  serviceId: string | number;
-  serialNumber: number | string;
-}
-
 const getSortQuery = (orderType: SortTypes | string, order: GridSortDirection) => {
   const orderStr = ',' + order.toUpperCase();
 
@@ -500,18 +512,6 @@ const getSortQuery = (orderType: SortTypes | string, order: GridSortDirection) =
       return '';
   }
 };
-
-export interface EventsOptions extends PartialQueryOptions {
-  userId?: ID;
-  carId?: ID;
-  alcolockId?: ID;
-}
-
-export interface ActivateServiceModeOptions {
-  duration: number | undefined | null;
-  deviceId: ID;
-  isDeactivate: boolean;
-}
 
 export class EventsApi {
   private static EVENTS_TYPES_BLACKLIST = ['SERVICE_MODE_ACTIVATE', 'SERVICE_MODE_DEACTIVATE'];

@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import { TableRow } from '@mui/material';
 
 import { EventData, type HistoryTypes } from '@entities/events_data';
-import type { EventsOptions } from '@shared/api/baseQuerys';
 import { testids } from '@shared/const/testid';
 import { StyledTable } from '@shared/styled_components/styledTable';
-import type { ID } from '@shared/types/BaseQueryTypes';
+import type { EventsOptions, ID } from '@shared/types/BaseQueryTypes';
 
 import { useEventsHistoryApi } from '../api/useEventsHistoryApi';
 import { ItemButton, date, isTheSameRow, typeEvent } from '../lib/helpers';

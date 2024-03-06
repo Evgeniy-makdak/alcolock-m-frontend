@@ -1,8 +1,8 @@
 import { Table, TableBody, TableHead } from '@mui/material';
 
 import type { HistoryTypes } from '@entities/events_data';
-import type { EventsOptions } from '@shared/api/baseQuerys';
 import { StyledTable } from '@shared/styled_components/styledTable';
+import type { EventsOptions } from '@shared/types/BaseQueryTypes';
 import { Loader } from '@shared/ui/loader';
 
 import { useEventsHistory } from '../hooks/useEventsHistory';

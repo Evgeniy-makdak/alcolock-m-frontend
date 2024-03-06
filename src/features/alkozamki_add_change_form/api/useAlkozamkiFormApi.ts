@@ -1,7 +1,7 @@
-import { AlcolocksApi, type CreateAlcolockData } from '@shared/api/baseQuerys';
+import { AlcolocksApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
 import { useUpdateQueries } from '@shared/hooks/useUpdateQuerys';
-import type { ID } from '@shared/types/BaseQueryTypes';
+import type { CreateAlcolockData, ID } from '@shared/types/BaseQueryTypes';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 const updateQueries = [

@@ -1,6 +1,7 @@
-import { EventsApi, type EventsOptions } from '@shared/api/baseQuerys';
+import { EventsApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
 import { SortTypes, SortsTypes } from '@shared/const/types';
+import type { EventsOptions } from '@shared/types/BaseQueryTypes';
 import { useQuery } from '@tanstack/react-query';
 
 export const useEventsHistoryApi = (options: EventsOptions) => {

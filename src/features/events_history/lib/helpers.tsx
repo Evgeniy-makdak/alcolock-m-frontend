@@ -8,7 +8,8 @@ export const ItemButton = (event: IDeviceAction, expandRowId: ID) =>
 
 export const date = (event: IDeviceAction) => Formatters.formatISODate(event.createdAt);
 
-export const typeEvent = (event: IDeviceAction) =>
-  AppConstants.eventTypesList.find((item) => item.value === event.type)?.label ?? '-';
+export const typeEvent = (event: IDeviceAction) => {
+  return AppConstants.eventTypesList.find((item) => item.value === event.type)?.label ?? '-';
+};
 
 export const isTheSameRow = (event: IDeviceAction, expandRowId: ID) => expandRowId === event.id;

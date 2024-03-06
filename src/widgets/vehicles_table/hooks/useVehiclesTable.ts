@@ -8,27 +8,27 @@ import { useToggle } from '@shared/hooks/useToggle';
 import type { ID } from '@shared/types/BaseQueryTypes';
 import { Formatters } from '@shared/utils/formatters';
 
-import { useAlkolocksApi } from '../api/alkolocksApi';
+import { useVehiclesTableApi } from '../api/useVehiclesTableApi';
 import { useGetColumns } from '../lib/getColumns';
 import { useGetRows } from '../lib/getRows';
-import { useAlcolocksStore } from '../model/alkolocksStore';
+import { useVehiclesTableStore } from '../model/vehiclesTableStore';
 
-export const useAlkolocksTable = () => {
+export const useVehiclesTable = () => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
-    storageKeys.ALCOLOCKS_TABLE,
+    storageKeys.VEHICLES_PAGE_TABLE_SORTS,
   );
 
-  const [deleteAlcolock, setDeleteAlcolock] = useState(null);
-  const [changeAlkolockId, setChangeAlkolockId] = useState<ID>(null);
-
-  const [openAddAlcolockModal, toggleAddAlcolockModal, closeAddAlcolockModal] = useToggle(false);
+  const [deleteCar, setDeleteCar] = useState(null);
+  const [changeCarId, setChangeCarId] = useState<ID>(null);
+  const [openAddCarModal, toggleAddCarModal, closeAddCarModal] = useToggle(false);
 
   const [input, setInput] = useState('');
-  const { changeEndDate, changeStartDate, clearDates, endDate, startDate } = useAlcolocksStore();
+  const { changeEndDate, changeStartDate, clearDates, endDate, startDate } =
+    useVehiclesTableStore();
 
   const [searchQuery] = useDebounce(input, InputSearchDelay);
 
-  const { data, isLoading, refetch } = useAlkolocksApi({
+  const { cars, isLoading, refetch } = useVehiclesTableApi({
     searchQuery,
     endDate: Formatters.formatToISODate(endDate),
     startDate: Formatters.formatToISODate(startDate),
@@ -38,32 +38,32 @@ export const useAlkolocksTable = () => {
     order: state?.sortModel[0]?.sort,
   });
 
-  const handleClickDeletetAlcolock = (id: ID, text?: ReactNode) => {
-    setDeleteAlcolock({
+  const handleClickDeletetCar = (id: ID, text?: ReactNode) => {
+    setDeleteCar({
       id,
       text,
     });
   };
   const closeDeleteModal = () => {
-    setDeleteAlcolock(null);
+    setDeleteCar(null);
   };
 
-  const handleClickAddAlkolock = (id: ID) => {
-    setChangeAlkolockId(id);
-    toggleAddAlcolockModal();
+  const handleClickAddCar = (id: ID) => {
+    setChangeCarId(id);
+    toggleAddCarModal();
   };
 
-  const rows = useGetRows(data);
+  const rows = useGetRows(cars);
   const headers = useGetColumns(
     refetch,
-    handleClickDeletetAlcolock,
-    toggleAddAlcolockModal,
-    handleClickAddAlkolock,
+    handleClickDeletetCar,
+    toggleAddCarModal,
+    handleClickAddCar,
   );
 
   const closeEditModal = () => {
-    closeAddAlcolockModal();
-    setChangeAlkolockId(null);
+    closeAddCarModal();
+    setChangeCarId(null);
   };
 
   const tableData = {
@@ -87,19 +87,19 @@ export const useAlkolocksTable = () => {
   };
 
   const addModalData = {
-    changeAlkolockId,
-    closeAddAlcolockModal: closeEditModal,
-    toggleAddAlcolockModal,
-    openAddAlcolockModal,
+    changeCarId,
+    closeAddCarModal: closeEditModal,
+    toggleAddCarModal,
+    openAddCarModal,
   };
 
-  const deleteAlcolockModalData = {
+  const deleteCarModalData = {
     closeDeleteModal,
-    deleteAlcolock,
+    deleteCar,
   };
 
   return {
-    deleteAlcolockModalData,
+    deleteCarModalData,
     addModalData,
     tableData,
     filtersData,
