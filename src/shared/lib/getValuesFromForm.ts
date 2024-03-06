@@ -1,4 +1,4 @@
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Value, Values } from '@shared/ui/search_multiple_select';
 
 export const getStringFromArrayValues = (values: (string | Value)[] | Value) => {
   if (Array.isArray(values)) {
@@ -12,8 +12,8 @@ export const getStringFromArrayValues = (values: (string | Value)[] | Value) => 
   return values.value.toString();
 };
 
-export const getArrayValues = (values: (string | Value)[] | Value | string): Value[] => {
-  const arr: Value[] = [];
+export const getArrayValues = (values: (string | Value)[] | Value | string): Values => {
+  const arr: Values = [];
   if (typeof values === 'string' || !values) return arr;
   if (Array.isArray(values)) {
     values.map((val) => {

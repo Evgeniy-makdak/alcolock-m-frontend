@@ -1,8 +1,5 @@
 import type { ID } from '@shared/types/BaseQueryTypes';
-import {
-  SearchMultipleSelect,
-  type Value,
-} from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import { SearchMultipleSelect, type Value, type Values } from '@shared/ui/search_multiple_select';
 
 import { useUserSelect } from '../hooks/useUserSelect';
 
@@ -13,7 +10,7 @@ interface UsersSelectProps<T> {
   label?: string;
   error?: boolean;
   name: keyof T;
-  value?: Value[];
+  value?: Values;
   vieBranch?: boolean;
   branchId?: ID;
   notInBranch?: ID;

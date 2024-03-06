@@ -1,36 +1,24 @@
+import type React from 'react';
 import { type Control } from 'react-hook-form';
 
-import { Autocomplete, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  type AutocompleteInputChangeReason,
+  TextField,
+  createFilterOptions,
+} from '@mui/material';
 
 import { ValidationsWrapper } from '@shared/components/validations_wrapper';
 import { debounce } from '@shared/lib/debounce';
-import type { ID } from '@shared/types/BaseQueryTypes';
 
 import style from './SearchMultipleSelect.module.scss';
-
-export interface Value {
-  label: string;
-  value: ID;
-}
-
-export function mapOptions<T>(
-  values: T[],
-  adapter: (data: T) => [] | [string, number | string],
-): Value[] {
-  if (!Array.isArray(values)) return [];
-  const readyArr: Value[] = [];
-  values.map((data) => {
-    const vals = adapter(data);
-
-    if (!vals.length) return;
-    const [label, value] = vals;
-    readyArr.push({
-      label,
-      value,
-    });
-  });
-  return readyArr;
-}
+import {
+  type OnChane,
+  type Value,
+  type Values,
+  isOptionEqualToValue,
+  renderOptions,
+} from './helpers';
 
 export interface SearchMultipleSelectProps<T> {
   testid?: string;
@@ -38,20 +26,21 @@ export interface SearchMultipleSelectProps<T> {
   label?: string;
   multiple?: boolean;
   isLoading?: boolean;
-  values: Value[];
+  values: Values;
   validations?: any[];
   name: keyof T;
-  value?: Value[];
+  value?: Values;
   onSelect?: (value: number[] | number) => void;
   onInputChange?: (value: string) => void;
   onReset?: () => void;
   control?: Control<T, any>;
   setValueStore?: (
     type: keyof T,
-    value: string | Value | Value[] | (string | Value | Value[])[],
+    value: string | Values | Value | (string | Values | Value)[],
   ) => void;
   inputValue?: string;
   helperText?: string;
+  serverFilter?: boolean;
 }
 
 export function SearchMultipleSelect<T>({
@@ -69,6 +58,7 @@ export function SearchMultipleSelect<T>({
   helperText,
   setValueStore,
   onInputChange,
+  serverFilter = true,
 }: SearchMultipleSelectProps<T>) {
   const debouncedFunc = debounce({ time: 500, callBack: onInputChange });
 
@@ -83,11 +73,27 @@ export function SearchMultipleSelect<T>({
     return <TextField helperText={helperText} {...prop} label={label} error={error} />;
   };
 
-  const renderOptions = (props: React.HTMLAttributes<HTMLLIElement>, option: Value) => (
-    <li {...props} data-testid={`${testid}_${option.label}`}>
-      {option.label}
-    </li>
-  );
+  const onInputChangeHandler = (
+    _event: React.SyntheticEvent<Element, Event>,
+    value: string,
+    reason: AutocompleteInputChangeReason,
+  ) => {
+    if (reason === 'clear') {
+      onReset && onReset();
+    }
+    if (reason !== 'input') return;
+    if (!debouncedFunc) return;
+
+    debouncedFunc(value);
+  };
+
+  const onChange: OnChane = (_event, value, reason) => {
+    setValueStore(name, value);
+    if (reason === 'selectOption') {
+      onReset && onReset();
+    }
+  };
+
   const matchValue = multiple ? value : values.find((op) => op.value === value[0]?.value);
 
   const readyValues = matchValue || multiple ? values : [...value, ...values];
@@ -99,35 +105,19 @@ export function SearchMultipleSelect<T>({
     <div className={style.searchSelect}>
       <ValidationsWrapper validationMsgs={validations ? validations : []}>
         <Autocomplete
-          //TODO => из-за этого есть баг при печатании на клавиатуре
-          value={readyValue || []}
+          value={readyValue || null}
           fullWidth
           freeSolo
           multiple={multiple}
-          isOptionEqualToValue={(option, value) => {
-            if (!Array.isArray(option) && !Array.isArray(value))
-              return option.value === value.value;
-          }}
-          options={readyValues}
+          isOptionEqualToValue={isOptionEqualToValue}
+          options={!isLoading ? readyValues : []}
           loading={isLoading}
+          filterOptions={serverFilter ? (op) => op : createFilterOptions()}
           inputValue={inputValue}
-          onInputChange={(_e, value, reason) => {
-            if (reason === 'clear') {
-              onReset && onReset();
-            }
-            if (reason !== 'input') return;
-            if (!debouncedFunc) return;
-
-            debouncedFunc(value);
-          }}
-          onChange={(_e, value, reson) => {
-            setValueStore(name, value);
-            if (reson === 'selectOption') {
-              onReset && onReset();
-            }
-          }}
+          onInputChange={onInputChangeHandler}
+          onChange={onChange}
           loadingText={'Загрузка...'}
-          renderOption={renderOptions}
+          renderOption={(props, option) => renderOptions(props, option, testid)}
           renderInput={renderInput}
           noOptionsText={'Ничего не найдено'}
         />

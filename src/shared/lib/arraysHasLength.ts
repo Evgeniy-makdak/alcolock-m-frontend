@@ -1,6 +1,6 @@
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Values } from '@shared/ui/search_multiple_select';
 
-export const arraysHasLength = (arrays: Value[][]) => {
+export const arraysHasLength = (arrays: Values[]) => {
   let hasLength = false;
   arrays.map((array) => {
     if (array.length > 0) {

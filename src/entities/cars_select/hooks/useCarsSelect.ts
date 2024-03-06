@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import type { ID } from '@shared/types/BaseQueryTypes';
-import { mapOptions } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import { mapOptions } from '@shared/ui/search_multiple_select';
 
 import { useCarListQuery } from '../api/useCarListQuery';
 import { adapterMapOptions } from '../lib/adapterMapOptions';

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export const useBranchSelectApi = (options?: PartialQueryOptions) => {
   const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.BRANCH_LIST_SELECT],
+    queryKey: [QueryKeys.BRANCH_LIST_SELECT, ...Object.values(options)],
     queryFn: () => BranchApi.getBranchList(options),
   });
 

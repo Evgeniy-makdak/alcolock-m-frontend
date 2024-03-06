@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { useToggle } from '@shared/hooks/useToggle';
 import { getArrayFromValues, getArrayValues } from '@shared/lib/getValuesFromForm';
 import type { ID } from '@shared/types/BaseQueryTypes';
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Value, Values } from '@shared/ui/search_multiple_select';
 
 import { useGroupAlcolocksAddFormApi } from '../api/useGroupAlcolocksAddFormApi';
 
 export const useGroupAlcolocksAddForm = (branchId: ID, close: () => void) => {
-  const [alcolocks, setAlcolocks] = useState<Value[]>([]);
+  const [alcolocks, setAlcolocks] = useState<Values>([]);
   const [openAlert, toggleAlert, closeAlert] = useToggle(false);
   const [error, setError] = useState(false);
   const { mutate } = useGroupAlcolocksAddFormApi();

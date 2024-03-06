@@ -3,13 +3,13 @@ import { useState } from 'react';
 
 import { useToggle } from '@shared/hooks/useToggle';
 import { getArrayValues } from '@shared/lib/getValuesFromForm';
-import { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import { Value, type Values } from '@shared/ui/search_multiple_select';
 
 import { useGroupUserMoveFormApi } from '../api/useGroupUserMoveFormApi';
 import type { GroupUserMoveFormProps } from '../ui/GroupUserMoveForm';
 
 export const useGroupUserMoveForm = ({ user, close }: GroupUserMoveFormProps) => {
-  const [branchSelect, setBranchSelect] = useState<Value[]>([]);
+  const [branchSelect, setBranchSelect] = useState<Values>([]);
   const [openAlert, toggleAlert, closeAlert] = useToggle(false);
   const [error, setError] = useState(false);
 

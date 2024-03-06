@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { useToggle } from '@shared/hooks/useToggle';
 import { getArrayFromValues, getArrayValues } from '@shared/lib/getValuesFromForm';
 import type { ID } from '@shared/types/BaseQueryTypes';
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Value, Values } from '@shared/ui/search_multiple_select';
 
 import { useGroupUserAddFormApi } from '../api/useGroupUserAddFormApi';
 
 export const useGroupUserAddForm = (branchId: ID, close: () => void) => {
-  const [users, setCars] = useState<Value[]>([]);
+  const [users, setCars] = useState<Values>([]);
   const [openAlert, toggleAlert, closeAlert] = useToggle(false);
   const [error, setError] = useState(false);
   const { moveUsers } = useGroupUserAddFormApi();
