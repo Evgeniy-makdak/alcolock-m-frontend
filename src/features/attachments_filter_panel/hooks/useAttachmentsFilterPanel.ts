@@ -1,13 +1,13 @@
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Values } from '@shared/ui/search_multiple_select';
 
 import { attachmentsFilterPanelStore } from '../model/attachmentsFilterPanelStore';
 
 export type AttachmentsFilters = {
-  driverId: Value[];
-  carId: Value[];
-  alcolocks: Value[];
-  createLink: Value[];
-  dateLink: Value[];
+  driverId: Values;
+  carId: Values;
+  alcolocks: Values;
+  createLink: Values;
+  dateLink: Values;
 };
 
 export const useAttachmentsFilterPanel = () => {

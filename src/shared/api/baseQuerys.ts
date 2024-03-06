@@ -151,28 +151,6 @@ export class AttachmentsApi {
   static createItem(data: AttachmentsCreateData, headers?: AxiosRequestConfig['headers']) {
     return postQuery({ url: this.getCreateAttachmentApiURL(), data, headers });
   }
-  // static createItem(data: any) {
-  //   const params = {
-  //     url: `api/vehicle-driver-allotments`,
-  //     method: 'POST',
-  //     data,
-  //   };
-  // }
-
-  // static getItem(id: string | number) {
-  //   const params = {
-  //     url: `api/vehicle-driver-allotments/${id}`,
-  //     method: 'GET',
-  //   };
-  // }
-
-  // static changeItem(id: string | number, data) {
-  //   const params = {
-  //     url: `api/vehicle-driver-allotments/${id}`,
-  //     method: 'PUT',
-  //     data,
-  //   };
-  // }
 
   static deleteItem(id: ID, headers?: AxiosRequestConfig['headers']) {
     return deleteQuery<void>({ url: this.getAttachmentsDeleteItemURL(id), headers });
@@ -196,6 +174,7 @@ export class UsersApi {
     });
 
     if (trimmedQuery) {
+      queries += `&any.match.contains=${trimmedQuery}`;
       queries += `&any.email.contains=${trimmedQuery}`;
     }
 

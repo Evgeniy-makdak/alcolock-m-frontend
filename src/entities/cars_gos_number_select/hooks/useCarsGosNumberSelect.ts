@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { SortTypes, SortsTypes } from '@shared/const/types';
-import { mapOptions } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import { mapOptions } from '@shared/ui/search_multiple_select';
 
 import { useCarListQuery } from '../api/useCarListQuery';
 import { adapterMapOptions } from '../lib/adapterMapOptions';

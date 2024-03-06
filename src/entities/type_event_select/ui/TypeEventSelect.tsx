@@ -1,7 +1,4 @@
-import {
-  SearchMultipleSelect,
-  type Value,
-} from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import { SearchMultipleSelect, type Value, type Values } from '@shared/ui/search_multiple_select';
 
 import { useTypeEventSelect } from '../hooks/useTypeEventSelect';
 
@@ -12,7 +9,7 @@ interface TypeEventSelectProps<T> {
   label?: string;
   error?: boolean;
   name: keyof T;
-  value?: Value[];
+  value?: Values;
   setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
 }
 

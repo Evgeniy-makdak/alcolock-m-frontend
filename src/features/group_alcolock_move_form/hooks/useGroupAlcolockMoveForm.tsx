@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { useToggle } from '@shared/hooks/useToggle';
 import { getArrayValues } from '@shared/lib/getValuesFromForm';
 import { FormCheckbox } from '@shared/ui/form_checkbox';
-import { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import { Value, type Values } from '@shared/ui/search_multiple_select';
 
 import { useGroupAlcolockMoveFormApi } from '../api/useGroupAlcolockMoveFormApi';
 import type { GroupAlcolockMoveFormProps } from '../ui/GroupAlcolockMoveForm';
 
 export const useGroupAlcolockMoveForm = ({ alcolock, close }: GroupAlcolockMoveFormProps) => {
-  const [branchSelect, setBranchSelect] = useState<Value[]>([]);
+  const [branchSelect, setBranchSelect] = useState<Values>([]);
   const [withVehicle, setWithVehicle] = useState(false);
   const [openAlert, toggleAlert, closeAlert] = useToggle(false);
   const [error, setError] = useState(false);

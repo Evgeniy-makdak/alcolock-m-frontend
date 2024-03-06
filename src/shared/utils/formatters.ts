@@ -2,7 +2,7 @@ import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 
 import type { ICar, IUser } from '@shared/types/BaseQueryTypes';
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Values } from '@shared/ui/search_multiple_select';
 
 export class Formatters {
   static formatISODate(isoDate: string | Date) {
@@ -97,7 +97,7 @@ export class Formatters {
   static removeExtraSpaces(str: string) {
     return str.replace(/\s+/g, ' ').trim();
   }
-  static getStringForQueryParams(arr: Value[]) {
+  static getStringForQueryParams(arr: Values) {
     if (arr.length === 0) return '';
     const arrIds = arr.map((value) => value.value);
     return arrIds.join(',');

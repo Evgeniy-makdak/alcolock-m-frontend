@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { AttachmentsApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
 import type { IAttachmentItems } from '@shared/types/BaseQueryTypes';
-import { mapOptions } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import { mapOptions } from '@shared/ui/search_multiple_select';
 import { useQuery } from '@tanstack/react-query';
 
 import { adapterMapOptions } from '../lib/adapterMapOptions';

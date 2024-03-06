@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { getArrayValues } from '@shared/lib/getValuesFromForm';
 import { selectedBranchStore } from '@shared/model/selected_branch/store';
 import type { ID } from '@shared/types/BaseQueryTypes';
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Value } from '@shared/ui/search_multiple_select';
 import { Formatters } from '@shared/utils/formatters';
 
 import { useAlkozamkiFormApi } from '../api/useAlkozamkiFormApi';

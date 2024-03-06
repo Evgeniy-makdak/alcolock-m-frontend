@@ -1,8 +1,5 @@
 import type { ID } from '@shared/types/BaseQueryTypes';
-import {
-  SearchMultipleSelect,
-  type Value,
-} from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import { SearchMultipleSelect, type Value, type Values } from '@shared/ui/search_multiple_select';
 
 import { useCarsSelect } from '../hooks/useCarsSelect';
 
@@ -13,7 +10,7 @@ interface CarsSelectProps<T> {
   error?: boolean;
   setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
   name: keyof T;
-  value: Value[];
+  value: Values;
   branchId?: ID;
   notInBranch?: ID;
   vieBranch?: boolean;

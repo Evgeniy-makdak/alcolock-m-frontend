@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useForm } from 'react-hook-form';
 
 import { getArrayValues } from '@shared/lib/getValuesFromForm';
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Value, Values } from '@shared/ui/search_multiple_select';
 
 import { useCreateAttachment } from '../api/createAttachment';
 
 interface AttachmentAddForm {
-  carId: Value[];
-  driverId: Value[];
+  carId: Values;
+  driverId: Values;
 }
 
 export const useAttachmentsForm = () => {

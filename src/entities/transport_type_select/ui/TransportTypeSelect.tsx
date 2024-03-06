@@ -2,7 +2,8 @@ import {
   SearchMultipleSelect,
   type SearchMultipleSelectProps,
   type Value,
-} from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+  type Values,
+} from '@shared/ui/search_multiple_select';
 
 import { useTransportTypeSelect } from '../hooks/useTransportTypeSelect';
 
@@ -13,7 +14,7 @@ type TransportTypeSelect<T> = {
   label?: string;
   error?: boolean;
   name: keyof T;
-  value?: Value[];
+  value?: Values;
   setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
 } & Partial<SearchMultipleSelectProps<T>>;
 

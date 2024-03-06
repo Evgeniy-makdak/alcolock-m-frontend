@@ -1,7 +1,4 @@
-import {
-  SearchMultipleSelect,
-  type Value,
-} from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import { SearchMultipleSelect, type Value, type Values } from '@shared/ui/search_multiple_select';
 
 import { useCarsGosNumberSelect } from '../hooks/useCarsGosNumberSelect';
 
@@ -12,7 +9,7 @@ interface CarsGosNumberSelectProps<T> {
   error?: boolean;
   setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
   name: keyof T;
-  value: Value[];
+  value: Values;
 }
 
 export function CarsGosNumberSelect<T>(props: CarsGosNumberSelectProps<T>) {

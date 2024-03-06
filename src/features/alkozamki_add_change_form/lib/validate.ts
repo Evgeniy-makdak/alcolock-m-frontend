@@ -1,13 +1,13 @@
 import * as yup from 'yup';
 
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Values } from '@shared/ui/search_multiple_select';
 import { ValidationRules } from '@shared/validations/validation_rules';
 
 export interface Form {
   name: string;
   serialNumber: number;
   uid: string;
-  tc: Value[];
+  tc: Values;
 }
 
 export const schema = yup.object<Form>({

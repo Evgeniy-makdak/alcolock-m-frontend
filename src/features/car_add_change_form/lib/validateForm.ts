@@ -1,7 +1,7 @@
 import dayjs, { type Dayjs } from 'dayjs';
 import * as yup from 'yup';
 
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Values } from '@shared/ui/search_multiple_select';
 import { ValidationRules } from '@shared/validations/validation_rules';
 
 export type Form = {
@@ -9,8 +9,8 @@ export type Form = {
   model: string;
   vin: string;
   registrationNumber: string;
-  color: Value[];
-  type: Value[];
+  color: Values;
+  type: Values;
   year: Dayjs;
 };
 

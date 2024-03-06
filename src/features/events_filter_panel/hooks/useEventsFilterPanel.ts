@@ -1,12 +1,12 @@
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Values } from '@shared/ui/search_multiple_select';
 
 import { eventsFilterPanelStore } from '../model/eventsFilterPanelStore';
 
 export interface EventsFilters {
-  driverId: Value[];
-  markCar: Value[];
-  gosNumber: Value[];
-  typeEvent: Value[];
+  driverId: Values;
+  markCar: Values;
+  gosNumber: Values;
+  typeEvent: Values;
 }
 
 export const useEventsFilterPanel = () => {

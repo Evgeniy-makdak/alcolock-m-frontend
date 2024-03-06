@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 import { arraysHasLength } from '@shared/lib/arraysHasLength';
 import { getArrayValues } from '@shared/lib/getValuesFromForm';
-import type { Value } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import type { Value } from '@shared/ui/search_multiple_select';
 
 import type { AttachmentsFilters } from '../hooks/useAttachmentsFilterPanel';
 

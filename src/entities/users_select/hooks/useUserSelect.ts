@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { SortTypes, SortsTypes } from '@shared/const/types';
 import type { ID } from '@shared/types/BaseQueryTypes';
-import { mapOptions } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import { mapOptions } from '@shared/ui/search_multiple_select';
 
 import { useUserListQuery } from '../api/userListQuery';
 import { adapterMapOptions } from '../lib/adapterMapOptions';

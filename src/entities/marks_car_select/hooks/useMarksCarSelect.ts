@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { mapOptions } from '@shared/ui/search_multiple_select/SearchMultipleSelect';
+import { mapOptions } from '@shared/ui/search_multiple_select';
 
 import { useMarksCarQuery } from '../api/useMarksCarQuery';
 import { adapterMapOptions } from '../lib/adapterMapOptions';
