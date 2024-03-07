@@ -19,6 +19,7 @@ import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import ModelTrainingOutlinedIcon from '@mui/icons-material/ModelTrainingOutlined';
 import NumbersIcon from '@mui/icons-material/Numbers';
+import PausePresentationOutlinedIcon from '@mui/icons-material/PausePresentationOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
@@ -50,6 +51,7 @@ export enum TypeOfRows {
   COLOR = 'COLOR',
   NAMING = 'NAMING',
   MODE = 'MODE',
+  STATUS = 'STATUS',
 }
 
 const TypeOfRowIcons: TypeOfRowIconsType = {
@@ -75,6 +77,7 @@ const TypeOfRowIcons: TypeOfRowIconsType = {
   DATE: <CalendarMonthOutlinedIcon color="info" />,
   TERM: <GavelOutlinedIcon color="info" />,
   CATEGORY: <CategoryOutlinedIcon color="info" />,
+  STATUS: <PausePresentationOutlinedIcon color="info" />,
 };
 
 const CustomChipValue = (props: ChipProps) => (
