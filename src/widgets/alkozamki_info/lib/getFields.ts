@@ -12,6 +12,9 @@ export const getFields = (itemData: IAlcolock) => {
   const carForCopy = Formatters.carNameFormatter(itemData?.vehicleBind?.vehicle, false, false);
   const name = Formatters.nameFormatter(itemData?.createdBy);
   const date = Formatters.formatISODate(itemData?.createdAt);
+  const mode =
+    AppConstants.alkolockWorkModes.find((mode) => mode.value === itemData?.mode)?.label ?? '-';
+
   return [
     {
       label: 'Наименование',
@@ -25,9 +28,7 @@ export const getFields = (itemData: IAlcolock) => {
       label: 'Режим работы',
       type: TypeOfRows.MODE,
       value: {
-        label:
-          AppConstants.alkolockWorkModes.find((mode) => mode.value === itemData?.mode)?.label ??
-          '-',
+        label: mode,
       },
     },
     {
