@@ -1,4 +1,4 @@
-import type { AxiosResponse } from 'axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import type { GridSortDirection } from '@mui/x-data-grid';
 
@@ -18,16 +18,16 @@ export type RefetchType<T> = () => Promise<
 >;
 
 export interface QueryOptions {
-  page: number;
-  equals: string;
-  limit: number | string;
-  sortBy: SortTypes | string;
-  searchQuery: string;
-  order: GridSortDirection;
-  startDate: string;
-  endDate: string;
-  selectedBranch: ID;
-  filterOptions: {
+  page?: number;
+  equals?: string;
+  limit?: number | string;
+  sortBy?: SortTypes | string;
+  searchQuery?: string;
+  order?: GridSortDirection;
+  startDate?: string;
+  endDate?: string;
+  selectedBranch?: ID;
+  filterOptions?: {
     drivers?: string;
     users?: string;
     brandCar?: string;
@@ -44,6 +44,10 @@ export interface QueryOptions {
     notBranchId?: ID;
     groupId?: string;
     excludeId?: ID;
+    driverSpecified?: boolean;
   };
-  id: ID;
+  id?: ID;
+  headers?: HeaderReq;
 }
+
+export type HeaderReq = AxiosRequestConfig['headers'];

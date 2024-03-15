@@ -50,4 +50,6 @@ export enum SortTypes {
   PROCESS = 'PROCESS',
   EXPIRES = 'EXPIRES',
   YEAR = 'YEAR',
+  ROLE = 'ROLE',
+  ACCESS = 'ACCESS',
 }

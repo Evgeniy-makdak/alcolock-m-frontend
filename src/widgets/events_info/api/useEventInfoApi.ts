@@ -1,11 +1,13 @@
 import { EventsApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
-import { useQuery } from '@tanstack/react-query';
+import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
+import type { ID } from '@shared/types/BaseQueryTypes';
 
-export const useEventInfoApi = (id: string | number) => {
-  const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.EVENTS_ITEM, id],
-    queryFn: () => EventsApi.getEventItem(id),
-  });
+export const useEventInfoApi = (id: ID) => {
+  const { data, isLoading } = useConfiguredQuery(
+    [QueryKeys.EVENTS_ITEM],
+    EventsApi.getEventItem,
+    id,
+  );
   return { data, isLoading };
 };

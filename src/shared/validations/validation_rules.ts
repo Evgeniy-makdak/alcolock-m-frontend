@@ -19,7 +19,7 @@ export class ValidationRules {
   static phoneValidation = (value: string) => {
     const re = /^\+7[0-9]+$/;
 
-    return re.test(value) ? [] : [ValidationMessages.notValidPhone];
+    return re.test(value) && value.length === 12 ? [] : [ValidationMessages.notValidPhone];
   };
 
   static driverLicenseValidation = (value: ValidateValue) => {

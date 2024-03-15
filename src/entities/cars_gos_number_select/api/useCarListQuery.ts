@@ -1,11 +1,13 @@
-import { CarsApi, type PartialQueryOptions } from '@shared/api/baseQuerys';
+import { CarsApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
-import { useQuery } from '@tanstack/react-query';
+import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
+import type { QueryOptions } from '@shared/types/QueryTypes';
 
-export const useCarListQuery = (options: PartialQueryOptions) => {
-  const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.CAR_LIST, ...Object.values(options)],
-    queryFn: () => CarsApi.getCarsList(options),
-  });
+export const useCarListQuery = (options: QueryOptions) => {
+  const { data, isLoading } = useConfiguredQuery(
+    [QueryKeys.CAR_LIST],
+    CarsApi.getCarsList,
+    options,
+  );
   return { data: data?.data || [], isLoading };
 };

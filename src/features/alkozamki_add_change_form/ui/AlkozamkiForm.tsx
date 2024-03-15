@@ -1,3 +1,5 @@
+import type { FC } from 'react';
+
 import { TextField, Typography } from '@mui/material';
 
 import { CarsSelect } from '@entities/cars_select';
@@ -12,12 +14,12 @@ import { useAlkozamkiForm } from '../hooks/useAlkozamkiForm';
 import { LABEL_TEXT } from '../lib/conts';
 import style from './AlkozamkiForm.module.scss';
 
-interface AlkozamkiForm {
+interface AlkozamkiFormProps {
   closeModal: () => void;
   id?: ID;
 }
 
-export const AlkozamkiForm = ({ closeModal, id }: AlkozamkiForm) => {
+export const AlkozamkiForm: FC<AlkozamkiFormProps> = ({ closeModal, id }) => {
   const {
     handleSubmit,
     onSelect,

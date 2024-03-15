@@ -1,9 +1,51 @@
 import { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ru';
 
+import { type Theme, createTheme } from '@mui/material';
+
 import { InputDate } from '../input_date/InputDate';
 import style from './InputDate.module.scss';
 
+const newTheme = (theme?: Theme) => ({
+  ...theme,
+  components: {
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          width: '181px',
+          height: '30px',
+          backgroundColor: '#f1f1f1',
+        },
+      },
+    },
+    MuiPickersSlideTransition: {
+      styleOverrides: {
+        root: {
+          maxHeight: 200,
+          minHeight: '150px !important',
+          height: 200,
+        },
+      },
+    },
+    MuiDateCalendar: {
+      styleOverrides: {
+        root: {
+          height: 'auto',
+        },
+      },
+    },
+    MuiPickersLayout: {
+      styleOverrides: {
+        root: {
+          paddingBottom: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          maxHeight: 350,
+        },
+      },
+    },
+  },
+});
 interface InputsDatesProps {
   inputStartTestId?: string;
   inputEndTestId?: string;
@@ -15,7 +57,7 @@ interface InputsDatesProps {
   valueEndDatePicker?: Dayjs;
   onClear?: () => void;
 }
-
+const theme = createTheme(newTheme());
 export const InputsDates = ({
   valueStartDatePicker,
   valueEndDatePicker,
@@ -27,11 +69,17 @@ export const InputsDates = ({
   return (
     <div className={style.datePickers}>
       <InputDate
+        theme={theme}
         testid={inputStartTestId}
         value={valueStartDatePicker}
         onChange={onChangeStartDate}
       />
-      <InputDate testid={inputEndTestId} value={valueEndDatePicker} onChange={onChangeEndDate} />
+      <InputDate
+        theme={theme}
+        testid={inputEndTestId}
+        value={valueEndDatePicker}
+        onChange={onChangeEndDate}
+      />
     </div>
   );
 };

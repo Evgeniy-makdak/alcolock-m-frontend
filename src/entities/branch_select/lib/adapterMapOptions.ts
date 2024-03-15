@@ -1,5 +1,5 @@
-import type { IBranch } from '@shared/types/BaseQueryTypes';
+import type { IBranch, ID } from '@shared/types/BaseQueryTypes';
 
-export const adapterMapOptions = (branch: IBranch): [string, number | string] => {
+export const adapterMapOptions = (branch: IBranch): [string, ID] => {
   return [branch?.name, branch?.id];
 };

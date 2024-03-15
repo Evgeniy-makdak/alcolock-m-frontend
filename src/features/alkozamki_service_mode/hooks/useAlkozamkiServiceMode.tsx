@@ -2,18 +2,17 @@ import { useEffect } from 'react';
 
 import { testids } from '@shared/const/testid';
 import { useToggle } from '@shared/hooks/useToggle';
-import type { IAlcolock, ID, IDeviceAction } from '@shared/types/BaseQueryTypes';
+import {
+  EventType,
+  type IAlcolock,
+  type ID,
+  type IDeviceAction,
+} from '@shared/types/BaseQueryTypes';
 import { Formatters } from '@shared/utils/formatters';
 import { SearchMethods } from '@shared/utils/global_methods';
 
 import { useAlkozamkiServiceModeApi } from '../api/useAlkozamkiServiceModeApi';
-import {
-  EventType,
-  RequestType,
-  ServiceModeInfoActionTypes,
-  ServiceModeInfoRequestType,
-  ServiceModeInfoType,
-} from '../lib/const';
+import { ServiceModeInfoActionTypes } from '../lib/const';
 import { serviceModeInfoMapper } from '../lib/serviceModeInfoMapper';
 import style from '../ui/AlkozamkiServiceMode.module.scss';
 
@@ -38,14 +37,12 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
     );
 
     if (
-      [ServiceModeInfoType.OFFLINE_DEACTIVATION, ServiceModeInfoType.OFFLINE_ACTIVATION].includes(
+      [EventType.OFFLINE_DEACTIVATION, EventType.OFFLINE_ACTIVATION].includes(
         lastEvent?.eventType,
       ) ||
       isAcknowledged ||
-      ([ServiceModeInfoType.REJECTED, ServiceModeInfoType.ACCEPTED].includes(
-        lastEvent?.eventType,
-      ) &&
-        requestType === RequestType.SERVER_REQUEST)
+      ([EventType.REJECTED, EventType.ACCEPTED].includes(lastEvent?.eventType) &&
+        requestType === EventType.SERVER_REQUEST)
     ) {
       seenMutate(deviceAction?.id);
     }
@@ -100,7 +97,7 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
         const timeFormat = time ? `${time.hours}:${time.minutes}:${time.seconds}` : '-';
 
         switch (serviceModeInfo.type) {
-          case ServiceModeInfoType.SERVER_REQUEST:
+          case EventType.SERVER_REQUEST:
             const servText =
               serviceModeInfo.action.type === ServiceModeInfoActionTypes.SERVICE_MODE_DEACTIVATE ? (
                 <span>
@@ -127,7 +124,7 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
                 </div>
               </>
             );
-          case ServiceModeInfoType.APP_REQUEST:
+          case EventType.APP_REQUEST:
             const appText =
               serviceModeInfo.action.type === ServiceModeInfoActionTypes.SERVICE_MODE_DEACTIVATE ? (
                 <span>
@@ -159,8 +156,8 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
                 </div>
               </>
             );
-          case ServiceModeInfoType.REJECTED:
-            if (serviceModeInfo.requestType === ServiceModeInfoRequestType.SERVER_REQUEST) {
+          case EventType.REJECTED:
+            if (serviceModeInfo.requestType === EventType.SERVER_REQUEST) {
               return serviceModeInfo.action.type ===
                 ServiceModeInfoActionTypes.SERVICE_MODE_DEACTIVATE ? (
                 <span>
@@ -183,8 +180,8 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
             } else {
               return <span>Ожидание подтверждения приложения</span>;
             }
-          case ServiceModeInfoType.ACCEPTED:
-            if (serviceModeInfo.requestType === ServiceModeInfoRequestType.SERVER_REQUEST) {
+          case EventType.ACCEPTED:
+            if (serviceModeInfo.requestType === EventType.SERVER_REQUEST) {
               return serviceModeInfo.action.type ===
                 ServiceModeInfoActionTypes.SERVICE_MODE_ACTIVATE ? (
                 <span>
@@ -198,7 +195,7 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
               ) : (
                 '-'
               );
-            } else if (serviceModeInfo.requestType === ServiceModeInfoRequestType.APP_REQUEST) {
+            } else if (serviceModeInfo.requestType === EventType.APP_REQUEST) {
               if (serviceModeInfo.isAcknowledged) {
                 return <span>Подтвержденно приложением</span>;
               } else {
@@ -207,9 +204,9 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
             } else {
               return <span>Ожидание подтверждения приложения</span>;
             }
-          case ServiceModeInfoType.OFFLINE_DEACTIVATION:
+          case EventType.OFFLINE_DEACTIVATION:
             return <span>Выключен в оффлайн-режиме</span>;
-          case ServiceModeInfoType.OFFLINE_ACTIVATION:
+          case EventType.OFFLINE_ACTIVATION:
             return <span>Включен в оффлайн-режиме на {timeFormat}</span>;
           default:
             return null;
@@ -322,7 +319,7 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
   //   }
   // };
   const modeResetAt = alkolock?.modeResetAt || null;
-  const hasTime = modeResetAt && alkolock?.mode === ServiceModeInfoType.MAINTENANCE;
+  const hasTime = modeResetAt && alkolock?.mode === EventType.MAINTENANCE;
   return {
     getButtons,
     handleDeactivate,

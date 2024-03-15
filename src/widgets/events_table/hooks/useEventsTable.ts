@@ -4,19 +4,27 @@ import { useState } from 'react';
 import { eventsFilterPanelStore } from '@features/events_filter_panel';
 import { InputSearchDelay } from '@shared/const/config';
 import { storageKeys } from '@shared/const/storageKeys';
+import { SortsTypes } from '@shared/const/types';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
 import { Formatters } from '@shared/utils/formatters';
 
 import { useEventsApi } from '../api/useEventsApi';
-import { useGetColumns } from '../lib/getColumns';
+import { ValuesHeader, useGetColumns } from '../lib/getColumns';
 import { useGetRows } from '../lib/getRows';
 import { useEventsStore } from '../model/eventsStore';
 
 export const useEventsTable = () => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
     storageKeys.EVENTS_TABLE_SORTS,
+    [
+      {
+        field: ValuesHeader.DATE_OCCURRENT,
+        sort: SortsTypes.desc,
+      },
+    ],
   );
+
   const { resetFilters, filters, hasActiveFilters } = eventsFilterPanelStore();
 
   const [searchQuery, setSearchQuery] = useState('');

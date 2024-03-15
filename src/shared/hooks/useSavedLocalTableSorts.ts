@@ -10,6 +10,7 @@ import { useLocalStorage } from './useLocalStorage';
 
 export const useSavedLocalTableSorts = (
   key: storageKeys,
+  sortModel?: GridSortModel,
 ): [
   {
     sortModel: GridSortModel;
@@ -24,7 +25,9 @@ export const useSavedLocalTableSorts = (
   const { state, setItemState } = useLocalStorage({
     key,
     value: {
-      sortModel: (apiRef?.current?.getSortModel && apiRef?.current?.getSortModel()) || [],
+      sortModel: sortModel
+        ? sortModel
+        : (apiRef?.current?.getSortModel && apiRef?.current?.getSortModel()) || [],
       page: apiRef?.current?.state?.pagination?.paginationModel?.page || 0,
       pageSize: apiRef?.current?.state?.pagination?.paginationModel?.pageSize || 25,
     },

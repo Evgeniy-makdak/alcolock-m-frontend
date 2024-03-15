@@ -1,12 +1,14 @@
-import { AlcolocksApi, type PartialQueryOptions } from '@shared/api/baseQuerys';
+import { AlcolocksApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
-import { useQuery } from '@tanstack/react-query';
+import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
+import type { QueryOptions } from '@shared/types/QueryTypes';
 
-export const useAlcolockListQuery = (options: PartialQueryOptions) => {
-  const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.ALCOLOCK_LIST, options.searchQuery],
-    queryFn: () => AlcolocksApi.getList(options),
-  });
+export const useAlcolockListQuery = (options: QueryOptions) => {
+  const { data, isLoading } = useConfiguredQuery(
+    [QueryKeys.ALCOLOCK_LIST],
+    AlcolocksApi.getList,
+    options,
+  );
 
   return { data: data?.data || [], isLoading };
 };

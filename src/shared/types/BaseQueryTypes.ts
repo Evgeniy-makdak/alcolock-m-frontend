@@ -1,43 +1,136 @@
-import type { PartialQueryOptions } from '@shared/api/baseQuerys';
+import type { QueryOptions } from './QueryTypes';
+
+interface IUserDataMain {
+  email: string;
+  firstName: string;
+  id: ID;
+  lastName: string;
+  middleName: string;
+}
+
+interface IDriver {
+  id: ID;
+  licenseCode: string;
+  licenseIssueDate: string;
+  licenseClass: string[];
+  userAccount: IAccountUser;
+  vehicleAllotments: { vehicle: ICar }[];
+  licenseExpirationDate: string;
+}
+
+export interface Role {
+  id: ID;
+  createdAt: string;
+  createdBy: IUserDataMain;
+  group: {
+    createdAt: string;
+    id: ID;
+    lastModifiedAt: string;
+    name: string;
+    systemGenerated: boolean;
+  };
+}
+
+export interface IAccountUser {
+  id: ID;
+  login: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  birthDate: string;
+  activated: boolean;
+  disabled: boolean;
+  driver: IDriver;
+  groupMembership: [
+    {
+      id: ID;
+      group: {
+        id: ID;
+        name: string;
+        systemGenerated: boolean;
+        userGroupPermissions: [
+          {
+            id: ID;
+            permission: {
+              name: string;
+              manuallyAssignable: boolean;
+            };
+            createdAt: string;
+            createdBy: {
+              id: ID;
+              email: string;
+              firstName: string;
+              middleName: string;
+              lastName: string;
+            };
+            group: string;
+          },
+        ];
+        createdAt: string;
+        createdBy: IUserDataMain;
+        lastModifiedAt: string;
+        lastModifiedBy: IUserDataMain;
+      };
+      user: {
+        id: ID;
+        login: string;
+        firstName: string;
+        middleName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        birthDate: string;
+        activated: boolean;
+        disabled: boolean;
+        driver: string;
+        groupMembership: [string];
+        assignment: {
+          branch: IBranch;
+          createdAt: string;
+          createdBy: IUserDataMain;
+        };
+        createdAt: string;
+        createdBy: IUserDataMain;
+        lastModifiedAt: string;
+        lastModifiedBy: IUserDataMain;
+      };
+      createdAt: string;
+      createdBy: IUserDataMain;
+    },
+  ];
+  assignment: {
+    branch: IBranch;
+    createdAt: string;
+    createdBy: IUserDataMain;
+  };
+  createdAt: string;
+  createdBy: IUserDataMain;
+  lastModifiedAt: string;
+  lastModifiedBy: IUserDataMain;
+  permissions: string[];
+}
 
 export interface IUser {
   firstName: string;
   middleName: string;
   lastName: string;
   activated: boolean;
+  phone?: string;
+  createdAt: string;
+  birthDate?: string;
   email: string;
   login: string;
   id: ID;
-  lastModifiedBy: {
-    email: string;
-    firstName: string;
-    id: ID;
-    lastName: string;
-    middleName: string;
-  };
+  groupMembership: Role[];
+  lastModifiedBy: IUserDataMain;
   assignment: {
-    branch: { id: ID; name: string };
+    branch: Branch;
     createdAt: string;
-    createdBy: {
-      name: string;
-      id: ID;
-      email: string;
-      firstName: string;
-      middleName: string;
-      lastName: string;
-    };
+    createdBy: IUserDataMain;
   };
-  driver: {
-    id: number;
-    licenseClass: string[];
-    licenseCode: string;
-    licenseExpirationDate: string;
-    licenseIssueDate: string;
-    vehicleAllotments: {
-      vehicle: ICar;
-      id: ID;
-    }[];
-  };
+  driver: IDriver;
   disabled: boolean;
 }
 
@@ -45,25 +138,18 @@ export interface IAttachmentItems {
   createdAt: string;
   createdBy: IUser;
   id: ID;
-  driver: {
-    id: ID;
-    licenseClass: string[];
-    licenseCode: string;
-    licenseExpirationDate: string;
-    licenseIssueDate: string;
-    userAccount: IUser;
-  };
+  driver: IDriver;
   vehicle: ICar;
 }
 
 export interface AttachmentsCreateData {
-  driverId: number | string;
-  vehicleId: number | string;
+  driverId: ID;
+  vehicleId: ID;
 }
 
 export interface ICar {
   color: string;
-  id: number;
+  id: ID;
   manufacturer: string;
   model: string;
   registrationNumber: string;
@@ -80,13 +166,13 @@ export interface ICar {
     modeUpdatedAt: string;
   };
   assignment?: {
-    branch: { id: ID; name?: string };
+    branch: Branch;
     createdAt: string;
   };
 }
 
 interface IActiveActions {
-  id: number;
+  id: ID;
   uuid: string;
   type: string;
   status: string;
@@ -100,8 +186,8 @@ interface IActiveActions {
     vin: string;
   };
   vehicle: {
-    id: number;
-    branchId: number;
+    id: ID;
+    branchId: ID;
   };
   seen: boolean;
   events: IEvent[];
@@ -109,9 +195,15 @@ interface IActiveActions {
   createdBy: IUser;
 }
 
+export type IAuthenticate = {
+  response: any;
+  idToken: string;
+  refreshToken: string;
+};
+
 export interface IAlcolock {
   modeResetAt?: string;
-  id: number;
+  id: ID;
   name: string;
   serialNumber: number;
   serviceId: string;
@@ -127,24 +219,15 @@ export interface IAlcolock {
   };
 
   assignment: {
-    branch: {
-      id: number;
-      name: string;
-    };
+    branch: Branch;
     createdAt: string;
-    createdBy: {
-      id: number;
-      email: string;
-      firstName: string;
-      middleName: string;
-      lastName: string;
-    };
+    createdBy: IUserDataMain;
   };
 
   createdBy: IUser;
 
   lastModifiedBy: {
-    id: number;
+    id: ID;
     email: string;
     firstName: string;
     middleName: string;
@@ -152,13 +235,24 @@ export interface IAlcolock {
   };
 }
 
+export enum EventType {
+  APP_ACKNOWLEDGED = 'APP_ACKNOWLEDGED',
+  SERVER_REQUEST = 'SERVER_REQUEST',
+  APP_REQUEST = 'APP_REQUEST',
+  REJECTED = 'REJECTED',
+  ACCEPTED = 'ACCEPTED',
+  OFFLINE_DEACTIVATION = 'OFFLINE_DEACTIVATION',
+  OFFLINE_ACTIVATION = 'OFFLINE_ACTIVATION',
+  MAINTENANCE = 'MAINTENANCE',
+}
+
 export interface IEvent {
-  eventType: string;
+  eventType: EventType;
   extra: {
     qrCode: string;
     duration: string;
   };
-  id: number;
+  id: ID;
   latitude: number;
   longitude: number;
   occurredAt: string;
@@ -169,7 +263,7 @@ export interface IEvent {
     lastName: string;
     middleName: string | null;
   };
-  user: { id: number; branchId: number };
+  user: { id: ID; branchId: ID };
 }
 
 export interface ISummary {
@@ -205,6 +299,12 @@ export interface IDeviceAction {
   action: { type: string };
 }
 
+type FieldError = {
+  objectName: string;
+  field: string;
+  message: string;
+};
+
 export interface IError {
   detail: string;
   instance: string;
@@ -213,6 +313,7 @@ export interface IError {
   status: number;
   title: string;
   type: string;
+  fieldErrors: FieldError[];
 }
 
 export interface AuthError {
@@ -222,7 +323,7 @@ export interface AuthError {
 }
 
 export interface Branch {
-  id: number;
+  id: ID;
   name: string;
 }
 
@@ -234,7 +335,7 @@ interface Assignment {
 
 interface GroupMembership {
   id: 11;
-  group: { id: number; name: string; systemGenerated: boolean };
+  group: { id: ID; name: string; systemGenerated: boolean };
 }
 
 export type ID = string | number | null | undefined;
@@ -246,11 +347,11 @@ export interface IAccount {
   email: string;
   firstName: string;
   groupMembership: GroupMembership[];
-  id: number;
+  id: ID;
   lastName: string;
   login: string;
   middleName: string;
-  permissions: string[];
+  permissions: IPermissionsString[];
 }
 
 export interface IBranch {
@@ -277,6 +378,29 @@ export interface IBranch {
   systemGenerated: boolean;
 }
 
+export interface IUserGroupPermission {
+  createdAt: string;
+  createdBy: { id: ID; email: string; firstName: string; lastName: string };
+  id: ID;
+  permission: {
+    manuallyAssignable: boolean;
+    name: string;
+  };
+}
+
+export interface IRole {
+  createdAt: string;
+  createdBy: { id: ID; email: string; firstName: string; lastName: string };
+  id: ID;
+  lastModifiedAt: string;
+  lastModifiedBy: { id: ID; email: string; firstName: string; lastName: string };
+  name: string;
+  systemGenerated: boolean;
+  userGroupPermissions: IUserGroupPermission[];
+}
+
+/// RESPONSES
+
 export interface CreateCarBody extends ChangeCarBody {
   branchId: ID;
 }
@@ -299,7 +423,7 @@ export interface CreateAlcolockData {
   serialNumber: number | string;
 }
 
-export interface EventsOptions extends PartialQueryOptions {
+export interface EventsOptions extends QueryOptions {
   userId?: ID;
   carId?: ID;
   alcolockId?: ID;
@@ -309,4 +433,47 @@ export interface ActivateServiceModeOptions {
   duration: number | undefined | null;
   deviceId: ID;
   isDeactivate: boolean;
+}
+
+export interface CreateUserData {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+  disabled: boolean;
+  phone?: string;
+  birthDate?: string;
+  driver?: {
+    licenseCode?: string;
+    licenseIssueDate?: string;
+    licenseExpirationDate?: string;
+    licenseClass?: string[];
+  };
+  password?: string;
+  userGroups?: ID[];
+  branchId: ID;
+}
+export type IPermissionsString =
+  | 'PERMISSION_USER_CREATE'
+  | 'PERMISSION_DEVICE_CREATE'
+  | 'PERMISSION_VEHICLE_CREATE'
+  | 'PERMISSION_USER_READ'
+  | 'PERMISSION_DEVICE_READ'
+  | 'PERMISSION_VEHICLE_READ'
+  | 'SYSTEM_GLOBAL_ADMIN';
+
+export type CreateRoleData = {
+  name: string;
+  permissions: IPermissionsString[];
+};
+export type ChangeRoleData = CreateRoleData;
+
+export type ChangePasswordData = {
+  currentPassword: string;
+  newPassword: string;
+};
+export interface UserDataLogin {
+  username: string | null;
+  password: string | null;
+  rememberMe: boolean;
 }

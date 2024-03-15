@@ -1,42 +1,41 @@
 import type { ID } from '@shared/types/BaseQueryTypes';
-import { SearchMultipleSelect, type Value, type Values } from '@shared/ui/search_multiple_select';
+import {
+  SearchMultipleSelect,
+  type SearchMultipleSelectProps,
+} from '@shared/ui/search_multiple_select';
 
 import { useUserSelect } from '../hooks/useUserSelect';
 
-interface UsersSelectProps<T> {
-  onSelectDriver?: (value: number[] | number) => void;
-  testid?: string;
-  multiple?: boolean;
-  label?: string;
-  error?: boolean;
-  name: keyof T;
-  value?: Values;
+type UsersSelectProps<T> = {
   vieBranch?: boolean;
   branchId?: ID;
   notInBranch?: ID;
-  setValueStore?: (type: keyof T, value: string | Value | (string | Value)[]) => void;
-}
+  // TODO => убрать needDriverId когда уберут ID у поля driver в сущности User => user: {driver: {id: ID}}
+  needDriverId?: boolean;
+} & Omit<SearchMultipleSelectProps<T>, 'values'>;
 
-export function UsersSelect<T>({
+export const UsersSelect = <T,>({
   vieBranch,
   branchId,
   notInBranch,
-  onSelectDriver,
+  needDriverId,
   ...rest
-}: UsersSelectProps<T>) {
+}: UsersSelectProps<T>): JSX.Element => {
   const { onChange, isLoading, onReset, driversList } = useUserSelect(
     vieBranch,
     branchId,
     notInBranch,
+    // TODO => убрать needDriverId когда уберут ID у поля driver в сущности User => user: {driver: {id: ID}}
+    needDriverId,
   );
+
   return (
     <SearchMultipleSelect
       onReset={onReset}
       onInputChange={onChange}
       isLoading={isLoading}
       values={driversList}
-      onSelect={onSelectDriver}
       {...rest}
     />
   );
-}
+};

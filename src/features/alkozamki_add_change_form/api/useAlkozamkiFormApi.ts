@@ -1,8 +1,9 @@
 import { AlcolocksApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
+import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
 import { useUpdateQueries } from '@shared/hooks/useUpdateQuerys';
 import type { CreateAlcolockData, ID } from '@shared/types/BaseQueryTypes';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 const updateQueries = [
   QueryKeys.ALCOLOCK_LIST,
@@ -13,11 +14,12 @@ const updateQueries = [
 export const useAlkozamkiFormApi = (id?: ID) => {
   const update = useUpdateQueries();
 
-  const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.ALKOLOCK_ITEM, id],
-    queryFn: () => AlcolocksApi.getAlkolock(id),
-    enabled: !!id,
-  });
+  const { data, isLoading } = useConfiguredQuery(
+    [QueryKeys.ALKOLOCK_ITEM],
+    AlcolocksApi.getAlkolock,
+    id,
+    { enabled: !!id },
+  );
 
   const { mutateAsync: changeItem } = useMutation({
     mutationFn: (changeData: CreateAlcolockData) => AlcolocksApi.changeItem(changeData, id),

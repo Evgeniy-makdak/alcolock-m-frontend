@@ -1,14 +1,14 @@
 import type React from 'react';
-import { type Control } from 'react-hook-form';
 
 import {
   Autocomplete,
   type AutocompleteInputChangeReason,
+  type AutocompleteProps,
+  type AutocompleteRenderInputParams,
   TextField,
   createFilterOptions,
 } from '@mui/material';
 
-import { ValidationsWrapper } from '@shared/components/validations_wrapper';
 import { debounce } from '@shared/lib/debounce';
 
 import style from './SearchMultipleSelect.module.scss';
@@ -20,49 +20,47 @@ import {
   renderOptions,
 } from './helpers';
 
-export interface SearchMultipleSelectProps<T> {
+export type SearchMultipleSelectProps<T> = {
   testid?: string;
   error?: boolean;
   label?: string;
-  multiple?: boolean;
   isLoading?: boolean;
   values: Values;
   validations?: any[];
-  name: keyof T;
+  name: keyof T | string;
   value?: Values;
   onSelect?: (value: number[] | number) => void;
   onInputChange?: (value: string) => void;
   onReset?: () => void;
-  control?: Control<T, any>;
   setValueStore?: (
-    type: keyof T,
+    type: keyof T | string,
     value: string | Values | Value | (string | Values | Value)[],
   ) => void;
-  inputValue?: string;
   helperText?: string;
   serverFilter?: boolean;
-}
+} & Partial<
+  Omit<AutocompleteProps<Value, boolean, boolean, boolean>, 'onInputChange' | 'value' | 'name'>
+>;
 
 export function SearchMultipleSelect<T>({
   testid,
   label,
   error,
   isLoading,
-  validations,
   onReset,
   values,
   value = [],
-  inputValue,
   multiple,
   name,
   helperText,
   setValueStore,
   onInputChange,
   serverFilter = true,
+  ...rest
 }: SearchMultipleSelectProps<T>) {
   const debouncedFunc = debounce({ time: 500, callBack: onInputChange });
 
-  const renderInput = (params: any) => {
+  const renderInput = (params: AutocompleteRenderInputParams) => {
     const prop = {
       ...params,
       inputProps: {
@@ -103,25 +101,23 @@ export function SearchMultipleSelect<T>({
 
   return (
     <div className={style.searchSelect}>
-      <ValidationsWrapper validationMsgs={validations ? validations : []}>
-        <Autocomplete
-          value={readyValue || null}
-          fullWidth
-          freeSolo
-          multiple={multiple}
-          isOptionEqualToValue={isOptionEqualToValue}
-          options={!isLoading ? readyValues : []}
-          loading={isLoading}
-          filterOptions={serverFilter ? (op) => op : createFilterOptions()}
-          inputValue={inputValue}
-          onInputChange={onInputChangeHandler}
-          onChange={onChange}
-          loadingText={'Загрузка...'}
-          renderOption={(props, option) => renderOptions(props, option, testid)}
-          renderInput={renderInput}
-          noOptionsText={'Ничего не найдено'}
-        />
-      </ValidationsWrapper>
+      <Autocomplete
+        {...rest}
+        multiple={multiple}
+        onChange={onChange}
+        fullWidth
+        freeSolo
+        value={readyValue || null}
+        isOptionEqualToValue={isOptionEqualToValue}
+        options={!isLoading ? readyValues : []}
+        loading={isLoading}
+        filterOptions={serverFilter ? (op) => op : createFilterOptions()}
+        onInputChange={onInputChangeHandler}
+        loadingText={'Загрузка...'}
+        renderOption={(props, option) => renderOptions(props, option, testid)}
+        renderInput={renderInput}
+        noOptionsText={'Ничего не найдено'}
+      />
     </div>
   );
 }

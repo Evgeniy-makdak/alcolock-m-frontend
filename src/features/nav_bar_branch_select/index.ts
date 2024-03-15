@@ -1,1 +1,1 @@
-export { BranchSelect } from './ui/BranchSelect';
+export { NavbarBranchSelect } from './ui/NavbarBranchSelect';

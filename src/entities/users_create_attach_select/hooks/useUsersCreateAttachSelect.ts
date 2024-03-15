@@ -2,9 +2,9 @@ import { useMemo, useState } from 'react';
 
 import { AttachmentsApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
+import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
 import type { IAttachmentItems } from '@shared/types/BaseQueryTypes';
 import { mapOptions } from '@shared/ui/search_multiple_select';
-import { useQuery } from '@tanstack/react-query';
 
 import { adapterMapOptions } from '../lib/adapterMapOptions';
 
@@ -18,10 +18,11 @@ export const useUsersCreateAttachSelect = () => {
     setSearchQuery('');
   };
 
-  const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.ATTACHMENT_LIST],
-    queryFn: () => AttachmentsApi.getList({ searchQuery }),
-  });
+  const { data, isLoading } = useConfiguredQuery(
+    [QueryKeys.ATTACHMENT_LIST],
+    AttachmentsApi.getList,
+    { searchQuery },
+  );
   const array: number[] = [];
 
   const createdBy = useMemo(

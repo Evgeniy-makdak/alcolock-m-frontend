@@ -1,11 +1,13 @@
-import { AlcolocksApi, type PartialQueryOptions } from '@shared/api/baseQuerys';
+import { AlcolocksApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
-import { useQuery } from '@tanstack/react-query';
+import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
+import type { QueryOptions } from '@shared/types/QueryTypes';
 
-export const useGroupAlcolocksTableApi = (options: PartialQueryOptions) => {
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: [QueryKeys.ALKOLOCK_LIST_TABLE, ...Object.values(options)],
-    queryFn: () => AlcolocksApi.getListAlcolocks(options),
-  });
+export const useGroupAlcolocksTableApi = (options: QueryOptions) => {
+  const { data, isLoading, refetch } = useConfiguredQuery(
+    [QueryKeys.ALKOLOCK_LIST_TABLE],
+    AlcolocksApi.getListAlcolocks,
+    options,
+  );
   return { alcolocks: data?.data, isLoading, refetch };
 };

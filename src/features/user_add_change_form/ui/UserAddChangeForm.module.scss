@@ -1,0 +1,25 @@
+.inputsWrapper {
+  min-height: 700px;
+  min-width: 870px;
+  max-width: 870px;
+}
+.wrapperCategories {
+  display: flex;
+  flex-wrap: wrap;
+  height: 210px;
+  width: 240px;
+}
+
+.categoriesItem {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 80px;
+}
+.disabledDriverData {
+  opacity: 0.4;
+}
+.columnsWrapper {
+  gap: 20px;
+  display: flex;
+}

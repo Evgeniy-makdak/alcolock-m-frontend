@@ -7,7 +7,13 @@ import { mapOptions } from '@shared/ui/search_multiple_select';
 import { useUserListQuery } from '../api/userListQuery';
 import { adapterMapOptions } from '../lib/adapterMapOptions';
 
-export const useUserSelect = (vieBranch = false, branchId?: ID, notInBranch?: ID) => {
+export const useUserSelect = (
+  vieBranch = false,
+  branchId?: ID,
+  notInBranch?: ID,
+  // TODO => убрать needDriverId когда уберут ID у поля driver в сущности User => user: {driver: {id: ID}}
+  needDriverId = false,
+) => {
   const [searchQuery, setSearchQuery] = useState('');
   const onChange = (value: string) => {
     setSearchQuery(value);
@@ -18,9 +24,12 @@ export const useUserSelect = (vieBranch = false, branchId?: ID, notInBranch?: ID
     sortBy: SortTypes.USER,
     order: SortsTypes.asc,
   });
+
   const onReset = () => {
     setSearchQuery('');
   };
-  const driversList = mapOptions(data, (user) => adapterMapOptions(user, vieBranch));
+  // TODO => убрать needDriverId когда уберут ID у поля driver в сущности User => user: {driver: {id: ID}}
+  const driversList = mapOptions(data, (user) => adapterMapOptions(user, vieBranch, needDriverId));
+
   return { onChange, isLoading, onReset, driversList };
 };

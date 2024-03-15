@@ -1,6 +1,7 @@
-interface Error {
+import type { AxiosError } from 'axios';
+
+interface Error extends AxiosError {
   field: string;
-  message?: string;
 }
 
 export const mapFieldError = (errors: Error[], name: string) => {

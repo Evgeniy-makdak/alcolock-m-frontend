@@ -13,7 +13,8 @@ interface AttachmentAddFormProps {
 }
 
 export const AttachmentAddForm = ({ onClose }: AttachmentAddFormProps) => {
-  const { carId, driverId, onSelect, onAddAtachment, errorCar, errorDriver } = useAttachmentsForm();
+  const { carId, driverId, onSelect, onAddAtachment, errorCar, errorDriver } =
+    useAttachmentsForm(onClose);
   return (
     <Loader>
       <InputsColumnWrapper>
@@ -29,6 +30,7 @@ export const AttachmentAddForm = ({ onClose }: AttachmentAddFormProps) => {
         />
 
         <UsersSelect
+          needDriverId={true}
           value={driverId}
           setValueStore={onSelect}
           testid={

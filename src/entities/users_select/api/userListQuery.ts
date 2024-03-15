@@ -1,12 +1,10 @@
-import { type PartialQueryOptions, UsersApi } from '@shared/api/baseQuerys';
+import { UsersApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
-import { useQuery } from '@tanstack/react-query';
+import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
+import type { QueryOptions } from '@shared/types/QueryTypes';
 
-export const useUserListQuery = (options: PartialQueryOptions) => {
-  const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.USER_LIST, options.searchQuery],
-    queryFn: () => UsersApi.getList(options),
-  });
+export const useUserListQuery = (options: QueryOptions) => {
+  const { data, isLoading } = useConfiguredQuery([QueryKeys.USER_LIST], UsersApi.getList, options);
 
   return { data: data?.data || [], isLoading };
 };

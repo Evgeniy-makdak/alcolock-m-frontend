@@ -3,20 +3,20 @@ import { useForm } from 'react-hook-form';
 import dayjs, { Dayjs } from 'dayjs';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getArrayValues } from '@shared/lib/getValuesFromForm';
-import { selectedBranchStore } from '@shared/model/selected_branch/store';
+import { appStore } from '@shared/model/app_store/AppStore';
 import type { ID } from '@shared/types/BaseQueryTypes';
 import type { Value } from '@shared/ui/search_multiple_select';
+import ArrayUtils from '@shared/utils/ArrayUtils';
 
 import { useCarAddChangeFormApi } from '../api/useCarAddChangeFormApi';
 import { colorSelectValueFormatter, typeSelectValueFormatter } from '../lib/helpers';
-import { type Form, schema } from '../lib/validateForm';
+import { type Form, schema } from '../lib/validate';
 
 const dateNow = dayjs();
 
 export const useCarAddChangeForm = (id?: ID, closeModal?: () => void) => {
   // TODO => потом убрать когда бэк научится брать это из кук
-  const [selectedBranch] = selectedBranchStore.selectedBranch.useState();
+  const selectedBranch = appStore.getState().selectedBranchState;
   const { car, isLoadingCar, changeItem, createItem } = useCarAddChangeFormApi(id);
 
   const defaultValues =
@@ -26,8 +26,8 @@ export const useCarAddChangeForm = (id?: ID, closeModal?: () => void) => {
           model: car?.model || '',
           vin: car?.vin || '',
           registrationNumber: car?.registrationNumber || '',
-          type: [typeSelectValueFormatter(car?.type)].filter((item) => item !== null) || [],
-          color: [colorSelectValueFormatter(car?.color)].filter((item) => item !== null) || [],
+          type: [typeSelectValueFormatter(car?.type)] || [],
+          color: [colorSelectValueFormatter(car?.color)] || [],
           year: car?.year ? dateNow.year(car.year) : dateNow,
         }
       : null;
@@ -60,7 +60,7 @@ export const useCarAddChangeForm = (id?: ID, closeModal?: () => void) => {
   };
   const onSelect = (type: string, value: string | Value | (string | Value)[]) => {
     clearErrors(type);
-    const values = getArrayValues(value);
+    const values = ArrayUtils.getArrayValues(value);
     setValue(type, values);
   };
 
@@ -76,7 +76,7 @@ export const useCarAddChangeForm = (id?: ID, closeModal?: () => void) => {
     const year = data?.year.year();
 
     const payload = {
-      branchId: 'id' in selectedBranch ? selectedBranch.id : 10,
+      branchId: selectedBranch?.id,
       color: data.color[0]?.value,
       type: data?.type[0]?.value,
       manufacturer: data.mark,
