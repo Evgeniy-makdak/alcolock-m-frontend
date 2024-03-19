@@ -7,7 +7,7 @@ export class ValidationRules {
     if (Array.isArray(value)) {
       checkedValue = value.length;
     }
-    return checkedValue ? [] : [ValidationMessages.required];
+    return checkedValue ? false : ValidationMessages.required;
   }
   static emailValidation(value: ValidateValue) {
     const re =
@@ -60,7 +60,7 @@ export class ValidationRules {
   static vinValidator = (value: string) => {
     const regex = /^[A-HJ-NPR-Z0-9]{17}$/;
 
-    return regex.test(value?.trim() ?? '') ? [] : [ValidationMessages.notValidVin];
+    return regex.test(value?.trim() ?? '') ? false : ValidationMessages.notValidVin;
   };
   static serialNumberValidator = (value: string) => {
     return value.length > 0 && value.length < 21 ? [] : [ValidationMessages.notValidSerialNumber];

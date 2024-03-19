@@ -47,12 +47,16 @@ export const schema: yup.ObjectSchema<Form> = yup.object({
     .test({
       name: 'vin',
       test(value, ctx) {
-        if (value.length === 0) {
-          return ctx.createError({ message: ValidationMessages.required });
+        const requiredError = ValidationRules.requiredValidation(value);
+        if (requiredError) {
+          return ctx.createError({ message: requiredError });
         }
-        if (ValidationRules.vinValidator(value).length > 0) {
-          return ctx.createError({ message: 'Некорректный vin' });
+
+        const vinError = ValidationRules.vinValidator(value);
+        if (vinError) {
+          return ctx.createError({ message: vinError });
         }
+
         return true;
       },
     })
