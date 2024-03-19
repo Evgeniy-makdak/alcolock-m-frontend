@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { type FC, useId } from 'react';
 
 import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ru';
@@ -18,18 +18,34 @@ dayjs.updateLocale('ru', {
   weekStart: 1,
 });
 
+const CustomMenuItem = (props: PickersActionBarProps) => {
+  const { onClear } = props;
+  const id = useId();
+  return (
+    <MenuItem
+      data-mui-test="clear-action-button"
+      onClick={() => {
+        onClear();
+      }}
+      style={{
+        alignSelf: 'center',
+        backgroundColor: '#e6e6e6',
+        color: '#1976d2',
+        borderRadius: '3px',
+      }}
+      key={id}>
+      Очистить
+    </MenuItem>
+  );
+};
+
+type MyInputDateProps = {
+  theme?: Theme;
+} & InputDateProps;
+
 const newTheme = (theme?: Theme) => ({
   ...theme,
   components: {
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          width: '181px',
-          height: '30px',
-          backgroundColor: '#f1f1f1',
-        },
-      },
-    },
     MuiPickersSlideTransition: {
       styleOverrides: {
         root: {
@@ -59,33 +75,14 @@ const newTheme = (theme?: Theme) => ({
   },
 });
 
-const CustomMenuItem = (props: PickersActionBarProps) => {
-  const { onClear } = props;
-  const id = useId();
-  return (
-    <MenuItem
-      data-mui-test="clear-action-button"
-      onClick={() => {
-        onClear();
-      }}
-      style={{
-        alignSelf: 'center',
-        backgroundColor: '#e6e6e6',
-        color: '#1976d2',
-        borderRadius: '3px',
-      }}
-      key={id}>
-      Очистить
-    </MenuItem>
-  );
-};
+const myTheme = createTheme(newTheme() as Theme);
 
-const theme = createTheme(newTheme());
-
-export const InputDate = (props: InputDateProps) => {
+export const InputDate: FC<MyInputDateProps> = (props) => {
+  const theme = props.theme || {};
+  const textFieldProps = props?.slotProps?.textField || {};
   return (
     <MuiLocalizationProvider>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={{ ...myTheme, ...theme }}>
         <DatePicker
           {...props}
           slots={{
@@ -114,6 +111,7 @@ export const InputDate = (props: InputDateProps) => {
               id: `SWITCH_VIEW_BUTTON`,
             },
             textField: {
+              ...textFieldProps,
               id: `TEXT_FIELD ${props.testid}_TEXT_FIELD`,
             },
             clearButton: {

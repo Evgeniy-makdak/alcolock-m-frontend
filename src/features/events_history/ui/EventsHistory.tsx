@@ -18,7 +18,7 @@ export const EventsHistory = (props: EventsHistory) => {
 
   return (
     <Loader isLoading={isLoading}>
-      <div>
+      <div className={style.minWidthWrapper}>
         <Table stickyHeader>
           <TableHead className={style.tableHead}>
             <StyledTable.HeaderRow>

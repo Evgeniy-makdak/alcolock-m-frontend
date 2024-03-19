@@ -1,17 +1,17 @@
 import { useForm } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getArrayValues } from '@shared/lib/getValuesFromForm';
-import { selectedBranchStore } from '@shared/model/selected_branch/store';
+import { appStore } from '@shared/model/app_store/AppStore';
 import type { ID } from '@shared/types/BaseQueryTypes';
 import type { Value } from '@shared/ui/search_multiple_select';
+import ArrayUtils from '@shared/utils/ArrayUtils';
 import { Formatters } from '@shared/utils/formatters';
 
 import { useAlkozamkiFormApi } from '../api/useAlkozamkiFormApi';
 import { type Form, schema } from '../lib/validate';
 
 export const useAlkozamkiForm = (id?: ID, closeModal?: () => void) => {
-  const [selectedBranch] = selectedBranchStore.selectedBranch.useState();
+  const selectedBranch = appStore.getState().selectedBranchState;
   const { alkolock, isLoadingAlkolock, changeItem, createItem } = useAlkozamkiFormApi(id);
   const car = alkolock?.vehicleBind?.vehicle;
 
@@ -40,13 +40,13 @@ export const useAlkozamkiForm = (id?: ID, closeModal?: () => void) => {
     formState: {
       errors: { name: nameAlkolock, serialNumber, uid },
     },
-  } = useForm<any>({
+  } = useForm({
     resolver: yupResolver(schema),
     values: defaultValues,
   });
 
   const onSelect = (type: keyof Form, value: string | Value | (string | Value)[]) => {
-    const values = getArrayValues(value);
+    const values = ArrayUtils.getArrayValues(value);
     setValue(type, values);
   };
 

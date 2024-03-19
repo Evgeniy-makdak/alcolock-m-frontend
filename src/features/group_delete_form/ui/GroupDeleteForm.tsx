@@ -25,14 +25,10 @@ export const GroupDeleteForm: FC<GroupDeleteFormProps> = ({ branch, closeModal }
         Вы действительно хотите удалить группу <b>{branch.text}?</b>
       </Typography>
       <ButtonFormWrapper>
-        <Button
-          testid={`${testids.POPUP_ACTION_BUTTON}_${testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}`}
-          onClick={handleDelete}>
+        <Button testid={`${testids.POPUP_ACTION_BUTTON}`} onClick={handleDelete}>
           удалить
         </Button>
-        <Button
-          testid={`${testids.POPUP_CANCEL_BUTTON}_${testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}`}
-          onClick={closeModal}>
+        <Button testid={`${testids.POPUP_CANCEL_BUTTON}`} onClick={closeModal}>
           отмена
         </Button>
       </ButtonFormWrapper>

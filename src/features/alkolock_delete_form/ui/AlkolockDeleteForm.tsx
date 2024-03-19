@@ -23,14 +23,10 @@ export const AlkolockDeleteForm = ({
         </Typography>
         <Typography>Вы действительно хотите удалить Алкозамок {alkolock?.text}</Typography>
         <ButtonFormWrapper>
-          <Button
-            testid={`${testids.POPUP_ACTION_BUTTON}_${testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}`}
-            onClick={handleDelete}>
+          <Button testid={`${testids.POPUP_ACTION_BUTTON}`} onClick={handleDelete}>
             удалить
           </Button>
-          <Button
-            testid={`${testids.POPUP_CANCEL_BUTTON}_${testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}`}
-            onClick={closeDeleteModal}>
+          <Button testid={`${testids.POPUP_CANCEL_BUTTON}`} onClick={closeDeleteModal}>
             отмена
           </Button>
         </ButtonFormWrapper>

@@ -2,16 +2,15 @@
 import type { FC } from 'react';
 
 import { TextField, Typography } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers';
 
 import { CarColorSelect } from '@entities/car_color_select';
 import { TransportTypeSelect } from '@entities/transport_type_select';
 import { InputsColumnWrapper } from '@shared/components/Inputs_column_wrapper';
 import { ButtonFormWrapper } from '@shared/components/button_form_wrapper/ButtonFormWrapper';
-import { MuiLocalizationProvider } from '@shared/components/mui_localization_provider';
 import { testids } from '@shared/const/testid';
 import type { ID } from '@shared/types/BaseQueryTypes';
 import { Button } from '@shared/ui/button';
+import { InputDate } from '@shared/ui/input_date/InputDate';
 import { Loader } from '@shared/ui/loader';
 
 import { useCarAddChangeForm } from '../hooks/useCarAddChangeForm';
@@ -98,22 +97,19 @@ export const CarAddChangeForm: FC<CarAddChangeFormProps> = ({ closeModal, id }) 
                 {...register('registrationNumber')}
                 label={'Государственный номер'}
               />
-              <MuiLocalizationProvider>
-                <DatePicker
-                  disableFuture
-                  value={yearValue}
-                  {...register('year')}
-                  slotProps={{
-                    textField: {
-                      error: !!errorYear,
-                      helperText: errorYear,
-                    },
-                  }}
-                  label={'Год выпуска'}
-                  onChange={onSetDate}
-                  views={['year']}
-                />
-              </MuiLocalizationProvider>
+              <InputDate
+                disableFuture
+                value={yearValue}
+                slotProps={{
+                  textField: {
+                    error: !!errorYear,
+                    helperText: errorYear,
+                  },
+                }}
+                label={'Год выпуска'}
+                onChange={onSetDate}
+                views={['year']}
+              />
             </InputsColumnWrapper>
             <ButtonFormWrapper>
               <Button type="submit">{id ? 'сохранить' : 'добавить'}</Button>

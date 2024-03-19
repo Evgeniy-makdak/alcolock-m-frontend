@@ -1,26 +1,13 @@
-import { type AxiosError } from 'axios';
+import { type AxiosError, type AxiosResponse } from 'axios';
 import { enqueueSnackbar } from 'notistack';
 
-import { postQuery } from '@shared/api/baseQueryTypes';
-import type { IError } from '@shared/types/BaseQueryTypes';
+import { UsersApi } from '@shared/api/baseQuerys';
+import type { IAuthenticate, IError, UserDataLogin } from '@shared/types/BaseQueryTypes';
 import { useMutation } from '@tanstack/react-query';
 
-export interface UserDataLogin {
-  username: string | null;
-  password: string | null;
-}
-
-export const useAuthApi = (onSuccess: (data: any) => void) => {
+export const useAuthApi = (onSuccess: (data: AxiosResponse<IAuthenticate, IError>) => void) => {
   const { isPending, mutate } = useMutation({
-    mutationFn: (data: UserDataLogin) =>
-      postQuery({
-        data: data,
-        url: 'api/authenticate',
-        headers: {
-          method: 'POST',
-          isAuth: false,
-        },
-      }),
+    mutationFn: (data: UserDataLogin) => UsersApi.authenticate(data),
     onSuccess: onSuccess,
     onError(error: AxiosError<IError>) {
       console.log(error);
@@ -29,5 +16,6 @@ export const useAuthApi = (onSuccess: (data: any) => void) => {
       });
     },
   });
+
   return { mutate, isLoading: isPending };
 };

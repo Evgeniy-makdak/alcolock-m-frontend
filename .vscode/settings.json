@@ -5,12 +5,15 @@
   "prettier.singleQuote": true,
   "cSpell.words": [
     "ALCOLOCKS",
+    "alkolock",
+    "Alkolocks",
     "Alkozamki",
     "AVTOSERVISE",
     "craco",
     "testid",
     "testids",
-    "алкозамкам"
+    "алкозамкам",
+    "алкозамками"
   ],
   "explorer.compactFolders": false
 }

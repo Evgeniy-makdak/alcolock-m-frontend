@@ -1,1 +1,0 @@
-export { MultipleSearchSelect } from './MultipleSearchSelect';

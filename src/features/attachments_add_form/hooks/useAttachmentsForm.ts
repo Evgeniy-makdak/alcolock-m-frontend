@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 
-import { getArrayValues } from '@shared/lib/getValuesFromForm';
 import type { Value, Values } from '@shared/ui/search_multiple_select';
+import ArrayUtils from '@shared/utils/ArrayUtils';
 
 import { useCreateAttachment } from '../api/createAttachment';
 
@@ -10,7 +10,7 @@ interface AttachmentAddForm {
   driverId: Values;
 }
 
-export const useAttachmentsForm = () => {
+export const useAttachmentsForm = (closeModal: () => void) => {
   const { register, setValue, getValues, setError, clearErrors, watch, formState } =
     useForm<AttachmentAddForm>({
       defaultValues: {
@@ -19,8 +19,9 @@ export const useAttachmentsForm = () => {
       },
     });
   const mutation = useCreateAttachment();
+  // TODO перевести на Yup
   const onSelect = (type: keyof AttachmentAddForm, value: string | Value | (string | Value)[]) => {
-    const values = getArrayValues(value);
+    const values = ArrayUtils.getArrayValues(value);
     clearErrors(['driverId', 'carId']);
     setValue(type, values);
   };
@@ -37,6 +38,7 @@ export const useAttachmentsForm = () => {
       driverId,
       vehicleId,
     });
+    closeModal();
   };
 
   return {

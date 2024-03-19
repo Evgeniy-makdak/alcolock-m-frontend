@@ -1,12 +1,14 @@
-import { type PartialQueryOptions, UsersApi } from '@shared/api/baseQuerys';
+import { UsersApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
-import { useQuery } from '@tanstack/react-query';
+import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
+import type { QueryOptions } from '@shared/types/QueryTypes';
 
-export const useGroupUsersTableApi = (options: PartialQueryOptions) => {
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: [QueryKeys.USER_LIST, ...Object.values(options)],
-    queryFn: () => UsersApi.getList(options, true),
-  });
+export const useGroupUsersTableApi = (options: QueryOptions) => {
+  const { data, isLoading, refetch } = useConfiguredQuery(
+    [QueryKeys.USER_LIST],
+    (op: QueryOptions) => UsersApi.getList(op, true),
+    options,
+  );
 
   return { isLoading, users: data?.data, refetch };
 };

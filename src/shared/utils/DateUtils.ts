@@ -11,7 +11,10 @@ export class DateUtils {
   }
 
   static isValidDate(date: string | Date | Dayjs | number) {
-    return dayjs(date).isValid();
+    const dateDayjs = dayjs(date);
+
+    if ('isValid' in dateDayjs && !dayjs(date).isValid()) return false;
+    return true;
   }
 
   static dateSortArray(dateOne: Dayjs | string, dateTwo: Dayjs | string) {

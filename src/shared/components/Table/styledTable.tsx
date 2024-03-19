@@ -61,6 +61,13 @@ export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
       '& .MuiSvgIcon-root': {
         color: getBackgroundColor(theme.palette.mode),
       },
+      '& .css-r6bn6-MuiChip-root': {
+        color: '#fff',
+      },
+      '& .css-1j047yb-MuiChip-root': {
+        color: '#fff',
+      },
+
       '& .MuiButtonBase-root:hover': {
         backgroundColor: getBackgroundColorIconHoverSelected(theme.palette.mode),
         color: getColorIcon(theme.palette.mode),

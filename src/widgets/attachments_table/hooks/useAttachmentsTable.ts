@@ -22,7 +22,7 @@ export const useAttachmentsTable = () => {
     text: string;
   }>(null);
 
-  const [openAppAttachModal, toggleAppAttachModal, closeAppAttachModal] = useToggle(false);
+  const [openAddAttachModal, toggleAddAttachModal, closeAddAttachModal] = useToggle(false);
 
   const [input, setInput] = useState('');
   const {
@@ -63,7 +63,7 @@ export const useAttachmentsTable = () => {
   };
 
   const rows = useGetRows(data);
-  const headers = useGetColumns(toggleAppAttachModal, handleClickDeleteAttachment, refetch);
+  const headers = useGetColumns(toggleAddAttachModal, handleClickDeleteAttachment, refetch);
 
   const tableData = {
     ...state,
@@ -88,9 +88,9 @@ export const useAttachmentsTable = () => {
   };
 
   const addModalData = {
-    closeAppAttachModal,
-    toggleAppAttachModal,
-    openAppAttachModal,
+    closeAddAttachModal,
+    toggleAddAttachModal,
+    openAddAttachModal,
   };
 
   const deleteAttachModalData = {

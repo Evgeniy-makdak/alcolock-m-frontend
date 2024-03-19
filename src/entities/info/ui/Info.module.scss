@@ -3,7 +3,7 @@
 }
 .card {
   margin-top: 25px;
-  min-width: 580px;
+  width: 580px;
 }
 .zeroPaddings {
   padding: 0;
@@ -27,6 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: start;
+  flex-wrap: wrap;
   width: 50%;
 }
 .row {
@@ -49,5 +50,6 @@
 
 .labelWrapper {
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
 }

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import { useToggle } from '@shared/hooks/useToggle';
-import { getArrayValues } from '@shared/lib/getValuesFromForm';
 import { FormCheckbox } from '@shared/ui/form_checkbox';
 import { Value, type Values } from '@shared/ui/search_multiple_select';
+import ArrayUtils from '@shared/utils/ArrayUtils';
 
 import { useGroupCarMoveFormApi } from '../api/useGroupCarMoveFormApi';
 import type { GroupCarMoveFormProps } from '../ui/GroupCarMoveForm';
@@ -17,7 +17,7 @@ export const useGroupCarMoveForm = ({ car, close }: GroupCarMoveFormProps) => {
 
   const onSelect = (_type: string, value: string | Value | (string | Value)[]) => {
     setError(false);
-    const values = getArrayValues(value);
+    const values = ArrayUtils.getArrayValues(value);
     setBranchSelect(values);
     closeAlert();
   };

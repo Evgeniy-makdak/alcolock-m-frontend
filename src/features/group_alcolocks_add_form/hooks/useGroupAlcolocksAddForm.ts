@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import { useToggle } from '@shared/hooks/useToggle';
-import { getArrayFromValues, getArrayValues } from '@shared/lib/getValuesFromForm';
 import type { ID } from '@shared/types/BaseQueryTypes';
 import type { Value, Values } from '@shared/ui/search_multiple_select';
+import ArrayUtils from '@shared/utils/ArrayUtils';
 
 import { useGroupAlcolocksAddFormApi } from '../api/useGroupAlcolocksAddFormApi';
 
@@ -15,7 +15,7 @@ export const useGroupAlcolocksAddForm = (branchId: ID, close: () => void) => {
 
   const onSelect = (_type: string, value: string | Value | (string | Value)[]) => {
     setError(false);
-    const values = getArrayValues(value);
+    const values = ArrayUtils.getArrayValues(value);
     setAlcolocks(values);
     closeAlert();
   };
@@ -25,7 +25,7 @@ export const useGroupAlcolocksAddForm = (branchId: ID, close: () => void) => {
       return;
     }
     closeAlert();
-    mutate({ branchId, ids: getArrayFromValues(alcolocks) });
+    mutate({ branchId, ids: ArrayUtils.getArrayFromValues(alcolocks) });
     close();
   };
 

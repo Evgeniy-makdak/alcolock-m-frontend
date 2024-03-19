@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
 import { arraysHasLength } from '@shared/lib/arraysHasLength';
-import { getArrayValues } from '@shared/lib/getValuesFromForm';
 import type { Value } from '@shared/ui/search_multiple_select';
+import ArrayUtils from '@shared/utils/ArrayUtils';
 
 import type { AttachmentsFilters } from '../hooks/useAttachmentsFilterPanel';
 
@@ -24,7 +24,7 @@ export const attachmentsFilterPanelStore = create<AttachmentsFilterPanelStore>()
   hasActiveFilters: false,
   setFilters(type, value) {
     const filters = get().filters;
-    const readyValue = getArrayValues(value);
+    const readyValue = ArrayUtils.getArrayValues(value);
     const newState = { ...filters, [type]: readyValue };
     const hasActiveFilters = arraysHasLength([
       newState.alcolocks,

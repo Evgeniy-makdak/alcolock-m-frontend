@@ -76,11 +76,11 @@ export const AttachmentsTable = () => {
       <Popup
         testid={testids.page_attachments.attachments_popup_add_attach.ATTACHMENTS_ADD_ATTACH}
         closeonClickSpace={false}
-        toggleModal={addModalData.toggleAppAttachModal}
+        toggleModal={addModalData.toggleAddAttachModal}
         headerTitle="Привязка Алкозамка"
-        onCloseModal={addModalData.closeAppAttachModal}
-        isOpen={addModalData.openAppAttachModal}
-        body={<AttachmentAddForm onClose={addModalData.closeAppAttachModal} />}
+        onCloseModal={addModalData.closeAddAttachModal}
+        isOpen={addModalData.openAddAttachModal}
+        body={<AttachmentAddForm onClose={addModalData.closeAddAttachModal} />}
       />
       <Popup
         testid={testids.page_attachments.attachments_popup_delete_attach.ATTACHMENTS_DELETE_ATTACH}

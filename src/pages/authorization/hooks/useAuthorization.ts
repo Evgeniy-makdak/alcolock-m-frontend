@@ -1,23 +1,43 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
+import type { AxiosResponse } from 'axios';
 import { enqueueSnackbar } from 'notistack';
 
 import { RoutePaths } from '@app/index';
-import { AuthStatus, appAuthStatusState, appTokenState, refreshTokenState } from '@app/model/store';
-import type { AuthError } from '@shared/types/BaseQueryTypes';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { appStore } from '@shared/model/app_store/AppStore';
+import type { AuthError, IAuthenticate, IError, UserDataLogin } from '@shared/types/BaseQueryTypes';
 import { cookieManager } from '@shared/utils/cookie_manager';
-import { ValidationRules } from '@shared/validations/validation_rules';
 
-import { type UserDataLogin, useAuthApi } from '../api/authApi';
+import { useAuthApi } from '../api/authApi';
+import { schema } from '../lib/validate';
 
 export const useAuthorization = () => {
-  const { handleSubmit, control, setError } = useForm<UserDataLogin>();
-
+  const {
+    handleSubmit,
+    setValue,
+    register,
+    watch,
+    control,
+    formState: {
+      errors: { password, username },
+    },
+  } = useForm({
+    defaultValues: {
+      rememberMe: false,
+    },
+    resolver: yupResolver(schema),
+  });
+  const setState = appStore.setState;
   const navigate = useNavigate();
 
+  const handleChangeRemeber = (value: boolean) => {
+    setValue('rememberMe', value);
+  };
+
   // TODO => после swagger написать типы
-  const onSuccess = (data: any) => {
+  const onSuccess = (data: AxiosResponse<IAuthenticate, IError>) => {
     const errors = data?.data?.response?.data?.fieldErrors || [];
 
     if (errors.length > 0) {
@@ -33,47 +53,36 @@ export const useAuthorization = () => {
       // Токены должны быть только в cookie и бэк должен вернуть ошибку
       // not auth например и приложение должно перекинуться на авторизацию
       cookieManager.set('bearer', idToken);
-      appTokenState.setState(idToken);
-
+      console.log(data);
       const refreshToken = data.data?.refreshToken;
       if (refreshToken) {
         cookieManager.set('refresh', refreshToken);
-        refreshTokenState.setState(refreshToken);
       }
 
-      appAuthStatusState.setState(AuthStatus.auth);
+      setState({
+        auth: true,
+      });
       navigate(RoutePaths.events);
     }
   };
 
   const { mutate: enter, isLoading } = useAuthApi(onSuccess);
 
-  const validateEmail = (value: string) => {
-    const validEmail = ValidationRules.emailValidation(value);
-    const isValid = validEmail.length === 0;
-    !isValid && setError('username', { message: validEmail[0] });
-    return isValid;
-  };
-
-  const validatePassword = (value: string) => {
-    const validPassword = ValidationRules.requiredValidation(value);
-    const isValid = validPassword.length === 0;
-    !isValid && setError('password', { message: validPassword[0] });
-    return isValid;
-  };
-
   const handleAuthorization = (data: UserDataLogin) => {
-    const validEmail = validateEmail(data.username);
-    const validPassword = validatePassword(data.password);
-    if (!validEmail || !validPassword) return;
-
     enter(data);
   };
 
+  const errorPassword = password ? password?.message : '';
+  const errorUsername = username ? username?.message : '';
   return {
     handleSubmit,
     handleAuthorization,
     isLoading,
+    register,
+    errorPassword,
+    errorUsername,
     control,
+    remeberMe: watch('rememberMe'),
+    handleChangeRemeber,
   };
 };

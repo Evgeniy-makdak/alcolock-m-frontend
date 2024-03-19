@@ -1,10 +1,10 @@
 import type { ID } from '@shared/types/BaseQueryTypes';
 
 import { useEventInfoApi } from '../api/useEventInfoApi';
-import { dataMapperFromApi } from '../lib/dataMapperFromApi';
+import { getFields } from '../lib/getFields';
 
 export const useEventInfo = (id: ID) => {
   const { data, isLoading } = useEventInfoApi(id);
-  const fields = dataMapperFromApi(data?.data);
+  const fields = getFields(data?.data);
   return { data: data?.data, isLoading, fields };
 };

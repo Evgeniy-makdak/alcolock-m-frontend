@@ -1,26 +1,27 @@
-import { AccountApi, EventsApi } from '@shared/api/baseQuerys';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { AccountApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
-import { useQuery } from '@tanstack/react-query';
+import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
 
 export const useNavBarApi = () => {
   const {
     data,
     isLoading: isLoadingAccountData,
+    error,
     refetch: refetchAccountData,
-  } = useQuery({
-    queryKey: [QueryKeys.ACCOUNT],
-    queryFn: () => AccountApi.getAccountData(),
-  });
-  const { data: list, isLoading: isLoadingAvtoServiceEventList } = useQuery({
-    queryKey: [QueryKeys.AUTO_SERVICE_EVENTS_LIST],
-    queryFn: () => EventsApi.getEventListForAutoService({}),
-  });
+  } = useConfiguredQuery([QueryKeys.ACCOUNT], AccountApi.getAccountData);
 
+  // const { data: count, isLoading: isLoadingAvtoServiceEventList } = useConfiguredQuery(
+  //   [QueryKeys.EVENTS_COUNT],
+  //   EventsApi.getCount,
+  //   null,
+  //   { refetchInterval: 15000 },
+  // );
   return {
     refetchAccountData,
     userData: data?.data,
     isLoadingAccountData,
-    isLoadingAvtoServiceEventList,
-    length: list?.data?.length,
+    length: 0,
+    error,
   };
 };

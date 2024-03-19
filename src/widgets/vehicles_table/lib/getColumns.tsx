@@ -1,18 +1,14 @@
 import { type ReactNode, useMemo } from 'react';
 
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import { GridActionsCellItem, GridColDef, type GridColumnHeaderParams } from '@mui/x-data-grid';
+import { GridColDef, type GridColumnHeaderParams } from '@mui/x-data-grid';
 
+import { TableHeaderActions } from '@entities/table_header_actions';
+import { TableRowControls } from '@entities/table_row_controls/ui/TableRowControls';
 import { setTestIdsToHeaderColumns } from '@shared/components/Table/Table';
 import { testids } from '@shared/const/testid';
 import { SortTypes } from '@shared/const/types';
 import type { IAlcolock, ID } from '@shared/types/BaseQueryTypes';
 import type { RefetchType } from '@shared/types/QueryTypes';
-import { Refetch } from '@shared/ui/refetch/Refetch';
-
-import style from '../ui/VehiclesTable.module.scss';
 
 export enum ValuesHeader {
   MARK = SortTypes.MARK,
@@ -34,7 +30,7 @@ export const useGetColumns = (
   refetch: RefetchType<IAlcolock[]>,
   toggleDelete: (id: string, text?: ReactNode) => void,
   toggle: () => void,
-  setChangeAlkolockId: (id: ID) => void,
+  setChangeVehiclesId: (id: ID) => void,
 ): GridColDef[] => {
   return useMemo(
     () => [
@@ -78,56 +74,39 @@ export const useGetColumns = (
         filterable: false,
         renderCell: ({ row }) => {
           return (
-            <div className={style.controls}>
-              <GridActionsCellItem
-                data-testid={
-                  testids.page_transports.transports_widget_table
-                    .TRANSPORT_WIDGET_TABLE_BODY_ITEM_ACTION_EDIT
-                }
-                label="edit"
-                icon={<ModeEditIcon />}
-                key={'add'}
-                onClick={() => setChangeAlkolockId(row.id)}
-              />
-              <GridActionsCellItem
-                onClick={() =>
-                  toggleDelete(
-                    row?.id,
-                    <>
-                      <b>
-                        {row?.MARK}, {row?.MODEL}, {row?.YEAR}, {row?.GOS_NUMBER}
-                      </b>
-                    </>,
-                  )
-                }
-                key={'delete'}
-                data-testid={
-                  testids.page_transports.transports_widget_table
-                    .TRANSPORT_WIDGET_TABLE_BODY_ITEM_ACTION_DELETE
-                }
-                icon={<DeleteIcon />}
-                label="Delete"
-              />
-            </div>
+            <TableRowControls
+              testidDelete={
+                testids.page_transports.transports_widget_table
+                  .TRANSPORT_WIDGET_TABLE_BODY_ITEM_ACTION_DELETE
+              }
+              testidEdit={
+                testids.page_transports.transports_widget_table
+                  .TRANSPORT_WIDGET_TABLE_BODY_ITEM_ACTION_EDIT
+              }
+              onClickEdit={() => setChangeVehiclesId(row.id)}
+              onClickDelete={() =>
+                toggleDelete(
+                  row?.id,
+                  <>
+                    <b>
+                      {row?.MARK}, {row?.MODEL}, {row?.YEAR}, {row?.GOS_NUMBER}
+                    </b>
+                  </>,
+                )
+              }
+            />
           );
         },
         renderHeader: () => {
           return (
-            <div className={style.headerAction}>
-              <Refetch testId={testids.TABLE_REFETCH_TABLE_DATA_BUTTON} onClick={refetch} />
-              <span
-                onClick={toggle}
-                data-testid={
-                  testids.page_transports.transports_widget_table
-                    .TRANSPORT_WIDGET_TABLE_HEADER_ITEM_OPEN_MODAL
-                }>
-                <GridActionsCellItem
-                  key={'add'}
-                  icon={<AddIcon style={{ color: '#000' }} />}
-                  label="add"
-                />
-              </span>
-            </div>
+            <TableHeaderActions
+              refetch={refetch}
+              testidAddIcon={
+                testids.page_transports.transports_widget_table
+                  .TRANSPORT_WIDGET_TABLE_HEADER_ITEM_OPEN_MODAL
+              }
+              onClickAddIcon={toggle}
+            />
           );
         },
         width: 120,

@@ -3,13 +3,13 @@ import { useMemo } from 'react';
 import { Chip } from '@mui/material';
 import { GridColDef, type GridColumnHeaderParams } from '@mui/x-data-grid';
 
+import { TableHeaderActions } from '@entities/table_header_actions';
 import { TimeCell } from '@entities/time_cell';
 import { setTestIdsToHeaderColumns } from '@shared/components/Table/Table';
 import { testids } from '@shared/const/testid';
 import { SortTypes } from '@shared/const/types';
 import type { IAttachmentItems } from '@shared/types/BaseQueryTypes';
 import type { RefetchType } from '@shared/types/QueryTypes';
-import { Refetch } from '@shared/ui/refetch/Refetch';
 
 import style from '../ui/AvtoServiceTable.module.scss';
 import { chipColor } from './getRows';
@@ -98,11 +98,7 @@ export const useGetColumns = (refetch: RefetchType<IAttachmentItems[]>): GridCol
         filterable: false,
         getActions: () => [],
         renderHeader: () => {
-          return (
-            <div className={style.refetchWrapper}>
-              <Refetch testId={testids.TABLE_REFETCH_TABLE_DATA_BUTTON} onClick={refetch} />
-            </div>
-          );
+          return <TableHeaderActions refetch={refetch} />;
         },
         width: 120,
         hideable: false,

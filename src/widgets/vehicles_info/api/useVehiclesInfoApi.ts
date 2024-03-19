@@ -1,12 +1,9 @@
 import { CarsApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
+import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
 import type { ID } from '@shared/types/BaseQueryTypes';
-import { useQuery } from '@tanstack/react-query';
 
 export const useVehiclesInfoApi = (id: ID) => {
-  const { data, isLoading } = useQuery({
-    queryKey: [QueryKeys.CAR_ITEM],
-    queryFn: () => CarsApi.getCar(id),
-  });
+  const { data, isLoading } = useConfiguredQuery([QueryKeys.CAR_ITEM], CarsApi.getCar, id);
   return { car: data?.data, isLoading };
 };

@@ -1,7 +1,5 @@
-import type { IAlcolock, IDeviceAction } from '@shared/types/BaseQueryTypes';
+import { EventType, type IAlcolock, type IDeviceAction } from '@shared/types/BaseQueryTypes';
 import { SearchMethods } from '@shared/utils/global_methods';
-
-import { EventType } from './const';
 
 export const serviceModeInfoMapper = (deviceAction: IDeviceAction, alkolock: IAlcolock) => {
   const action =

@@ -32,8 +32,8 @@ export const Loader = ({
           ...base,
           backdropFilter: 'blur(1px)',
           background: 'rgba(255, 255, 255, 0.65)',
+          ...styles,
         }),
-        ...styles,
       }}
       fadeSpeed={100}>
       {children}

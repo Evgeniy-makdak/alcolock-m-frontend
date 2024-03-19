@@ -1,13 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useNavigate } from 'react-router-dom';
+
 import { RoutePaths } from '@app/index';
+import { permissionsMapper } from '@features/role_add_change_form';
 
 import { useNavBarApi } from '../api/useNavBarApi';
 import type { TypeNavLink } from '../lib/const';
-import { permissionsMapper } from '../lib/permissionsMapper';
 
 export const useNavBar = () => {
-  const { userData, isLoadingAccountData, length } = useNavBarApi();
+  const { userData, isLoadingAccountData, length, error } = useNavBarApi();
   const permission = permissionsMapper(userData?.permissions);
+  const navigate = useNavigate();
 
   const permissionsFilter = (item: TypeNavLink) => {
     const isAdmin = (userData?.permissions || []).includes('SYSTEM_GLOBAL_ADMIN');
@@ -27,5 +29,8 @@ export const useNavBar = () => {
       return true;
     }
   };
+  if (error) {
+    error?.status === 401 && navigate(RoutePaths.auth);
+  }
   return { userData, isLoadingAccountData, length, permissionsFilter };
 };

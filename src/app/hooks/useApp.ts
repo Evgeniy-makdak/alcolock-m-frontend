@@ -1,36 +1,68 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { type Location, type NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 
-import { AuthStatus, appStore } from '@app/model/store';
-import { getUserData } from '@features/menu_button/model/effects';
+import type { AxiosError } from 'axios';
+
+import { appStore } from '@shared/model/app_store/AppStore';
 import { setStore } from '@shared/model/store/localStorage';
-import { cookieManager } from '@shared/utils/cookie_manager';
+import type { IAccount, IError } from '@shared/types/BaseQueryTypes';
 
 import { RoutePaths } from '..';
+import { useAppApi } from '../api/useAppApi';
 
 setStore(window.localStorage);
 
+type OnFetchDataHandlingArgs = {
+  isLoading: boolean;
+  error: AxiosError<IError, any>;
+  user: IAccount;
+  refetch: () => void;
+  navigate: NavigateFunction;
+  location: Location;
+};
+
+const onFetchDataHandling = ({
+  isLoading,
+  error,
+  user,
+  refetch,
+  navigate,
+  location,
+}: OnFetchDataHandlingArgs) => {
+  if (isLoading) return;
+  if (!error && !user) {
+    refetch();
+    return;
+  }
+  const isAdmin = (user?.permissions || []).includes('SYSTEM_GLOBAL_ADMIN');
+  if (user) {
+    appStore.setState({
+      auth: true,
+      email: user?.email,
+      isAdmin: isAdmin,
+    });
+  }
+  if (location?.pathname === '/' && !error) {
+    navigate(RoutePaths.events);
+  }
+};
+
 export const useApp = () => {
+  const { isLoading, user, error, refetch } = useAppApi();
   const navigate = useNavigate();
   const location = useLocation();
-  const isAuth = appStore.appAuthStatus.useValue() === AuthStatus.auth;
-  const isLoadingApp = appStore.appLoading.useValue();
-  const token = appStore.appToken.useValue();
 
   useEffect(() => {
-    const bar = token ?? cookieManager.get('bearer');
-    getUserData({
-      token: bar,
-    }).catch((err) => {
-      console.log('getUserData error', err?.response);
+    onFetchDataHandling({
+      isLoading,
+      error,
+      user,
+      refetch,
+      location,
+      navigate,
     });
-  }, [token]);
+  }, [error, user]);
 
-  useEffect(() => {
-    if (!isAuth && !isLoadingApp) {
-      navigate(RoutePaths.auth);
-    } else {
-      if (location?.pathname === '/') navigate(RoutePaths.events);
-    }
-  }, [isAuth, isLoadingApp]);
+  return { isLoading };
 };

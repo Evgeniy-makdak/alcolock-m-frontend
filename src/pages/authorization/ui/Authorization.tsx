@@ -1,6 +1,8 @@
+import { TextField } from '@mui/material';
+
 import { InputsColumnWrapper } from '@shared/components/Inputs_column_wrapper/InputsColumnWrapper';
 import { testids } from '@shared/const/testid';
-import { Input } from '@shared/ui/InputWright/Input';
+import { InputPassword } from '@shared/ui/InputPassword/Input';
 import { FormCheckbox } from '@shared/ui/form_checkbox';
 import { Loader } from '@shared/ui/loader';
 import { Logo } from '@shared/ui/logo';
@@ -9,7 +11,18 @@ import { useAuthorization } from '../hooks/useAuthorization';
 import style from './Authorization.module.scss';
 
 export const Authorization = () => {
-  const { isLoading, handleSubmit, handleAuthorization, control } = useAuthorization();
+  const {
+    isLoading,
+    handleSubmit,
+    handleAuthorization,
+    register,
+    control,
+    errorPassword,
+    errorUsername,
+    remeberMe,
+    handleChangeRemeber,
+  } = useAuthorization();
+
   return (
     <div className={style.authorization}>
       <div className={style.logo}>
@@ -30,17 +43,22 @@ export const Authorization = () => {
             className={style.form}
             onSubmit={handleSubmit(handleAuthorization)}>
             <InputsColumnWrapper>
-              <Input
-                control={control}
+              <TextField
+                {...register('username')}
                 name="username"
+                helperText={errorUsername}
+                error={!!errorUsername}
                 autoComplete="off"
                 fullWidth
                 type={'text'}
                 variant={'outlined'}
               />
-              <Input
-                control={control}
+              <InputPassword
+                helperText={errorPassword}
+                error={!!errorPassword}
+                {...register('password')}
                 name="password"
+                control={control}
                 autoComplete="off"
                 fullWidth
                 type={'pass'}
@@ -49,7 +67,8 @@ export const Authorization = () => {
 
               <FormCheckbox
                 checkBox={{
-                  checked: true,
+                  onChange: (_e, val) => handleChangeRemeber(val),
+                  checked: remeberMe,
                 }}
                 label={'Запомнить меня'}
               />

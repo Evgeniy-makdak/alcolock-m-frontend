@@ -18,7 +18,7 @@ export const renderOptions = (
   option: Value,
   testid: string,
 ) => (
-  <li {...props} key={option.value} data-testid={`${testid}_${option.label}`}>
+  <li {...props} key={option.value?.toString()} data-testid={`${testid}_${option.label}`}>
     {option.label}
   </li>
 );
@@ -30,10 +30,7 @@ export type OnChane = (
   details?: AutocompleteChangeDetails<any>,
 ) => void;
 
-export function mapOptions<T>(
-  values: T[],
-  adapter: (data: T) => [] | [string, number | string],
-): Values {
+export function mapOptions<T>(values: T[], adapter: (data: T) => [] | [string, ID]): Values {
   if (!Array.isArray(values)) return [];
   const readyArr: Values = [];
   values.map((data) => {

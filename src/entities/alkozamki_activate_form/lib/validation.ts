@@ -1,5 +1,7 @@
 import * as yup from 'yup';
 
+import { ValidationMessages } from '@shared/validations/validation_messages';
+
 export interface Form {
   duration: number;
 }
@@ -12,7 +14,7 @@ export const schema = yup
       .nullable('значение должно быть числом')
       .positive('значение должно быть больше 0')
       .integer('значение должно быть числом')
-      .required('Обязательное поле')
+      .required(ValidationMessages.required)
       .min(1, 'значение должно быть больше 0'),
   })
-  .required('Обязательное поле');
+  .required(ValidationMessages.required);
