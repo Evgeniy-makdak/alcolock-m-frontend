@@ -1,5 +1,6 @@
 import type { Dayjs } from 'dayjs';
 import * as yup from 'yup';
+import { object } from 'yup';
 
 import type { ID } from '@shared/types/BaseQueryTypes';
 import type { Value, Values } from '@shared/ui/search_multiple_select';
@@ -19,8 +20,24 @@ export interface Form {
   licenseIssueDate: Dayjs | null;
   licenseExpirationDate: Dayjs | null;
   licenseClass: string[];
-  disabled: string;
+  disabled: ID;
 }
+
+export type KeyForm = keyof Form;
+
+yup.addMethod(object, 'dayjs', function method(message) {
+  return this.test('dayjs', message, function validate(value: Dayjs, ctx) {
+    if (!mustBeDate(ctx)) return true;
+    if (!value) {
+      return ctx.createError({ message: ValidationMessages.required });
+    }
+    const isValid = 'isValid' in value && value.isValid();
+    if (!isValid) {
+      return ctx.createError({ message: ValidationMessages.notValidData });
+    }
+    return true;
+  });
+});
 
 const mustBeDate = (ctx: yup.TestContext<yup.AnyObject>) => {
   const licenseCode = ctx.parent?.licenseCode;
@@ -28,17 +45,24 @@ const mustBeDate = (ctx: yup.TestContext<yup.AnyObject>) => {
   return licenseCode.trim() > 0;
 };
 
-export const schema = (id: ID) =>
-  yup.object<Form>({
+export const schema = (id: ID): yup.ObjectSchema<Form> =>
+  yup.object({
+    licenseClass: yup.array<Value>(),
     firstName: yup.string().required(ValidationMessages.required),
     middleName: yup.string().required(ValidationMessages.required),
     lastName: yup.string(),
-    birthDate: yup.object().nullable(),
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    birthDate: yup.object().dayjs(),
     phone: yup.string().test({
       name: 'phone',
       test(value, ctx) {
-        if (ValidationRules.phoneValidation(value).length > 0) {
-          return ctx.createError({ message: 'Невалидный номер телефона' });
+        if (!value || value.length === 0) {
+          return true;
+        }
+        const errorMessage = ValidationRules.phoneValidation(value);
+        if (errorMessage) {
+          return ctx.createError({ message: errorMessage });
         }
         return true;
       },
@@ -53,7 +77,7 @@ export const schema = (id: ID) =>
             return ctx.createError({ message: ValidationMessages.required });
           }
           if (ValidationRules.emailValidation(value).length > 0) {
-            return ctx.createError({ message: 'Невалидный email' });
+            return ctx.createError({ message: ValidationMessages.notValidEmail });
           }
           return true;
         },
@@ -82,47 +106,27 @@ export const schema = (id: ID) =>
       name: 'licenseCode',
       test(value, ctx) {
         if (value.trim().length > 0 && ValidationRules.driverLicenseValidation(value).length > 0) {
-          return ctx.createError({ message: 'Невалидное значение' });
+          return ctx.createError({ message: ValidationMessages.notValidData });
         }
         return true;
       },
     }),
     licenseIssueDate: yup
       .object()
-      .typeError('Невалидное значение')
-      .nullable()
-      .test({
-        name: 'licenseIssueDate',
-        test(value: Dayjs | null, ctx) {
-          if (!mustBeDate(ctx)) return true;
-          if (!value) {
-            return ctx.createError({ message: ValidationMessages.required });
-          }
-          const isValid = 'isValid' in value && value.isValid();
-          if (!isValid) {
-            return ctx.createError({ message: 'Невалидное значение' });
-          }
-          return true;
-        },
-      }),
+      // TODO => разобраться с типами
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      .dayjs()
+      .typeError(ValidationMessages.notValidData)
+      .nullable(),
     licenseExpirationDate: yup
       .object()
+      // TODO => разобраться с типами
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      .dayjs()
       .nullable()
-      .typeError('Невалидное значение')
-      .test({
-        name: 'licenseIssueDate',
-        test(value: Dayjs | null, ctx) {
-          if (!mustBeDate(ctx)) return true;
-          if (!value) {
-            return ctx.createError({ message: ValidationMessages.required });
-          }
-          const isValid = 'isValid' in value && value.isValid();
-          if (!isValid) {
-            return ctx.createError({ message: 'Невалидное значение' });
-          }
-          return true;
-        },
-      }),
+      .typeError(ValidationMessages.notValidData),
     userGroups: yup.array().test({
       name: 'userGroups',
       test(value, ctx) {

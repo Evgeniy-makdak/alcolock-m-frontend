@@ -15,6 +15,7 @@ export type Form = {
   type: Values;
   year?: Dayjs;
 };
+
 yup.addMethod(object, 'dayjs', function method(message) {
   return this.test('dayjs', message, function validate(value: Dayjs, ctx) {
     if (!value) {
@@ -36,6 +37,7 @@ yup.addMethod(object, 'dayjs', function method(message) {
     return true;
   });
 });
+
 const date = new Date();
 const maxYear = dayjs(date).year();
 const minYear = 1900;

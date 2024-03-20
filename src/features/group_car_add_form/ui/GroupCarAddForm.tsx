@@ -28,7 +28,7 @@ export const GroupCarAddForm: FC<GroupCarAddFormProps> = ({ close, branchId }) =
   const { cars, error, onSelect, onSubmit, showAlert, handleOpenAlert, closeAlert } =
     useGroupCarAddForm(branchId, close);
   return (
-    <>
+    <div className={style.group}>
       <Typography fontWeight={600} marginBottom={2} variant="h6">
         Добавить ТС в группу
       </Typography>
@@ -60,6 +60,6 @@ export const GroupCarAddForm: FC<GroupCarAddFormProps> = ({ close, branchId }) =
         open={showAlert}
         className={style.alert}
       />
-    </>
+    </div>
   );
 };

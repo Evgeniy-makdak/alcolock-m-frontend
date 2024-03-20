@@ -54,7 +54,6 @@ export const UserAddChangeForm: FC<UserAddChangeFormProps> = ({ closeModal, id }
     showLicenseCode,
     errorPhone,
   } = useUserAddChangeForm(id, closeModal);
-
   return (
     <Loader isLoading={isLoading}>
       <form className={style.inputsWrapper} onSubmit={handleSubmit}>
@@ -89,15 +88,7 @@ export const UserAddChangeForm: FC<UserAddChangeFormProps> = ({ closeModal, id }
                   disableFuture
                   onChange={(value) => onChangeDate('birthDate', value)}
                 />
-                <PhoneInput
-                  TextFieldProps={{
-                    label: 'Номер телефона',
-                    helperText: errorPhone,
-                    error: !!errorPhone,
-                  }}
-                  value={phone}
-                  setValue={setPhone}
-                />
+                <PhoneInput error={errorPhone} value={phone} setValue={setPhone} />
                 <TextField
                   helperText={errorEmail}
                   error={!!errorEmail}

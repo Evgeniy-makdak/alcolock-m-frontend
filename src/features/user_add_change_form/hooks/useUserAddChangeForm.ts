@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useForm } from 'react-hook-form';
 
 import dayjs, { type Dayjs } from 'dayjs';
@@ -13,7 +12,7 @@ import ArrayUtils from '@shared/utils/ArrayUtils';
 import { useUserAddChangeFormApi } from '../api/useUserAddChangeFormApi';
 import { getDataForRequest } from '../lib/getDataForRequest';
 import { userGroupsMapper } from '../lib/userGroupsMapper';
-import { type Form, schema } from '../lib/validate';
+import { type Form, type KeyForm, schema } from '../lib/validate';
 
 export const useUserAddChangeForm = (id?: ID, closeModal?: () => void) => {
   const selectedBranch = appStore.getState().selectedBranchState;
@@ -70,7 +69,7 @@ export const useUserAddChangeForm = (id?: ID, closeModal?: () => void) => {
         phone: phoneError,
       },
     },
-  } = useForm<any>({
+  } = useForm({
     resolver: yupResolver(schema(id)),
     values: defaultValues,
   });
@@ -82,13 +81,13 @@ export const useUserAddChangeForm = (id?: ID, closeModal?: () => void) => {
       : [...licenseClass, value];
     setValue('licenseClass', newLicenseClass);
   };
-  const onSelectUserGroups = (type: string, value: string | Value | (string | Value)[]) => {
+  const onSelectUserGroups = (type: KeyForm, value: string | Value | (string | Value)[]) => {
     const values = ArrayUtils.getArrayValues(value);
     clearErrors(type);
     setValue(type, values);
   };
 
-  const onChangeDate = (type: string, value: Dayjs) => {
+  const onChangeDate = (type: KeyForm, value: Dayjs) => {
     clearErrors(type);
     setValue(type, value);
   };
@@ -97,7 +96,7 @@ export const useUserAddChangeForm = (id?: ID, closeModal?: () => void) => {
     setValue('disabled', value);
   };
 
-  const setPhone = (value: string, type = 'phone') => {
+  const setPhone = (value: string, type: KeyForm = 'phone') => {
     clearErrors(type);
     setValue(type, value);
   };
@@ -129,7 +128,7 @@ export const useUserAddChangeForm = (id?: ID, closeModal?: () => void) => {
   return {
     register,
     showLicenseCode,
-    handleSubmit: handleSubmit(onSubmit, console.log),
+    handleSubmit: handleSubmit(onSubmit),
     isLoading,
     onSelectLicenseClass,
     errorFirstName,

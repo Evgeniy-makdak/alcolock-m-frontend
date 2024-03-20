@@ -1,38 +1,57 @@
-import type { FC } from 'react';
-import InputMask from 'react-input-mask';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { type FC } from 'react';
+import PhoneInput, { type DefaultInputComponentProps } from 'react-phone-number-input';
+import { getCountries, getCountryCallingCode } from 'react-phone-number-input/input';
+import ru from 'react-phone-number-input/locale/ru.json';
+import 'react-phone-number-input/style.css';
 
-import { TextField, type TextFieldProps } from '@mui/material';
+import { MenuItem, Select, type SelectChangeEvent, type TextFieldProps } from '@mui/material';
+
+import style from './PhoneInput.module.scss';
+
+type CountrySelect = {
+  value?: SelectChangeEvent<string>;
+  onChange: (value: SelectChangeEvent<string>) => void;
+  labels: string;
+};
+
+const CountrySelect: FC<CountrySelect> = ({ value, onChange, labels, ...rest }) => {
+  return (
+    <Select value={value as unknown as string} onChange={onChange} autoWidth label="Age">
+      {getCountries().map((country) => (
+        <MenuItem key={country} value={country}>
+          {labels[country as unknown as number]} +{getCountryCallingCode(country)}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+};
 
 type PhoneInputProps = {
   setValue: (value: string | null) => void;
-  disabled?: boolean;
   testid?: string;
   value?: string;
   TextFieldProps?: TextFieldProps;
-};
+  error?: string;
+} & DefaultInputComponentProps;
 
-export const PhoneInput: FC<PhoneInputProps> = ({
-  disabled = false,
-  testid,
-  setValue,
-  value,
-  TextFieldProps,
-}) => {
-  const onChange = (value: string) => {
-    if (disabled) return;
-    const formattedValue = value.replace(/\s+|_/g, '');
-    setValue(formattedValue === '+7' ? null : formattedValue);
-  };
-
+export const PhoneInputSet: FC<PhoneInputProps> = ({ setValue, value, error }) => {
   return (
-    <InputMask mask="+7 999 999 99 99" value={value} onChange={(e) => onChange(e?.target?.value)}>
-      <TextField
-        {...TextFieldProps}
-        data-testid={testid}
-        type="tel"
-        aria-label={'start top'}
-        fullWidth
+    <div>
+      <PhoneInput
+        international
+        countryCallingCodeEditable={false}
+        withCountryCallingCode
+        useNationalFormatForDefaultCountryValue
+        limitMaxLength
+        labels={ru}
+        placeholder="Введите номер телефона"
+        value={value}
+        defaultCountry="RU"
+        onChange={setValue}
+        className={style.input}
       />
-    </InputMask>
+      {error && <span className={style.error}>{error}</span>}
+    </div>
   );
 };
