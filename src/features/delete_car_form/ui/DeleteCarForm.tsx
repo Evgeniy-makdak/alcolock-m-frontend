@@ -1,11 +1,10 @@
 import type { FC, ReactNode } from 'react';
 
-import type { ID } from 'effector';
-
 import { Typography } from '@mui/material';
 
 import { ButtonFormWrapper } from '@shared/components/button_form_wrapper/ButtonFormWrapper';
 import { testids } from '@shared/const/testid';
+import type { ID } from '@shared/types/BaseQueryTypes';
 import { Button } from '@shared/ui/button';
 
 import { useDeleteCarForm } from '../hooks/useDeleteCarForm';
