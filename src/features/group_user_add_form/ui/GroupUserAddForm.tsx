@@ -28,7 +28,7 @@ export const GroupUserAddForm: FC<GroupUserAddFormProps> = ({ close, branchId })
     useGroupUserAddForm(branchId, close);
 
   return (
-    <>
+    <div className={style.group}>
       <Typography fontWeight={600} marginBottom={2} variant="h6">
         Добавить пользователей в группу
       </Typography>
@@ -60,6 +60,6 @@ export const GroupUserAddForm: FC<GroupUserAddFormProps> = ({ close, branchId })
         open={showAlert}
         className={style.alert}
       />
-    </>
+    </div>
   );
 };

@@ -53,7 +53,7 @@ export const useAuthorization = () => {
       // Токены должны быть только в cookie и бэк должен вернуть ошибку
       // not auth например и приложение должно перекинуться на авторизацию
       cookieManager.set('bearer', idToken);
-      console.log(data);
+
       const refreshToken = data.data?.refreshToken;
       if (refreshToken) {
         cookieManager.set('refresh', refreshToken);

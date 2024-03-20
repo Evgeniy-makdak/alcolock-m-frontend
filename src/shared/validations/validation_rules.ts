@@ -1,3 +1,5 @@
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
+
 import { ValidationMessages } from './validation_messages';
 
 type ValidateValue = string | null | undefined | any[];
@@ -17,9 +19,9 @@ export class ValidationRules {
   }
 
   static phoneValidation = (value: string) => {
-    const re = /^\+7[0-9]+$/;
+    if (isPossiblePhoneNumber(value)) return false;
 
-    return re.test(value) && value.length === 12 ? [] : [ValidationMessages.notValidPhone];
+    return ValidationMessages.notValidPhone;
   };
 
   static driverLicenseValidation = (value: ValidateValue) => {

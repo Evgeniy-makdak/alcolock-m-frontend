@@ -4,7 +4,7 @@ import { useUpdateQueries } from '@shared/hooks/useUpdateQuerys';
 import type { ID } from '@shared/types/BaseQueryTypes';
 import { useMutation } from '@tanstack/react-query';
 
-const updateQueries = [QueryKeys.BRANCH_LIST_TABLE];
+const updateQueries = [QueryKeys.BRANCH_LIST_TABLE, QueryKeys.BRANCH_LIST_SELECT];
 
 export const useGroupDeleteFormApi = () => {
   const refetchQueries = useUpdateQueries();

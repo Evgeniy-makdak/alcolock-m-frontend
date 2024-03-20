@@ -18,7 +18,7 @@ type GroupAlcolockAddFormProps = {
 
 const alertText = (
   <>
-    При перемещении выбранных алкозмаков все их текущие связи с ТС будут <b>разорваны</b>.
+    При перемещении выбранных алкозамков все их текущие связи с ТС будут <b>разорваны</b>.
     <br />
     <br />
     Пожалуйста, подтвердите действие.
@@ -29,7 +29,7 @@ export const GroupAlcolocksAddForm: FC<GroupAlcolockAddFormProps> = ({ branchId,
   const { alcolocks, error, onSelect, onSubmit, showAlert, handleOpenAlert, closeAlert } =
     useGroupAlcolocksAddForm(branchId, close);
   return (
-    <>
+    <div className={style.group}>
       <Typography fontWeight={600} marginBottom={2} variant="h6">
         Добавить алкозамки в группу
       </Typography>
@@ -61,6 +61,6 @@ export const GroupAlcolocksAddForm: FC<GroupAlcolockAddFormProps> = ({ branchId,
         open={showAlert}
         className={style.alert}
       />
-    </>
+    </div>
   );
 };
