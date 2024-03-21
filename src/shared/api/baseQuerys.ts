@@ -15,6 +15,7 @@ import {
   getEventListForAutoServiceURL,
   getEventsApiURL,
   getEventsHistoryURL,
+  getEventsTypeUrl,
   getMarksCarURL,
   getRolesListURL,
   getUrlCountEventsQuery,
@@ -41,6 +42,7 @@ import {
   ICar,
   type ID,
   type IDeviceAction,
+  type IEventsType,
   type IRole,
   IUser,
   type UserDataLogin,
@@ -182,6 +184,10 @@ export class EventsApi {
 
   static getEventsHistory(options: EventsOptions) {
     return getQuery<IDeviceAction[]>({ url: getEventsHistoryURL(options) });
+  }
+
+  static getEventsTypeList() {
+    return getQuery<IEventsType>({ url: getEventsTypeUrl() });
   }
 
   static activateServiceMode({

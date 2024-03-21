@@ -1,3 +1,5 @@
+import type { IEventsType } from '@shared/types/BaseQueryTypes';
+
 export class AppConstants {
   static rolesSystemList = [
     {
@@ -270,12 +272,12 @@ export class AppConstants {
     sobrietyTest: 'SOBRIETY_TEST',
   });
 
-  static eventTypesList = [
+  static eventTypesList: IEventsType = [
     {
       value: this.EVENT_TYPES.alcolockEventStartedRegularMode,
       label: 'Включение',
-      errCode: 0x01,
     },
+
     {
       value: 'SERVICE_MODE_ACTIVATE',
       label: 'Переход в сервисный режим',
@@ -287,64 +289,52 @@ export class AppConstants {
     {
       value: this.EVENT_TYPES.alcolockEventStartedMaintenanceMode,
       label: 'Включение в сервисном режиме',
-      errCode: 0x02,
     },
     {
       value: this.EVENT_TYPES.alcolockEventIgnitionStarted,
       label: 'Включение зажигания',
-      errCode: 0x03,
     },
     {
       value: this.EVENT_TYPES.alcolockEventEngineBlocked,
       label: 'Блокировка двигателя',
-      errCode: 0x05,
     },
     {
       value: this.EVENT_TYPES.alcolockEventEngineUnblocked,
       label: 'Разблокировка двигателя',
-      errCode: 0x06,
     },
     {
       value: this.EVENT_TYPES.alcolockEventMaintenanceModeOff,
       label: 'Выход из режима "Атвосервис"',
-      errCode: 0x08,
     },
     {
       value: this.EVENT_TYPES.alcolockEventEmergencyModeOn,
       label: 'Переход в аварийный режим',
-      errCode: 0x09,
     },
     {
       value: this.EVENT_TYPES.alcolockEventEmergencyModeOff,
       label: 'Выход из аварийного режима',
-      errCode: 0x0a,
     },
     {
       value: this.EVENT_TYPES.alcolockEventDoorOpened,
       label: 'Открытие двери',
-      errCode: 0x0b,
     },
     {
       value: this.EVENT_TYPES.alcolockEventDoorClosed,
       label: 'Закрытие двери',
-      errCode: 0x0c,
     },
 
     {
       value: this.EVENT_TYPES.alcolockEventBlockedUnauthorized,
       label: 'Блокировка при неразрешенном движении',
-      errCode: 0x0d,
     },
     {
       value: this.EVENT_TYPES.alcolockEventBlockedTimeout,
       label: 'Блокировка по истечении таймера (5мин)',
-      errCode: 0x0e,
     },
 
     {
       value: this.EVENT_TYPES.alcolockError,
       label: 'Ошибка устройства',
-      errCode: 0xff,
     },
     {
       value: this.EVENT_TYPES.sobrietyTest,

@@ -5,7 +5,7 @@ import type { QueryOptions } from '@shared/types/QueryTypes';
 
 export const useEventsApi = (options: QueryOptions) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
-    [QueryKeys.EVENTS_LIST],
+    [QueryKeys.EVENTS_LIST_TABLE],
     EventsApi.getList,
     options,
     { refetchInterval: 30000, retry: 1, retryDelay: 3000 },

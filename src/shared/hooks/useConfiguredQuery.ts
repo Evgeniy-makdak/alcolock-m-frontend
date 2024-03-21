@@ -37,6 +37,7 @@ export const useConfiguredQuery = <T, D extends QueryOptions>(
   const selectedBranchState = appStore.getState().selectedBranchState;
   const queryBranch = branchId ? branchId : selectedBranchState?.id;
   const newOptions = isOptions ? getOptions(options, queryBranch) : options;
+
   const data = useQuery<T, AxiosError<IError>, T, QueryKey>({
     queryKey: [...key, queryBranch, ...[isOptions ? Object.values(newOptions) : newOptions]],
     queryFn: () => fn(!!newOptions ? newOptions : {}),

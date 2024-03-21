@@ -49,7 +49,7 @@ export const useEventsTable = () => {
       users: Formatters.getStringForQueryParams(filters.driverId),
       carsByMake: Formatters.getStringForQueryParams(filters.markCar),
       carsByLicense: Formatters.getStringForQueryParams(filters.gosNumber),
-      eventsByType: Formatters.getStringForQueryParams(filters.typeEvent),
+      eventsByType: filters.typeEvent,
     },
     sortBy: state?.sortModel[0]?.field,
     order: state?.sortModel[0]?.sort,

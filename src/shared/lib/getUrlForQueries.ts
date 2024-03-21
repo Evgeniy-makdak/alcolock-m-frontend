@@ -1,5 +1,6 @@
 import type { GridSortDirection } from '@mui/x-data-grid';
 
+import { AppConstants } from '@app/index';
 import { SortTypes } from '@shared/const/types';
 import type { EventsOptions, ID } from '@shared/types/BaseQueryTypes';
 import type { QueryOptions } from '@shared/types/QueryTypes';
@@ -405,6 +406,10 @@ export function getCreateAlkolocksURL() {
 
 ////////////////////////////////==============================================EVENTS API
 
+export const getEventsTypeUrl = () => {
+  return `api/event-types`;
+};
+
 function getSortQueryEvents(orderType: SortTypes | string, order: GridSortDirection) {
   const orderStr = ',' + order.toUpperCase();
 
@@ -452,7 +457,6 @@ export function getEventsHistoryURL({
   sortBy,
   filterOptions,
 }: EventsOptions) {
-  console.log('WORK_GET_URL', alcolockId, carId, userId, page, limit, order, sortBy, filterOptions);
   const branchId = filterOptions?.branchId;
   let queries = getSelectBranchQueryUrl({
     page: 'device',
@@ -531,8 +535,20 @@ export function getEventsApiURL({
     queries += `&any.vehicleRecord.registrationNumber.in=${filterOptions.carsByLicense}`;
   }
 
-  if (!!eventsByType) {
-    queries += `&any.events.eventType.in=${filterOptions.eventsByType}`;
+  if (eventsByType && eventsByType.length > 0) {
+    const testTypeEvent = [
+      eventsByType.find((elem) => elem.value === AppConstants.EVENT_TYPES.sobrietyTest),
+    ];
+    if (testTypeEvent.length === 1) {
+      const items = Formatters.getStringForQueryParams(testTypeEvent);
+      queries += `&any.type.in=${items}`;
+    }
+    const items = Formatters.getStringForQueryParams(
+      eventsByType.filter((elem) => elem.value !== AppConstants.EVENT_TYPES.sobrietyTest),
+    );
+    if (items.length > 1) {
+      queries += `&any.events.eventType.in=${items}`;
+    }
   }
 
   return `api/device-actions?page=${page || 0}&size=${limit || 20}${queries}`;

@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { TableRow } from '@mui/material';
 
 import { EventData, type HistoryTypes } from '@entities/events_data';
+import { getLastEvent } from '@entities/type_event_select';
 import { testids } from '@shared/const/testid';
 import { StyledTable } from '@shared/styled_components/styledTable';
 import type { EventsOptions, ID } from '@shared/types/BaseQueryTypes';
 
 import { useEventsHistoryApi } from '../api/useEventsHistoryApi';
-import { ItemButton, date, isTheSameRow, typeEvent } from '../lib/helpers';
+import { ItemButton, date, isTheSameRow } from '../lib/helpers';
 import style from '../ui/EventsHistory.module.scss';
 
 export const useEventsHistory = (options: EventsOptions, type: HistoryTypes) => {
@@ -29,7 +30,7 @@ export const useEventsHistory = (options: EventsOptions, type: HistoryTypes) => 
           return (
             <React.Fragment key={event?.id}>
               <StyledTable.BodyRow key={event.id} data-testid={testids.EVENT_HISTORY_TABLE_ITEM}>
-                <StyledTable.BodyCell>{typeEvent(event)}</StyledTable.BodyCell>
+                <StyledTable.BodyCell>{getLastEvent(event)}</StyledTable.BodyCell>
 
                 <StyledTable.BodyCell className={style.bodyCellCreatedAt}>
                   {date(event)}

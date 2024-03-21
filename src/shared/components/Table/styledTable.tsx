@@ -20,6 +20,11 @@ export const getStyle = (flag: boolean) => {
     '.MuiDataGrid-row': {
       cursor: flag ? 'pointer' : 'default',
     },
+    '.MuiDataGrid-cellContent': {
+      minHeight: 40,
+      display: 'flex',
+      alignItems: 'center',
+    },
     '.MuiDataGrid-columnHeaderTitle': {
       fontWeight: '600',
     },
