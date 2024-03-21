@@ -18,6 +18,16 @@ interface IDriver {
   licenseExpirationDate: string;
 }
 
+export type IEventType = {
+  id?: ID;
+  label: string;
+  // TODO => изменить название ключа event когда на бэке поменяется api на value
+  event?: string;
+  value?: string;
+};
+
+export type IEventsType = IEventType[];
+
 export interface Role {
   id: ID;
   createdAt: string;
@@ -190,7 +200,7 @@ interface IActiveActions {
     branchId: ID;
   };
   seen: boolean;
-  events: IEvent[];
+  events: IEvents;
   createdAt: string;
   createdBy: IUser;
 }
@@ -246,7 +256,8 @@ export enum EventType {
   MAINTENANCE = 'MAINTENANCE',
 }
 
-export interface IEvent {
+export type IEvent = {
+  //@prop eventType - тип события
   eventType: EventType;
   extra: {
     qrCode: string;
@@ -264,7 +275,9 @@ export interface IEvent {
     middleName: string | null;
   };
   user: { id: ID; branchId: ID };
-}
+};
+
+export type IEvents = IEvent[];
 
 export interface ISummary {
   photoFileName: any;
@@ -293,7 +306,7 @@ export interface IDeviceAction {
   uuid: string;
   createdBy: IUser;
   device: IAlcolock;
-  events: IEvent[];
+  events: IEvents;
   summary: ISummary;
   vehicleRecord: ICar;
   action: { type: string };

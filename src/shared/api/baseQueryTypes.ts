@@ -12,7 +12,12 @@ import type { IError } from '@shared/types/BaseQueryTypes';
 import type { HeaderReq } from '@shared/types/QueryTypes';
 import { cookieManager } from '@shared/utils/cookie_manager';
 
-function viewResErrors(error: AxiosError<IError>): null {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type AppAxiosResponse<T> = {
+  isError?: boolean;
+} & AxiosResponse<T, IError>;
+
+function viewResErrors<T>(error: AxiosError<IError>): AppAxiosResponse<T> {
   console.log('error', error);
   const fieldErrors = error?.response?.data?.fieldErrors;
   const status = error?.status || error?.response?.status;
@@ -31,7 +36,14 @@ function viewResErrors(error: AxiosError<IError>): null {
         variant: 'error',
       });
     });
-  return null;
+  return {
+    data: null,
+    status: status,
+    config: error?.config,
+    headers: error?.request,
+    statusText: error?.response?.statusText,
+    isError: true,
+  };
 }
 
 const returnHeaders = (headers: HeaderReq): HeaderReq => {
@@ -43,12 +55,18 @@ const returnHeaders = (headers: HeaderReq): HeaderReq => {
   });
 };
 
-export function getQuery<T>({ url, config }: { url: string; config?: AxiosRequestConfig }) {
+export function getQuery<T>({
+  url,
+  config,
+}: {
+  url: string;
+  config?: AxiosRequestConfig;
+}): Promise<AppAxiosResponse<T>> {
   const requestUrl = `${API_URL}${url}`;
   const headersReg = returnHeaders(config?.headers);
 
   return axios
-    .get<IError, AxiosResponse<T, IError>>(requestUrl, {
+    .get<IError, AppAxiosResponse<T>>(requestUrl, {
       headers: { ...config?.headers, ...headersReg },
       ...config,
     })
@@ -68,7 +86,7 @@ export function postQuery<T, D>({
 }) {
   const requestUrl = `${API_URL}${url}`;
   return axios
-    .post<IError, AxiosResponse<T, IError>>(requestUrl, data, {
+    .post<IError, AppAxiosResponse<T>>(requestUrl, data, {
       headers: returnHeaders(headers),
     })
     .catch((e) => {
@@ -87,7 +105,7 @@ export function putQuery<T, D>({
 }) {
   const requestUrl = `${API_URL}${url}`;
   return axios
-    .put<IError, AxiosResponse<T, IError>>(requestUrl, data, {
+    .put<IError, AppAxiosResponse<T>>(requestUrl, data, {
       headers: returnHeaders(headers),
     })
     .catch((e) => {
@@ -98,7 +116,7 @@ export function putQuery<T, D>({
 export function deleteQuery<T>({ headers, url }: { headers?: HeaderReq; url: string }) {
   const requestUrl = `${API_URL}${url}`;
   return axios
-    .delete<IError, AxiosResponse<T, IError>>(requestUrl, {
+    .delete<IError, AppAxiosResponse<T>>(requestUrl, {
       httpsAgent: 'fetch',
       headers: returnHeaders(headers),
     })

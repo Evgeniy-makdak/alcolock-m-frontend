@@ -98,8 +98,9 @@ export class Formatters {
     return str.replace(/\s+/g, ' ').trim();
   }
   static getStringForQueryParams(arr: Values) {
+    if (!Array.isArray(arr)) return '';
     if (arr.length === 0) return '';
-    const arrIds = arr.map((value) => value.value);
+    const arrIds = arr.map((value) => value?.value || '');
     return arrIds.join(',');
   }
 }

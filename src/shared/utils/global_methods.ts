@@ -1,7 +1,7 @@
-import type { IEvent } from '@shared/types/BaseQueryTypes';
+import type { IEvents } from '@shared/types/BaseQueryTypes';
 
 export class SearchMethods {
-  static findMostRecentEvent = (events: IEvent[]) => {
+  static findMostRecentEvent = (events: IEvents) => {
     if (!events || events.length === 0) {
       return null;
     }
@@ -22,7 +22,7 @@ export class SearchMethods {
     return mostRecentEvent;
   };
 
-  static findFirstRequestEvent = (events: IEvent[]) => {
+  static findFirstRequestEvent = (events: IEvents) => {
     if (!events || events.length === 0) {
       return null;
     }
