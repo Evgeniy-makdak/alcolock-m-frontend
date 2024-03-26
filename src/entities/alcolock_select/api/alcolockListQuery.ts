@@ -10,5 +10,5 @@ export const useAlcolockListQuery = (options: QueryOptions) => {
     options,
   );
 
-  return { data: data?.data || [], isLoading };
+  return { alcolocks: data?.data || [], isLoading };
 };

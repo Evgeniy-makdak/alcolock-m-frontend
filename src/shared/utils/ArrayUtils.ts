@@ -9,7 +9,7 @@ export default class ArrayUtils {
     return index >= 0;
   }
 
-  static getStringFromArrayValues(values: (string | Value)[] | Value) {
+  static getStringFromArrayValues(values: (string | Value)[] | Value): ID {
     if (Array.isArray(values)) {
       const arr: ID[] = [];
       values.map((item) => {
@@ -44,5 +44,14 @@ export default class ArrayUtils {
       return arr;
     }
     return [values.value];
+  }
+  static getValueFromAnyOption(
+    value: string | Value | Values | (string | Value)[] | undefined | null,
+  ): Value {
+    if (Array.isArray(value)) {
+      return typeof value[0] === 'object' ? value[0] : null;
+    } else if (typeof value === 'object') {
+      return value;
+    }
   }
 }

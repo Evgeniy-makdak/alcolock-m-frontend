@@ -23,7 +23,7 @@ const theme = createTheme(
 );
 
 export const setTestIdsToHeaderColumns = (
-  row: GridColumnHeaderParams<any, any, any>,
+  row: GridColumnHeaderParams<unknown, unknown, unknown>,
   testId: string,
 ) => {
   return <span data-testid={`${testId}_${row?.colDef?.field}`}>{row?.colDef?.headerName}</span>;

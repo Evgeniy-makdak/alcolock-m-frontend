@@ -1,33 +1,39 @@
 import type { CreateUserData, ID } from '@shared/types/BaseQueryTypes';
 import ArrayUtils from '@shared/utils/ArrayUtils';
 
-import type { Form } from './validate';
+import { type Form } from './validate';
 
 export const getDataForRequest = (data: Form, branchId: ID): CreateUserData => {
-  const userGroups = ArrayUtils.getArrayFromValues(data?.userGroups);
+  const userGroups = data?.userGroups;
+  const userGroupsIds = ArrayUtils.getArrayFromValues(userGroups);
   const licenseCode = data?.licenseCode;
   const licenseCodeLengthMoreZero = licenseCode.trim().length > 0;
-  const phone = data?.phone;
+  const phone = data?.phone?.trim();
+  const lastName = data?.lastName || '';
   const password = data?.password;
+  const birthDate = data?.birthDate?.format('YYYY-MM-DD');
+  const licenseExpirationDate =
+    licenseCodeLengthMoreZero && data?.licenseExpirationDate
+      ? data?.licenseExpirationDate?.format('YYYY-MM-DD')
+      : null;
+  const licenseIssueDate =
+    licenseCodeLengthMoreZero && data?.licenseIssueDate
+      ? data?.licenseIssueDate?.format('YYYY-MM-DD')
+      : null;
+
   const reqBody: CreateUserData = {
-    birthDate: data?.birthDate?.format('YYYY-MM-DD'),
     branchId: branchId,
     disabled: data?.disabled === 'true' ? true : false,
     email: data.email,
-    firstName: data.firstName,
+    firstName: data?.firstName,
     middleName: data?.middleName,
-    lastName: data?.lastName,
-    phone: phone.trim().length === 0 ? null : phone,
-    userGroups,
+    lastName,
+    userGroups: userGroupsIds,
     driver: {
-      licenseCode: data?.licenseCode,
-      licenseClass: licenseCodeLengthMoreZero ? data?.licenseClass : [],
-      licenseExpirationDate: licenseCodeLengthMoreZero
-        ? data?.licenseExpirationDate?.format('YYYY-MM-DD')
-        : '',
-      licenseIssueDate: licenseCodeLengthMoreZero
-        ? data?.licenseIssueDate?.format('YYYY-MM-DD')
-        : '',
+      licenseCode: data?.licenseCode ? data?.licenseCode : null,
+      licenseClass: data?.licenseClass || [],
+      licenseExpirationDate: licenseExpirationDate,
+      licenseIssueDate: licenseIssueDate,
     },
   };
 
@@ -35,32 +41,13 @@ export const getDataForRequest = (data: Form, branchId: ID): CreateUserData => {
     reqBody.password = password;
   }
 
+  if (phone) {
+    reqBody.phone = phone;
+  }
+
+  if (birthDate) {
+    reqBody.birthDate = birthDate;
+  }
+
   return reqBody;
 };
-/**
- * birthDate:"2000-03-10"
-branchId:20
-disabled:false
-driver:{licenseCode: "1010200010", licenseIssueDate: "2018-10-10", licenseExpirationDate: "2028-10-10",…}
-email:"testemail@yandex.ru"
-firstName:"Берёт"
-lastName:"Константин"
-middleName:"Гитару"
-password:"1010"
-phone:"+73242342342"
-userGroups:[200, 400, 500, 1223, 300, 2190]
- * 
- * 
- * birthDate: "2000-10-10"
-branchId: 20
-disabled: false
-driver: {licenseCode: "1234324234", licenseIssueDate: "2024-03-01", licenseExpirationDate: "2024-03-31",…}
-email: "testKonstemail@yandex.ru"
-firstName: "Konst"
-lastName: "Bush"
-middleName: "Vict"
-password: "1010"
-phone: "+79500176825"
-userGroups: [200, 1223, 300, 2190, 400, 500]
- * 
- */

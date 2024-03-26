@@ -21,7 +21,9 @@ export enum ValuesHeader {
   CREATED_AT = SortTypes.DATE_CREATE,
 }
 
-const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
+const setTestIdsToHeaderColumnsAdapter = (
+  row: GridColumnHeaderParams<unknown, unknown, unknown>,
+) => {
   return setTestIdsToHeaderColumns(
     row,
     testids.page_users.users_widget_table.USERS_WIDGET_TABLE_HEADER_ITEM,

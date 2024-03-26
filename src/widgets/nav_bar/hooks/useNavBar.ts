@@ -1,18 +1,16 @@
-import { useNavigate } from 'react-router-dom';
-
 import { RoutePaths } from '@app/index';
 import { permissionsMapper } from '@features/role_add_change_form';
+import { Permissions } from '@shared/const/config';
 
 import { useNavBarApi } from '../api/useNavBarApi';
 import type { TypeNavLink } from '../lib/const';
 
 export const useNavBar = () => {
-  const { userData, isLoadingAccountData, length, error } = useNavBarApi();
+  const { userData, isLoadingAccountData, length } = useNavBarApi();
   const permission = permissionsMapper(userData?.permissions);
-  const navigate = useNavigate();
 
   const permissionsFilter = (item: TypeNavLink) => {
-    const isAdmin = (userData?.permissions || []).includes('SYSTEM_GLOBAL_ADMIN');
+    const isAdmin = (userData?.permissions || []).includes(Permissions.SYSTEM_GLOBAL_ADMIN);
     if (item.path === RoutePaths.groups || item.path === RoutePaths.roles) {
       return isAdmin;
     } else if (item.path === RoutePaths.users) {
@@ -29,8 +27,5 @@ export const useNavBar = () => {
       return true;
     }
   };
-  if (error) {
-    error?.status === 401 && navigate(RoutePaths.auth);
-  }
   return { userData, isLoadingAccountData, length, permissionsFilter };
 };

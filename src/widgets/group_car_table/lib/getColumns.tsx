@@ -17,7 +17,9 @@ export enum ValuesHeader {
   GOS_NUMBER = SortTypes.GOS_NUMBER,
 }
 
-const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
+const setTestIdsToHeaderColumnsAdapter = (
+  row: GridColumnHeaderParams<unknown, unknown, unknown>,
+) => {
   return setTestIdsToHeaderColumns(
     row,
     testids.page_groups.groups_widget_info.GROUPS_WIDGET_INFO_TAB_CARS_TABLE,
@@ -33,19 +35,19 @@ export const useGetColumns = (
     () => [
       {
         renderHeader: setTestIdsToHeaderColumnsAdapter,
-        headerName: 'Наименование',
+        headerName: 'Марка',
         field: ValuesHeader.MARK,
         maxWidth: 130,
       },
       {
         renderHeader: setTestIdsToHeaderColumnsAdapter,
-        headerName: 'Серийный номер',
+        headerName: 'Модель',
         maxWidth: 135,
         field: ValuesHeader.MODEL,
       },
       {
         renderHeader: setTestIdsToHeaderColumnsAdapter,
-        headerName: 'Установлен на ТС',
+        headerName: 'VIN',
         field: ValuesHeader.VIN,
       },
       {

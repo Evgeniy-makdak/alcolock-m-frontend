@@ -51,7 +51,7 @@ import { deleteQuery, getQuery, postQuery, putQuery } from './baseQueryTypes';
 
 export default class PhotosApi {
   static getItem(url: string) {
-    return getQuery<any>({
+    return getQuery<unknown>({
       url: `api/photos/${url}`,
       config: {
         responseType: 'blob',
@@ -83,13 +83,13 @@ export class UsersApi {
     return getQuery<IUser>({ url: `api/users/${id}` });
   }
   static switchBranch({ id, filterOptions: { branchId } }: QueryOptions) {
-    return postQuery<ICar, any>({ url: `api/users/${id}/assign/${branchId}` });
+    return postQuery<ICar, unknown>({ url: `api/users/${id}/assign/${branchId}` });
   }
   static createUser(data: CreateUserData) {
-    return postQuery<IUser, any>({ url: `api/users`, data });
+    return postQuery<IUser, unknown>({ url: `api/users`, data });
   }
   static changeUser(data: CreateUserData, id: ID) {
-    return putQuery<IUser, any>({ url: `api/users/${id}`, data });
+    return putQuery<IUser, unknown>({ url: `api/users/${id}`, data });
   }
   static deleteUser(id: ID) {
     return deleteQuery({ url: `api/users/${id}` });
@@ -102,7 +102,7 @@ export class UsersApi {
     return postQuery({ url: `api/account/change-password`, data });
   }
   static authenticate(data: UserDataLogin) {
-    return postQuery<IAuthenticate, any>({
+    return postQuery<IAuthenticate, unknown>({
       url: `api/authenticate`,
       data,
       headers: { isAuth: false },
@@ -134,7 +134,7 @@ export class CarsApi {
     return postQuery({ url: `api/vehicles`, data });
   }
   static switchBranch(options: QueryOptions, isPairSwitch: boolean) {
-    return postQuery<ICar, any>({ url: getCarSwitchBranchUrl(options, isPairSwitch) });
+    return postQuery<ICar, unknown>({ url: getCarSwitchBranchUrl(options, isPairSwitch) });
   }
 }
 
@@ -160,7 +160,7 @@ export class AlcolocksApi {
     return putQuery({ url: getAlkolockURL(id), data });
   }
   static switchBranch({ id, filterOptions: { branchId } }: QueryOptions, withVehicle = false) {
-    return postQuery<IAlcolock, any>({
+    return postQuery<IAlcolock, unknown>({
       url: `api/monitoring-devices/${id}/assign/${branchId}?withVehicle=${withVehicle}`,
     });
   }
@@ -205,21 +205,21 @@ export class EventsApi {
           deviceId,
           type: 'SERVICE_MODE_ACTIVATE',
         };
-    return postQuery<IDeviceAction, any>({ url: `api/device-actions`, data: requestData });
+    return postQuery<IDeviceAction, unknown>({ url: `api/device-actions`, data: requestData });
   }
   static cancelActivateService(id: ID) {
-    return postQuery<IDeviceAction, any>({ url: `api/device-actions/${id}/cancel` });
+    return postQuery<IDeviceAction, unknown>({ url: `api/device-actions/${id}/cancel` });
   }
 
   static rejectActivateService(id: ID) {
-    return postQuery<IDeviceAction, any>({ url: `api/device-actions/${id}/reject` });
+    return postQuery<IDeviceAction, unknown>({ url: `api/device-actions/${id}/reject` });
   }
 
   static acceptActivateService(id: ID) {
-    return postQuery<IDeviceAction, any>({ url: `api/device-actions/${id}/accept` });
+    return postQuery<IDeviceAction, unknown>({ url: `api/device-actions/${id}/accept` });
   }
   static seenAutoService(id: ID) {
-    return postQuery<IDeviceAction, any>({ url: `api/device-actions/${id}/seen` });
+    return postQuery<IDeviceAction, unknown>({ url: `api/device-actions/${id}/seen` });
   }
 }
 
@@ -237,7 +237,7 @@ export class BranchApi {
     return postQuery<IBranch, { name: string }>({ data: { name }, url: `api/branch-offices` });
   }
   static deleteBranch(id: ID) {
-    return deleteQuery<any>({ url: `api/branch-offices/${id}` });
+    return deleteQuery<unknown>({ url: `api/branch-offices/${id}` });
   }
   static editBranch(id: ID, name: string) {
     return putQuery<IBranch, { id: ID; name: string }>({

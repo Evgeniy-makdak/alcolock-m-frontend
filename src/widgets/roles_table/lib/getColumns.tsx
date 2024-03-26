@@ -18,7 +18,9 @@ export enum ValuesHeader {
   ATTACHMENT_MANAGEMENTS = 'ATTACHMENT_MANAGEMENTS',
 }
 
-const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
+const setTestIdsToHeaderColumnsAdapter = (
+  row: GridColumnHeaderParams<unknown, unknown, unknown>,
+) => {
   return setTestIdsToHeaderColumns(
     row,
     testids.page_roles.roles_widget_table.ROLES_WIDGET_TABLE_HEADER_ITEM,

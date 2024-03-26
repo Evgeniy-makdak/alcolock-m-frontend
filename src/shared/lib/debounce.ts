@@ -1,5 +1,6 @@
 import type { MouseEventHandler } from 'react';
 
+// eslint-disable-next-line no-undef
 const timer: { timer: null | number | NodeJS.Timeout } = { timer: null };
 
 interface DebounceProps {

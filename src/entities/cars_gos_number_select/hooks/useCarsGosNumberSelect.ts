@@ -15,12 +15,12 @@ export const useCarsGosNumberSelect = () => {
     setSearchQuery('');
   };
 
-  const { data, isLoading } = useCarListQuery({
+  const { carList, isLoading } = useCarListQuery({
     searchQuery,
     sortBy: SortTypes.byLicense,
     order: SortsTypes.asc,
   });
 
-  const carList = mapOptions(data, adapterMapOptions);
-  return { onChange, onReset, isLoading, carList };
+  const carListMapped = mapOptions(carList, adapterMapOptions);
+  return { onChange, onReset, isLoading, carList: carListMapped };
 };

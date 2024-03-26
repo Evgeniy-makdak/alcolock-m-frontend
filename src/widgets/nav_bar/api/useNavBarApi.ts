@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AccountApi } from '@shared/api/baseQuerys';
 import { QueryKeys } from '@shared/const/storageKeys';
 import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
@@ -9,7 +8,9 @@ export const useNavBarApi = () => {
     isLoading: isLoadingAccountData,
     error,
     refetch: refetchAccountData,
-  } = useConfiguredQuery([QueryKeys.ACCOUNT], AccountApi.getAccountData);
+  } = useConfiguredQuery([QueryKeys.ACCOUNT], AccountApi.getAccountData, null, {
+    networkMode: 'offlineFirst',
+  });
 
   // const { data: count, isLoading: isLoadingAvtoServiceEventList } = useConfiguredQuery(
   //   [QueryKeys.EVENTS_COUNT],

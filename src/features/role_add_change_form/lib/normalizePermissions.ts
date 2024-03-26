@@ -1,6 +1,7 @@
-import type { IPermissionsString, IUserGroupPermission } from '@shared/types/BaseQueryTypes';
+import { Entities, type Permissions } from '@shared/const/config';
+import type { IUserGroupPermission } from '@shared/types/BaseQueryTypes';
 
-import { Entitys, UserPermissionsTypes } from './const';
+import { UserPermissionsTypes } from './const';
 
 export type NormalizePermissions = {
   user_control: number;
@@ -27,20 +28,20 @@ export function normalizePermissions(
 
     switch (availableMethod) {
       case 'CREATE':
-        if (permissionArea === Entitys.DEVICE) {
+        if (permissionArea === Entities.DEVICE) {
           rolePermissions.alkozamki_control = 1;
-        } else if (permissionArea === Entitys.VEHICLE) {
+        } else if (permissionArea === Entities.VEHICLE) {
           rolePermissions.car_control = 1;
-        } else if (permissionArea === Entitys.USER) {
+        } else if (permissionArea === Entities.USER) {
           rolePermissions.user_control = 1;
         }
         break;
       case 'READ':
-        if (permissionArea === Entitys.DEVICE) {
+        if (permissionArea === Entities.DEVICE) {
           rolePermissions.alkozamki_control = 2;
-        } else if (permissionArea === Entitys.VEHICLE) {
+        } else if (permissionArea === Entities.VEHICLE) {
           rolePermissions.car_control = 2;
-        } else if (permissionArea === Entitys.USER) {
+        } else if (permissionArea === Entities.USER) {
           rolePermissions.user_control = 2;
         }
         break;
@@ -56,18 +57,18 @@ export function normalizePermissions(
   return rolePermissions;
 }
 
-const permissionsNormalize = (permissionsList: IPermissionsString[], entity: Entitys) => {
+const permissionsNormalize = (permissionsList: Permissions[], entity: Entities) => {
   if (!permissionsList) return null;
-  if (permissionsList.includes(`PERMISSION_${entity}_CREATE`)) {
+  if (permissionsList.includes(`PERMISSION_${entity}_CREATE` as Permissions)) {
     return UserPermissionsTypes.CREATE;
-  } else if (permissionsList.includes(`PERMISSION_${entity}_READ`)) {
+  } else if (permissionsList.includes(`PERMISSION_${entity}_READ` as Permissions)) {
     return UserPermissionsTypes.READ;
   } else {
     return null;
   }
 };
 
-export const permissionsMapper = (permissionsList: IPermissionsString[]) => {
+export const permissionsMapper = (permissionsList: Permissions[]) => {
   const permissions: {
     attachments: null | UserPermissionsTypes;
     users: null | UserPermissionsTypes;
@@ -75,11 +76,11 @@ export const permissionsMapper = (permissionsList: IPermissionsString[]) => {
     alcolocks: null | UserPermissionsTypes;
     alkozamki: null | UserPermissionsTypes;
   } = {
-    users: permissionsNormalize(permissionsList, Entitys.USER),
-    cars: permissionsNormalize(permissionsList, Entitys.VEHICLE),
+    users: permissionsNormalize(permissionsList, Entities.USER),
+    cars: permissionsNormalize(permissionsList, Entities.VEHICLE),
     attachments: null,
     alkozamki: null,
-    alcolocks: permissionsNormalize(permissionsList, Entitys.DEVICE),
+    alcolocks: permissionsNormalize(permissionsList, Entities.DEVICE),
   };
 
   if (
@@ -87,7 +88,7 @@ export const permissionsMapper = (permissionsList: IPermissionsString[]) => {
     permissions.cars === UserPermissionsTypes.CREATE
   ) {
     permissions.attachments = UserPermissionsTypes.CREATE;
-  } else if (!!permissions.users && !!permissions.cars) {
+  } else if (permissions.users && permissions.cars) {
     permissions.attachments = UserPermissionsTypes.READ;
   }
 

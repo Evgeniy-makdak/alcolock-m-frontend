@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import { useEffect } from 'react';
 
 import { testids } from '@shared/const/testid';
@@ -59,7 +60,6 @@ export const useAlkozamkiServiceMode = (deviceAction: IDeviceAction, alkolock: I
   };
   const handleRejectActivateService = (id: ID) => {
     if (!id) {
-      console.log('Нет id action');
       return;
     }
     rejectActivateServiceMutate(id);

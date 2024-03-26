@@ -1,4 +1,5 @@
 import type { IEventsType } from '@shared/types/BaseQueryTypes';
+import type { Values } from '@shared/ui/search_multiple_select';
 
 export class AppConstants {
   static rolesSystemList = [
@@ -54,7 +55,7 @@ export class AppConstants {
     },
   ];
 
-  static carColorsList = [
+  static carColorsList: Values = [
     {
       value: 'BLACK',
       label: 'Черный',
@@ -101,7 +102,7 @@ export class AppConstants {
     },
   ];
 
-  static carTypesList = [
+  static carTypesList: Values = [
     {
       value: 'PERSONAL',
       label: 'Автомобиль',

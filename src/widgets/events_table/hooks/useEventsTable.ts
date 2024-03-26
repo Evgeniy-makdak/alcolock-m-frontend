@@ -7,6 +7,7 @@ import { storageKeys } from '@shared/const/storageKeys';
 import { SortsTypes } from '@shared/const/types';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
+import { appStore } from '@shared/model/app_store/AppStore';
 import { Formatters } from '@shared/utils/formatters';
 
 import { useEventsApi } from '../api/useEventsApi';

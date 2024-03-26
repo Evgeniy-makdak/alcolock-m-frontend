@@ -6,8 +6,8 @@ export interface Form {
   duration: number;
 }
 
-export const schema = yup
-  .object<Form>({
+export const schema: yup.ObjectSchema<Form> = yup
+  .object({
     duration: yup
       .number()
       .transform((val) => (Number.isNaN(val) ? null : val))

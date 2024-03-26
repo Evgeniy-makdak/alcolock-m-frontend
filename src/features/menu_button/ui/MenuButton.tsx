@@ -1,4 +1,4 @@
-import { type FC, useState } from 'react';
+import { type FC, type MouseEvent, useState } from 'react';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Divider, Menu, MenuItem, Button as MuiButton } from '@mui/material';
@@ -15,7 +15,7 @@ export const MenuButton: FC<MenuButtonProps> = ({ close, toggleModal }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { email, logout } = appStore((state) => state);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {

@@ -19,7 +19,9 @@ export enum ValuesHeader {
   DATE_LINK = SortTypes.DATE_CREATE,
 }
 
-const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
+const setTestIdsToHeaderColumnsAdapter = (
+  row: GridColumnHeaderParams<unknown, unknown, unknown>,
+) => {
   return setTestIdsToHeaderColumns(
     row,
     testids.page_attachments.attachments_widget_table.ATTACHMENTS_WIDGET_TABLE_HEADER_ITEM,

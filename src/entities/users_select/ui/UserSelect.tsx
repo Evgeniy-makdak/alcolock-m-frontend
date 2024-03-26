@@ -1,3 +1,5 @@
+import type { JSX } from 'react';
+
 import type { ID } from '@shared/types/BaseQueryTypes';
 import {
   SearchMultipleSelect,

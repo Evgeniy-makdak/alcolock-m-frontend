@@ -16,11 +16,11 @@ export const useCarsSelect = (vieBranch = false, branchId?: ID, notInBranch?: ID
     setSearchQuery('');
   };
 
-  const { data, isLoading } = useCarListQuery({
+  const { carList, isLoading } = useCarListQuery({
     searchQuery,
     filterOptions: { branchId: branchId, notBranchId: notInBranch },
   });
 
-  const carList = mapOptions(data, (car) => adapterMapOptions(car, vieBranch));
-  return { onChange, onReset, isLoading, carList };
+  const carListMapped = mapOptions(carList, (car) => adapterMapOptions(car, vieBranch));
+  return { onChange, onReset, isLoading, carList: carListMapped };
 };

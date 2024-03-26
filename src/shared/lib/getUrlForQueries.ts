@@ -113,19 +113,19 @@ export function getAttachmentURL({
     queries += `&any.driver.userAccount.match.contains=${queryTrimmed}`;
   }
 
-  if (!!drivers) {
+  if (drivers) {
     queries += `&any.vehicle.driver.id.in=${drivers}`;
   }
-  if (!!tc) {
+  if (tc) {
     queries += `&any.vehicle.registrationNumber.match=${tc}`;
   }
-  if (!!createAttach) {
+  if (createAttach) {
     queries += `&any.vehicle.createdBy.id.in=${createAttach}`;
   }
-  if (!!alcolock) {
+  if (alcolock) {
     queries += `&any.vehicle.monitoringDevice.id.in=${alcolock}`;
   }
-  if (!!dateLink) {
+  if (dateLink) {
     queries += `&any.vehicle.createdAt.match=${dateLink}`;
   }
   return `api/vehicle-driver-allotments?page=${page || 0}&size=${limit || 25}${queries}`;
@@ -523,15 +523,15 @@ export function getEventsApiURL({
     queries += `&any.vehicleRecord.match.contains=${queryTrimmed}`;
   }
 
-  if (!!users) {
+  if (users) {
     queries += `&any.events.user.id.in=${filterOptions.users}`;
   }
 
-  if (!!carsByMake) {
+  if (carsByMake) {
     queries += `&any.vehicleRecord.manufacturer.in=${filterOptions.carsByMake}`;
   }
 
-  if (!!carsByLicense) {
+  if (carsByLicense) {
     queries += `&any.vehicleRecord.registrationNumber.in=${filterOptions.carsByLicense}`;
   }
 

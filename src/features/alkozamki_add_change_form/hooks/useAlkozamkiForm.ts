@@ -41,6 +41,8 @@ export const useAlkozamkiForm = (id?: ID, closeModal?: () => void) => {
       errors: { name: nameAlkolock, serialNumber, uid },
     },
   } = useForm({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     resolver: yupResolver(schema),
     values: defaultValues,
   });

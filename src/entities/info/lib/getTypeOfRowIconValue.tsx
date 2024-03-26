@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 
 import { Chip, type ChipOwnProps, Tooltip } from '@mui/material';
 

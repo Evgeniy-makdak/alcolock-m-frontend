@@ -11,8 +11,7 @@ export const useActivateForm = () => {
     formState: {
       errors: { duration },
     },
-    // TODO => следить за обновлением библиотеки, должны исправить в 8 версии
-  } = useForm<any>({
+  } = useForm({
     defaultValues: { duration: 1 },
     resolver: yupResolver(schema),
   });

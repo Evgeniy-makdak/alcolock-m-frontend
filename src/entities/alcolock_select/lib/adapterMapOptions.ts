@@ -1,9 +1,9 @@
 import type { IAlcolock } from '@shared/types/BaseQueryTypes';
+import type { AdapterReturn } from '@shared/ui/search_multiple_select';
 
-export const adapterMapOptions = (
-  val: IAlcolock,
-  vieBranch: boolean,
-): [string, number | string] => {
-  const branch = vieBranch ? `(${val?.assignment?.branch?.name})` : '';
-  return [`${val.name} ${val.serialNumber} ${branch}`, val.id];
+export const adapterMapOptions = (alcolock: IAlcolock, vieBranch: boolean): AdapterReturn => {
+  const branch = vieBranch ? `(${alcolock?.assignment?.branch?.name})` : '';
+  const label = `${alcolock.name} ${alcolock.serialNumber} ${branch}`;
+  const id = alcolock.id;
+  return [label, id, []];
 };

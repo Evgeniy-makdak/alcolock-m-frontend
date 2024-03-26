@@ -13,7 +13,7 @@ export const useGroupAddForm = (close: () => void, branch?: { id: ID; name: stri
     formState: {
       errors: { name },
     },
-  } = useForm<any>({
+  } = useForm({
     defaultValues: {
       name: branch?.name || '',
     },

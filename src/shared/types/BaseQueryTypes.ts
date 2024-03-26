@@ -1,3 +1,4 @@
+import { Permissions } from '../const/config';
 import type { QueryOptions } from './QueryTypes';
 
 interface IUserDataMain {
@@ -205,8 +206,17 @@ interface IActiveActions {
   createdBy: IUser;
 }
 
+type IErrors = {
+  field: string;
+  message: string;
+};
+
 export type IAuthenticate = {
-  response: any;
+  response: {
+    data: {
+      fieldErrors: IErrors[];
+    };
+  };
   idToken: string;
   refreshToken: string;
 };
@@ -280,7 +290,7 @@ export type IEvent = {
 export type IEvents = IEvent[];
 
 export interface ISummary {
-  photoFileName: any;
+  photoFileName: string;
   testResult?: string;
   stateError?: string;
   stateErrorCode?: string;
@@ -364,7 +374,7 @@ export interface IAccount {
   lastName: string;
   login: string;
   middleName: string;
-  permissions: IPermissionsString[];
+  permissions: IPermissions;
 }
 
 export interface IBranch {
@@ -397,9 +407,11 @@ export interface IUserGroupPermission {
   id: ID;
   permission: {
     manuallyAssignable: boolean;
-    name: string;
+    name: Permissions;
   };
 }
+
+export type IPermissions = Permissions[];
 
 export interface IRole {
   createdAt: string;
@@ -451,7 +463,7 @@ export interface ActivateServiceModeOptions {
 export interface CreateUserData {
   firstName: string;
   middleName: string;
-  lastName: string;
+  lastName?: string;
   email: string;
   disabled: boolean;
   phone?: string;
@@ -466,18 +478,10 @@ export interface CreateUserData {
   userGroups?: ID[];
   branchId: ID;
 }
-export type IPermissionsString =
-  | 'PERMISSION_USER_CREATE'
-  | 'PERMISSION_DEVICE_CREATE'
-  | 'PERMISSION_VEHICLE_CREATE'
-  | 'PERMISSION_USER_READ'
-  | 'PERMISSION_DEVICE_READ'
-  | 'PERMISSION_VEHICLE_READ'
-  | 'SYSTEM_GLOBAL_ADMIN';
 
 export type CreateRoleData = {
   name: string;
-  permissions: IPermissionsString[];
+  permissions: IPermissions;
 };
 export type ChangeRoleData = CreateRoleData;
 

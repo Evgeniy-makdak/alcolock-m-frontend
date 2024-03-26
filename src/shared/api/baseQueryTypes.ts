@@ -18,14 +18,14 @@ type AppAxiosResponse<T> = {
 } & AxiosResponse<T, IError>;
 
 function viewResErrors<T>(error: AxiosError<IError>): AppAxiosResponse<T> {
-  console.log('error', error);
   const fieldErrors = error?.response?.data?.fieldErrors;
   const status = error?.status || error?.response?.status;
 
   if (status === 401) {
+    const logout = appStore.getState().logout;
     enqueueSnackbar(`Сессия авторизации закончена, авторизуйтесь заново`, {
-      onClose: appStore.getState().logout,
-      onExit: appStore.getState().logout,
+      onClose: logout,
+      onExit: logout,
       variant: 'error',
     });
   }
