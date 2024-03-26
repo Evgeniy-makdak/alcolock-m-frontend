@@ -43,12 +43,12 @@ export const useRoleAddChangeForm = (id: ID, close: () => void) => {
     formState: {
       errors: { name },
     },
-  } = useForm<any>({
+  } = useForm({
     resolver: yupResolver(schema),
     values: defaultValues,
   });
   const onChangePermissions = (type: TypesOfForm, value: ID) => {
-    const values: Form = getValues();
+    const values = getValues();
     const usersPermission = type === TypesOfForm.usersPermission ? value : values.usersPermission;
     const carsPermission = type === TypesOfForm.carsPermission ? value : values.carsPermission;
 

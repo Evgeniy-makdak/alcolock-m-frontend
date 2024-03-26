@@ -19,7 +19,9 @@ export enum ValuesHeader {
   DATA_INSTALLATION = SortTypes.DATA_INSTALLATION,
 }
 
-const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
+const setTestIdsToHeaderColumnsAdapter = (
+  row: GridColumnHeaderParams<unknown, unknown, unknown>,
+) => {
   return setTestIdsToHeaderColumns(
     row,
     testids.page_alcolocks.alcolocks_widget_table.ALCOLOCKS_WIDGET_TABLE_HEADER_ITEM,

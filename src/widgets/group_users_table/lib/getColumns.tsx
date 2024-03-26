@@ -17,7 +17,9 @@ export enum ValuesHeader {
   CAR_LINK = SortTypes.CAR_LINK,
 }
 
-const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
+const setTestIdsToHeaderColumnsAdapter = (
+  row: GridColumnHeaderParams<unknown, unknown, unknown>,
+) => {
   return setTestIdsToHeaderColumns(
     row,
     testids.page_groups.groups_widget_info.GROUPS_WIDGET_INFO_TAB_USERS_TABLE,

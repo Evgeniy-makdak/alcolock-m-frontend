@@ -6,6 +6,6 @@ export interface Form {
   name: string;
 }
 
-export const schema = yup.object<Form>({
+export const schema: yup.ObjectSchema<Form> = yup.object({
   name: yup.string().min(1, ValidationMessages.required).required(ValidationMessages.required),
 });

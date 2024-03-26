@@ -2,7 +2,7 @@ import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 import { ValidationMessages } from './validation_messages';
 
-type ValidateValue = string | null | undefined | any[];
+type ValidateValue = string | null | undefined | unknown[];
 export class ValidationRules {
   static requiredValidation(value: ValidateValue) {
     let checkedValue: number | ValidateValue = value;
@@ -13,6 +13,7 @@ export class ValidationRules {
   }
   static emailValidation(value: ValidateValue) {
     const re =
+      // eslint-disable-next-line no-useless-escape
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     return re.test(String(value).toLowerCase()) ? [] : [ValidationMessages.notValidEmail];
@@ -25,7 +26,7 @@ export class ValidationRules {
   };
 
   static driverLicenseValidation = (value: ValidateValue) => {
-    return value.length === 10 ? [] : [ValidationMessages.notValidData];
+    return value.length === 10 ? false : ValidationMessages.notValidData;
   };
 
   static minMaxValidation = (

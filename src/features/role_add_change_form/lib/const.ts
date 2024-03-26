@@ -1,10 +1,5 @@
 export enum UserPermissionsTypes {
   CREATE = 'CREATE',
+  EDIT = 'EDIT',
   READ = 'READ',
-}
-
-export enum Entitys {
-  USER = 'USER',
-  VEHICLE = 'VEHICLE',
-  DEVICE = 'DEVICE',
 }

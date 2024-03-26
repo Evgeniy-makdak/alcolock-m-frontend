@@ -7,6 +7,7 @@ export const useUserDataApi = () => {
     [QueryKeys.ACCOUNT],
     AccountApi.getAccountData,
     null,
+    { networkMode: 'offlineFirst' },
   );
 
   return { user: data?.data, isLoading };

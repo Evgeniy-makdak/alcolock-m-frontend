@@ -12,7 +12,7 @@ import { ValuesHeader } from './getColumns';
 export interface Row {
   id: string;
   idDevice: number;
-  lastEvent: any;
+  lastEvent: { eventType?: string };
   finishedAt: string;
   status: string;
   DATE: string;

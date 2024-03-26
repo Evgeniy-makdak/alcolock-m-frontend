@@ -8,13 +8,22 @@ import { Button } from '../button';
 
 type AppAlertProps = {
   title: string;
-  text: string | ReactNode;
-  onSubmit: () => void;
+  text?: string | ReactNode;
+  onSubmit?: () => void;
   onClose: () => void;
   open: boolean;
+  type?: 'button' | 'submit' | 'reset';
 } & AlertProps;
 
-export const AppAlert: FC<AppAlertProps> = ({ onClose, onSubmit, text, title, open, ...rest }) => {
+export const AppAlert: FC<AppAlertProps> = ({
+  onClose,
+  onSubmit,
+  text,
+  type = 'button',
+  title,
+  open,
+  ...rest
+}) => {
   return (
     <Collapse in={open}>
       <Alert {...rest}>
@@ -25,7 +34,9 @@ export const AppAlert: FC<AppAlertProps> = ({ onClose, onSubmit, text, title, op
         </AlertTitle>
         {text}
         <ButtonFormWrapper>
-          <Button onClick={onSubmit}>подтвердить</Button>
+          <Button type={type} onClick={onSubmit}>
+            подтвердить
+          </Button>
           <Button onClick={onClose}>отмена</Button>
         </ButtonFormWrapper>
       </Alert>

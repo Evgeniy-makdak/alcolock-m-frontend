@@ -11,7 +11,7 @@ export const useAlcolockSelect = (vieBranch = false, branchId?: ID, notInBranch?
   const onChange = (value: string) => {
     setSearchQuery(value);
   };
-  const { data, isLoading } = useAlcolockListQuery({
+  const { alcolocks, isLoading } = useAlcolockListQuery({
     searchQuery,
     filterOptions: { branchId, notBranchId: notInBranch },
   });
@@ -19,6 +19,6 @@ export const useAlcolockSelect = (vieBranch = false, branchId?: ID, notInBranch?
     setSearchQuery('');
   };
 
-  const alcolockList = mapOptions(data, (alcolok) => adapterMapOptions(alcolok, vieBranch));
+  const alcolockList = mapOptions(alcolocks, (alcolock) => adapterMapOptions(alcolock, vieBranch));
   return { onChange, isLoading, onReset, alcolockList };
 };

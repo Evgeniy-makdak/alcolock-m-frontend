@@ -16,7 +16,9 @@ export enum ValuesHeader {
   TC = SortTypes.TC,
 }
 
-const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
+const setTestIdsToHeaderColumnsAdapter = (
+  row: GridColumnHeaderParams<unknown, unknown, unknown>,
+) => {
   return setTestIdsToHeaderColumns(
     row,
     testids.page_groups.groups_widget_info.GROUPS_WIDGET_INFO_TAB_TABLE_HEADER,

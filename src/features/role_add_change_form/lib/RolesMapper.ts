@@ -1,16 +1,19 @@
 import { AppConstants } from '@app/index';
-import type { CreateRoleData, IPermissionsString, IRole } from '@shared/types/BaseQueryTypes';
+import { Entities, type Permissions } from '@shared/const/config';
+import type { CreateRoleData, IRole } from '@shared/types/BaseQueryTypes';
 
-import { Entitys } from './const';
 import type { NormalizePermissions } from './normalizePermissions';
 import { normalizePermissions } from './normalizePermissions';
 import type { Form } from './validate';
 
 export class RolesMapper {
   static toApi(data: Form): CreateRoleData {
-    const userPermissions = this.getPermissions(Entitys.USER, Number(data.usersPermission));
-    const devicesPermissions = this.getPermissions(Entitys.DEVICE, Number(data.alkolockPermission));
-    const carPermissions = this.getPermissions(Entitys.VEHICLE, Number(data.carsPermission));
+    const userPermissions = this.getPermissions(Entities.USER, Number(data.usersPermission));
+    const devicesPermissions = this.getPermissions(
+      Entities.DEVICE,
+      Number(data.alkolockPermission),
+    );
+    const carPermissions = this.getPermissions(Entities.VEHICLE, Number(data.carsPermission));
 
     return {
       name: data.name,
@@ -27,13 +30,13 @@ export class RolesMapper {
     };
   }
 
-  static getPermissions(entity: Entitys, value: number): IPermissionsString[] {
-    const result: IPermissionsString[] = [];
+  static getPermissions(entity: Entities, value: number): Permissions[] {
+    const result: Permissions[] = [];
 
     if (value === 1) {
-      result.push(`PERMISSION_${entity}_CREATE`);
+      result.push(`PERMISSION_${entity}_CREATE` as Permissions);
     } else if (value === 2) {
-      result.push(`PERMISSION_${entity}_READ`);
+      result.push(`PERMISSION_${entity}_READ` as Permissions);
     }
 
     return result;

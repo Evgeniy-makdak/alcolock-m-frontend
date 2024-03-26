@@ -10,5 +10,5 @@ export const useCarListQuery = (options: QueryOptions) => {
 
     options,
   );
-  return { data: data?.data || [], isLoading };
+  return { carList: data?.data || [], isLoading };
 };

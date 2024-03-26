@@ -11,7 +11,7 @@ export interface Form {
   attachPermission: ID;
 }
 
-export const schema = yup.object<Form>({
+export const schema: yup.ObjectSchema<Form> = yup.object({
   name: yup.string().required(ValidationMessages.required),
   usersPermission: yup.string().required(ValidationMessages.required),
   carsPermission: yup.string().required(ValidationMessages.required),

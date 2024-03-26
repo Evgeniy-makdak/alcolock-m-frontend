@@ -26,7 +26,6 @@ export type SearchMultipleSelectProps<T> = {
   label?: string;
   isLoading?: boolean;
   values: Values;
-  validations?: any[];
   name: keyof T | string;
   value?: Values;
   onSelect?: (value: number[] | number) => void;
@@ -114,7 +113,7 @@ export function SearchMultipleSelect<T>({
         filterOptions={serverFilter ? (op) => op : createFilterOptions()}
         onInputChange={onInputChangeHandler}
         loadingText={'Загрузка...'}
-        renderOption={(props, option) => renderOptions(props, option, testid)}
+        renderOption={(props, option) => renderOptions(props, option as Value, testid)}
         renderInput={renderInput}
         noOptionsText={'Ничего не найдено'}
       />

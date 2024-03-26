@@ -34,13 +34,13 @@ export const useConfiguredQuery = <T, D extends QueryOptions>(
   const isOptions = isOptionsValue(options);
   const filterOptions = isOptions && options?.filterOptions;
   const branchId = filterOptions && filterOptions?.branchId;
-  const selectedBranchState = appStore.getState().selectedBranchState;
+  const selectedBranchState = appStore((state) => state.selectedBranchState);
   const queryBranch = branchId ? branchId : selectedBranchState?.id;
   const newOptions = isOptions ? getOptions(options, queryBranch) : options;
 
   const data = useQuery<T, AxiosError<IError>, T, QueryKey>({
     queryKey: [...key, queryBranch, ...[isOptions ? Object.values(newOptions) : newOptions]],
-    queryFn: () => fn(!!newOptions ? newOptions : {}),
+    queryFn: () => fn(newOptions ? newOptions : {}),
     ...(settings || {}),
   });
 

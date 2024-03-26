@@ -19,7 +19,9 @@ export enum ValuesHeader {
   DATE_CREATE = SortTypes.DATE_CREATE,
 }
 
-const setTestIdsToHeaderColumnsAdapter = (row: GridColumnHeaderParams<any, any, any>) => {
+const setTestIdsToHeaderColumnsAdapter = (
+  row: GridColumnHeaderParams<unknown, unknown, unknown>,
+) => {
   return setTestIdsToHeaderColumns(
     row,
     testids.page_transports.transports_widget_table.TRANSPORT_WIDGET_TABLE_HEADER_ITEM,

@@ -26,8 +26,8 @@ export const useCarAddChangeForm = (id?: ID, closeModal?: () => void) => {
           model: car?.model || '',
           vin: car?.vin || '',
           registrationNumber: car?.registrationNumber || '',
-          type: [typeSelectValueFormatter(car?.type)] || [],
-          color: [colorSelectValueFormatter(car?.color)] || [],
+          type: typeSelectValueFormatter(car?.type) || [],
+          color: colorSelectValueFormatter(car?.color) || [],
           year: car?.year ? dateNow.year(car.year) : dateNow,
         }
       : null;
@@ -41,7 +41,7 @@ export const useCarAddChangeForm = (id?: ID, closeModal?: () => void) => {
     formState: {
       errors: { mark, model, vin, registrationNumber, type, color, year },
     },
-  } = useForm<any>({
+  } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       mark: '',
@@ -58,7 +58,7 @@ export const useCarAddChangeForm = (id?: ID, closeModal?: () => void) => {
     clearErrors('year');
     setValue('year', value);
   };
-  const onSelect = (type: string, value: string | Value | (string | Value)[]) => {
+  const onSelect = (type: 'type' | 'color', value: string | Value | (string | Value)[]) => {
     clearErrors(type);
     const values = ArrayUtils.getArrayValues(value);
     setValue(type, values);

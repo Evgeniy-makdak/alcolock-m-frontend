@@ -5,7 +5,7 @@ import { mapOptions } from '@shared/ui/search_multiple_select';
 import { useRolesSelectApi } from '../api/useRolesSelectApi';
 import { adapterMapOptions } from '../lib/adapterMapOptions';
 
-export const useRolesSelect = () => {
+export const useRolesSelect = (notShowGlobalAdminRole = true) => {
   const [searchQuery, setSearchQuery] = useState('');
   const onChange = (value: string) => {
     setSearchQuery(value);
@@ -17,6 +17,6 @@ export const useRolesSelect = () => {
     setSearchQuery('');
   };
 
-  const roles = mapOptions(data, (alcolok) => adapterMapOptions(alcolok));
+  const roles = mapOptions(data, (role) => adapterMapOptions(role, notShowGlobalAdminRole));
   return { onChange, isLoading, onReset, roles };
 };

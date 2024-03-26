@@ -9,5 +9,5 @@ export const useCarListQuery = (options: QueryOptions) => {
     CarsApi.getCarsList,
     options,
   );
-  return { data: data?.data || [], isLoading };
+  return { carList: data?.data || [], isLoading };
 };

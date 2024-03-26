@@ -10,7 +10,6 @@ export const useAuthApi = (onSuccess: (data: AxiosResponse<IAuthenticate, IError
     mutationFn: (data: UserDataLogin) => UsersApi.authenticate(data),
     onSuccess: onSuccess,
     onError(error: AxiosError<IError>) {
-      console.log(error);
       enqueueSnackbar(`${error?.response?.data?.detail} ${error?.response?.data.status}`, {
         variant: 'error',
       });

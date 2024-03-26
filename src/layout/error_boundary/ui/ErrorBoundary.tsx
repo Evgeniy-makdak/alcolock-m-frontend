@@ -1,6 +1,5 @@
-import { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ReactNode } from 'react';
 
-// TODO => вынести из страниц? - это обертка для страниц => layout?
 interface ErrorBoundaryProps {
   children?: ReactNode;
 }
@@ -19,9 +18,9 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.log(error, errorInfo);
-  }
+  // componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  //   console.log(error, errorInfo);
+  // }
 
   render() {
     if (this.state.hasError) {

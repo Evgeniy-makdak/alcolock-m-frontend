@@ -1,5 +1,10 @@
-import type { ID, IRole } from '@shared/types/BaseQueryTypes';
+import { Permissions } from '@shared/const/config';
+import type { IPermissions, IRole } from '@shared/types/BaseQueryTypes';
+import type { AdapterReturn } from '@shared/ui/search_multiple_select';
 
-export const adapterMapOptions = (val: IRole): [string, ID] => {
-  return [`${val?.name}`, val.id];
+export const adapterMapOptions = (val: IRole, notShowGlobalAdminRole = true): AdapterReturn => {
+  const permissions: IPermissions = val?.userGroupPermissions.map((item) => item.permission.name);
+  const isGlobalAdminRole = permissions.includes(Permissions.SYSTEM_GLOBAL_ADMIN);
+  if (notShowGlobalAdminRole && isGlobalAdminRole) return [];
+  return [`${val?.name}`, val.id, permissions];
 };

@@ -2,6 +2,7 @@ import type { Dayjs } from 'dayjs';
 import * as yup from 'yup';
 import { object } from 'yup';
 
+import { Permissions } from '@shared/const/config';
 import type { ID } from '@shared/types/BaseQueryTypes';
 import type { Value, Values } from '@shared/ui/search_multiple_select';
 import { ValidationMessages } from '@shared/validations/validation_messages';
@@ -25,44 +26,66 @@ export interface Form {
 
 export type KeyForm = keyof Form;
 
+type YupContext = yup.TestContext<Form>;
+
 yup.addMethod(object, 'dayjs', function method(message) {
-  return this.test('dayjs', message, function validate(value: Dayjs, ctx) {
-    if (!mustBeDate(ctx)) return true;
+  return this.test('dayjs', message, function validate(value: Dayjs, context: YupContext) {
+    if (!mustBeDate(context)) return true;
     if (!value) {
-      return ctx.createError({ message: ValidationMessages.required });
+      return context.createError({ message: ValidationMessages.required });
     }
     const isValid = 'isValid' in value && value.isValid();
     if (!isValid) {
-      return ctx.createError({ message: ValidationMessages.notValidData });
+      return context.createError({ message: ValidationMessages.notValidData });
     }
     return true;
   });
 });
 
-const mustBeDate = (ctx: yup.TestContext<yup.AnyObject>) => {
-  const licenseCode = ctx.parent?.licenseCode;
+yup.addMethod(object, 'birthDate', function method(message) {
+  return this.test('birthDate', message, function validate(value: Dayjs, context: YupContext) {
+    if (!value) return true;
+    const isValid = 'isValid' in value && value.isValid();
+    if (!isValid) {
+      return context.createError({ message: ValidationMessages.notValidData });
+    }
+    return true;
+  });
+});
 
-  return licenseCode.trim() > 0;
+const mustBeDate = (context: YupContext) => {
+  const parent = context.parent;
+  const licenseCode = parent?.licenseCode;
+
+  return licenseCode && licenseCode?.trim() > 0;
 };
 
 export const schema = (id: ID): yup.ObjectSchema<Form> =>
   yup.object({
-    licenseClass: yup.array<Value>(),
+    licenseClass: yup.array().test({
+      name: 'licenseClass',
+      test(value, context: YupContext) {
+        if (mustBeDate(context) && value?.length === 0) {
+          return context.createError({ message: ValidationMessages.required });
+        }
+        return true;
+      },
+    }),
     firstName: yup.string().required(ValidationMessages.required),
     middleName: yup.string().required(ValidationMessages.required),
     lastName: yup.string(),
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    birthDate: yup.object().dayjs(),
+    birthDate: yup.object().birthDate().nullable(),
     phone: yup.string().test({
       name: 'phone',
-      test(value, ctx) {
+      test(value, context) {
         if (!value || value.length === 0) {
           return true;
         }
         const errorMessage = ValidationRules.phoneValidation(value);
         if (errorMessage) {
-          return ctx.createError({ message: errorMessage });
+          return context.createError({ message: errorMessage });
         }
         return true;
       },
@@ -72,21 +95,21 @@ export const schema = (id: ID): yup.ObjectSchema<Form> =>
       .required(ValidationMessages.required)
       .test({
         name: 'email',
-        test(value, ctx) {
+        test(value, context) {
           if (value.length === 0) {
-            return ctx.createError({ message: ValidationMessages.required });
+            return context.createError({ message: ValidationMessages.required });
           }
           if (ValidationRules.emailValidation(value).length > 0) {
-            return ctx.createError({ message: ValidationMessages.notValidEmail });
+            return context.createError({ message: ValidationMessages.notValidEmail });
           }
           return true;
         },
       }),
     password: yup.string().test({
       name: 'password',
-      test(value, ctx) {
+      test(value, context) {
         if (value.length === 0 && !id) {
-          return ctx.createError({ message: ValidationMessages.required });
+          return context.createError({ message: ValidationMessages.required });
         }
         if (value.length === 0 && id) return true;
         const errors = ValidationRules.minMaxValidation(
@@ -96,7 +119,7 @@ export const schema = (id: ID): yup.ObjectSchema<Form> =>
           ValidationMessages.notValidPasswordLength,
         );
         if (errors.length > 0) {
-          return ctx.createError({ message: errors[0] });
+          return context.createError({ message: errors[0] });
         }
         return true;
       },
@@ -104,9 +127,12 @@ export const schema = (id: ID): yup.ObjectSchema<Form> =>
     disabled: yup.string().required(ValidationMessages.required),
     licenseCode: yup.string().test({
       name: 'licenseCode',
-      test(value, ctx) {
-        if (value.trim().length > 0 && ValidationRules.driverLicenseValidation(value).length > 0) {
-          return ctx.createError({ message: ValidationMessages.notValidData });
+      test(value, context) {
+        const licenseCode = value?.trim();
+        if (licenseCode?.length === 0) return true;
+        const error = ValidationRules.driverLicenseValidation(value);
+        if (error) {
+          return context.createError({ message: error });
         }
         return true;
       },
@@ -129,26 +155,35 @@ export const schema = (id: ID): yup.ObjectSchema<Form> =>
       .typeError(ValidationMessages.notValidData),
     userGroups: yup.array().test({
       name: 'userGroups',
-      test(value, ctx) {
+      test(value, context) {
         if (value.length === 0) {
-          return ctx.createError({ message: ValidationMessages.required });
+          return context.createError({ message: ValidationMessages.required });
         }
         return true;
       },
     }),
   });
 
-export const isDisabledAdminRole = (id: ID, value: Value, roles: Values): boolean => {
-  const selectedRolesIds = roles.map((rol) => rol.value);
-  const hasSelectedRoles = selectedRolesIds.length > 0;
-  const isAdminRoleSelect = selectedRolesIds?.includes(100);
-  const isNotAdminRole = value.value !== 100;
+export const isDisabledAdminRole = (value: Value, roles: Values): boolean => {
+  const permissions = value?.permissions || [];
 
-  if (!hasSelectedRoles && !id) return false;
-  if (isAdminRoleSelect && isNotAdminRole && !id) return true;
-  if (isAdminRoleSelect && isNotAdminRole && !id) return true;
+  const selectedRolesPermissions = roles.reduce((prev, curr) => {
+    const permissionsCurr = curr.permissions;
 
-  if (!isAdminRoleSelect && !isNotAdminRole && !id) return true;
+    if (!Array.isArray(permissionsCurr)) return prev;
+    permissionsCurr?.map((per) => {
+      prev.push(per);
+    });
+    return prev;
+  }, []);
 
-  if (id && !isNotAdminRole) return true;
+  const hasSelectedRoles = selectedRolesPermissions.length > 0;
+  const isGlobalAdminRoleSelect = selectedRolesPermissions?.includes(
+    Permissions.SYSTEM_GLOBAL_ADMIN,
+  );
+  const isNotGlobalAdminRole = !permissions.includes(Permissions.SYSTEM_GLOBAL_ADMIN);
+
+  if (isNotGlobalAdminRole && isGlobalAdminRoleSelect) return true;
+  else if (hasSelectedRoles && !isNotGlobalAdminRole && !isGlobalAdminRoleSelect) return true;
+  return false;
 };

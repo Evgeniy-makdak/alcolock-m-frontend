@@ -17,7 +17,6 @@ interface AlkozamkiServiceModeProps {
   refetch?: () => void;
 }
 
-// TODO => вынести все лишние функции в lib - компонент очень раздут
 export const AlkozamkiServiceMode = ({
   deviceAction,
   alkolock,
@@ -41,7 +40,7 @@ export const AlkozamkiServiceMode = ({
     <>
       <div className={style.alcolockServiceMode}>
         <Stack spacing={2} direction={'column'}>
-          <span className={style.name}>Режим "Автосервис": </span>
+          <span className={style.name}>Режим &quot;Автосервис&quot;: </span>
           {/* {getText()} */}
           {hasTime && (
             <Stack spacing={2} direction={'row'}>

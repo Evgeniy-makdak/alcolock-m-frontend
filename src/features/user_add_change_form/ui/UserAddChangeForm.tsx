@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { type FC } from 'react';
 
 import { Checkbox, TextField, Typography } from '@mui/material';
@@ -8,6 +7,7 @@ import { RolesSelect } from '@entities/roles_select';
 import { InputsColumnWrapper } from '@shared/components/Inputs_column_wrapper';
 import { ButtonFormWrapper } from '@shared/components/button_form_wrapper/ButtonFormWrapper';
 import type { ID } from '@shared/types/BaseQueryTypes';
+import { AppAlert } from '@shared/ui/alert';
 import { Button } from '@shared/ui/button';
 import { FieldSelect } from '@shared/ui/field_select';
 import { InputDate } from '@shared/ui/input_date/InputDate';
@@ -51,9 +51,15 @@ export const UserAddChangeForm: FC<UserAddChangeFormProps> = ({ closeModal, id }
     licenseExpirationDate,
     licenseIssueDate,
     disableDriverInfo,
-    showLicenseCode,
     errorPhone,
+    isGlobalAdmin,
+    errorLicenseClass,
+    licenseCode,
+    setLicenseCode,
+    closeAlert,
+    alert,
   } = useUserAddChangeForm(id, closeModal);
+
   return (
     <Loader isLoading={isLoading}>
       <form className={style.inputsWrapper} onSubmit={handleSubmit}>
@@ -65,16 +71,16 @@ export const UserAddChangeForm: FC<UserAddChangeFormProps> = ({ closeModal, id }
             <div className={style.columnsWrapper}>
               <InputsColumnWrapper>
                 <TextField
-                  error={!!errorFirstName}
-                  helperText={errorFirstName}
-                  label="Имя"
-                  {...register('firstName')}
-                />
-                <TextField
                   error={!!errorMiddleName}
                   helperText={errorMiddleName}
                   label="Фамилия"
                   {...register('middleName')}
+                />
+                <TextField
+                  error={!!errorFirstName}
+                  helperText={errorFirstName}
+                  label="Имя"
+                  {...register('firstName')}
                 />
                 <TextField
                   error={!!errorLastName}
@@ -110,12 +116,10 @@ export const UserAddChangeForm: FC<UserAddChangeFormProps> = ({ closeModal, id }
               </InputsColumnWrapper>
               <InputsColumnWrapper>
                 <RolesSelect
-                  getOptionDisabled={(op) => {
-                    return isDisabledAdminRole(id, op, userGroups);
-                  }}
-                  readOnly={id && userGroups && !!userGroups.find((item) => item.value === 100)}
+                  getOptionDisabled={(op) => isDisabledAdminRole(op, userGroups)}
                   helperText={errorUserGroups}
                   error={!!errorUserGroups}
+                  disabled={isGlobalAdmin}
                   label="Роли"
                   setValueStore={onSelectUserGroups}
                   multiple
@@ -124,11 +128,11 @@ export const UserAddChangeForm: FC<UserAddChangeFormProps> = ({ closeModal, id }
                   disableCloseOnSelect
                 />
                 <TextField
-                  disabled={!showLicenseCode}
                   helperText={errorLicenseCode}
                   error={!!errorLicenseCode}
                   label={'Номер ВУ'}
-                  {...register('licenseCode')}
+                  value={licenseCode}
+                  onChange={(e) => setLicenseCode(e?.target?.value)}
                 />
                 <InputDate
                   disabled={disableDriverInfo}
@@ -169,13 +173,25 @@ export const UserAddChangeForm: FC<UserAddChangeFormProps> = ({ closeModal, id }
                       </div>
                     );
                   })}
+                  {!!errorLicenseClass && <span className={style.error}>{errorLicenseClass}</span>}
                 </div>
               </InputsColumnWrapper>
             </div>
-            <ButtonFormWrapper>
-              <Button type="submit">{id ? 'сохранить' : 'добавить'}</Button>
-              <Button onClick={closeModal}>отмена</Button>
-            </ButtonFormWrapper>
+            {!alert && (
+              <ButtonFormWrapper>
+                <Button type="submit">{id ? 'сохранить' : 'добавить'}</Button>
+                <Button onClick={closeModal}>отмена</Button>
+              </ButtonFormWrapper>
+            )}
+            {
+              <AppAlert
+                severity="warning"
+                title="Введенные данные ВУ будут удалены"
+                type="submit"
+                onClose={closeAlert}
+                open={alert}
+              />
+            }
           </>
         )}
       </form>

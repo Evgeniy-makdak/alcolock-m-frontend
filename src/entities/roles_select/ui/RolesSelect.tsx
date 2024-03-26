@@ -1,3 +1,5 @@
+import type { JSX } from 'react';
+
 import {
   SearchMultipleSelect,
   type SearchMultipleSelectProps,
@@ -5,10 +7,12 @@ import {
 
 import { useRolesSelect } from '../hooks/useRolesSelect';
 
-type RolesSelectProps<T> = Omit<SearchMultipleSelectProps<T>, 'values'>;
+type RolesSelectProps<T> = {
+  notShowGlobalAdminRole?: boolean;
+} & Omit<SearchMultipleSelectProps<T>, 'values'>;
 
 export const RolesSelect = <T,>(props: RolesSelectProps<T>): JSX.Element => {
-  const { onChange, isLoading, onReset, roles } = useRolesSelect();
+  const { onChange, isLoading, onReset, roles } = useRolesSelect(props.notShowGlobalAdminRole);
   return (
     <SearchMultipleSelect
       onReset={onReset}
