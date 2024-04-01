@@ -4,10 +4,8 @@ import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
 import type { QueryOptions } from '@shared/types/QueryTypes';
 
 export const useMarksCarQuery = (options?: QueryOptions) => {
-  const { data, isLoading } = useConfiguredQuery(
-    [QueryKeys.MARKS_CAR],
-    CarsApi.getMarksCarList,
+  const { data, isLoading } = useConfiguredQuery([QueryKeys.MARKS_CAR], CarsApi.getMarksCarList, {
     options,
-  );
+  });
   return { data, isLoading };
 };

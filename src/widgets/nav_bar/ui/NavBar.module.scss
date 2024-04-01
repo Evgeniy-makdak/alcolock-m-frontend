@@ -1,19 +1,39 @@
-.navBar {
-  width: 260px;
-  padding: 24px 26px;
-  background: white;
-  border-right: 1px solid #d8d8d8;
+.wrapper {
+  padding-top: 20px;
+  transition: 0.3s all;
   display: flex;
   flex-direction: column;
+  border-right: 1px solid #d8d8d8;
+}
+.navBar {
+  transition: 0.3s all;
+  background: white;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
   justify-content: space-between;
+  position: relative;
+  padding: 10px 12px;
+  width: 100%;
+}
+.navBarOpen {
+  min-width: 260px;
+  max-width: 260px;
 }
 
+.navBarCollops {
+  min-width: 80px;
+  max-width: 80px;
+}
+.navLink {
+  display: flex;
+}
 .links {
   display: flex;
   flex-direction: column;
 
   & a {
-    padding: 9px 18px;
+    padding: 5px 12px;
     background: transparent;
     width: 100%;
     color: #667a8a;
@@ -63,7 +83,78 @@
   color: white !important;
 }
 
+.collops {
+  transform: rotate(180deg);
+}
+.openedCollops {
+  height: 23px;
+  transition: 0.3s all;
+}
+
+.between {
+  justify-content: space-between;
+}
+
+.center {
+  justify-content: center;
+}
+
+.navBarButton {
+  min-width: 30px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #667a8a;
+  text-align: center;
+  color: white;
+  &:hover {
+    background: #667a8a;
+    color: white;
+  }
+}
+.email {
+  font-weight: 600;
+  font-size: 15px;
+}
+.text {
+  text-align: start;
+  max-height: 23px;
+  transition: 0.7s all;
+}
+
+.textCollops {
+  transition: 0.6s all;
+  opacity: 0;
+  width: 0;
+}
+.img {
+  height: 65px;
+  width: 65px;
+}
+.logoText {
+  font-size: 24px;
+  text-transform: uppercase;
+  display: inline;
+  font-weight: 700;
+  width: 120px;
+}
+
 .logo {
-  margin-bottom: 34px;
-  width: 207px;
+  gap: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chipWrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.navBarWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }

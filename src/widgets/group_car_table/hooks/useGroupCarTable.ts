@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { InputSearchDelay } from '@shared/const/config';
-import { storageKeys } from '@shared/const/storageKeys';
+import { InputSearchDelay } from '@shared/config/permissionsEnums';
+import { StorageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
 import { useToggle } from '@shared/hooks/useToggle';
@@ -13,7 +13,7 @@ import { useGetRows } from '../lib/getRows';
 
 export const useGroupCarTable = (groupInfo: IBranch) => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
-    storageKeys.CARS_TABLE_IN_GROUP,
+    StorageKeys.CARS_TABLE_IN_GROUP,
   );
 
   const [changeCar, setChangeCar] = useState<{ text: string; id: ID }>(null);

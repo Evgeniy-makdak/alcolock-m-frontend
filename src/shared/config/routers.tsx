@@ -7,13 +7,14 @@ import { Authorization } from '@pages/authorization/ui/Authorization';
 import { AutoService } from '@pages/auto_service';
 import { Events } from '@pages/events';
 import { Groups } from '@pages/groups';
+import { NotFound } from '@pages/not_found';
 import { Roles } from '@pages/roles';
 import { Users } from '@pages/users';
 import { Vehicles } from '@pages/vehicles';
 import { Spinner } from '@shared/ui/spinner';
 
-import { App } from '..';
-import { RoutePaths } from './route_paths';
+import { App } from '../../app';
+import { RoutePaths } from './routePathsEnum';
 
 export const routers = createBrowserRouter([
   {
@@ -57,7 +58,10 @@ export const routers = createBrowserRouter([
       element: <Suspense fallback={<Spinner />}>{element.element}</Suspense>,
     })),
   },
-
+  {
+    path: RoutePaths.all,
+    element: <NotFound />,
+  },
   {
     path: RoutePaths.auth,
     element: <Authorization />,

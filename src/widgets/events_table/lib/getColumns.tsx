@@ -4,8 +4,8 @@ import { type GridColDef, type GridColumnHeaderParams } from '@mui/x-data-grid';
 
 import { TableHeaderActions } from '@entities/table_header_actions';
 import { setTestIdsToHeaderColumns } from '@shared/components/Table/Table';
+import { SortTypes } from '@shared/config/queryParamsEnums';
 import { testids } from '@shared/const/testid';
-import { SortTypes } from '@shared/const/types';
 import type { IDeviceAction } from '@shared/types/BaseQueryTypes';
 import type { RefetchType } from '@shared/types/QueryTypes';
 

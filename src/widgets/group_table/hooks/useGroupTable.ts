@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { InputSearchDelay } from '@shared/const/config';
-import { storageKeys } from '@shared/const/storageKeys';
+import { InputSearchDelay } from '@shared/config/permissionsEnums';
+import { StorageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
 import { useToggle } from '@shared/hooks/useToggle';
@@ -14,7 +14,7 @@ import { useGroupTableStore } from '../model/groupTableStore';
 
 export const useGroupTable = () => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
-    storageKeys.BRANCH_TABLE_SORTS,
+    StorageKeys.BRANCH_TABLE_SORTS,
   );
   const [selectBranchDelete, setSelectBranch] = useState<null | { id: number; text: string }>(null);
 

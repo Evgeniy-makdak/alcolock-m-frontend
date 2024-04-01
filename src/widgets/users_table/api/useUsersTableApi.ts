@@ -7,7 +7,7 @@ export const useUsersTableApi = (options: QueryOptions) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.USER_LIST_TABLE],
     UsersApi.getList,
-    options,
+    { options },
   );
 
   return { users: data?.data, isLoading, refetch };

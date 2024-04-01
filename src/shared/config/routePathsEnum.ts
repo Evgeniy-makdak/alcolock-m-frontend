@@ -1,4 +1,5 @@
 export enum RoutePaths {
+  all = '*',
   root = '/',
   auth = '/authorization',
   events = '/events',

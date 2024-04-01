@@ -7,7 +7,7 @@ export const useGroupTableApi = (options?: QueryOptions) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.BRANCH_LIST_TABLE],
     BranchApi.getBranchList,
-    options,
+    { options },
   );
 
   return { branchs: data?.data, isLoading, refetch };

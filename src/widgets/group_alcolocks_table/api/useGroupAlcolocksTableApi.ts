@@ -7,7 +7,7 @@ export const useGroupAlcolocksTableApi = (options: QueryOptions) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.ALKOLOCK_LIST_TABLE],
     AlcolocksApi.getListAlcolocks,
-    options,
+    { options },
   );
   return { alcolocks: data?.data, isLoading, refetch };
 };

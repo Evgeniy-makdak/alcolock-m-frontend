@@ -7,9 +7,11 @@ export const useAttachmentsApi = (options: QueryOptions) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.ATTACHMENT_LIST],
     AttachmentsApi.getList,
-    options,
-    { refetchInterval: 30000 },
+    {
+      options,
+      settings: { refetchInterval: 30000 },
+    },
   );
 
-  return { data: data?.data, count: data?.data.length, isLoading, refetch };
+  return { attachmentList: data?.data || [], isLoading, refetch };
 };

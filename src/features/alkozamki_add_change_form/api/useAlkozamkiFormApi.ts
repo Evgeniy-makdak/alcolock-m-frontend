@@ -17,8 +17,7 @@ export const useAlkozamkiFormApi = (id?: ID) => {
   const { data, isLoading } = useConfiguredQuery(
     [QueryKeys.ALKOLOCK_ITEM],
     AlcolocksApi.getAlkolock,
-    id,
-    { enabled: !!id },
+    { options: id, settings: { enabled: !!id } },
   );
 
   const { mutateAsync: changeItem } = useMutation({

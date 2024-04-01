@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 
+/**
+ *
+ * @param value - значение которое будет возвращаться с тротлингом
+ * @param time - время тротлинга
+ * @returns значение value
+ */
 export const useDebounce = (value?: string, time?: number): [string] => {
   const [state, setState] = useState(value);
   const ref = useRef(null);

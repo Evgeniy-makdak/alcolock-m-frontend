@@ -1,14 +1,29 @@
 import type { AutocompleteChangeDetails, AutocompleteChangeReason } from '@mui/material';
 
-import type { Permissions } from '@shared/const/config';
+import type { Permissions } from '@shared/config/permissionsEnums';
 import type { ID } from '@shared/types/BaseQueryTypes';
 
-export interface Value {
+/**
+ * @field label - текст для отображения
+ * @field value - значение элемента (обычно ID)
+ * @field permissions? - доступы для элемента - нужно для удобного доступа разрешениям ??? - может быть не нужно и потом удалить
+ */
+export type Value = {
   label: string;
   value: ID;
   permissions?: Permissions[] | [] | null | undefined;
-}
+};
 
+/**
+ * [
+ * {
+ * @field label - текст для отображения
+ * @field value - значение элемента (обычно ID)
+ * @field permissions? - доступы для элемента - нужно для удобного доступа разрешениям ??? - может быть не нужно и потом удалить
+ *
+ * }
+ * ]
+ */
 export type Values = Value[];
 
 export const isOptionEqualToValue = (option: Value | Values, value: Value | Values) => {

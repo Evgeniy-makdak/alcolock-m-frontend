@@ -1,5 +1,6 @@
 {
   "compileOnSave": true,
+  "files": ["declarations.d.ts"],
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",

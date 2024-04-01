@@ -52,7 +52,7 @@ function eslintRules() {
     'no-mixed-spaces-and-tabs': 'error',
     'no-case-declarations': 'error',
     'react/no-unescaped-entities': 'error',
-    'no-console': 'error',
+    'no-console': 'warn',
     'typescript-eslint': 'off',
     'react-hooks/exhaustive-deps': 'warn',
     'react/jsx-uses-react': 'error',
@@ -60,7 +60,7 @@ function eslintRules() {
     'react/jsx-no-undef': 'error',
     '@typescript-eslint/no-explicit-any': 'warn',
     'prettier/prettier': [
-      'error',
+      'warn',
       {
         endOfLine: 'auto',
       },

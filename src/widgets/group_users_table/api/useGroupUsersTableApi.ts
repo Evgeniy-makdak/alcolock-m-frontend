@@ -7,7 +7,7 @@ export const useGroupUsersTableApi = (options: QueryOptions) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.USER_LIST],
     (op: QueryOptions) => UsersApi.getList(op, true),
-    options,
+    { options },
   );
 
   return { isLoading, users: data?.data, refetch };

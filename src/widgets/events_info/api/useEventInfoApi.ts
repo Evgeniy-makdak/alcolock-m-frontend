@@ -4,10 +4,8 @@ import { useConfiguredQuery } from '@shared/hooks/useConfiguredQuery';
 import type { ID } from '@shared/types/BaseQueryTypes';
 
 export const useEventInfoApi = (id: ID) => {
-  const { data, isLoading } = useConfiguredQuery(
-    [QueryKeys.EVENTS_ITEM],
-    EventsApi.getEventItem,
-    id,
-  );
+  const { data, isLoading } = useConfiguredQuery([QueryKeys.EVENTS_ITEM], EventsApi.getEventItem, {
+    options: id,
+  });
   return { data, isLoading };
 };

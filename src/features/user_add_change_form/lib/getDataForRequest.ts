@@ -6,8 +6,8 @@ import { type Form } from './validate';
 export const getDataForRequest = (data: Form, branchId: ID): CreateUserData => {
   const userGroups = data?.userGroups;
   const userGroupsIds = ArrayUtils.getArrayFromValues(userGroups);
-  const licenseCode = data?.licenseCode;
-  const licenseCodeLengthMoreZero = licenseCode.trim().length > 0;
+  const licenseCode = data?.licenseCode || '';
+  const licenseCodeLengthMoreZero = licenseCode?.trim()?.length > 0;
   const phone = data?.phone?.trim();
   const lastName = data?.lastName || '';
   const password = data?.password;

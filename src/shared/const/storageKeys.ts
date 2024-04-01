@@ -1,4 +1,7 @@
-export enum storageKeys {
+/**
+ * @enum {string}
+ */
+export enum StorageKeys {
   ROLES_TABLE = 'ROLES_LIST_TABLE',
   USERS_TABLE = 'USERS_TABLE',
   CARS_TABLE_IN_GROUP = 'CARS_TABLE_IN_GROUP',
@@ -11,8 +14,12 @@ export enum storageKeys {
   ATTACHMENTS_TABLE_SORTS = 'ATTACHMENTS_TABLE_SORTS',
   EVENTS_TABLE_SORTS = 'EVENTS_TABLE_SORTS',
   AVTO_SERVICE_EVENTS_TABLE_SORTS = 'AVTO_SERVICE_EVENTS_TABLE_SORTS',
+  NAVBAR_COLLOPS_MENU = 'NAVBAR_COLLOPS_MENU',
 }
 
+/**
+ * @enum {string}
+ */
 export enum QueryKeys {
   IMAGE = 'IMAGE',
   EVENTS_COUNT = 'EVENTS_COUNT',

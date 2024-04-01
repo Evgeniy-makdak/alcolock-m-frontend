@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 
-import { InputSearchDelay } from '@shared/const/config';
-import { storageKeys } from '@shared/const/storageKeys';
+import { InputSearchDelay } from '@shared/config/permissionsEnums';
+import { StorageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
 import { Formatters } from '@shared/utils/formatters';
@@ -14,7 +13,7 @@ import { useAutoServiceStore } from '../model/autoServiceStore';
 
 export const useAvtoServiceTable = () => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
-    storageKeys.AVTO_SERVICE_EVENTS_TABLE_SORTS,
+    StorageKeys.AVTO_SERVICE_EVENTS_TABLE_SORTS,
   );
   const [input, setInput] = useState('');
   const { changeEndDate, changeStartDate, clearDates, endDate, startDate } = useAutoServiceStore();

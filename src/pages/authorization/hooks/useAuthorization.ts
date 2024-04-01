@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import type { AxiosResponse } from 'axios';
 import { enqueueSnackbar } from 'notistack';
 
-import { RoutePaths } from '@app/index';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { RoutePaths } from '@shared/config/routePathsEnum';
 import { appStore } from '@shared/model/app_store/AppStore';
 import type { AuthError, IAuthenticate, IError, UserDataLogin } from '@shared/types/BaseQueryTypes';
 import { cookieManager } from '@shared/utils/cookie_manager';
@@ -49,7 +49,7 @@ export const useAuthorization = () => {
     }
     const idToken = data?.data?.idToken;
     if (idToken) {
-      // TODO избавить приложение от использования токенов в store
+      // TODO избавить приложение от использования токенов
       // Токены должны быть только в cookie и бэк должен вернуть ошибку
       // not auth например и приложение должно перекинуться на авторизацию
       cookieManager.set('bearer', idToken);
@@ -75,8 +75,7 @@ export const useAuthorization = () => {
   const errorPassword = password ? password?.message : '';
   const errorUsername = username ? username?.message : '';
   return {
-    handleSubmit,
-    handleAuthorization,
+    handleSubmit: handleSubmit(handleAuthorization),
     isLoading,
     register,
     errorPassword,

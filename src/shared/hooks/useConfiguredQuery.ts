@@ -1,6 +1,6 @@
 import type { AxiosError } from 'axios';
 
-import type { QueryKeys } from '@shared/const/storageKeys';
+import { QueryKeys } from '@shared/const/storageKeys';
 import { appStore } from '@shared/model/app_store/AppStore';
 import type { ID, IError } from '@shared/types/BaseQueryTypes';
 import type { QueryOptions } from '@shared/types/QueryTypes';
@@ -22,14 +22,34 @@ const getOptions = (options: QueryOptions, queryBranch: ID): QueryOptions => {
   };
 };
 
-export const useConfiguredQuery = <T, D extends QueryOptions>(
-  key: QueryKeys[],
-  fn: (options?: QueryOptions | ID) => Promise<T>,
-  options?: QueryOptions | ID | D,
+/**
+ * @prop settings - параметры настроек хука useQuery
+ * @prop triggerOnBranchChange - нужно ли делать запрос при смене офиса (обычно нужно)
+ * @prop options - обычно это query параметры для запроса, но иногда это может быть ID или что другое в зависимости от требований запроса (смотри в swagger)
+ */
+type OtherArgs<T, D> = {
   settings?: Omit<
     UndefinedInitialDataOptions<T, AxiosError<IError>, T, QueryKey>,
     'queryKey' | 'queryFn'
-  >,
+  >;
+  triggerOnBranchChange?: boolean;
+  options?: QueryOptions | ID | D;
+};
+
+/**
+ *
+ * @param key - ключи запроса которые хранятся в enum {@link QueryKeys} - для сохранение и управлением запросами из вне или другого запроса
+ * @param fn - функция Promise которая и отправляет запрос на бэк - используется  Axios и все они описываются shared/api/baseQuerys.ts в соответствущем классе
+ * @param param2 - объект с полями -
+ * @field settings - параметры настроек хука useQuery
+ * @field triggerOnBranchChange - нужно ли делать запрос при смене офиса (обычно нужно)
+ * @field  options - обычно это query параметры для запроса, но иногда это может быть ID или что другое в зависимости от требований запроса (смотри в swagger)
+ * @returns вернет объект UseQueryResult<T, AxiosError<IError>> - можно посмотреть в документации {@link https://tanstack.com/query/v5/docs/framework/react/reference/useQuery|some tanstack/react-query}
+ */
+export const useConfiguredQuery = <T, D extends QueryOptions>(
+  key: QueryKeys[],
+  fn: (options?: QueryOptions | ID) => Promise<T>,
+  { options, settings, triggerOnBranchChange = true }: OtherArgs<T, D>,
 ) => {
   const isOptions = isOptionsValue(options);
   const filterOptions = isOptions && options?.filterOptions;
@@ -39,7 +59,11 @@ export const useConfiguredQuery = <T, D extends QueryOptions>(
   const newOptions = isOptions ? getOptions(options, queryBranch) : options;
 
   const data = useQuery<T, AxiosError<IError>, T, QueryKey>({
-    queryKey: [...key, queryBranch, ...[isOptions ? Object.values(newOptions) : newOptions]],
+    queryKey: [
+      ...key,
+      triggerOnBranchChange ? queryBranch : null,
+      ...[isOptions ? Object.values(newOptions) : newOptions],
+    ],
     queryFn: () => fn(newOptions ? newOptions : {}),
     ...(settings || {}),
   });

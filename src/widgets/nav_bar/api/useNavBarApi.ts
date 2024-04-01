@@ -8,8 +8,11 @@ export const useNavBarApi = () => {
     isLoading: isLoadingAccountData,
     error,
     refetch: refetchAccountData,
-  } = useConfiguredQuery([QueryKeys.ACCOUNT], AccountApi.getAccountData, null, {
-    networkMode: 'offlineFirst',
+  } = useConfiguredQuery([QueryKeys.ACCOUNT], AccountApi.getAccountData, {
+    settings: {
+      networkMode: 'offlineFirst',
+    },
+    triggerOnBranchChange: false,
   });
 
   // const { data: count, isLoading: isLoadingAvtoServiceEventList } = useConfiguredQuery(

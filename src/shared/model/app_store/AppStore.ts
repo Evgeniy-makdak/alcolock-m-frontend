@@ -2,7 +2,8 @@ import 'react-router-dom';
 
 import { create } from 'zustand';
 
-import { RoutePaths } from '@app/index';
+import { RoutePaths } from '@shared/config/routePathsEnum';
+import { routers } from '@shared/config/routers';
 import type { ID } from '@shared/types/BaseQueryTypes';
 import { cookieManager } from '@shared/utils/cookie_manager';
 
@@ -57,7 +58,6 @@ export const appStore = create<AppStore>()((set, get) => ({
       isAdmin: false,
     });
     cookieManager.removeAll();
-    // TODO => если будут с этим проблемы то использовать redirect из react-router-dom
-    window.location.href = RoutePaths.auth;
+    routers.navigate(RoutePaths.auth);
   },
 }));
