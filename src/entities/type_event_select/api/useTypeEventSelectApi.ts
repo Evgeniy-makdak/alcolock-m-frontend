@@ -6,6 +6,7 @@ export const useTypeEventSelectApi = () => {
   const { data, isLoading } = useConfiguredQuery(
     [QueryKeys.EVENTS_TYPE_LIST],
     EventsApi.getEventsTypeList,
+    {},
   );
 
   return { events: data?.data, isLoading, isError: data?.isError };

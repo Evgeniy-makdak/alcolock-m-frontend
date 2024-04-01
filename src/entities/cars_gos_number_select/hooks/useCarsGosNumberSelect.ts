@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { SortTypes, SortsTypes } from '@shared/const/types';
+import { SortTypes, SortsTypes } from '@shared/config/queryParamsEnums';
 import { mapOptions } from '@shared/ui/search_multiple_select';
 
 import { useCarListQuery } from '../api/useCarListQuery';
@@ -17,7 +17,7 @@ export const useCarsGosNumberSelect = () => {
 
   const { carList, isLoading } = useCarListQuery({
     searchQuery,
-    sortBy: SortTypes.byLicense,
+    sortBy: SortTypes.GOS_NUMBER,
     order: SortsTypes.asc,
   });
 

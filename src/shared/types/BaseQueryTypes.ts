@@ -1,4 +1,4 @@
-import { Permissions } from '../const/config';
+import { Permissions } from '../config/permissionsEnums';
 import type { QueryOptions } from './QueryTypes';
 
 interface IUserDataMain {
@@ -265,9 +265,11 @@ export enum EventType {
   OFFLINE_ACTIVATION = 'OFFLINE_ACTIVATION',
   MAINTENANCE = 'MAINTENANCE',
 }
-
+/**
+ * @type IEvent - сущность "событие" которое приходит с бэка
+ *  @field eventType - тип события
+ *  */
 export type IEvent = {
-  //@prop eventType - тип события
   eventType: EventType;
   extra: {
     qrCode: string;

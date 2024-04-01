@@ -1,7 +1,7 @@
 import { type ReactNode, useState } from 'react';
 
-import { InputSearchDelay } from '@shared/const/config';
-import { storageKeys } from '@shared/const/storageKeys';
+import { InputSearchDelay } from '@shared/config/permissionsEnums';
+import { StorageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
 import { useToggle } from '@shared/hooks/useToggle';
@@ -13,7 +13,7 @@ import { useGetRows } from '../lib/getRows';
 
 export const useRolesTable = () => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
-    storageKeys.ROLES_TABLE,
+    StorageKeys.ROLES_TABLE,
   );
 
   const [deleteRole, setDeleteRole] = useState(null);

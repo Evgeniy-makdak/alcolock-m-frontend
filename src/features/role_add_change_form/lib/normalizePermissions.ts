@@ -1,7 +1,6 @@
-import { Entities, type Permissions } from '@shared/const/config';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Entities, Permissions, PermissionsStatus } from '@shared/config/permissionsEnums';
 import type { IUserGroupPermission } from '@shared/types/BaseQueryTypes';
-
-import { UserPermissionsTypes } from './const';
 
 export type NormalizePermissions = {
   user_control: number;
@@ -9,7 +8,7 @@ export type NormalizePermissions = {
   alkozamki_control: number;
   attachments_control: number;
 };
-
+// TODO => поменять всю работу с доступами когда на бэке поменяется структура доступов
 export function normalizePermissions(
   userGroupPermissions: IUserGroupPermission[],
 ): NormalizePermissions {
@@ -56,41 +55,69 @@ export function normalizePermissions(
 
   return rolePermissions;
 }
-
-const permissionsNormalize = (permissionsList: Permissions[], entity: Entities) => {
-  if (!permissionsList) return null;
-  if (permissionsList.includes(`PERMISSION_${entity}_CREATE` as Permissions)) {
-    return UserPermissionsTypes.CREATE;
-  } else if (permissionsList.includes(`PERMISSION_${entity}_READ` as Permissions)) {
-    return UserPermissionsTypes.READ;
-  } else {
-    return null;
-  }
+// TODO => поменять всю работу с доступами когда на бэке поменяется структура доступов
+export const permissionsListIncludes = (permissionsList: Permissions[]) => {
+  return function (permissions: Permissions): boolean {
+    return (permissionsList || [])?.includes(permissions);
+  };
 };
 
-export const permissionsMapper = (permissionsList: Permissions[]) => {
-  const permissions: {
-    attachments: null | UserPermissionsTypes;
-    users: null | UserPermissionsTypes;
-    cars: null | UserPermissionsTypes;
-    alcolocks: null | UserPermissionsTypes;
-    alkozamki: null | UserPermissionsTypes;
-  } = {
-    users: permissionsNormalize(permissionsList, Entities.USER),
-    cars: permissionsNormalize(permissionsList, Entities.VEHICLE),
-    attachments: null,
-    alkozamki: null,
-    alcolocks: permissionsNormalize(permissionsList, Entities.DEVICE),
+type GetArrayOfStringFromPermissionReturn = {
+  entities: keyof typeof Entities | null;
+  status: keyof typeof PermissionsStatus | null;
+};
+// TODO => поменять всю работу с доступами когда на бэке поменяется структура доступов
+const getArrayOfStringFromPermission = (
+  permission: Permissions,
+): GetArrayOfStringFromPermissionReturn => {
+  const splitPermissions: (string | keyof typeof Entities | keyof typeof PermissionsStatus)[] =
+    permission.split('_');
+  const resultArr: GetArrayOfStringFromPermissionReturn = { entities: null, status: null };
+  const entitiesArr = Object.values(Entities);
+  const permissionsStatusArray: (number | string | PermissionsStatus)[] =
+    Object.values(PermissionsStatus);
+
+  splitPermissions.map((splitPermission) => {
+    const findEntities = entitiesArr.find((item) => item === splitPermission) || null;
+    const findPermission = permissionsStatusArray.find((item) => item === splitPermission) || null;
+    if (findEntities) {
+      resultArr.entities = findEntities;
+    }
+    if (findPermission) {
+      resultArr.status = findPermission as keyof typeof PermissionsStatus;
+    }
+  });
+  return resultArr;
+};
+// TODO => поменять всю работу с доступами когда на бэке поменяется структура доступов
+export const permissionForEntity = (permissionsList: Permissions[]) => {
+  return function (entity: Entities): PermissionsStatus[] {
+    const permissionStatus: PermissionsStatus[] = [];
+    (permissionsList || []).map((item) => {
+      const { entities, status } = getArrayOfStringFromPermission(item);
+      if (entities === entity) {
+        permissionStatus.push(PermissionsStatus[status]);
+      }
+    });
+
+    return permissionStatus.length > 0 ? permissionStatus : [PermissionsStatus.NO_PERMISSION];
   };
-
-  if (
-    permissions.users === UserPermissionsTypes.CREATE &&
-    permissions.cars === UserPermissionsTypes.CREATE
-  ) {
-    permissions.attachments = UserPermissionsTypes.CREATE;
-  } else if (permissions.users && permissions.cars) {
-    permissions.attachments = UserPermissionsTypes.READ;
-  }
-
-  return permissions;
+};
+// TODO => поменять всю работу с доступами когда на бэке поменяется структура доступов
+export const getPermissionsNumbersEntities = (permissionsList: Permissions[]) => {
+  const findPermissionForEntity = permissionForEntity(permissionsList);
+  const userPermission = findPermissionForEntity(Entities.USER);
+  const devicePermission = findPermissionForEntity(Entities.DEVICE);
+  const carPermission = findPermissionForEntity(Entities.VEHICLE);
+  const eventPermission = findPermissionForEntity(Entities.EVENT);
+  const rolePermission = findPermissionForEntity(Entities.ROLE);
+  const attachmentsPermission = findPermissionForEntity(Entities.ATTACHMENT);
+  return {
+    userPermission,
+    devicePermission,
+    carPermission,
+    attachmentsPermission,
+    rolePermission,
+    eventPermission,
+  };
 };

@@ -7,7 +7,7 @@ export const useAutoServiceInfoApi = (id: ID) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.AVTOSERVISE_EVENTS_ITEM],
     EventsApi.getEventItem,
-    id,
+    { options: id },
   );
   return { data, isLoading, refetch };
 };

@@ -7,7 +7,7 @@ export const useAvtoServiceEventsApi = (options: QueryOptions) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.AUTO_SERVICE_EVENTS_LIST],
     EventsApi.getEventListForAutoService,
-    options,
+    { options },
   );
   return { data, isLoading, refetch };
 };

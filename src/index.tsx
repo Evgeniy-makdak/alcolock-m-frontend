@@ -6,8 +6,8 @@ import { SnackbarProvider, closeSnackbar } from 'notistack';
 import CloseIcon from '@mui/icons-material/Close';
 import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 
-import { routers } from '@app/lib/routers';
 import { ErrorBoundary } from '@layout/error_boundary';
+import { routers } from '@shared/config/routers';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import './index.scss';

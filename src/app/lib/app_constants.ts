@@ -28,7 +28,7 @@ export class AppConstants {
       label: 'Сервисный работник',
     },
   ];
-
+  // TODO => убрать
   static permissionsList = [
     {
       value: 1,

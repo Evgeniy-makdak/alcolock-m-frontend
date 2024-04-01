@@ -1,24 +1,25 @@
 import { useEffect } from 'react';
 
-import { storageKeys } from '@shared/const/storageKeys';
+import { Permissions } from '@shared/config/permissionsEnums';
+import { StorageKeys } from '@shared/const/storageKeys';
 import { useLocalStorage } from '@shared/hooks/useLocalStorage';
-import { appStore } from '@shared/model/app_store/AppStore';
+import { appStore } from '@shared/model/app_store/appStore';
 import type { Value } from '@shared/ui/search_multiple_select';
 import ArrayUtils from '@shared/utils/ArrayUtils';
 
 import { useUserDataApi } from '../api/useUserDataApi';
 
 export const useNavbarBranchSelect = () => {
-  const { selectedBranchState, setState, isAdmin } = appStore((state) => state);
+  const { selectedBranchState, setState } = appStore((state) => state);
   const { user } = useUserDataApi();
-
+  const isGlobalAdmin = user ? user?.permissions?.includes(Permissions.SYSTEM_GLOBAL_ADMIN) : false;
   const { state: office, setItemState: setOffice } = useLocalStorage({
-    key: storageKeys.OFFICE,
+    key: StorageKeys.OFFICE,
     value: user?.assignment?.branch,
   });
 
   const onChangeBranch = (_type: string, value: string | Value | (string | Value)[]) => {
-    if (!isAdmin) return;
+    if (!isGlobalAdmin) return;
     const arrVal = ArrayUtils.getArrayValues(value);
 
     if (arrVal.length === 0) return;
@@ -35,8 +36,11 @@ export const useNavbarBranchSelect = () => {
 
   useEffect(() => {
     if (!user) return;
-    setState({ selectedBranchState: isAdmin ? office : user?.assignment?.branch });
-  }, [user, isAdmin]);
+    setState({
+      selectedBranchState: isGlobalAdmin ? office : user?.assignment?.branch,
+      isAdmin: isGlobalAdmin,
+    });
+  }, [user]);
 
   return {
     value: [
@@ -45,7 +49,7 @@ export const useNavbarBranchSelect = () => {
         label: selectedBranchState?.name,
       },
     ],
-    isAdmin,
+    isGlobalAdmin,
     onChangeBranch,
   };
 };

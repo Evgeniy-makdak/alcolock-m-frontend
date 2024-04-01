@@ -1,7 +1,7 @@
 import { type ReactNode, useState } from 'react';
 
-import { InputSearchDelay } from '@shared/const/config';
-import { storageKeys } from '@shared/const/storageKeys';
+import { InputSearchDelay } from '@shared/config/permissionsEnums';
+import { StorageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
 import { useToggle } from '@shared/hooks/useToggle';
@@ -15,7 +15,7 @@ import { useVehiclesTableStore } from '../model/vehiclesTableStore';
 
 export const useVehiclesTable = () => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
-    storageKeys.VEHICLES_PAGE_TABLE_SORTS,
+    StorageKeys.VEHICLES_PAGE_TABLE_SORTS,
   );
 
   const [deleteCar, setDeleteCar] = useState(null);

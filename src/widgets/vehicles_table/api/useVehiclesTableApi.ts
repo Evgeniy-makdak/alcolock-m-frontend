@@ -7,7 +7,7 @@ export const useVehiclesTableApi = (options: QueryOptions) => {
   const { data, refetch, isLoading } = useConfiguredQuery(
     [QueryKeys.VEHICLES_PAGE_TABLE],
     CarsApi.getCarsList,
-    options,
+    { options },
   );
   return { cars: data?.data, isLoading, refetch };
 };

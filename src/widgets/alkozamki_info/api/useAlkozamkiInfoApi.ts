@@ -7,8 +7,7 @@ export const useAlkozamkiInfoApi = (id: ID) => {
   const { data, isLoading } = useConfiguredQuery(
     [QueryKeys.ALKOLOCK_ITEM],
     AlcolocksApi.getAlkolock,
-    id,
-    { enabled: !!id },
+    { options: id, settings: { enabled: !!id } },
   );
 
   return { alkolock: data?.data, isLoading };

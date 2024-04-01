@@ -1,15 +1,26 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { type MutableRefObject, useEffect } from 'react';
 
 import { type GridPaginationModel, type GridSortModel, useGridApiRef } from '@mui/x-data-grid';
 import type { GridApiCommunity } from '@mui/x-data-grid/internals';
 
-import type { storageKeys } from '@shared/const/storageKeys';
+import type { StorageKeys } from '@shared/const/storageKeys';
 
 import { useLocalStorage } from './useLocalStorage';
 
+/**
+ *
+ * @param key => уникальный ключ под которым в localStorage будут сохранены все данные таблицы
+ * @param sortModel => {@link GridSortModel}
+ * @returns [
+ *    * state - текущее состояние таблицы
+ *    * apiRef - ref для таблицы с котрой хотим взять данные
+ *    * changeTableState - функция для изменения состояния таблицы
+ *    * changeTableSorts - функция для изменения конкретно сортировок у таблицы
+ *
+ * ]
+ */
 export const useSavedLocalTableSorts = (
-  key: storageKeys,
+  key: StorageKeys,
   sortModel?: GridSortModel,
 ): [
   {

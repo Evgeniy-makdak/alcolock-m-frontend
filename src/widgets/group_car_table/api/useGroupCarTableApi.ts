@@ -7,7 +7,7 @@ export const useGroupCarTableApi = (options: QueryOptions) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.CAR_LIST],
     CarsApi.getCarsList,
-    options,
+    { options },
   );
 
   return { isLoading, cars: data?.data, refetch };

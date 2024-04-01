@@ -7,8 +7,7 @@ export const useGroupsApi = (id: ID) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.BRANCH_ITEM],
     BranchApi.getBranch,
-    id,
-    { enabled: !!id },
+    { options: id, settings: { enabled: !!id } },
   );
 
   return { branch: data?.data, isLoading, refetch };

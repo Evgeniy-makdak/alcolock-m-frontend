@@ -1,4 +1,4 @@
-import { Permissions } from '@shared/const/config';
+import { Permissions } from '@shared/config/permissionsEnums';
 import type { IRole, IUser } from '@shared/types/BaseQueryTypes';
 import type { Values } from '@shared/ui/search_multiple_select';
 

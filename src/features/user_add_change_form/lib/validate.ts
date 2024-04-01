@@ -2,7 +2,7 @@ import type { Dayjs } from 'dayjs';
 import * as yup from 'yup';
 import { object } from 'yup';
 
-import { Permissions } from '@shared/const/config';
+import { Permissions } from '@shared/config/permissionsEnums';
 import type { ID } from '@shared/types/BaseQueryTypes';
 import type { Value, Values } from '@shared/ui/search_multiple_select';
 import { ValidationMessages } from '@shared/validations/validation_messages';
@@ -128,9 +128,9 @@ export const schema = (id: ID): yup.ObjectSchema<Form> =>
     licenseCode: yup.string().test({
       name: 'licenseCode',
       test(value, context) {
-        const licenseCode = value?.trim();
-        if (licenseCode?.length === 0) return true;
-        const error = ValidationRules.driverLicenseValidation(value);
+        if (!value) return true;
+        const licenseCode = (value || '')?.trim();
+        const error = ValidationRules.driverLicenseValidation(licenseCode);
         if (error) {
           return context.createError({ message: error });
         }

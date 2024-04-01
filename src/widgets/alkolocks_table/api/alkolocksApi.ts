@@ -7,8 +7,7 @@ export const useAlkolocksApi = (options: QueryOptions) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.ALKOLOCK_LIST_TABLE],
     AlcolocksApi.getListAlcolocks,
-    options,
-    { refetchInterval: 30000 },
+    { options, settings: { refetchInterval: 30000 } },
   );
   return { data: data?.data, isLoading, refetch };
 };

@@ -1,4 +1,4 @@
-import { Permissions } from '@shared/const/config';
+import { Permissions } from '@shared/config/permissionsEnums';
 import type { IPermissions, IRole } from '@shared/types/BaseQueryTypes';
 import type { AdapterReturn } from '@shared/ui/search_multiple_select';
 

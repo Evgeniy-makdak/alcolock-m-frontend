@@ -1,7 +1,7 @@
 import { type ReactNode, useState } from 'react';
 
-import { InputSearchDelay } from '@shared/const/config';
-import { storageKeys } from '@shared/const/storageKeys';
+import { InputSearchDelay } from '@shared/config/permissionsEnums';
+import { StorageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
 import { useToggle } from '@shared/hooks/useToggle';
@@ -15,7 +15,7 @@ import { useAlcolocksStore } from '../model/alkolocksStore';
 
 export const useAlkolocksTable = () => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
-    storageKeys.ALCOLOCKS_TABLE,
+    StorageKeys.ALCOLOCKS_TABLE,
   );
 
   const [deleteAlcolock, setDeleteAlcolock] = useState(null);

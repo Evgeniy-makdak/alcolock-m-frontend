@@ -8,8 +8,11 @@ import { useMutation } from '@tanstack/react-query';
 const updateQueries = [QueryKeys.ROLES_LIST_TABLE];
 export const useRoleAddChangeFormApi = (id: ID) => {
   const update = useUpdateQueries();
-  const { data, isLoading } = useConfiguredQuery([QueryKeys.ROLE_ITEM], RolesApi.getItem, id, {
-    enabled: !!id,
+  const { data, isLoading } = useConfiguredQuery([QueryKeys.ROLE_ITEM], RolesApi.getItem, {
+    options: id,
+    settings: {
+      enabled: !!id,
+    },
   });
 
   const { mutateAsync: changeRole } = useMutation({

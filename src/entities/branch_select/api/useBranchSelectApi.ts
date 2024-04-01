@@ -7,7 +7,7 @@ export const useBranchSelectApi = (options?: QueryOptions) => {
   const { data, isLoading } = useConfiguredQuery(
     [QueryKeys.BRANCH_LIST_SELECT],
     BranchApi.getBranchList,
-    options,
+    { options },
   );
 
   return { branch: data?.data, isLoading };

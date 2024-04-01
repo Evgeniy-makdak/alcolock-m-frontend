@@ -1,67 +1,57 @@
 import { useEffect } from 'react';
-import { type Location, type NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import type { AxiosError } from 'axios';
+import { enqueueSnackbar } from 'notistack';
 
-import { Permissions } from '@shared/const/config';
-import { appStore } from '@shared/model/app_store/AppStore';
+import { onFetchDataHandling } from '@app/lib/onFetchDataHandling';
+import { Permissions } from '@shared/config/permissionsEnums';
+import type { RoutePaths } from '@shared/config/routePathsEnum';
+import { appStore } from '@shared/model/app_store/appStore';
 import { setStore } from '@shared/model/store/localStorage';
-import type { IAccount, IError } from '@shared/types/BaseQueryTypes';
+import { NAV_LINKS } from '@widgets/nav_bar/config/const';
+import { hasPermissionForThisPage } from '@widgets/nav_bar/lib/getPermissionsForPages';
 
-import { RoutePaths } from '..';
 import { useAppApi } from '../api/useAppApi';
 
 setStore(window.localStorage);
 
-type OnFetchDataHandlingArgs = {
-  isLoading: boolean;
-  error: AxiosError<IError>;
-  user: IAccount;
-  navigate: NavigateFunction;
-  location: Location;
-  auth: boolean;
-};
-
-const onFetchDataHandling = ({
-  isLoading,
-  error,
-  user,
-  navigate,
-  location,
-  auth,
-}: OnFetchDataHandlingArgs) => {
-  if (isLoading) return;
-  const isAdmin = (user?.permissions || []).includes(Permissions.SYSTEM_GLOBAL_ADMIN);
-  if (user) {
-    appStore.setState({
-      auth: true,
-      email: user?.email,
-      isAdmin: isAdmin,
-    });
-  }
-  if (location?.pathname === '/' && !error && !isLoading && user) {
-    navigate(RoutePaths.events);
-  } else if (error || (!auth && !user)) {
-    navigate(RoutePaths.auth);
-  }
-};
-
 export const useApp = () => {
-  const { auth, isAdmin } = appStore.getState();
-  const { isLoading, user, error } = useAppApi(isAdmin);
+  const auth = appStore((state) => state.auth);
+  const { isLoading, user, error } = useAppApi();
   const navigate = useNavigate();
   const location = useLocation();
+  const pathName = location.pathname as RoutePaths;
+  // TODO => поменять всю работу с доступами когда на бэке поменяется структура доступов
+  const permissionsPath = hasPermissionForThisPage(user?.permissions);
+  // TODO => поменять всю работу с доступами когда на бэке поменяется структура доступов
+  const array = Object.entries(permissionsPath).filter((perm) => perm[1] === true);
+  const firstAvailableRouter = array[0][0];
+  // TODO => поменять всю работу с доступами когда на бэке поменяется структура доступов
+  useEffect(() => {
+    if (isLoading || !user) return;
+    if (user?.permissions.includes(Permissions.SYSTEM_GLOBAL_ADMIN)) return;
+    const hasAccess = pathName in permissionsPath && permissionsPath[pathName];
+    if (hasAccess) return;
+    if (!hasAccess) {
+      const pathDisplayName = NAV_LINKS.find((link) => link.path === pathName);
+      enqueueSnackbar(`У вас нет доступа к странице "${pathDisplayName.name}"`, {
+        variant: 'error',
+      });
+      navigate(firstAvailableRouter);
+    }
+  }, [pathName]);
 
   useEffect(() => {
+    if (isLoading) return;
     onFetchDataHandling({
-      isLoading,
       error,
       user,
       location,
       navigate,
       auth,
+      route: firstAvailableRouter,
     });
-  }, [error, user]);
+  }, [error, isLoading, user]);
 
-  return { isLoading, auth };
+  return { isLoading };
 };

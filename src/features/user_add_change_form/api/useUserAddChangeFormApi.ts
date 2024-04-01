@@ -9,17 +9,21 @@ const updateQueries = [QueryKeys.USER_LIST_TABLE, QueryKeys.USER_LIST];
 
 export const useUserAddChangeFormApi = (id: ID) => {
   const update = useUpdateQueries();
-  const { data, isLoading } = useConfiguredQuery([QueryKeys.USER_ITEM], UsersApi.getUser, id, {
-    enabled: !!id,
+  const { data, isLoading } = useConfiguredQuery([QueryKeys.USER_ITEM], UsersApi.getUser, {
+    options: id,
+    settings: {
+      enabled: !!id,
+    },
   });
   // TODO => убрать запрос когда бэк начнет возвращать в user permissions
   const { data: userGroups, isLoading: isLoadingUserGroups } = useConfiguredQuery(
     [QueryKeys.ROLES_LIST],
     RolesApi.getList,
-    null,
     {
-      enabled: !!id,
-      networkMode: 'offlineFirst',
+      settings: {
+        enabled: !!id,
+        networkMode: 'offlineFirst',
+      },
     },
   );
 

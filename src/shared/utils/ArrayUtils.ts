@@ -9,7 +9,12 @@ export default class ArrayUtils {
     return index >= 0;
   }
 
-  static getStringFromArrayValues(values: (string | Value)[] | Value): ID {
+  /**
+   *
+   * @param values => может быть либо строкой, типом {@link Value}, либо массивом (Value | string)[]
+   * @returns ID => вернет все id готовые для вставки в query параметры например: '1,2,3,45,6'
+   */
+  static getIDFromArrayValues(values: (string | Value)[] | Value): ID {
     if (Array.isArray(values)) {
       const arr: ID[] = [];
       values.map((item) => {
@@ -46,7 +51,7 @@ export default class ArrayUtils {
     return [values.value];
   }
   static getValueFromAnyOption(
-    value: string | Value | Values | (string | Value)[] | undefined | null,
+    value: string | Value | (string | Value)[] | undefined | null,
   ): Value {
     if (Array.isArray(value)) {
       return typeof value[0] === 'object' ? value[0] : null;

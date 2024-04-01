@@ -1,11 +1,12 @@
 import { AppConstants } from '@app/index';
-import { Entities, type Permissions } from '@shared/const/config';
+import { Entities, type Permissions } from '@shared/config/permissionsEnums';
 import type { CreateRoleData, IRole } from '@shared/types/BaseQueryTypes';
 
 import type { NormalizePermissions } from './normalizePermissions';
 import { normalizePermissions } from './normalizePermissions';
 import type { Form } from './validate';
 
+// TODO => поменять всю работу с доступами когда на бэке поменяется структура доступов
 export class RolesMapper {
   static toApi(data: Form): CreateRoleData {
     const userPermissions = this.getPermissions(Entities.USER, Number(data.usersPermission));

@@ -15,7 +15,7 @@ export const useDateOfLinkSelect = () => {
   const { data, isLoading } = useConfiguredQuery(
     [QueryKeys.ATTACHMENT_LIST],
     AttachmentsApi.getList,
-    { searchQuery },
+    { options: searchQuery },
   );
   const onReset = () => {
     setSearchQuery('');

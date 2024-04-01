@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 
 import { eventsFilterPanelStore } from '@features/events_filter_panel';
-import { InputSearchDelay } from '@shared/const/config';
-import { storageKeys } from '@shared/const/storageKeys';
-import { SortsTypes } from '@shared/const/types';
+import { InputSearchDelay } from '@shared/config/permissionsEnums';
+import { SortsTypes } from '@shared/config/queryParamsEnums';
+import { StorageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
-import { appStore } from '@shared/model/app_store/AppStore';
 import { Formatters } from '@shared/utils/formatters';
 
 import { useEventsApi } from '../api/useEventsApi';
@@ -17,7 +15,7 @@ import { useEventsStore } from '../model/eventsStore';
 
 export const useEventsTable = () => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
-    storageKeys.EVENTS_TABLE_SORTS,
+    StorageKeys.EVENTS_TABLE_SORTS,
     [
       {
         field: ValuesHeader.DATE_OCCURRENT,

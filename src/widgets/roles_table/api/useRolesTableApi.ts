@@ -7,7 +7,7 @@ export const useRolesTableApi = (options: QueryOptions) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.ROLES_LIST_TABLE],
     RolesApi.getList,
-    options,
+    { options },
   );
   return { roles: data?.data, isLoading, refetch };
 };

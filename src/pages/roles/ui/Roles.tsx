@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { RoutePaths } from '@app/index';
 import { PageWrapper } from '@layout/page_wrapper';
-import { appStore } from '@shared/model/app_store/AppStore';
+import { RoutePaths } from '@shared/config/routePathsEnum';
+import { appStore } from '@shared/model/app_store/appStore';
 import { RolesTable } from '@widgets/roles_table';
 
 const Roles = () => {

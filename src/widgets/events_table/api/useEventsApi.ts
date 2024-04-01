@@ -7,8 +7,7 @@ export const useEventsApi = (options: QueryOptions) => {
   const { data, isLoading, refetch } = useConfiguredQuery(
     [QueryKeys.EVENTS_LIST_TABLE],
     EventsApi.getList,
-    options,
-    { refetchInterval: 30000, retry: 1, retryDelay: 3000 },
+    { options, settings: { refetchInterval: 30000, retry: 1 } },
   );
 
   return { isLoading, data, refetch };

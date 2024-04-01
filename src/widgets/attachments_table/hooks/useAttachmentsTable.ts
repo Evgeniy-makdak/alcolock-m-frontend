@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import { attachmentsFilterPanelStore } from '@features/attachments_filter_panel';
-import { InputSearchDelay } from '@shared/const/config';
-import { storageKeys } from '@shared/const/storageKeys';
+import { InputSearchDelay } from '@shared/config/permissionsEnums';
+import { StorageKeys } from '@shared/const/storageKeys';
 import { useDebounce } from '@shared/hooks/useDebounce';
 import { useSavedLocalTableSorts } from '@shared/hooks/useSavedLocalTableSorts';
 import { useToggle } from '@shared/hooks/useToggle';
@@ -15,7 +15,7 @@ import { useAttachmentsStore } from '../model/attachmentsStore';
 
 export const useAttachmentsTable = () => {
   const [state, apiRef, changeTableState, changeTableSorts] = useSavedLocalTableSorts(
-    storageKeys.ATTACHMENTS_TABLE_SORTS,
+    StorageKeys.ATTACHMENTS_TABLE_SORTS,
   );
   const [selectDeleteAttachment, setSelectDeleteAttachment] = useState<null | {
     id: number;
@@ -37,7 +37,7 @@ export const useAttachmentsTable = () => {
   const filters = attachmentsFilterPanelStore((state) => state.filters);
   const [searchQuery] = useDebounce(input, InputSearchDelay);
 
-  const { data, isLoading, refetch } = useAttachmentsApi({
+  const { attachmentList, isLoading, refetch } = useAttachmentsApi({
     searchQuery,
     endDate: Formatters.formatToISODate(endDate),
     startDate: Formatters.formatToISODate(startDate),
@@ -62,7 +62,7 @@ export const useAttachmentsTable = () => {
     setSelectDeleteAttachment(null);
   };
 
-  const rows = useGetRows(data);
+  const rows = useGetRows(attachmentList);
   const headers = useGetColumns(toggleAddAttachModal, handleClickDeleteAttachment, refetch);
 
   const tableData = {

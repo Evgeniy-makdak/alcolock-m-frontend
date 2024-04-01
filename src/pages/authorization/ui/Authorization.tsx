@@ -14,7 +14,6 @@ export const Authorization = () => {
   const {
     isLoading,
     handleSubmit,
-    handleAuthorization,
     register,
     control,
     errorPassword,
@@ -41,7 +40,7 @@ export const Authorization = () => {
           <form
             data-testid={testids.page_auth.AUTH_FORM}
             className={style.form}
-            onSubmit={handleSubmit(handleAuthorization)}>
+            onSubmit={handleSubmit}>
             <InputsColumnWrapper>
               <TextField
                 {...register('username')}
@@ -72,6 +71,7 @@ export const Authorization = () => {
                 }}
                 label={'Запомнить меня'}
               />
+              <input type="submit" style={{ display: 'none' }} />
             </InputsColumnWrapper>
             <button
               data-testid={testids.page_auth.AUTH_BUTTON_ENTER}
