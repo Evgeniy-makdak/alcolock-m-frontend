@@ -19,7 +19,7 @@ export const useAlkozamki = () => {
     {
       testid: testids.page_alcolocks.alcolocks_widget_info.ALCOLOCKS_WIDGET_INFO_TAB_BUTTON_HISTORY,
       name: 'ИСТОРИЯ',
-      content: <EventsHistory type={HistoryTypes.byAlcolock} id={selectedAlcolockId} />,
+      content: <EventsHistory type={HistoryTypes.byAlcolock} alcolockId={selectedAlcolockId} />,
     },
   ];
 

@@ -21,7 +21,7 @@ export const useUsers = () => {
     {
       testid: testids.page_users.users_widget_info.USERS_WIDGET_INFO_TAB_BUTTON_HISTORY,
       name: 'ИСТОРИЯ',
-      content: <EventsHistory type={HistoryTypes.byUser} id={selectedUserId} />,
+      content: <EventsHistory type={HistoryTypes.byUser} userId={selectedUserId} />,
     },
   ];
 

@@ -23,7 +23,7 @@ export const EventData: FC<EventData> = ({ event, type, testid }) => {
     !!(event?.events ?? [])[0] && !!event?.events[0].latitude && !!event?.events[0].longitude;
 
   return (
-    <div>
+    <div className={style.td}>
       {type !== HistoryTypes.byUser && (
         <>
           <div className={style.row}>

@@ -58,12 +58,13 @@ export const useConfiguredQuery = <T, D extends QueryOptions>(
   const queryBranch = branchId ? branchId : selectedBranchState?.id;
   const newOptions = isOptions ? getOptions(options, queryBranch) : options;
 
+  const readyOptions = isOptions ? Object.values(newOptions) : newOptions;
+  const readyBranch = triggerOnBranchChange ? queryBranch : null;
+
+  const readyOptionsArr = Array.isArray(readyOptions) ? readyOptions : [readyOptions];
+
   const data = useQuery<T, AxiosError<IError>, T, QueryKey>({
-    queryKey: [
-      ...key,
-      triggerOnBranchChange ? queryBranch : null,
-      ...[isOptions ? Object.values(newOptions) : newOptions],
-    ],
+    queryKey: [...key, readyBranch, ...readyOptionsArr],
     queryFn: () => fn(newOptions ? newOptions : {}),
     ...(settings || {}),
   });

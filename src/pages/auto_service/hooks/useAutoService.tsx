@@ -18,7 +18,9 @@ export const useAutoService = () => {
     },
     {
       name: 'ИСТОРИЯ',
-      content: <EventsHistory type={HistoryTypes.byAlcolock} id={selectedItemId?.deviceId} />,
+      content: (
+        <EventsHistory type={HistoryTypes.byAlcolock} alcolockId={selectedItemId?.deviceId} />
+      ),
     },
   ];
 

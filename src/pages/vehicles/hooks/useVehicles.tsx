@@ -21,7 +21,7 @@ export const useVehicles = () => {
       testid:
         testids.page_transports.transports_widget_info.TRANSPORTS_WIDGET_INFO_TAB_BUTTON_HISTORY,
       name: 'ИСТОРИЯ',
-      content: <EventsHistory type={HistoryTypes.byCar} id={selectedCarId} />,
+      content: <EventsHistory type={HistoryTypes.byCar} carId={selectedCarId} />,
     },
   ];
   return {

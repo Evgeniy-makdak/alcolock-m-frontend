@@ -10,6 +10,10 @@ import styled from '@emotion/styled';
 export class StyledTable {
   static HeaderRow = styled(TableRow)({
     width: '100%',
+    display: 'flex',
+    position: 'sticky',
+    top: 0,
+    justifyContent: 'space-between',
     background: '#F6F6F6',
     borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
     borderTop: '1px solid rgba(0, 0, 0, 0.12)',
@@ -23,6 +27,7 @@ export class StyledTable {
     lineHeight: '171.429%',
     letterSpacing: '0.1px',
     color: '#333',
+    border: 'none',
   });
 
   static HeaderIconCell = styled(TableCell)({
@@ -57,6 +62,7 @@ export class StyledTable {
   });
 
   static TableButton = styled(IconButton)({
+    border: 'none',
     width: '40px',
     height: '40px',
     padding: '0',
@@ -68,6 +74,7 @@ export class StyledTable {
 
   static BodyCell = styled(TableCell)({
     padding: '12px 16px',
+    border: 'none',
     fontSize: '14px',
     fontWeight: 500,
     lineHeight: '171.429%',

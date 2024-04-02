@@ -1,27 +1,37 @@
-import { ReactNode, useState } from 'react';
+import { type FC, ReactNode, useState } from 'react';
 
 import style from './RowTableInfo.module.scss';
 
-interface Tab {
+type Tab = {
   name: string;
   testid?: string;
   content: ReactNode | string;
-}
+};
 
-interface RowTableInfoProps {
+type RowTableInfoProps = {
   tabs: Tab[];
-}
+};
 
-export const RowTableInfo = ({ tabs }: RowTableInfoProps) => {
+type MappedTabs = {
+  nameTabs: { name: string; testid: string }[];
+  contentTabs: ReactNode[];
+};
+
+export const RowTableInfo: FC<RowTableInfoProps> = ({ tabs }) => {
   const [activeTab, setActiveTab] = useState(0);
-  const nameTabs = tabs.map((tab) => {
-    return { name: tab.name, testid: tab?.testid };
+  const dataTabs: MappedTabs = {
+    nameTabs: [],
+    contentTabs: [],
+  };
+  tabs.map((tab) => {
+    dataTabs.nameTabs.push({ name: tab.name, testid: tab?.testid });
+    dataTabs.contentTabs.push(tab.content);
   });
-  const contentTabs = tabs.map((tab) => tab.content);
+
   return (
     <div className={style.rowTableInfo}>
       <div className={style.tabs}>
-        {nameTabs.map(({ name, testid }, i) => (
+        {dataTabs.nameTabs.map(({ name, testid }, i) => (
           <button
             data-testid={testid}
             key={name}
@@ -31,7 +41,7 @@ export const RowTableInfo = ({ tabs }: RowTableInfoProps) => {
           </button>
         ))}
       </div>
-      {contentTabs.map((content, i) => {
+      {dataTabs.contentTabs.map((content, i) => {
         return (
           activeTab === i && (
             <div key={i} className={activeTab !== i ? style.contentHidden : style.content}>

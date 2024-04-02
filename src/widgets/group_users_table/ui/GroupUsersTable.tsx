@@ -46,7 +46,7 @@ export const GroupUsersTable: FC<GroupUsersTableProps> = ({ groupInfo }) => {
       <Popup
         isOpen={addModalData.openAddCarModal}
         toggleModal={addModalData.closeAddCarModal}
-        body={<GroupUserAddForm close={addModalData.closeAddCarModal} branchId={groupInfo.id} />}
+        body={<GroupUserAddForm close={addModalData.closeAddCarModal} branchId={groupInfo?.id} />}
       />
       <Popup
         isOpen={editModalData.open}

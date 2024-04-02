@@ -440,7 +440,6 @@ export function getEventsHistoryURL({
 }: EventsOptions) {
   const branchId = filterOptions?.branchId;
   let queries = getSelectBranchQueryUrl({
-    page: 'device',
     branchId,
   });
 

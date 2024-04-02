@@ -1,38 +1,38 @@
-import { Table, TableBody, TableHead } from '@mui/material';
+import { Virtuoso } from 'react-virtuoso';
+
+import { TableContainer } from '@mui/material';
 
 import type { HistoryTypes } from '@entities/events_data';
-import { StyledTable } from '@shared/styled_components/styledTable';
 import type { EventsOptions } from '@shared/types/BaseQueryTypes';
-import { Loader } from '@shared/ui/loader';
 
 import { useEventsHistory } from '../hooks/useEventsHistory';
+import { TableHeader, getTextList } from '../lib/components';
 import style from './EventsHistory.module.scss';
 
-export type EventsHistory = {
+type EventsHistoryProps = {
   type: HistoryTypes;
 } & EventsOptions;
 
-export const EventsHistory = (props: EventsHistory) => {
+export const EventsHistory = (props: EventsHistoryProps) => {
   const type = props.type;
-  const { rows, isLoading } = useEventsHistory(props, type);
+  const { rows, data, handleEnd, isLoading } = useEventsHistory(props, type);
 
+  const length = data?.length || 0;
   return (
-    <Loader isLoading={isLoading}>
-      <div className={style.minWidthWrapper}>
-        <Table stickyHeader>
-          <TableHead className={style.tableHead}>
-            <StyledTable.HeaderRow>
-              <StyledTable.HeaderCell>Тип события</StyledTable.HeaderCell>
-
-              <StyledTable.HeaderCell className={style.headerCellDate}>Дата</StyledTable.HeaderCell>
-
-              <StyledTable.HeaderCell className={style.headerCell} />
-            </StyledTable.HeaderRow>
-          </TableHead>
-
-          <TableBody>{rows}</TableBody>
-        </Table>
-      </div>
-    </Loader>
+    <div className={style.minWidthWrapper}>
+      <TableContainer className={style.hiddenWrapper}>
+        <Virtuoso
+          endReached={handleEnd}
+          totalCount={length}
+          className={style.tableVirtuoso}
+          data={data}
+          components={{
+            Header: TableHeader,
+            Footer: () => getTextList(isLoading, length),
+          }}
+          itemContent={rows}
+        />
+      </TableContainer>
+    </div>
   );
 };

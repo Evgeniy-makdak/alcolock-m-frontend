@@ -8,7 +8,7 @@ import { EventsTable } from '@widgets/events_table';
 import { useEventsPage } from '../hooks/useEventsPage';
 
 const Events = () => {
-  const { handleClickRow, handleCloseAside, selectedEventId } = useEventsPage();
+  const { handleClickRow, handleCloseAside, selectedEventId, tabs } = useEventsPage();
 
   return (
     <>
@@ -18,14 +18,7 @@ const Events = () => {
 
       {selectedEventId && (
         <Aside onClose={handleCloseAside}>
-          <RowTableInfo
-            tabs={[
-              {
-                name: 'Инфо',
-                content: <EventInfo selectedEventId={selectedEventId} />,
-              },
-            ]}
-          />
+          <RowTableInfo tabs={tabs} />
         </Aside>
       )}
     </>
