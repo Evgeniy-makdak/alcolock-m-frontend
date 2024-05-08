@@ -67,7 +67,7 @@ const returnHeaders = (headers: HeaderReq): HeaderReq => {
   });
 };
 
-export function getQuery<T>({
+export async function getQuery<T>({
   url,
   config,
 }: {
@@ -77,17 +77,18 @@ export function getQuery<T>({
   const requestUrl = `${API_URL}${url}`;
   const headersReg = returnHeaders(config?.headers);
 
-  return axios
-    .get<IError, AppAxiosResponse<T>>(requestUrl, {
-      headers: { ...config?.headers, ...headersReg },
-      ...config,
-    })
-    .catch((e) => {
-      return viewResErrors(e);
-    });
+  try {
+    return await axios
+      .get<IError, AppAxiosResponse<T>>(requestUrl, {
+        headers: { ...config?.headers, ...headersReg },
+        ...config,
+      });
+  } catch (e) {
+    return viewResErrors(e);
+  }
 }
 
-export function postQuery<T, D>({
+export async function postQuery<T, D>({
   headers,
   url,
   data,
@@ -97,16 +98,17 @@ export function postQuery<T, D>({
   data?: D;
 }) {
   const requestUrl = `${API_URL}${url}`;
-  return axios
-    .post<IError, AppAxiosResponse<T>>(requestUrl, data, {
-      headers: returnHeaders(headers),
-    })
-    .catch((e) => {
-      return viewResErrors(e);
-    });
+  try {
+    return await axios
+      .post<IError, AppAxiosResponse<T>>(requestUrl, data, {
+        headers: returnHeaders(headers),
+      });
+  } catch (e) {
+    return viewResErrors(e);
+  }
 }
 
-export function putQuery<T, D>({
+export async function putQuery<T, D>({
   headers,
   url,
   data,
@@ -116,23 +118,25 @@ export function putQuery<T, D>({
   data?: D;
 }) {
   const requestUrl = `${API_URL}${url}`;
-  return axios
-    .put<IError, AppAxiosResponse<T>>(requestUrl, data, {
-      headers: returnHeaders(headers),
-    })
-    .catch((e) => {
-      return viewResErrors(e);
-    });
+  try {
+    return await axios
+      .put<IError, AppAxiosResponse<T>>(requestUrl, data, {
+        headers: returnHeaders(headers),
+      });
+  } catch (e) {
+    return viewResErrors(e);
+  }
 }
 
-export function deleteQuery<T>({ headers, url }: { headers?: HeaderReq; url: string }) {
+export async function deleteQuery<T>({ headers, url }: { headers?: HeaderReq; url: string }) {
   const requestUrl = `${API_URL}${url}`;
-  return axios
-    .delete<IError, AppAxiosResponse<T>>(requestUrl, {
-      httpsAgent: 'fetch',
-      headers: returnHeaders(headers),
-    })
-    .catch((e) => {
-      return viewResErrors(e);
-    });
+  try {
+    return await axios
+      .delete<IError, AppAxiosResponse<T>>(requestUrl, {
+        httpsAgent: 'fetch',
+        headers: returnHeaders(headers),
+      });
+  } catch (e) {
+    return viewResErrors(e);
+  }
 }
