@@ -97,7 +97,7 @@ export const NavBar = () => {
         <Popup
           isOpen={open}
           toggleModal={toggle}
-          closeonClickSpace={false}
+          // closeonClickSpace={false}
           body={<PasswordForm close={close} />}
           onCloseModal={close}
         />

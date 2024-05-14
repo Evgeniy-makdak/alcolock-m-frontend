@@ -1,4 +1,4 @@
-import { type FC, type MouseEvent, type ReactNode, useState } from 'react';
+import { type FC, type MouseEvent, type ReactNode, useEffect, useState } from 'react';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -47,6 +47,12 @@ export const MenuButton: FC<MenuButtonProps> = ({
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const handleToggle = () => {
+    toggleModal();
+    setAnchorEl(null);
+  };
+
   const handleClose = () => {
     close();
     setAnchorEl(null);
@@ -100,7 +106,7 @@ export const MenuButton: FC<MenuButtonProps> = ({
           }}>
           <MenuItem
             data-testid={testids.widget_navbar.NAVBAR_POPUP_CHANGE_PASSWORD_BUTTON}
-            onClick={toggleModal}
+            onClick={handleToggle}
             className={`${style.menuItem} ${collops ? style.center : style.between}`}>
             {!collops && <span>Изменить пароль</span>}
             <EditOutlinedIcon />
