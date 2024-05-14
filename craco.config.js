@@ -8,17 +8,19 @@ module.exports = {
   plugins: [
     {
       plugin: CracoAliasPlugin,
-      options: {},
+      options: {
+        aliases: {
+          app: resolvePath('./src/app'),
+          pages: resolvePath('./src/pages'),
+          widgets: resolvePath('./src/widgets'),
+          features: resolvePath('./src/features'),
+          entities: resolvePath('./src/entities'),
+          shared: resolvePath('./src/shared'),
+        },
+      },
     },
   ],
   webpack: {
-    alias: {
-      app: resolvePath('./src/app'),
-      pages: resolvePath('./src/pages'),
-      widgets: resolvePath('./src/widgets'),
-      features: resolvePath('./src/features'),
-      entities: resolvePath('./src/entities'),
-      shared: resolvePath('./src/shared'),
-    },
+    alias: {},
   },
 };

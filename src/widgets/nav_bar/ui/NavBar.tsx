@@ -21,6 +21,8 @@ import style from './NavBar.module.scss';
 
 export const NavBar = () => {
   const [open, toggle, close] = useToggle();
+  console.log("isOpen:", open); // Тестировочный консольный лог
+  console.log("toggleModal function:", toggle); // Тестировочный консольный лог
   const { state, setItemState } = useLocalStorage({
     key: StorageKeys.NAVBAR_COLLOPS_MENU,
     value: false,
@@ -91,6 +93,7 @@ export const NavBar = () => {
             </Button>
           </Stack>
         </div>
+      </div>
         <Popup
           isOpen={open}
           toggleModal={toggle}
@@ -98,7 +101,6 @@ export const NavBar = () => {
           body={<PasswordForm close={close} />}
           onCloseModal={close}
         />
-      </div>
     </>
   );
 };
