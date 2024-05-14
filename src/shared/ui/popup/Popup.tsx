@@ -36,6 +36,7 @@ export const Popup = ({
   styles = null, // HELP => тут нужно передать нужную высоту и ширину
 }: PopupProps) => {
   const handleClickOutside = (e: React.SyntheticEvent<HTMLDivElement>) => {
+    console.log('Toggle is active:', open);
     const { target } = e;
     if (!('dataset' in target)) return;
     if (typeof target.dataset !== 'object') return;
