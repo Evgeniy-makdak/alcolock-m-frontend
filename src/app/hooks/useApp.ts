@@ -38,11 +38,7 @@ export const useApp = () => {
         enqueueSnackbar(`У вас нет доступа к странице "${pathDisplayName.name}"`, {
           variant: 'error',
         });
-      } else {
-        enqueueSnackbar('У вас нет доступа к данной странице', {
-          variant: 'error',
-        });
-      }
+      } 
       navigate(firstAvailableRouter);
     }
   }, [pathName]);

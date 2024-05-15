@@ -305,7 +305,7 @@ export class AppConstants {
     },
     {
       value: this.EVENT_TYPES.alcolockEventMaintenanceModeOff,
-      label: 'Выход из режима "Атвосервис"',
+      label: 'Выход из режима "Автосервис"',
     },
     {
       value: this.EVENT_TYPES.alcolockEventEmergencyModeOn,
