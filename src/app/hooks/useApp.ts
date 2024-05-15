@@ -5,7 +5,7 @@ import { enqueueSnackbar } from 'notistack';
 
 import { onFetchDataHandling } from '@app/lib/onFetchDataHandling';
 import { Permissions } from '@shared/config/permissionsEnums';
-import type { RoutePaths } from '@shared/config/routePathsEnum';
+import { RoutePaths } from '@shared/config/routePathsEnum';
 import { appStore } from '@shared/model/app_store/AppStore';
 import { setStore } from '@shared/model/store/localStorage';
 import { NAV_LINKS } from '@widgets/nav_bar/config/const';
@@ -25,7 +25,7 @@ export const useApp = () => {
   const permissionsPath = hasPermissionForThisPage(user?.permissions);
   // TODO => поменять всю работу с доступами когда на бэке поменяется структура доступов
   const array = Object.entries(permissionsPath).filter((perm) => perm[1] === true);
-  const firstAvailableRouter = array[0][0];
+  const firstAvailableRouter = array.length > 0 ? array[0][0] : RoutePaths.root; // По умолчанию возвращаем RoutePaths.root, если массив пустой
   // TODO => поменять всю работу с доступами когда на бэке поменяется структура доступов
   useEffect(() => {
     if (isLoading || !user) return;
@@ -34,9 +34,15 @@ export const useApp = () => {
     if (hasAccess) return;
     if (!hasAccess) {
       const pathDisplayName = NAV_LINKS.find((link) => link.path === pathName);
-      enqueueSnackbar(`У вас нет доступа к странице "${pathDisplayName.name}"`, {
-        variant: 'error',
-      });
+      if (pathDisplayName) {
+        enqueueSnackbar(`У вас нет доступа к странице "${pathDisplayName.name}"`, {
+          variant: 'error',
+        });
+      } else {
+        enqueueSnackbar('У вас нет доступа к данной странице', {
+          variant: 'error',
+        });
+      }
       navigate(firstAvailableRouter);
     }
   }, [pathName]);
