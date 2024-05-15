@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -36,7 +36,7 @@ export const Popup = ({
   styles = null, // HELP => тут нужно передать нужную высоту и ширину
 }: PopupProps) => {
   const handleClickOutside = (e: React.SyntheticEvent<HTMLDivElement>) => {
-    console.log('Toggle is active:', headerTitle);
+    // console.log('Toggle is active:', headerTitle); 
     const { target } = e;
     if (!('dataset' in target)) return;
     if (typeof target.dataset !== 'object') return;
@@ -46,11 +46,11 @@ export const Popup = ({
     }
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      console.log('header_title', headerTitle);     
-    }
-  }, [isOpen, headerTitle])
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     console.log('header_title', headerTitle);     
+  //   }
+  // }, [isOpen, headerTitle])
 
   return isOpen
     ? createPortal(

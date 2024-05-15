@@ -21,8 +21,8 @@ import style from './NavBar.module.scss';
 
 export const NavBar = () => {
   const [open, toggle, close] = useToggle();
-  console.log("isOpen:", open); // Тестировочный консольный лог
-  console.log("toggleModal function:", toggle); // Тестировочный консольный лог
+  // console.log("isOpen:", open); // Тестировочный console.log
+  // console.log("toggleModal function:", toggle); // Тестировочный console.log
   const { state, setItemState } = useLocalStorage({
     key: StorageKeys.NAVBAR_COLLOPS_MENU,
     value: false,

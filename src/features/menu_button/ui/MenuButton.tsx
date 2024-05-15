@@ -1,4 +1,4 @@
-import { type FC, type MouseEvent, type ReactNode, useEffect, useState } from 'react';
+import { type FC, type MouseEvent, type ReactNode, useState } from 'react';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -48,6 +48,9 @@ export const MenuButton: FC<MenuButtonProps> = ({
     setAnchorEl(event.currentTarget);
   };
 
+  // Добавлена функция handleToggle, которая будет отвечать за открытие/закрытие модального окна в MenuItem.
+  // Этим исправили неактивные поля ввода в модалке "изменить пароль"
+  
   const handleToggle = () => {
     toggleModal();
     setAnchorEl(null);
