@@ -140,6 +140,7 @@ export const useUserAddChangeForm = (id?: ID, closeModal?: () => void) => {
   const licenseCode = watch('licenseCode');
 
   const onSubmit = async (data: Form) => {
+    console.log("Данные, отправляемые на сервер:", data);
     const licenseClass = (data?.licenseClass || []).length > 0;
     const licenseIssueDate = !!data?.licenseIssueDate;
     const licenseExpirationDate = !!data?.licenseExpirationDate;
